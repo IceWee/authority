@@ -2,25 +2,26 @@ package bing.model;
 
 import java.util.Date;
 
+import bing.constants.UserStatus;
 import bing.domain.BaseUser;
 
 public class SysUser extends BaseUser {
 
 	private static final long serialVersionUID = 5217735149888451989L;
-	
+
 	private Integer id;
 
-    private String name;
+	private String name;
 
-    private String salt;
+	private String salt;
 
-    private String mobile;
+	private String mobile;
 
-    private Integer status;
+	private Integer status = UserStatus.NORMAL.ordinal();
 
-    private Date createDate;
+	private Date createDate;
 
-    private Date updateDate;
+	private Date updateDate;
 
 	public SysUser() {
 		super();
@@ -84,6 +85,26 @@ public class SysUser extends BaseUser {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return UserStatus.NORMAL.ordinal() == status;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return UserStatus.LOCKED.ordinal() != status;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return UserStatus.NORMAL.ordinal() == status;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return UserStatus.NORMAL.ordinal() == status;
 	}
 
 }

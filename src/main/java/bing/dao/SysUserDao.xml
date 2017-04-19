@@ -15,8 +15,7 @@
 	<sql id="Base_Column_List">
 		id, username, name, password, salt, mobile, status, create_date, update_date
 	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user
@@ -138,4 +137,16 @@
 		update_date = #{updateDate,jdbcType=TIMESTAMP}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	<select id="getByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where username = #{username,jdbcType=VARCHAR}
+	</select>
+	<select id="listByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where name LIKE CONCAT(#{name,jdbcType=VARCHAR}, '%')
+	</select>
 </mapper>

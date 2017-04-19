@@ -16,7 +16,7 @@
 </script>
 </head>
 <body class="white">
-<form action="login" method="post" id="login-form">
+<form action="login" th:action="login" method="post" id="login-form">
 	<div class="login-hd">
 		<div class="left-bg"></div>
 		<div class="right-bg"></div>
@@ -33,14 +33,14 @@
 							<h4 th:text="#{login.label.login}">用户登录</h4>
 						</div>
 						<div class="alert alert-error">
-							<i class="iconfont">&#xe62e;</i> <span th:text="#{login.label.username}">请输入用户名</span>
+							<i class="iconfont">&#xe62e;</i>&nbsp;<span th:text="${msg}"></span>
 						</div>
 						<form>
 							<div class="lg-username input-item clearfix">
-								<i class="iconfont">&#xe60d;</i> <input type="text" name="username" th:placeholder="#{login.label.account}" placeholder="账号/邮箱">
+								<i class="iconfont">&#xe60d;</i>&nbsp;<input type="text" name="username" th:placeholder="#{login.label.account}" placeholder="账号/邮箱">
 							</div>
 							<div class="lg-password input-item clearfix">
-								<i class="iconfont">&#xe634;</i> <input type="password" name="password" th:placeholder="#{login.label.password}" placeholder="请输入密码">
+								<i class="iconfont">&#xe634;</i>&nbsp;<input type="password" name="password" th:placeholder="#{login.label.password}" placeholder="请输入密码">
 							</div>
 							<div class="lg-check clearfix">
 								<div class="input-item">
