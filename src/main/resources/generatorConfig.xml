@@ -2,8 +2,8 @@
 <!DOCTYPE generatorConfiguration  
       PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
       "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+      
 <generatorConfiguration>
-	<classPathEntry location="./lib/mysql-connector-java-5.1.27.jar" />
 	<context id="MysqlTables" targetRuntime="MyBatis3">
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 		<!-- <plugin type="org.mybatis.generator.plugins.ManagerClassPlugin" /> 
@@ -27,7 +27,7 @@
 		</javaTypeResolver>
 
 		<!-- generate Model -->
-		<javaModelGenerator targetPackage="net.huixiadan.user.model"
+		<javaModelGenerator targetPackage="temp.bing.model"
 			targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
@@ -35,14 +35,13 @@
 		</javaModelGenerator>
 
 		<!-- generate xml -->
-		<sqlMapGenerator targetPackage="bing.dao"
-			targetProject="./src/main/java">
+		<sqlMapGenerator targetPackage="temp.bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- generate Mapper -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="net.huixiadan.user.dao" targetProject="./src/main/java">
+			targetPackage="temp.bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<!-- <property name="rootInterface" value="bing.BaseDao" /> -->
 		</javaClientGenerator>
