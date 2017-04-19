@@ -16,7 +16,6 @@ spring:
 
 # MyBatis cofig
 mybatis: 
-  mapper-locations: classpath*:bing/**/dao/*.xml
   config-location: classpath:mybatis-config.xml
 
 # Auto pager plugin
