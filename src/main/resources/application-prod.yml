@@ -1,0 +1,22 @@
+spring:
+  datasource: 
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/authority?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+
+# MyBatis cofig
+mybatis: 
+  mapper-locations: classpath*:net/huixiadan/**/dao/*.xml
+  config-location: classpath:mybatis-config.xml
+
+# Auto pager plugin
+pagehelper:
+    helperDialect: mysql
+    offsetAsPageNum: true
+  
+# Logger config
+logging:
+  level:
+    org.springframework.transaction.interceptor: TRACE
