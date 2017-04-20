@@ -16,7 +16,7 @@ import bing.dao.SysUserDao;
 import bing.domain.GenericPage;
 import bing.model.SysUser;
 
-@Service("sysUserService")  
+@Service("sysUserService")
 public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
@@ -24,14 +24,14 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		SysUser sysUser = sysUserDao.getByUsername(username);
-		if (sysUser == null) {
-			throw new UsernameNotFoundException("User " + username + " has no GrantedAuthority");  
+		SysUser userDetails = sysUserDao.getByUsername(username);
+		if (userDetails == null) {
+			throw new UsernameNotFoundException("User " + username + " has no GrantedAuthority");
 		}
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ADMIN"));
-		sysUser.setAuthorities(authorities);
-		return sysUser;
+		userDetails.setAuthorities(authorities);
+		return userDetails;
 	}
 
 	@Override

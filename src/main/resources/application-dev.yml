@@ -13,6 +13,10 @@ spring:
   thymeleaf:
     cache: false
     enabled: true
+# EhCache config
+  cache:
+    ehcache:
+      config: classpath*:ehcache.xml
 
 # MyBatis cofig
 mybatis: 
@@ -27,3 +31,4 @@ pagehelper:
 logging:
   level:
     org.springframework.transaction.interceptor: TRACE
+    

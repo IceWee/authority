@@ -27,27 +27,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("sysUserService")
 	private UserDetailsService userDetailsService;
-	
+
 	@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/js/**", "/css/**", "/images/**");
-    }
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/js/**", "/css/**", "/images/**");
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		LOGGER.info("********************* Spring Security *************************");
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
-		http.authorizeRequests().antMatchers("/login").permitAll()
-		.anyRequest().authenticated()
-		.and().formLogin().loginPage("/login").failureUrl("/login?error").defaultSuccessUrl("/main").permitAll()
-		.and().logout().permitAll()
-		// 开启cookie保存用户数据
-		.and().rememberMe()
-        // 设置cookie有效期
-        .tokenValiditySeconds(60 * 60 * 24 * 7)
-        // 设置cookie的私钥
-        .key("authority_");
+		http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin()
+				.loginPage("/login").failureUrl("/login?error").defaultSuccessUrl("/main").permitAll().and().logout()
+				.permitAll()
+				// 开启cookie保存用户数据
+				.and().rememberMe()
+				// 设置cookie有效期
+				.tokenValiditySeconds(60 * 60 * 24 * 7)
+				// 设置cookie的私钥
+				.key("authority_");
 		// 设置注销成功后跳转页面，默认是跳转到登录页面
 		http.logout().logoutSuccessUrl("/login?logout");
 	}
@@ -55,14 +54,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(new Md5PasswordEncoder());
-        authProvider.setUserDetailsService(userDetailsService);
-        // 盐策略：通过反射UserDetails实现类的属性
-        ReflectionSaltSource saltSource = new ReflectionSaltSource();
-        // 盐取值为用户属性-salt
-        saltSource.setUserPropertyToUse("salt");
-        authProvider.setSaltSource(saltSource);
-        auth.authenticationProvider(authProvider);
+		authProvider.setPasswordEncoder(new Md5PasswordEncoder());
+		authProvider.setUserDetailsService(userDetailsService);
+		// 盐策略：通过反射UserDetails实现类的属性
+		ReflectionSaltSource saltSource = new ReflectionSaltSource();
+		// 盐取值为用户属性-salt
+		saltSource.setUserPropertyToUse("salt");
+		authProvider.setSaltSource(saltSource);
+		auth.authenticationProvider(authProvider);
 	}
 
 }

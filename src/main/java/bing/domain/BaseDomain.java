@@ -1,10 +1,14 @@
 package bing.domain;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-public class BaseDomain {
+public class BaseDomain implements Serializable {
+
+	private static final long serialVersionUID = -3001222131707495746L;
 
 	@Override
 	public String toString() {
@@ -20,5 +24,5 @@ public class BaseDomain {
 	public boolean equals(Object obj) {
 		return EqualsBuilder.reflectionEquals(this, obj);
 	}
-	
+
 }
