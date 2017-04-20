@@ -6,17 +6,23 @@
 <title th:text="#{system.name}">认证与授权管理系统</title>
 <link rel="stylesheet" type="text/css" href="/js/uimaker/css/base.css" th:href="@{/js/uimaker/css/base.css}" />
 <link rel="stylesheet" type="text/css" href="/js/uimaker/css/login/login.css" th:href="@{/js/uimaker/css/login/login.css}" />
+<link rel="stylesheet" type="text/css" href="/js/uimaker/easyui/easyui.css" th:href="@{/js/uimaker/easyui/easyui.css}" />
 <script type="text/javascript" src="/js/jquery-1.11.3.min.js" th:href="@{/js/jquery-1.11.3.min.js}"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/jquery.easyui.min.js" th:href="@{/js/uimaker/easyui/jquery.easyui.min.js}"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/jquery.easyui.validator.js" th:href="@{/js/uimaker/easyui/jquery.easyui.validator.js}"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/locale/easyui-lang-zh_CN.js" th:href="@{/js/uimaker/easyui/locale/easyui-lang-zh_CN.js}"></script>
 <script type="text/javascript">
 	$(function() {
 		$("#login-button").click(function() {
-			$("#submit-button").click();
+			if ($("#username").val() != "" && $("#password").val() != "") {
+				$("#submit-button").click();
+			}
 		});
 	});
 </script>
 </head>
 <body class="white">
-<form action="login" th:action="login" method="post" id="login-form">
+<form action="/login" th:action="@{/login}" method="post" id="login-form">
 	<div class="login-hd">
 		<div class="left-bg"></div>
 		<div class="right-bg"></div>
@@ -37,10 +43,10 @@
 						</div>
 						<form>
 							<div class="lg-username input-item clearfix">
-								<i class="iconfont">&#xe60d;</i>&nbsp;<input type="text" name="username" th:placeholder="#{login.label.account}" placeholder="账号/邮箱">
+								<i class="iconfont">&#xe60d;</i>&nbsp;<input type="text" id="username" name="username" th:placeholder="#{login.label.account}" placeholder="账号/邮箱">
 							</div>
 							<div class="lg-password input-item clearfix">
-								<i class="iconfont">&#xe634;</i>&nbsp;<input type="password" name="password" th:placeholder="#{login.label.password}" placeholder="请输入密码">
+								<i class="iconfont">&#xe634;</i>&nbsp;<input type="password" id="password" name="password" th:placeholder="#{login.label.password}" placeholder="请输入密码">
 							</div>
 							<div class="lg-check clearfix">
 								<div class="input-item">

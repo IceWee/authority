@@ -3,6 +3,8 @@ package bing.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,18 +19,16 @@ import bing.service.MessageSourceService;
 
 @Controller
 public class LoginController {
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
 	@Autowired
 	private MessageSourceService messageSourceService;
-
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String index() {
-		return "login";
-	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {
+		LOGGER.info("visiting login action...");
 		ModelAndView model = new ModelAndView("login");
 		model.addObject("msg", messageSourceService.getMessage("login.label.username"));
 		if (error != null) {
@@ -39,14 +39,15 @@ public class LoginController {
 		}
 		return model;
 	}
-	
-	@RequestMapping(value="/logout", method = RequestMethod.GET)  
-    public String logout(HttpServletRequest request, HttpServletResponse response) {  
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();  
-        if (auth != null){      
-            new SecurityContextLogoutHandler().logout(request, response, auth);  
-        }  
-        return "redirect:/login?logout";  
-    }  
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		LOGGER.info("visiting logout action...");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/login?logout";
+	}
 
 }
