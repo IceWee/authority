@@ -1,6 +1,6 @@
 html {
 	height: 100%;
-	background: #1da028;
+	background: #007cb6;
 	min-width: 1200px;
 	overflow: hidden
 }
@@ -21,7 +21,7 @@ html {
 	padding: 0 15px;
 	height: 100%;
 	width: 230px;
-	border-right: 1px solid #198b25;
+	border-right: 1px solid #007cb6;
 	line-height: 70px
 }
 
@@ -48,7 +48,7 @@ html {
 	height: 70px;
 	color: #fff;
 	padding: 0 15px;
-	border-right: 1px solid #198b25
+	border-right: 1px solid #007cb6
 }
 
 #pf-hd .pf-nav .pf-nav-item a {
@@ -302,7 +302,7 @@ html {
 #pf-bd #pf-sider .sider-nav>li .sider-nav-icon {
 	float: left;
 	margin: 0 10px 0 0;
-	color: #4fb259;
+	color: #007cb6;
 	font-size: 20px
 }
 
