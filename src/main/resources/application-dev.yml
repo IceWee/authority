@@ -1,3 +1,11 @@
+# HTTPS config
+server:
+  port: 8443
+  ssl.key-store: classpath:keystore.p12
+  ssl.key-store-password: tomcat
+  ssl.keyStoreType: PKCS12
+  ssl.keyAlias: tomcat
+
 spring:
 # i18n config
   messages:
