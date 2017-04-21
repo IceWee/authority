@@ -62,5 +62,20 @@ CREATE TABLE `sys_user_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
+-- 资源表
+CREATE TABLE `sys_source` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `name` varchar(32) DEFAULT NULL COMMENT '资源名称',
+  `type` int(11) DEFAULT NULL COMMENT '资源类型（菜单1，其他2）',
+  `parent_id` int(11) DEFAULT NULL COMMENT '上级资源ID',
+  `url` varchar(500) DEFAULT NULL COMMENT '资源地址',
+  `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
+  `remark` varchar(256) DEFAULT NULL COMMENT '备注',
+  `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
+  `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
+  `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
