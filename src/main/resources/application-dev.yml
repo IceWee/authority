@@ -16,7 +16,7 @@ spring:
 # EhCache config
   cache:
     ehcache:
-      config: classpath*:ehcache.xml
+      config: classpath:ehcache.xml
 
 # MyBatis cofig
 mybatis: 

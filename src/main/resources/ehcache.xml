@@ -21,7 +21,7 @@
 	<defaultCache eternal="false" maxElementsInMemory="1000"
 		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
 		timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU" />
-	<cache name="snailAuthCache" eternal="false" maxElementsInMemory="10000"
+	<cache name="userCache" eternal="false" maxElementsInMemory="10000"
 		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
 		timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU" />
 </ehcache>
