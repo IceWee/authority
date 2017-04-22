@@ -3,10 +3,11 @@
 <head th:include="common/header :: header(~{::title},~{::link})" />
 <title th:text="#{system.name}">认证与授权管理系统</title>
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/login/login.css}" />
-<script type="text/javascript" th:src="@{/js/login/login.js}"></script>
+<script type="text/javascript" th:href="@{/js/login/login.js}"></script>
+<script type="text/javascript" th:href="@{/js/jquery-1.11.3.min.js}"></script>
 <script type="text/javascript">
 	$(function() {
-		initEvents();
+		bindEvents();
 	});
 </script>
 </head>
@@ -39,9 +40,9 @@
 							</div>
 							<div class="lg-check clearfix">
 								<div class="input-item">
-									<i class="iconfont">&#xe633;</i> <input type="text" id="captcha" th:placeholder="#{login.label.code}" placeholder="验证码">
+									<i class="iconfont">&#xe633;</i> <input type="text" id="captcha" name="captcha" th:placeholder="#{login.label.code}" placeholder="验证码">
 								</div>
-								<span id="raw-captcha" class="check-code">XD34F</span>
+								<span class="check-code" id="raw-captcha">XD3F</span>
 							</div>
 							<div class="tips clearfix">
 								<input type="checkbox" checked="checked"><label th:text="#{login.label.rememberme}">记住用户名</label>

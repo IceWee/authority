@@ -30,23 +30,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/js/**", "/css/**", "/images/**");
+		web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/i18n/**");
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		LOGGER.info("********************* Spring Security *************************");
+		LOGGER.info("********************* Spring Security*************************");
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
-		http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin()
-				.loginPage("/login").failureUrl("/login?error").defaultSuccessUrl("/main").permitAll().and().logout()
-				.permitAll()
-				// 开启cookie保存用户数据
-				.and().rememberMe()
-				// 设置cookie有效期
-				.tokenValiditySeconds(60 * 60 * 24 * 7)
-				// 设置cookie的私钥
-				.key("authority_");
+		http.authorizeRequests().antMatchers("/login").permitAll()
+			.anyRequest().authenticated()
+			.and().formLogin().loginPage("/login").failureUrl("/login?error").defaultSuccessUrl("/main").permitAll()
+			.and().logout().permitAll()
+			// 开启cookie保存用户数据
+			.and().rememberMe()
+			// 设置cookie有效期
+			.tokenValiditySeconds(60 * 60 * 24 * 7)
+			// 设置cookie的私钥
+			.key("authority_");
 		// 设置注销成功后跳转页面，默认是跳转到登录页面
 		http.logout().logoutSuccessUrl("/login?logout");
 	}

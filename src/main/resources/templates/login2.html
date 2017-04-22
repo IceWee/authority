@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="common/header :: header(~{::title},~{::link})" />
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title th:text="#{system.name}">认证与授权管理系统</title>
-<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/login/login.css}" />
-<script type="text/javascript" th:src="@{/js/login/login.js}"></script>
+<link rel="stylesheet" type="text/css" href="/js/uimaker/css/base.css" th:href="@{/js/uimaker/css/base.css}" />
+<link rel="stylesheet" type="text/css" href="/js/uimaker/css/login/login.css" th:href="@{/js/uimaker/css/login/login.css}" />
+<link rel="stylesheet" type="text/css" href="/js/uimaker/easyui/easyui.css" th:href="@{/js/uimaker/easyui/easyui.css}" />
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js" th:href="@{/js/jquery-1.11.3.min.js}"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/jquery.easyui.min.js" th:href="@{/js/uimaker/easyui/jquery.easyui.min.js}"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/jquery.easyui.validator.js" th:href="@{/js/uimaker/easyui/jquery.easyui.validator.js}"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/locale/easyui-lang-zh_CN.js" th:href="@{/js/uimaker/easyui/locale/easyui-lang-zh_CN.js}"></script>
 <script type="text/javascript">
 	$(function() {
-		initEvents();
+		$("#login-button").click(function() {
+			if ($.trim($("#username").val()) == "") {
+				return;
+			}
+			if ($.trim($("#password").val()) == "") {
+				return;
+			}
+			if ($.trim($("#captcha").val()) != $("#raw-captcha").val()) {
+				return;
+			}
+			$("#submit-button").click();
+		});
 	});
 </script>
 </head>
@@ -28,7 +46,7 @@
 							<h4 th:text="#{login.label.login}">用户登录</h4>
 						</div>
 						<div class="alert alert-error">
-							<i class="iconfont">&#xe62e;</i>&nbsp;<span id="login-tips" th:text="${msg}"></span>
+							<i class="iconfont">&#xe62e;</i>&nbsp;<span th:text="${msg}"></span>
 						</div>
 						<form>
 							<div class="lg-username input-item clearfix">
@@ -39,9 +57,9 @@
 							</div>
 							<div class="lg-check clearfix">
 								<div class="input-item">
-									<i class="iconfont">&#xe633;</i> <input type="text" id="captcha" th:placeholder="#{login.label.code}" placeholder="验证码">
+									<i class="iconfont">&#xe633;</i> <input type="text" id="captcha" name="captcha" th:placeholder="#{login.label.code}" placeholder="验证码">
 								</div>
-								<span id="raw-captcha" class="check-code">XD34F</span>
+								<span class="check-code" id="raw-captcha">XD3F</span>
 							</div>
 							<div class="tips clearfix">
 								<input type="checkbox" checked="checked"><label th:text="#{login.label.rememberme}">记住用户名</label>
