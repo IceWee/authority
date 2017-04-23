@@ -2,6 +2,7 @@ package bing.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import bing.service.MessageSourceService;
+import bing.util.CaptchaUtils;
 
 @Controller
 public class LoginController {
@@ -29,8 +31,7 @@ public class LoginController {
 	private MessageSourceService messageSourceService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout) {
+	public ModelAndView login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout, HttpSession session) {
 		LOGGER.info("visiting login action...");
 		ModelAndView model = new ModelAndView("login");
 		model.addObject("msg", messageSourceService.getMessage("login.label.username"));
@@ -40,6 +41,10 @@ public class LoginController {
 		if (logout != null) {
 			model.addObject("msg", messageSourceService.getMessage("logout.tips.success"));
 		}
+		// 设置验证码
+		String captcha = CaptchaUtils.captcha(4);
+		LOGGER.info("生成登录验证码：{}", captcha);
+		session.setAttribute("captcha", captcha);
 		return model;
 	}
 

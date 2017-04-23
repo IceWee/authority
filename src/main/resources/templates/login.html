@@ -41,7 +41,7 @@
 								<div class="input-item">
 									<i class="iconfont">&#xe633;</i> <input type="text" id="captcha" name="captcha" th:placeholder="#{login.label.code}" placeholder="验证码">
 								</div>
-								<span id="raw-captcha" class="check-code">XD34F</span>
+								<span id="raw-captcha" class="check-code" th:text="${session.captcha}">ABCD</span>
 							</div>
 							<div class="tips clearfix">
 								<input type="checkbox" checked="checked"><label th:text="#{login.label.rememberme}">记住用户名</label>

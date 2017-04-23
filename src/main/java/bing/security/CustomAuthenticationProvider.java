@@ -69,8 +69,6 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 		CustomWebAuthenticationDetails details = (CustomWebAuthenticationDetails) authentication.getDetails();
 		String captcha = details.getCaptcha();
 		LOGGER.info("登陆验证码：{}", captcha);
-
-		// Determine username
 		String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
 		UserDetails user = null;
 		try {
