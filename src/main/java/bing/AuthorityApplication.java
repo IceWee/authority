@@ -1,9 +1,6 @@
 package bing;
 
-import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
-import org.apache.tomcat.util.descriptor.web.SecurityCollection;
-import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -16,11 +13,15 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+
+import bing.constants.SystemConstants;
 
 @SpringBootApplication
 @EnableCaching
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = SystemConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
 @ComponentScan(basePackages = {"bing"})
-@MapperScan("bing.**.dao")
+@MapperScan(SystemConstants.MAPPER_SCAN_PACKAGES)
 public class AuthorityApplication {
 
 	public static void main(String[] args) {
@@ -46,19 +47,20 @@ public class AuthorityApplication {
 	public EmbeddedServletContainerFactory servletContainer() {
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
 
-			@Override
-			protected void postProcessContext(Context context) {
-				SecurityConstraint constraint = new SecurityConstraint();
-				constraint.setUserConstraint("CONFIDENTIAL");
-				SecurityCollection collection = new SecurityCollection();
-				collection.addPattern("/*");
-				constraint.addCollection(collection);
-				context.addConstraint(constraint);
-			}
+			// @Override
+			// protected void postProcessContext(Context context) {
+			// SecurityConstraint constraint = new SecurityConstraint();
+			// constraint.setUserConstraint("CONFIDENTIAL");
+			// SecurityCollection collection = new SecurityCollection();
+			// collection.addPattern("/*");
+			// constraint.addCollection(collection);
+			// context.addConstraint(constraint);
+			// }
 
 		};
 
-		tomcat.addAdditionalTomcatConnectors(httpConnector());
+		// tomcat.addAdditionalTomcatConnectors(httpConnector());
+		tomcat.setSessionTimeout(5);
 		return tomcat;
 	}
 

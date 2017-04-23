@@ -3,18 +3,18 @@ package bing.constants;
 public class SystemConstants {
 
 	/**
-	 * Default templates path
-	 */
-	public static final String DEFAULT_TEMPLATES_PATH = "classpath:/templates/";
-
-	/**
 	 * Request parameter name - capthca
 	 */
 	public static final String PARAM_CAPTCHA = "captcha";
 
 	/**
-	 * User password encrypt salt property name
+	 * Session timeout seconds
 	 */
-	public static final String PROPERTY_SALT = "salt";
+	public static final int SESSION_TIMEOUT_SECONDS = 10 * 60;
+
+	/**
+	 * MyBatis mapper scan packages
+	 */
+	public static final String MAPPER_SCAN_PACKAGES = "bing.**.dao";
 
 }

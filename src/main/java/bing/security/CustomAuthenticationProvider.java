@@ -68,7 +68,8 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		CustomWebAuthenticationDetails details = (CustomWebAuthenticationDetails) authentication.getDetails();
 		String captcha = details.getCaptcha();
-		LOGGER.info("登陆验证码：{}", captcha);
+		LOGGER.info("用户输入的登陆验证码：{}", captcha);
+
 		String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
 		UserDetails user = null;
 		try {

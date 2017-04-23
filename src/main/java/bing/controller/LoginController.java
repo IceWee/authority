@@ -14,11 +14,12 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
+import bing.model.SysUser;
 import bing.service.MessageSourceService;
 import bing.util.CaptchaUtils;
 
@@ -31,21 +32,30 @@ public class LoginController {
 	private MessageSourceService messageSourceService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout, HttpSession session) {
+	public String login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout,
+			@RequestParam(value = "expired", required = false) String expired, ModelMap model, HttpSession session) {
 		LOGGER.info("visiting login action...");
-		ModelAndView model = new ModelAndView("login");
-		model.addObject("msg", messageSourceService.getMessage("login.label.username"));
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof SysUser) { // 已登录
+			SysUser user = (SysUser) principal;
+			LOGGER.info("用户：{} 已登录，重定向到主页面", user.getName());
+			return "redirect:/main";
+		}
+		model.addAttribute("msg", messageSourceService.getMessage("login.label.username"));
 		if (error != null) {
-			model.addObject("msg", messageSourceService.getMessage("login.tips.invalid"));
+			model.addAttribute("msg", messageSourceService.getMessage("login.tips.invalid"));
 		}
 		if (logout != null) {
-			model.addObject("msg", messageSourceService.getMessage("logout.tips.success"));
+			model.addAttribute("msg", messageSourceService.getMessage("logout.tips.success"));
+		}
+		if (expired != null) {
+			model.addAttribute("msg", messageSourceService.getMessage("session.tips.expired"));
 		}
 		// 设置验证码
 		String captcha = CaptchaUtils.captcha(4);
 		LOGGER.info("生成登录验证码：{}", captcha);
 		session.setAttribute("captcha", captcha);
-		return model;
+		return "login";
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)

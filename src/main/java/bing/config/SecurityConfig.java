@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 @Configuration
@@ -55,8 +56,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.tokenValiditySeconds(60 * 60 * 24 * 7)
 			// 设置cookie的私钥
 			.key("authority_");
+		
 		// 设置注销成功后跳转页面，默认是跳转到登录页面
 		http.logout().logoutSuccessUrl("/login?logout");
+		
+		// session配置
+		http.sessionManagement()
+        	.maximumSessions(1)
+        	.expiredUrl("/login?expired")
+        	.and()
+        	.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        	.invalidSessionUrl("/login?expired");
 	}
 
 	@Override
