@@ -18,7 +18,7 @@ function initEvents() {
 			$("#captcha").focus();
 			return;
 		}
-		if ($.trim($("#captcha").val()) != $("#raw-captcha").text()) {
+		if ($.trim($("#captcha").val()).toLowerCase() != $("#raw-captcha").text().toLowerCase()) {
 			$("#login-tips").text($.i18n.prop("login.error.captcha"));
 			$("#captcha").select();
 			return;

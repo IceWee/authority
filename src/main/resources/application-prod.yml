@@ -1,3 +1,11 @@
+# HTTPS config
+server:
+  port: 8443
+  ssl.key-store: classpath:keystore.p12
+  ssl.key-store-password: tomcat
+  ssl.keyStoreType: PKCS12
+  ssl.keyAlias: tomcat
+
 spring:
 # i18n config
   messages:
@@ -13,6 +21,11 @@ spring:
   thymeleaf:
     cache: false
     enabled: true
+    mode: HTML
+# EhCache config
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
 
 # MyBatis cofig
 mybatis: 
@@ -27,3 +40,4 @@ pagehelper:
 logging:
   level:
     org.springframework.transaction.interceptor: TRACE
+    
