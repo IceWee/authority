@@ -13,8 +13,6 @@ public class SysUser extends BaseUser {
 
 	private String name;
 
-	private String salt;
-
 	private String mobile;
 
 	private Integer status = UserStatus.NORMAL.ordinal();
@@ -45,14 +43,6 @@ public class SysUser extends BaseUser {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
 	}
 
 	public String getMobile() {

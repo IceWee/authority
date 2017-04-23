@@ -6,14 +6,13 @@
 		<result column="username" jdbcType="VARCHAR" property="username" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="password" jdbcType="VARCHAR" property="password" />
-		<result column="salt" jdbcType="VARCHAR" property="salt" />
 		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, username, name, password, salt, mobile, status, create_date, update_date
+		id, username, name, password, mobile, status, create_date, update_date
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
@@ -29,9 +28,7 @@
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_user (username, name, password,
-		salt, mobile, status,
-		create_date, update_date)
+		insert into sys_user (username, name, password, mobile, status, create_date, update_date)
 		values (#{username,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
 		#{password,jdbcType=VARCHAR},
 		#{salt,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
@@ -51,9 +48,6 @@
 			</if>
 			<if test="password != null">
 				password,
-			</if>
-			<if test="salt != null">
-				salt,
 			</if>
 			<if test="mobile != null">
 				mobile,
@@ -77,9 +71,6 @@
 			</if>
 			<if test="password != null">
 				#{password,jdbcType=VARCHAR},
-			</if>
-			<if test="salt != null">
-				#{salt,jdbcType=VARCHAR},
 			</if>
 			<if test="mobile != null">
 				#{mobile,jdbcType=VARCHAR},
@@ -107,9 +98,6 @@
 			<if test="password != null">
 				password = #{password,jdbcType=VARCHAR},
 			</if>
-			<if test="salt != null">
-				salt = #{salt,jdbcType=VARCHAR},
-			</if>
 			<if test="mobile != null">
 				mobile = #{mobile,jdbcType=VARCHAR},
 			</if>
@@ -130,7 +118,6 @@
 		set username = #{username,jdbcType=VARCHAR},
 		name = #{name,jdbcType=VARCHAR},
 		password = #{password,jdbcType=VARCHAR},
-		salt = #{salt,jdbcType=VARCHAR},
 		mobile = #{mobile,jdbcType=VARCHAR},
 		status = #{status,jdbcType=INTEGER},
 		create_date = #{createDate,jdbcType=TIMESTAMP},

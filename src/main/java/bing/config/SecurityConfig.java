@@ -7,15 +7,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.authentication.dao.ReflectionSaltSource;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -25,9 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
 	@Autowired
-	@Qualifier("sysUserService")
-	private UserDetailsService userDetailsService;
-
+	@Qualifier("customAuthenticationProvider")
+	private AuthenticationProvider authenticationProvider;
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/i18n/**");
@@ -54,15 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setPasswordEncoder(new Md5PasswordEncoder());
-		authProvider.setUserDetailsService(userDetailsService);
-		// 盐策略：通过反射UserDetails实现类的属性
-		ReflectionSaltSource saltSource = new ReflectionSaltSource();
-		// 盐取值为用户属性-salt
-		saltSource.setUserPropertyToUse("salt");
-		authProvider.setSaltSource(saltSource);
-		auth.authenticationProvider(authProvider);
+		auth.authenticationProvider(authenticationProvider);
 	}
 
 }

@@ -4,12 +4,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import bing.dao.SysUserDao;
 import bing.domain.GenericPage;
 import bing.model.SysUser;
 import bing.service.SysUserService;
+import bing.util.PasswordUtils;
 
 public class UserTest extends BaseTest {
 
@@ -42,10 +42,8 @@ public class UserTest extends BaseTest {
 	
 	@Test
 	public void testGenPassword() {
-		String rawPass = "admin";
-		String salt = "admin";
-		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		String encodedPass = encoder.encodePassword(rawPass, "");
+		String rawPassword = "admin";
+		String encodedPass = PasswordUtils.encrypt(rawPassword);
 		LOGGER.info("encoded password: {}", encodedPass);
 	}
 

@@ -22,7 +22,6 @@ CREATE TABLE `sys_user` (
   `username` varchar(32) DEFAULT NULL COMMENT '登录名',
   `name` varchar(32) DEFAULT NULL COMMENT '用户名',
   `password` varchar(256) DEFAULT NULL COMMENT '密码',
-  `salt` varchar(32) DEFAULT NULL COMMENT '密码盐，用于密码加密',
   `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
@@ -33,7 +32,7 @@ CREATE TABLE `sys_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- 系统管理员用户
-INSERT INTO `authority`.`sys_user` (`id`, `username`, `name`, `password`, `salt`, `mobile`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('1', 'admin', 'Admin', 'ceb4f32325eda6142bd65215f4c0f371', 'admin', '13800013800', '0', '2017-04-20 02:55:34', 'admin', '2017-04-20 02:55:34', 'admin');
+INSERT INTO `authority`.`sys_user` (`id`, `username`, `name`, `password`, `mobile`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('1', 'admin', 'Admin', '2630d0280856135d2c7a19aee22ce42b37a060a99f512801ddb5ff522b33efcb34a3be20435ace78', '13800013800', '0', now(), 'admin', now(), 'admin');
 
 -- 角色表
 CREATE TABLE `sys_role` (
