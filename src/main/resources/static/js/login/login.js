@@ -1,5 +1,5 @@
 // 绑定登陆页面事件
-function initEvents() {
+function initPage() {
 	i18n();
 	
 	$("#login-button").click(function() {
