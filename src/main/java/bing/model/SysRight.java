@@ -5,17 +5,19 @@ import java.util.Date;
 
 import bing.domain.BaseDomain;
 
-public class SysRolePermission extends BaseDomain implements Serializable {
+public class SysRight extends BaseDomain implements Serializable {
 
-	private static final long serialVersionUID = -6493019165240910953L;
+	private static final long serialVersionUID = -5297483312642066348L;
 
 	private Integer id;
 
-	private Integer roleId;
+	private String name;
 
-	private Integer permissionId;
+	private Integer type;
 
 	private Integer status;
+
+	private String remark;
 
 	private Date createDate;
 
@@ -33,20 +35,20 @@ public class SysRolePermission extends BaseDomain implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getRoleId() {
-		return roleId;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
+	public void setName(String name) {
+		this.name = name == null ? null : name.trim();
 	}
 
-	public Integer getPermissionId() {
-		return permissionId;
+	public Integer getType() {
+		return type;
 	}
 
-	public void setPermissionId(Integer permissionId) {
-		this.permissionId = permissionId;
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public Integer getStatus() {
@@ -55,6 +57,14 @@ public class SysRolePermission extends BaseDomain implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark == null ? null : remark.trim();
 	}
 
 	public Date getCreateDate() {

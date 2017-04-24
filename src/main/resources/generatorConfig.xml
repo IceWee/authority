@@ -46,63 +46,28 @@
 			<!-- <property name="rootInterface" value="bing.BaseDao" /> -->
 		</javaClientGenerator>
 
-		<table tableName="SYS_USER_GROUP" domainObjectName="SysUserGroup"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-
-		<table tableName="SYS_ROLE" domainObjectName="SysRole"
+		<table tableName="SYS_ROLE_RIGHT" domainObjectName="SysRoleRight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
 			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
 		</table>
 		
-		<table tableName="SYS_USER_ROLE" domainObjectName="SysUserRole"
+		<table tableName="SYS_GROUP_RIGHT" domainObjectName="SysGroupRight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
 			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
 		</table>
 		
-		<table tableName="SYS_ROLE_PERMISSION" domainObjectName="SysRolePermission"
+		<table tableName="SYS_MENU_Right" domainObjectName="SysMenuRight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
 			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
 		</table>
 		
-		<table tableName="SYS_GROUP" domainObjectName="SysGroup"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="SYS_GROUP_PERMISSION" domainObjectName="SysGroupPermission"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="SYS_MENU" domainObjectName="SysMenu"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="SYS_MENU_PERMISSION" domainObjectName="SysMenuPermission"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="SYS_PERMISSION" domainObjectName="SysPermission"
+		<table tableName="SYS_Right" domainObjectName="SysRight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

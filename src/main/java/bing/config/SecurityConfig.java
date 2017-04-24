@@ -38,10 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Qualifier("customAuthenticationDetailsSource")
 	private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
 
-	// @Autowired
-	// @Qualifier("customAuthenticationProvider")
-	// private AuthenticationProvider authenticationProvider;
-
 	@Autowired
 	@Qualifier("sysUserService")
 	private UserDetailsService userDetailsService;

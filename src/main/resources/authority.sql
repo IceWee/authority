@@ -23,7 +23,7 @@ CREATE TABLE `persistent_logins` (
   `token` varchar(64) NOT NULL,
   `last_used` timestamp NOT NULL,
   PRIMARY KEY (`series`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='remember-me记录表';
 
 
 -- 用户表
@@ -39,7 +39,7 @@ CREATE TABLE `sys_user` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- 系统管理员用户
 INSERT INTO `authority`.`sys_user` (`id`, `username`, `name`, `password`, `mobile`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('1', 'admin', '超级管理员', '2630d0280856135d2c7a19aee22ce42b37a060a99f512801ddb5ff522b33efcb34a3be20435ace78', '13800013800', '0', now(), 'admin', now(), 'admin');
@@ -55,7 +55,7 @@ CREATE TABLE `sys_group` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户组';
 
 -- 用户组关联表
 CREATE TABLE `sys_user_group` (
@@ -68,7 +68,7 @@ CREATE TABLE `sys_user_group` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户组关联';
 
 -- 角色表
 CREATE TABLE `sys_role` (
@@ -82,7 +82,7 @@ CREATE TABLE `sys_role` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- 用户角色关联表
 CREATE TABLE `sys_user_role` (
@@ -95,7 +95,7 @@ CREATE TABLE `sys_user_role` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户角色关联';
 
 -- 菜单表
 CREATE TABLE `sys_menu` (
@@ -110,10 +110,10 @@ CREATE TABLE `sys_menu` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='菜单';
 
 -- 权限表
-CREATE TABLE `sys_permission` (
+CREATE TABLE `sys_right` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `name` varchar(32) DEFAULT NULL COMMENT '权限名称',
   `type` int(11) DEFAULT NULL COMMENT '权限类型（菜单1，其他2）',
@@ -124,44 +124,44 @@ CREATE TABLE `sys_permission` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='权限';
 
 -- 菜单权限关联表
-CREATE TABLE `sys_menu_permission` (
+CREATE TABLE `sys_menu_right` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `menu_id` int(11) DEFAULT NULL COMMENT '菜单PK',
-  `permission_id` int(11) DEFAULT NULL COMMENT '权限PK',
+  `right_id` int(11) DEFAULT NULL COMMENT '权限PK',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
   `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='菜单权限关联';
 
 -- 角色权限关联表
-CREATE TABLE `sys_role_permission` (
+CREATE TABLE `sys_role_right` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `role_id` int(11) DEFAULT NULL COMMENT '角色PK',
-  `permission_id` int(11) DEFAULT NULL COMMENT '权限PK',
+  `right_id` int(11) DEFAULT NULL COMMENT '权限PK',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
   `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色权限关联';
 
 -- 用户组权限关联表
-CREATE TABLE `sys_group_permission` (
+CREATE TABLE `sys_group_right` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `group_id` int(11) DEFAULT NULL COMMENT '用户组PK',
-  `permission_id` int(11) DEFAULT NULL COMMENT '权限PK',
+  `right_id` int(11) DEFAULT NULL COMMENT '权限PK',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
   `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户组权限关联';
 

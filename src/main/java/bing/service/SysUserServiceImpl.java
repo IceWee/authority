@@ -1,10 +1,8 @@
 package bing.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,9 +26,9 @@ public class SysUserServiceImpl implements SysUserService {
 		if (userDetails == null) {
 			throw new UsernameNotFoundException("User " + username + " has no GrantedAuthority");
 		}
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("ADMIN"));
-		userDetails.setAuthorities(authorities);
+		// List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		// authorities.add(new SimpleGrantedAuthority("ADMIN"));
+		// userDetails.setAuthorities(authorities);
 		return userDetails;
 	}
 

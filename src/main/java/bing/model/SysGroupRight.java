@@ -5,15 +5,15 @@ import java.util.Date;
 
 import bing.domain.BaseDomain;
 
-public class SysMenuPermission extends BaseDomain implements Serializable {
+public class SysGroupRight extends BaseDomain implements Serializable {
 
-	private static final long serialVersionUID = 6102021825446915050L;
+	private static final long serialVersionUID = -6534588934767964141L;
 
 	private Integer id;
 
-	private Integer menuId;
+	private Integer groupId;
 
-	private Integer permissionId;
+	private Integer rightId;
 
 	private Integer status;
 
@@ -33,20 +33,20 @@ public class SysMenuPermission extends BaseDomain implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getMenuId() {
-		return menuId;
+	public Integer getGroupId() {
+		return groupId;
 	}
 
-	public void setMenuId(Integer menuId) {
-		this.menuId = menuId;
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
 	}
 
-	public Integer getPermissionId() {
-		return permissionId;
+	public Integer getRightId() {
+		return rightId;
 	}
 
-	public void setPermissionId(Integer permissionId) {
-		this.permissionId = permissionId;
+	public void setRightId(Integer rightId) {
+		this.rightId = rightId;
 	}
 
 	public Integer getStatus() {

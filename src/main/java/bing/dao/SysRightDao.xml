@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="bing.dao.SysPermissionDao">
-	<resultMap id="BaseResultMap" type="bing.model.SysPermission">
+<mapper namespace="bing.dao.SysRightDao">
+	<resultMap id="BaseResultMap" type="bing.model.SysRight">
 		<id column="id" jdbcType="INTEGER" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="type" jdbcType="INTEGER" property="type" />
@@ -20,18 +20,18 @@
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from sys_permission
+		from sys_right
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from sys_permission
+		delete from sys_right
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="bing.model.SysPermission">
+	<insert id="insert" parameterType="bing.model.SysRight">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_permission (name, type, status,
+		insert into sys_right (name, type, status,
 		remark, create_date, create_user,
 		update_date, update_user)
 		values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
@@ -39,11 +39,11 @@
 		#{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
 		#{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
 	</insert>
-	<insert id="insertSelective" parameterType="bing.model.SysPermission">
+	<insert id="insertSelective" parameterType="bing.model.SysRight">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_permission
+		insert into sys_right
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="name != null">
 				name,
@@ -97,8 +97,8 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="bing.model.SysPermission">
-		update sys_permission
+	<update id="updateByPrimaryKeySelective" parameterType="bing.model.SysRight">
+		update sys_right
 		<set>
 			<if test="name != null">
 				name = #{name,jdbcType=VARCHAR},
@@ -127,8 +127,8 @@
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="bing.model.SysPermission">
-		update sys_permission
+	<update id="updateByPrimaryKey" parameterType="bing.model.SysRight">
+		update sys_right
 		set name = #{name,jdbcType=VARCHAR},
 		type = #{type,jdbcType=INTEGER},
 		status = #{status,jdbcType=INTEGER},

@@ -5,15 +5,15 @@ import java.util.Date;
 
 import bing.domain.BaseDomain;
 
-public class SysGroupPermission extends BaseDomain implements Serializable {
+public class SysRoleRight extends BaseDomain implements Serializable {
 
-	private static final long serialVersionUID = -4050783672873751173L;
+	private static final long serialVersionUID = 6913295058157506632L;
 
 	private Integer id;
 
-	private Integer groupId;
+	private Integer roleId;
 
-	private Integer permissionId;
+	private Integer rightId;
 
 	private Integer status;
 
@@ -33,20 +33,20 @@ public class SysGroupPermission extends BaseDomain implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getGroupId() {
-		return groupId;
+	public Integer getRoleId() {
+		return roleId;
 	}
 
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
 	}
 
-	public Integer getPermissionId() {
-		return permissionId;
+	public Integer getRightId() {
+		return rightId;
 	}
 
-	public void setPermissionId(Integer permissionId) {
-		this.permissionId = permissionId;
+	public void setRightId(Integer rightId) {
+		this.rightId = rightId;
 	}
 
 	public Integer getStatus() {
