@@ -37,10 +37,8 @@
 							<div class="lg-password input-item clearfix">
 								<i class="iconfont">&#xe634;</i>&nbsp;<input type="password" id="password" name="password" th:placeholder="#{login.label.password}" placeholder="请输入密码">
 							</div>
-							<div class="lg-check clearfix">
-								<div class="input-item">
-									<i class="iconfont">&#xe633;</i> <input type="text" id="captcha" name="captcha" th:placeholder="#{login.label.code}" placeholder="验证码">
-								</div>
+							<div class="lg-check input-item clearfix">
+								<i class="iconfont">&#xe633;</i> <input type="text" style="width:140px" maxlength="4" id="captcha" name="captcha" th:placeholder="#{login.label.code}" placeholder="验证码">
 								<span id="raw-captcha" class="check-code" th:text="${session.captcha}">ABCD</span>
 							</div>
 							<div class="tips clearfix">

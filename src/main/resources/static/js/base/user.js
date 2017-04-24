@@ -1,6 +1,8 @@
 var PAGE_SIZE = 10; // 默认显示10条数据
 var TABLE_ID = "#datagrid";
 var SEARCH_FORM_ID = "#searchForm";
+var SEARCH_URI = "/users";
+var RESPONSE_OK = 200;
 
 function initPage() {
 	i18n();
@@ -21,6 +23,7 @@ function initPage() {
 		fitColumns : true // 自适应宽度
 	// 行数  
 	});
+	
 	// 自定义分页
 	$(TABLE_ID).datagrid("getPager").pagination({
 		onSelectPage : function(pageNo, pageSize) { // 翻页
@@ -42,23 +45,21 @@ function query() {
 	data = data + "&pageNo=" + pageNo + "&pageSize=" + pageSize + "&timestamp=" + new Date().getTime();
 	$.ajax({
 		type : "GET",
-		url : "/data/salers?timestamp=" + new Date().getTime(),
+		url : SEARCH_URI,
 		data : data,
 		success : function(json) {
 			ajaxLoaded();
-			var subCode = json.subCode;
-			if (subCode == 1) {
+			if (json.code == RESPONSE_OK) {
 				var totalRows = json.data.totalRows;
 				var list = json.data.data;
-				$("#salerDatagrid").datagrid("loadData", list);
+				$(TABLE_ID).datagrid("loadData", list);
 				pager.pagination({
 					total : totalRows, // 总条数  
 					pageNumber : pageNo, // 页号
 					pageSize : pageSize // 每页行数
 				});
 			} else {
-				var subMsg = json.subMessage;
-				showErrorTips(subMsg);
+				showErrorTips(json.message);
 			}
 		},
 		error : function() {

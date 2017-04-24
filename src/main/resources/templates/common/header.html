@@ -2,27 +2,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title th:replace="${title}">标题</title>
-<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/base.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/easyui/easyui.css}" />
-<script type="text/javascript" th:src="@{/js/jquery-1.11.3.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery.i18n.properties-1.0.9.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/i18n.js}"></script>
-<script type="text/javascript" th:src="@{/js/uimaker/easyui/jquery.easyui.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/uimaker/easyui/jquery.easyui.validator.js}"></script>
-<!--/* Per-page placeholder for additional links */-->
-<th:block th:replace="${links}" />
-</head>
-
-<head th:fragment="list_header(title, links)">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title th:replace="${title}">标题</title>
 <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-3.3.7/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/base.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/easyui/easyui.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/icon.css}" />
 <script type="text/javascript" th:src="@{/js/jquery-1.11.3.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.i18n.properties-1.0.9.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/i18n.js}"></script>
+<script type="text/javascript" th:src="@{/js/utils.js}"></script>
+<script type="text/javascript" th:src="@{/js/json2.js}"></script>
 <script type="text/javascript" th:src="@{/js/uimaker/easyui/jquery.easyui.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/uimaker/easyui/jquery.easyui.validator.js}"></script>
 <script type="text/javascript" th:src="@{/js/uimaker/easyui/locale/easyui-lang-zh_CN.js}"></script>

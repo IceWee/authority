@@ -30,7 +30,7 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 			String needCode = configAttribute.getAttribute();
 			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities(); // 当前用户具备的权限列表
 			for (GrantedAuthority authority : authorities) {
-				if (StringUtils.equals(authority.getAuthority(), "ROLE_" + needCode)) {
+				if (StringUtils.equals(authority.getAuthority(), needCode)) {
 					return;
 				}
 			}

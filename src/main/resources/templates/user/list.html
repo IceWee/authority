@@ -1,7 +1,8 @@
 <!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="common/header :: list_header(~{::title},~{::link})" />
+<head th:include="/common/header :: header(~{::title},~{::link})" />
 <title id="title">用户列表</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/base/user.css}" />
 <script type="text/javascript" th:src="@{/js/base/user.js}"></script>
 <style type="text/css">
 	.easyui-linkbutton{margin-right:5px}
@@ -9,10 +10,7 @@
 </style>
 <script type="text/javascript">
 	$(function() {
-		i18nInit();
-		i18n4list();
-		easyuiInit();
-		datagridInit();
+		initPage();
 	});
 </script>
 </head>
@@ -20,16 +18,19 @@
 <div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
-  		<div class="panel-heading border-none padding-none" style="height:40px">
+		<!-- 导航 -->
+  		<div class="panel-heading border-none padding-none" style="height:50px">
+		<div class="row">
 			<ol class="breadcrumb">
-			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 门店管理</li>
+			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 用户管理</li>
 			</ol>
+	  	</div>
 	  	</div>
 	  	<div class="panel-body border-none">
 	    	<div class="container-fluid">
 	    	<div class="row">
 		    	<div id="tips" class="alert" style="display:none;margin-bottom:0;border-bottom:0"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-				<table id="salerDatagrid" style="height:600px;">
+				<table id="datagrid" style="height:600px;">
 					<thead>
 						<tr>
 							<th field="ck" checkbox="true"></th>
@@ -49,51 +50,32 @@
 					<div class="conditions">
 					<form action="" method="post" id="searchForm">
 						<label id="label_username">账号</label>
-						<input id="srch_username" name="username" class="easyui-textbox" style="width:150px;height:25px;line-height:25px;"">
+						<input name="username" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
 						<label id="label_name">用户名</label>
-						<input id="srch_name" name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px;"">
+						<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
 						<label id="label_mobile">手机号</label>
-						<input id="srch_mobile" name="regionCode" class="easyui-textbox" style="width:150px;height:25px;line-height:25px;">
-						<label id="label_keeperMobile">店主手机号</label>
-						<input id="cond_keeperMobile" name="keeperMobile" class="easyui-textbox" style="width:150px;height:25px;line-height:25px;">
+						<input name="mobile" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
 						<label id="label_status" >状态</label>
-						<select class="easyui-combobox" data-options="editable:false" name="status" id="cond_status" style="height:25px;width:200px;">
+						<select class="easyui-combobox" data-options="editable:false" name="status" style="height:25px;width:200px">
 							<option value="" selected>全部</option>
 							<option value="1">正常</option>
 							<option value="2">锁定</option>
 							<option value="3">已删除</option>
 						</select>
-						<label id="label_salerType">门店类型</label>
-						<select id="cond_salerType" class="easyui-combobox" data-options="editable:false" name="channelId" style="height:25px;width:150px">
-							<option value="" selected>全部</option>
-							<option value="1">连锁卖场</option>
-							<option value="2">单体卖场（300㎡以上）</option>
-							<option value="3">便利店/杂货店</option>
-							<option value="4">餐饮</option>
-							<option value="5">粮油专营</option>
-							<option value="6">日化专营</option>
-							<option value="7">烟酒专营</option>
-							<option value="8">其他（网吧、旅馆、影院、报亭等）</option>
-							<option value="9">批零兼营</option>
-							<option value="10">母婴</option>
-							<option value="11">批发商</option>
-						</select>
 					    <a id="btn_search" href="javascript:void(0)" onclick="query()" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
-					    <a id="btn_reset" href="javascript:void(0)" onclick="resetForm('conditionForm')" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+					    <a id="btn_reset" href="javascript:void(0)" onclick="resetForm('searchForm')" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
 					</form>
 					</div>
 					<div class="opt-buttons">
 				        <a href="javascript:void(0)" onclick="toAdd()" class="easyui-linkbutton" data-options="selected:true">新增</a>
-				        <a href="javascript:void(0)" onclick="toImport()" class="easyui-linkbutton" data-options="selected:true">导入</a>
-				        <a href="javascript:void(0)" onclick="check()" class="easyui-linkbutton" data-options="selected:true">核查</a>
 				    </div>
 				</div>
 			</div>
 	    	</div>
 	    </div>
 	</div>
-<form action="" method="post" id="salerForm">
-<input type="hidden" id="salerId" name="salerId" />
+<form action="" method="post" id="hiddenForm">
+<input type="hidden" name="id" />
 </form>
 </div>
 </div>
