@@ -1,9 +1,11 @@
 package bing.security;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -20,7 +22,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import bing.constants.RedisKeys;
 import bing.util.PasswordUtils;
 
 @Component("customAuthenticationProvider")
@@ -35,6 +39,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 	@Qualifier("sysUserService")
 	private UserDetailsService userDetailsService;
 
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
+
+	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 		if (authentication.getCredentials() == null) {
 			LOGGER.debug("Authentication failed: no credentials provided");
@@ -69,7 +77,13 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 		CustomWebAuthenticationDetails details = (CustomWebAuthenticationDetails) authentication.getDetails();
 		String captcha = details.getCaptcha();
 		LOGGER.info("用户输入的登陆验证码：{}", captcha);
-
+		String currentSessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+		String rawCpatcha = stringRedisTemplate.opsForValue().get(RedisKeys.PREFIX_CAPTCHA + currentSessionId);
+		LOGGER.info("已缓存的登录验证码：{}", rawCpatcha);
+		if (!StringUtils.equalsIgnoreCase(rawCpatcha, captcha)) {
+			LOGGER.warn("验证码输入错误，需跳转到登录页面重新输入");
+			throw new CaptchaErrorException("Captcha not match");
+		}
 		String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
 		UserDetails user = null;
 		try {
@@ -102,7 +116,18 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 		return createSuccessAuthentication(principalToReturn, authentication, user);
 	}
 
+	@Override
+	public void setForcePrincipalAsString(boolean forcePrincipalAsString) {
+		this.forcePrincipalAsString = forcePrincipalAsString;
+	}
+
+	@Override
+	public boolean isForcePrincipalAsString() {
+		return forcePrincipalAsString;
+	}
+
 	private class DefaultPreAuthenticationChecks implements UserDetailsChecker {
+		@Override
 		public void check(UserDetails user) {
 			if (!user.isAccountNonLocked()) {
 				LOGGER.debug("User account is locked");
@@ -120,20 +145,13 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 	}
 
 	private class DefaultPostAuthenticationChecks implements UserDetailsChecker {
+		@Override
 		public void check(UserDetails user) {
 			if (!user.isCredentialsNonExpired()) {
 				LOGGER.debug("User account credentials have expired");
 				throw new CredentialsExpiredException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.credentialsExpired", "User credentials have expired"));
 			}
 		}
-	}
-
-	public void setForcePrincipalAsString(boolean forcePrincipalAsString) {
-		this.forcePrincipalAsString = forcePrincipalAsString;
-	}
-
-	public boolean isForcePrincipalAsString() {
-		return forcePrincipalAsString;
 	}
 
 }

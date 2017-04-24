@@ -17,4 +17,13 @@ public class SystemConstants {
 	 */
 	public static final String MAPPER_SCAN_PACKAGES = "bing.**.dao";
 
+	/**
+	 * Spring session redis key prefix
+	 */
+	public static final String SPRING_SESSION_REDIS_PREFIX = "spring:session:sessions:";
+
+	private SystemConstants() {
+		super();
+	}
+
 }

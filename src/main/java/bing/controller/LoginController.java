@@ -2,6 +2,7 @@ package bing.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import bing.constants.RedisKeys;
+import bing.constants.SystemConstants;
 import bing.model.SysUser;
 import bing.service.MessageSourceService;
 import bing.util.CaptchaUtils;
@@ -37,8 +40,7 @@ public class LoginController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout,
-			@RequestParam(value = "expired", required = false) String expired, ModelMap model) {
-		LOGGER.info("visiting login action...");
+			@RequestParam(value = "expired", required = false) String expired, ModelMap model, HttpSession session) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof SysUser) { // 已登录
 			SysUser user = (SysUser) principal;
@@ -57,8 +59,10 @@ public class LoginController {
 		}
 		// 设置验证码
 		String captcha = CaptchaUtils.captcha(4);
-		LOGGER.info("生成登录验证码：{}", captcha);
-		stringRedisTemplate.opsForValue().set(RedisKeys.PREFIX_CAPTCHA, captcha);
+		LOGGER.info("生成登录验证码并缓存：{}", captcha);
+		session.setAttribute(SystemConstants.PARAM_CAPTCHA, captcha);
+		String currentSessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+		stringRedisTemplate.opsForValue().set(RedisKeys.PREFIX_CAPTCHA + currentSessionId, captcha);
 		return "login";
 	}
 
