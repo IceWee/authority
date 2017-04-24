@@ -8,9 +8,14 @@ public class SystemConstants {
 	public static final String PARAM_CAPTCHA = "captcha";
 
 	/**
+	 * Request parameter name - remember-me
+	 */
+	public static final String PARAM_REMEMBER_ME = "rememberme";
+
+	/**
 	 * Session timeout seconds
 	 */
-	public static final int SESSION_TIMEOUT_SECONDS = 10 * 60;
+	public static final int SESSION_TIMEOUT_SECONDS = 10 * 60; // 10 mins
 
 	/**
 	 * MyBatis mapper scan packages

@@ -44,7 +44,7 @@
 								<span id="raw-captcha" class="check-code" th:text="${session.captcha}">ABCD</span>
 							</div>
 							<div class="tips clearfix">
-								<input type="checkbox" checked="checked"><label th:text="#{login.label.rememberme}">记住用户名</label>
+								<input type="checkbox" name="rememberme"><label th:text="#{login.label.rememberme}">记住我</label>
 								<a href="javascript:void(0)" class="register" th:text="#{login.label.register}">立即注册</a> 
 								<a href="javascript:void(0)" class="forget-pwd" th:text="#{login.label.forgot}">忘记密码？</a>
 							</div>

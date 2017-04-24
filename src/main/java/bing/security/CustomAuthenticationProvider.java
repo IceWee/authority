@@ -3,8 +3,6 @@ package bing.security;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,26 +18,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import bing.constants.RedisKeys;
 import bing.util.PasswordUtils;
 
-@Component("customAuthenticationProvider")
+//@Component("customAuthenticationProvider")
 public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
 	private boolean forcePrincipalAsString = false;
 	private UserDetailsChecker preAuthenticationChecks = new DefaultPreAuthenticationChecks();
 	private UserDetailsChecker postAuthenticationChecks = new DefaultPostAuthenticationChecks();
-
-	@Autowired
-	@Qualifier("sysUserService")
 	private UserDetailsService userDetailsService;
-
-	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
 
 	@Override
@@ -80,6 +72,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 		String currentSessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
 		String rawCpatcha = stringRedisTemplate.opsForValue().get(RedisKeys.PREFIX_CAPTCHA + currentSessionId);
 		LOGGER.info("已缓存的登录验证码：{}", rawCpatcha);
+		stringRedisTemplate.opsForValue().getOperations().delete(RedisKeys.PREFIX_CAPTCHA + currentSessionId);
 		if (!StringUtils.equalsIgnoreCase(rawCpatcha, captcha)) {
 			LOGGER.warn("验证码输入错误，需跳转到登录页面重新输入");
 			throw new CaptchaErrorException("Captcha not match");
@@ -124,6 +117,14 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 	@Override
 	public boolean isForcePrincipalAsString() {
 		return forcePrincipalAsString;
+	}
+
+	public void setUserDetailsService(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
+
+	public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
+		this.stringRedisTemplate = stringRedisTemplate;
 	}
 
 	private class DefaultPreAuthenticationChecks implements UserDetailsChecker {

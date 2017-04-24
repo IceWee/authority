@@ -27,7 +27,7 @@
 		</javaTypeResolver>
 
 		<!-- generate Model -->
-		<javaModelGenerator targetPackage="temp.bing.model"
+		<javaModelGenerator targetPackage="bing.model"
 			targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
@@ -35,18 +35,74 @@
 		</javaModelGenerator>
 
 		<!-- generate xml -->
-		<sqlMapGenerator targetPackage="temp.bing.dao" targetProject="./src/main/java">
+		<sqlMapGenerator targetPackage="bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- generate Mapper -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="temp.bing.dao" targetProject="./src/main/java">
+			targetPackage="bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<!-- <property name="rootInterface" value="bing.BaseDao" /> -->
 		</javaClientGenerator>
 
-		<table tableName="SYS_USER" domainObjectName="SysUser"
+		<table tableName="SYS_USER_GROUP" domainObjectName="SysUserGroup"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+
+		<table tableName="SYS_ROLE" domainObjectName="SysRole"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="SYS_USER_ROLE" domainObjectName="SysUserRole"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="SYS_ROLE_PERMISSION" domainObjectName="SysRolePermission"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="SYS_GROUP" domainObjectName="SysGroup"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="SYS_GROUP_PERMISSION" domainObjectName="SysGroupPermission"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="SYS_MENU" domainObjectName="SysMenu"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="SYS_MENU_PERMISSION" domainObjectName="SysMenuPermission"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="SYS_PERMISSION" domainObjectName="SysPermission"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
