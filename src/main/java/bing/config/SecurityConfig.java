@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,12 +22,16 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import bing.constants.SystemConstants;
+import bing.security.CustomAccessDecisionManager;
 import bing.security.CustomAuthenticationProvider;
+import bing.security.CustomSecurityMetadataSource;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -73,6 +79,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// 设置cookie的私钥
 				.key("authority_");
 
+		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+
+			/**
+			 * 注入自定义的访问决策管理器和自定义权限资源
+			 */
+			@Override
+			public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
+				fsi.setAccessDecisionManager(accessDecisionManager());
+				fsi.setSecurityMetadataSource(securityMetadataSource());
+				return fsi;
+			}
+
+		});
+
 		// 设置注销成功后跳转页面，默认是跳转到登录页面
 		http.logout().logoutSuccessUrl("/login?logout");
 
@@ -93,6 +113,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		JdbcTokenRepositoryImpl tokenRepositoryImpl = new JdbcTokenRepositoryImpl();
 		tokenRepositoryImpl.setDataSource(dataSource);
 		return tokenRepositoryImpl;
+	}
+
+	@Bean
+	public AccessDecisionManager accessDecisionManager() {
+		return new CustomAccessDecisionManager();
+	}
+
+	@Bean
+	public FilterInvocationSecurityMetadataSource securityMetadataSource() {
+		return new CustomSecurityMetadataSource();
 	}
 
 }
