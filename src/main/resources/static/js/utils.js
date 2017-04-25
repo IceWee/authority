@@ -24,7 +24,7 @@
 // 采用jquery easyui loading css效果
 function ajaxLoading(msg) {   
     $("<div class=\"datagrid-mask\"></div>").css({display:"block",width:"100%",height:$(window).height()}).appendTo("body");   
-    $("<div class=\"datagrid-mask-msg\" style=\"border:1px solid #8E8E8E;height:44px\"></div>").html(msg).appendTo("body").css({display:"block",left:($(document.body).outerWidth(true) - 190) / 2,top:($(window).height() - 45) / 2});   
+    $("<div class=\"datagrid-mask-msg\" style=\"background-color:#FFF;border:1px solid #8E8E8E;height:44px;line-height:22px\"></div>").html(msg).appendTo("body").css({display:"block",left:($(document.body).outerWidth(true) - 190) / 2,top:($(window).height() - 45) / 2});   
 }
 
 // 加载完毕
