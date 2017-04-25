@@ -130,10 +130,22 @@
 		from sys_user
 		where username = #{username,jdbcType=VARCHAR}
 	</select>
-	<select id="listByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="listByCondition" parameterType="bing.conditions.SysUserCondition" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user
-		where name LIKE CONCAT(#{name,jdbcType=VARCHAR}, '%')
+		where 1 = 1
+		<if test="username != null and username != ''">
+		AND username like concat(#{username,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="name != null and name != ''">
+		AND name like concat(#{name,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="mobile != null and mobile != ''">
+		AND mobile like concat(#{mobile,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="status != null">
+		AND status = #{status,jdbcType=INTEGER}
+		</if>
 	</select>
 </mapper>

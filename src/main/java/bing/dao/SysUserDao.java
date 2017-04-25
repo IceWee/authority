@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
 
+import bing.conditions.SysUserCondition;
 import bing.constants.EhCacheNames;
 import bing.model.SysUser;
 
@@ -24,5 +25,11 @@ public interface SysUserDao {
 	@Cacheable(value = EhCacheNames.USER_CACHE)
 	SysUser getByUsername(String username);
 
-	List<SysUser> listByName(String name);
+	/**
+	 * 用户列表
+	 * 
+	 * @param sysUserCondition
+	 * @return
+	 */
+	List<SysUser> listByCondition(SysUserCondition sysUserCondition);
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import bing.conditions.SysUserCondition;
 import bing.dao.SysUserDao;
 import bing.domain.GenericPage;
 import bing.model.SysUser;
@@ -36,9 +37,10 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public GenericPage<SysUser> listByPage(int pageNo, int pageSize, String name) {
-		PageHelper.startPage(pageNo, pageSize);
-		List<SysUser> list = sysUserDao.listByName(name);
+	public GenericPage<SysUser> listByPage(SysUserCondition sysUserCondition) {
+		Long pageNo = sysUserCondition.getPageNo();
+		PageHelper.startPage(pageNo.intValue(), sysUserCondition.getPageSize().intValue());
+		List<SysUser> list = sysUserDao.listByCondition(sysUserCondition);
 		PageInfo<SysUser> pageInfo = new PageInfo<>(list);
 		return new GenericPage<>(pageNo, pageInfo.getTotal(), list);
 	}

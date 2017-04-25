@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import bing.conditions.SysUserCondition;
 import bing.dao.SysUserDao;
 import bing.domain.GenericPage;
 import bing.model.SysUser;
@@ -35,11 +36,13 @@ public class UserTest extends BaseTest {
 
 	@Test
 	public void testListByName() {
-		GenericPage<SysUser> page = sysUserService.listByPage(1, 10, "A");
+		SysUserCondition sysUserCondition = new SysUserCondition();
+		sysUserCondition.setUsername("a");
+		GenericPage<SysUser> page = sysUserService.listByPage(sysUserCondition);
 		LOGGER.info("Pages: {}", page.getTotalPages());
 		LOGGER.info("Rows: {}", page.getTotalRows());
 	}
-	
+
 	@Test
 	public void testGenPassword() {
 		String rawPassword = "admin";

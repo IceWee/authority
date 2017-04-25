@@ -3,9 +3,12 @@ package bing.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author IceWee
+ */
 public class GenericPage<T> {
 
-	public final static long DEFAULT_PAGE_SIZE = 20;
+	public final static long DEFAULT_PAGE_SIZE = 10;
 
 	protected long pageNo = 1;
 	protected long pageSize = DEFAULT_PAGE_SIZE;
