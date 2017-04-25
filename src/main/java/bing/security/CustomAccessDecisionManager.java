@@ -21,6 +21,10 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 
 	@Override
 	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+		// 如果当前资源未配置权限则禁止访问，即黑名单，否则为白名单都可以访问，显然是不对的
+		if (configAttributes.isEmpty()) {
+			throw new AccessDeniedException("当前访问没有权限");
+		}
 		Iterator<ConfigAttribute> iterator = configAttributes.iterator(); // 访问当前URI需要具备的权限列表
 		while (iterator.hasNext()) {
 			if (authentication == null) {
