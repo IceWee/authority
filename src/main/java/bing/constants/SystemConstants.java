@@ -27,6 +27,11 @@ public class SystemConstants {
 	 */
 	public static final String ADMIN = "admin";
 
+	/**
+	 * Current user attribute in session scope
+	 */
+	public static final String SESSION_ATTRIBUTE_CURRENT_USER = "currentUser";
+
 	private SystemConstants() {
 		super();
 	}

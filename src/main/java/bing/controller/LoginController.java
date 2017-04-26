@@ -45,7 +45,7 @@ public class LoginController {
 		if (principal instanceof SysUser) { // 已登录
 			SysUser user = (SysUser) principal;
 			LOGGER.info("用户：{} 已登录，重定向到主页面", user.getName());
-			// return "redirect:/main";
+			return "redirect:/main";
 		}
 		model.addAttribute("msg", messageSourceService.getMessage("login.label.username"));
 		if (error != null) {

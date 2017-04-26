@@ -12,7 +12,7 @@
 	<div class="container">
 		<div id="pf-hd">
 			<div class="pf-logo">
-				<img src="/js/uimaker/images/main/main_logo.png" th:src="@{/js/uimaker/images/main/main_logo.png}" alt="logo">
+				<img th:src="@{/js/uimaker/images/main/main_logo.png}" alt="logo">
 			</div>
 			<div class="pf-nav-wrap">
 				<div class="pf-nav-ww">
@@ -73,7 +73,7 @@
 				<div class="pf-user-photo">
 					<img src="/js/uimaker/images/main/user.png" th:src="@{/js/uimaker/images/main/user.png}">
 				</div>
-				<h4 class="pf-user-name ellipsis">uimaker</h4>
+				<h4 class="pf-user-name ellipsis" th:text="${session.currentUser.name}">用户名</h4>
 				<i class="iconfont xiala">&#xe607;</i>
 				<div class="pf-user-panel">
 					<ul class="pf-user-opt">
@@ -81,7 +81,7 @@
 							<a href="javascript:void(0)"><i class="iconfont">&#xe60d;</i><span class="pf-opt-name">用户信息</span></a>
 						</li>
 						<li class="pf-modify-pwd">
-							<a href="http://www.uimaker.com"><i class="iconfont">&#xe634;</i><span class="pf-opt-name">修改密码</span></a>
+							<a href="javascript:void(0)"><i class="iconfont">&#xe634;</i><span class="pf-opt-name">修改密码</span></a>
 						</li>
 						<li class="pf-logout">
 							<a href="/logout" th:href="@{/logout}"><i class="iconfont">&#xe60e;</i><span class="pf-opt-name">退出</span></a>

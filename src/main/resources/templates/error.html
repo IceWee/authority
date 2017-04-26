@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -64,13 +65,13 @@
             _width: 500px;
             margin: 0 auto;
         }
-
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Server Error</h1>
-    <p>Sorry, but there was an error with the server that prevented this page from being displayed.</p>
+    <h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">500</h1>
+    <p th:utext="${errorMessage}">Error | Exception</p>
+    <a href="/main" th:href="@{/main}">Back to Home Page</a>
 </div>
 </body>
 </html>
