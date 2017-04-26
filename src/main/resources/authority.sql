@@ -97,12 +97,28 @@ CREATE TABLE `sys_user_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户角色关联';
 
+-- 资源表
+CREATE TABLE `sys_resource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `name` varchar(32) DEFAULT NULL COMMENT '资源名称',
+  `parent_id` int(11) DEFAULT NULL COMMENT '上级资源ID',
+  `type` int(11) DEFAULT NULL COMMENT '资源类型（功能地址1，其他2）',
+  `url` varchar(500) DEFAULT NULL COMMENT '资源地址',
+  `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
+  `remark` varchar(256) DEFAULT NULL COMMENT '备注',
+  `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
+  `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
+  `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源';
+
 -- 菜单表
 CREATE TABLE `sys_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `name` varchar(32) DEFAULT NULL COMMENT '菜单名称',
   `parent_id` int(11) DEFAULT NULL COMMENT '上级菜单ID',
-  `url` varchar(500) DEFAULT NULL COMMENT '菜单地址',
+  `resource_id` int(11) DEFAULT NULL COMMENT '资源ID',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
@@ -116,7 +132,6 @@ CREATE TABLE `sys_menu` (
 CREATE TABLE `sys_right` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `name` varchar(32) DEFAULT NULL COMMENT '权限名称',
-  `type` int(11) DEFAULT NULL COMMENT '权限类型（菜单1，其他2）',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
@@ -126,10 +141,10 @@ CREATE TABLE `sys_right` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='权限';
 
--- 菜单权限关联表
-CREATE TABLE `sys_menu_right` (
+-- 资源权限关联表
+CREATE TABLE `sys_resource_right` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `menu_id` int(11) DEFAULT NULL COMMENT '菜单PK',
+  `resource_id` int(11) DEFAULT NULL COMMENT '资源PK',
   `right_id` int(11) DEFAULT NULL COMMENT '权限PK',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
@@ -137,7 +152,7 @@ CREATE TABLE `sys_menu_right` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='菜单权限关联';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源权限关联';
 
 -- 角色权限关联表
 CREATE TABLE `sys_role_right` (

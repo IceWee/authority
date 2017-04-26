@@ -46,28 +46,21 @@
 			<!-- <property name="rootInterface" value="bing.BaseDao" /> -->
 		</javaClientGenerator>
 
-		<table tableName="SYS_ROLE_RIGHT" domainObjectName="SysRoleRight"
+		<table tableName="SYS_RESOURCE_RIGHT" domainObjectName="SysResourceRight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
 			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
 		</table>
 		
-		<table tableName="SYS_GROUP_RIGHT" domainObjectName="SysGroupRight"
+		<table tableName="SYS_RESOURCE" domainObjectName="SysResource"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
 			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
 		</table>
 		
-		<table tableName="SYS_MENU_Right" domainObjectName="SysMenuRight"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="SYS_Right" domainObjectName="SysRight"
+		<table tableName="SYS_RIGHT" domainObjectName="SysRight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

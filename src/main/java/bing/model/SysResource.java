@@ -5,13 +5,19 @@ import java.util.Date;
 
 import bing.domain.BaseDomain;
 
-public class SysRight extends BaseDomain implements Serializable {
+public class SysResource extends BaseDomain implements Serializable {
 
-	private static final long serialVersionUID = -9221147029482254521L;
+	private static final long serialVersionUID = -6827672328719969042L;
 
 	private Integer id;
 
 	private String name;
+
+	private Integer parentId;
+
+	private Integer type;
+
+	private String url;
 
 	private Integer status;
 
@@ -39,6 +45,30 @@ public class SysRight extends BaseDomain implements Serializable {
 
 	public void setName(String name) {
 		this.name = name == null ? null : name.trim();
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url == null ? null : url.trim();
 	}
 
 	public Integer getStatus() {

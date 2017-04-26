@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="bing.dao.SysRightDao">
-	<resultMap id="BaseResultMap" type="bing.model.SysRight">
+<mapper namespace="bing.dao.SysResourceRightDao">
+	<resultMap id="BaseResultMap" type="bing.model.SysResourceRight">
 		<id column="id" jdbcType="INTEGER" property="id" />
-		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+		<result column="right_id" jdbcType="INTEGER" property="rightId" />
 		<result column="status" jdbcType="INTEGER" property="status" />
-		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
 		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, status, remark, create_date, create_user, update_date,
+		id, resource_id, right_id, status, create_date, create_user, update_date,
 		update_user
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from sys_right
+		from sys_resource_right
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from sys_right
+		delete from sys_resource_right
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="bing.model.SysRight">
+	<insert id="insert" parameterType="bing.model.SysResourceRight">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_right (name, status, remark,
+		insert into sys_resource_right (resource_id, right_id, status,
 		create_date, create_user, update_date,
 		update_user)
-		values (#{name,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-		#{remark,jdbcType=VARCHAR},
+		values (#{resourceId,jdbcType=INTEGER}, #{rightId,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
 		#{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP},
 		#{updateUser,jdbcType=VARCHAR})
 	</insert>
-	<insert id="insertSelective" parameterType="bing.model.SysRight">
+	<insert id="insertSelective" parameterType="bing.model.SysResourceRight">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_right
+		insert into sys_resource_right
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="name != null">
-				name,
+			<if test="resourceId != null">
+				resource_id,
+			</if>
+			<if test="rightId != null">
+				right_id,
 			</if>
 			<if test="status != null">
 				status,
-			</if>
-			<if test="remark != null">
-				remark,
 			</if>
 			<if test="createDate != null">
 				create_date,
@@ -67,14 +67,14 @@
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="name != null">
-				#{name,jdbcType=VARCHAR},
+			<if test="resourceId != null">
+				#{resourceId,jdbcType=INTEGER},
+			</if>
+			<if test="rightId != null">
+				#{rightId,jdbcType=INTEGER},
 			</if>
 			<if test="status != null">
 				#{status,jdbcType=INTEGER},
-			</if>
-			<if test="remark != null">
-				#{remark,jdbcType=VARCHAR},
 			</if>
 			<if test="createDate != null">
 				#{createDate,jdbcType=TIMESTAMP},
@@ -90,17 +90,17 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="bing.model.SysRight">
-		update sys_right
+	<update id="updateByPrimaryKeySelective" parameterType="bing.model.SysResourceRight">
+		update sys_resource_right
 		<set>
-			<if test="name != null">
-				name = #{name,jdbcType=VARCHAR},
+			<if test="resourceId != null">
+				resource_id = #{resourceId,jdbcType=INTEGER},
+			</if>
+			<if test="rightId != null">
+				right_id = #{rightId,jdbcType=INTEGER},
 			</if>
 			<if test="status != null">
 				status = #{status,jdbcType=INTEGER},
-			</if>
-			<if test="remark != null">
-				remark = #{remark,jdbcType=VARCHAR},
 			</if>
 			<if test="createDate != null">
 				create_date = #{createDate,jdbcType=TIMESTAMP},
@@ -117,11 +117,11 @@
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="bing.model.SysRight">
-		update sys_right
-		set name = #{name,jdbcType=VARCHAR},
+	<update id="updateByPrimaryKey" parameterType="bing.model.SysResourceRight">
+		update sys_resource_right
+		set resource_id = #{resourceId,jdbcType=INTEGER},
+		right_id = #{rightId,jdbcType=INTEGER},
 		status = #{status,jdbcType=INTEGER},
-		remark = #{remark,jdbcType=VARCHAR},
 		create_date = #{createDate,jdbcType=TIMESTAMP},
 		create_user = #{createUser,jdbcType=VARCHAR},
 		update_date = #{updateDate,jdbcType=TIMESTAMP},
