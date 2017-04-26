@@ -2,6 +2,7 @@ package bing.model;
 
 import java.util.Date;
 
+import bing.constants.Hidden;
 import bing.constants.UserStatus;
 import bing.domain.BaseUser;
 
@@ -17,7 +18,13 @@ public class SysUser extends BaseUser {
 
 	private Integer status = UserStatus.NORMAL.ordinal();
 
+	private Integer hidden = Hidden.HIDDEN.ordinal();
+
+	private String createUser;
+
 	private Date createDate;
+
+	private String updateUser;
 
 	private Date updateDate;
 
@@ -61,6 +68,14 @@ public class SysUser extends BaseUser {
 		this.status = status;
 	}
 
+	public Integer getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(Integer hidden) {
+		this.hidden = hidden;
+	}
+
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -75,6 +90,22 @@ public class SysUser extends BaseUser {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public String getCreateUser() {
+		return createUser;
+	}
+
+	public void setCreateUser(String createUser) {
+		this.createUser = createUser;
+	}
+
+	public String getUpdateUser() {
+		return updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
 	}
 
 	@Override

@@ -1,3 +1,5 @@
+var CODE_OK = 200; // 请求状态码，正常
+
 // 将表单序列化成JSON对象
 // 依赖JQuery的serializeArray方法
 (function($) {
@@ -177,4 +179,9 @@ function _search(url, tableId, searchFormId) {
 			showErrorTips($.i18n .prop("requestFailed"));
 		}
 	});
+}
+
+// 只读背景色
+function readonlyColor(id) {
+	$("#" + id).textbox("textbox").css("background-color", "#F1F1F1");
 }

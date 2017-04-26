@@ -8,7 +8,6 @@ import bing.conditions.SysUserCondition;
 import bing.constants.EhCacheNames;
 import bing.model.SysUser;
 
-@Cacheable
 public interface SysUserDao {
 	int deleteByPrimaryKey(Integer id);
 

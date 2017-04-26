@@ -45,4 +45,14 @@ public class SysUserServiceImpl implements SysUserService {
 		return new GenericPage<>(pageNo, pageInfo.getTotal(), list);
 	}
 
+	@Override
+	public void saveOrUpdate(SysUser sysUser) {
+
+	}
+
+	@Override
+	public SysUser get(Integer id) {
+		return sysUserDao.selectByPrimaryKey(id);
+	}
+
 }

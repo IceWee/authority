@@ -1,0 +1,20 @@
+body {
+	padding: 0px;
+	margin: 0px;
+}
+
+.border-none {
+	border: 0px;
+}
+
+.padding-none {
+	padding: 0px;
+}
+
+.input-default {
+	width: 200px;
+}
+
+.select-default {
+	width: 200px;
+}

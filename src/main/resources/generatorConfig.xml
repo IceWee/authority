@@ -27,7 +27,7 @@
 		</javaTypeResolver>
 
 		<!-- generate Model -->
-		<javaModelGenerator targetPackage="bing.model"
+		<javaModelGenerator targetPackage="temp.bing.model"
 			targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
@@ -35,32 +35,18 @@
 		</javaModelGenerator>
 
 		<!-- generate xml -->
-		<sqlMapGenerator targetPackage="bing.dao" targetProject="./src/main/java">
+		<sqlMapGenerator targetPackage="temp.bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- generate Mapper -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="bing.dao" targetProject="./src/main/java">
+			targetPackage="temp.bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<!-- <property name="rootInterface" value="bing.BaseDao" /> -->
 		</javaClientGenerator>
 
-		<table tableName="SYS_RESOURCE_RIGHT" domainObjectName="SysResourceRight"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="SYS_RESOURCE" domainObjectName="SysResource"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="SYS_RIGHT" domainObjectName="SysRight"
+		<table tableName="SYS_USER" domainObjectName="SysUser"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

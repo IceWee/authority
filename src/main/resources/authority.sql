@@ -34,6 +34,7 @@ CREATE TABLE `sys_user` (
   `password` varchar(256) DEFAULT NULL COMMENT '密码',
   `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
+  `hidden` int(255) DEFAULT NULL COMMENT '隐藏（是1否0）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
   `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',

@@ -6,7 +6,7 @@
 <script type="text/javascript" th:src="@{/js/base/user.js}"></script>
 <script type="text/javascript">
 	$(function() {
-		initPage();
+		initListPage();
 	});
 </script>
 </head>
@@ -15,12 +15,10 @@
 <div class="row">
 	<div class="panel panel-default">
 		<!-- 导航 -->
-  		<div class="panel-heading border-none padding-none" style="height:50px">
-		<div class="row">
+  		<div class="panel-heading border-none padding-none" style="height:40px">
 			<ol class="breadcrumb">
 			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 用户管理</li>
 			</ol>
-	  	</div>
 	  	</div>
 	  	<div class="panel-body border-none">
 	    	<div class="container-fluid">
@@ -29,7 +27,7 @@
 				<table id="datagrid" style="height:600px;">
 					<thead>
 						<tr>
-							<th field="ck" checkbox="true"></th>
+							<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtml">操作</th>
 							<th id="column_username" data-options="field:'username',width:20">账号</th>
 							<th id="column_name" data-options="field:'name',width:10">用户名</th>
 							<th id="column_mobile" data-options="field:'mobile',width:20">手机</th>
@@ -60,18 +58,16 @@
 						</select>
 					    <a id="btn_search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
 					    <a id="btn_reset" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+				        <a id="btn_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">新增</a>
 					</form>
 					</div>
-					<div class="opt-buttons">
-				        <a href="javascript:void(0)" onclick="toAdd()" class="easyui-linkbutton" data-options="selected:true">新增</a>
-				    </div>
 				</div>
 			</div>
 	    	</div>
 	    </div>
 	</div>
-<form action="" method="post" id="hiddenForm">
-<input type="hidden" name="id" />
+<form action="" method="get" id="hiddenForm">
+<input type="hidden" id="id" name="id" />
 </form>
 </div>
 </div>
