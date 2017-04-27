@@ -16,6 +16,11 @@ public class RestResponseCodes {
 	 */
 	public static final int PARAM_INVALID = 600;
 
+	/**
+	 * RESTFul接口异常
+	 */
+	public static final int REST_ERROR = 700;
+
 	private RestResponseCodes() {
 		super();
 	}

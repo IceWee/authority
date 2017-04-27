@@ -1,5 +1,6 @@
 # HTTPS config
-#server:
+server:
+  port: 80
 #  port: 8443
 #  ssl.key-store: classpath:keystore.p12
 #  ssl.key-store-password: tomcat

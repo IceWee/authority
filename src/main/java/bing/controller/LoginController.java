@@ -23,7 +23,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import bing.constants.RedisKeys;
 import bing.constants.SystemConstants;
-import bing.model.SysUser;
 import bing.service.MessageSourceService;
 import bing.util.CaptchaUtils;
 
@@ -41,12 +40,6 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout,
 			@RequestParam(value = "expired", required = false) String expired, ModelMap model, HttpSession session) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof SysUser) { // 已登录
-			SysUser user = (SysUser) principal;
-			LOGGER.info("用户：{} 已登录，重定向到主页面", user.getName());
-			return "redirect:/main";
-		}
 		model.addAttribute("msg", messageSourceService.getMessage("login.label.username"));
 		if (error != null) {
 			model.addAttribute("msg", messageSourceService.getMessage("login.tips.invalid"));
