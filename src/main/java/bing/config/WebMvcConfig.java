@@ -10,7 +10,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import bing.annotation.CurrentUser;
@@ -46,7 +45,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 					return user;
 				}
 			}
-			throw new MissingServletRequestPartException("currentUser");
+			// throw new MissingServletRequestPartException("currentUser");
+			return null;
 		}
 
 		@Override

@@ -19,7 +19,7 @@ function back2list() {
 function initListPage() {
 	i18n();
 	
-	_initDatagrid(URI_AJAX_LIST);
+	_initDatagrid({url:URI_AJAX_LIST});
 	
 	// 跳转到新增页面
 	$(BTN_ADD_ID).click(function() {
