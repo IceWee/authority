@@ -1,20 +1,26 @@
 package bing.controller;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import bing.annotation.CurrentUser;
 import bing.constants.SystemConstants;
 import bing.model.SysUser;
 
 @Controller
-public class MainController {
+public class MainController extends BaseController {
 
-	@RequestMapping(value = { "/main", "/" })
-	public String main(@CurrentUser SysUser user, HttpSession session) {
-		session.setAttribute(SystemConstants.SESSION_ATTRIBUTE_CURRENT_USER, user);
+	@RequestMapping(value = {"/main", "/"})
+	public String main(HttpSession session) {
+		Optional<SysUser> optional = currentUser();
+		if (optional.isPresent()) {
+			session.setAttribute(SystemConstants.SESSION_ATTRIBUTE_CURRENT_USER, optional.get());
+		} else {
+			return "redirect:/login";
+		}
 		return "main";
 	}
 
