@@ -3,20 +3,25 @@ package bing.domain;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class BaseUser extends BaseDomain implements UserDetails {
 
 	private static final long serialVersionUID = 5230111703513005505L;
+
+	@NotBlank(message = "{required.username}")
 	protected String username;
+
+	@NotBlank(message = "{required.password}")
 	protected String password;
 	protected boolean enabled = true;
 	protected boolean accountNonExpired = true;
 	protected boolean accountNonLocked = true;
 	protected boolean credentialsNonExpired = true;
 	protected Collection<? extends GrantedAuthority> authorities = Collections.emptyList();
-	
+
 	public BaseUser() {
 		super();
 	}
@@ -89,5 +94,5 @@ public class BaseUser extends BaseDomain implements UserDetails {
 	public boolean isEnabled() {
 		return enabled;
 	}
-	
+
 }

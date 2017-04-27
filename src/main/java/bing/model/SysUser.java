@@ -2,6 +2,8 @@ package bing.model;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import bing.constants.Hidden;
 import bing.constants.UserStatus;
 import bing.domain.BaseUser;
@@ -12,6 +14,7 @@ public class SysUser extends BaseUser {
 
 	private Integer id;
 
+	@NotBlank(message = "{required.name}")
 	private String name;
 
 	private String mobile;

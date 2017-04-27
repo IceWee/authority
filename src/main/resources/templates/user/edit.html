@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title id="title">用户详情</title>
+<title id="title">编辑用户</title>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/base/user.css}" />
 <script type="text/javascript" th:src="@{/js/base/user.js}"></script>
 <script type="text/javascript">
 	$(function() {
-		initDetailPage();
+		initEditPage();
 	});
 </script>
 </head>
 <body>
-<form id="pageForm" method="post">
+<form id="pageForm" th:action="@{/users}" method="post">
 <div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
 			<ol class="breadcrumb">
 			  	<li><a href="/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 用户管理</a></li>
-			  	<li class="active">用户详情</li>
+			  	<li class="active">编辑用户</li>
 			</ol>
 	  	</div>
 	  	<div class="panel-body">
@@ -34,28 +34,13 @@
 						<label>登录账号</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.username}" type="text" name="username" data-options="required:true,validType:['username','minLength[3]','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${sysUser.username}" type="text" name="username" readonly="readonly"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label>用户名称</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${sysUser.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
-					</div>
-				</div>
-				<div style="margin-bottom: 20px"></div>
-				<div class="row">
-					<div class="col-md-2 text-right">
-						<label>密码</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" type="password" id="password" name="password" data-options="required:true,validType:['minLength[6]','maxLength[32]']"></input>
-					</div>
-					<div class="col-md-2 text-right">
-						<label>重复密码</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" type="password" name="rpassword" data-options="required:true,validType:['equals[\'#password\']']"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -80,13 +65,13 @@
 				<div style="margin-bottom: 20px"></div>
 				<div class="row">
 					<div class="col-md-2 text-right">
-						<label>创建人</label>
+						<label>修改人</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${sysUser.updateUser}" type="text" id="updateUser" name="updateUser" data-options="readonly:true"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label>创建日期</label>
+						<label>修改日期</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${#dates.format(sysUser.updateDate,'yyyy-MM-dd')}" type="text" id="updateDate" name="updateDate" data-options="readonly:true"></input>

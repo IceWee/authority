@@ -3,7 +3,8 @@ var FORM_ID_HIDDEN = "#hiddenForm"; // 隐藏表单ID
 var URI_LIST = "/user/list"; // 列表页面URI
 var URI_AJAX_LIST = "/users"; // 列表页获取列表数据异步URI
 var URI_AJAX_SAVE = "/users"; // ajax保存
-var DETAIL_URI = "/user/detail"; // 新增页面URI
+var ADD_URI = "/user/add"; // 新增页面URI
+var EDIT_URI = "/user/edit"; // 编辑页面URI
 var BTN_ADD_ID = "#btn_add"; // 增加按钮ID
 var BTN_SAVE_ID = "#btn_save"; // 保存按钮ID
 var BTN_BACK_ID = "#btn_back"; // 返回按钮ID
@@ -23,31 +24,37 @@ function initListPage() {
 	
 	// 跳转到新增页面
 	$(BTN_ADD_ID).click(function() {
-		detail(null);
+		add(null);
 	});
 }
 
-// 进入详情页
-function detail(id) {
-	$("#id").val(id);
-	$(FORM_ID_HIDDEN).attr("action", DETAIL_URI);
+// 进入新增页
+function add() {
+	$(FORM_ID_HIDDEN).attr("action", ADD_URI);
+	$(FORM_ID_HIDDEN).submit();
+}
+
+// 进入编辑页
+function edit(id) {
+	$("id").val(id);
+	$(FORM_ID_HIDDEN).attr("action", EDIT_URI);
 	$(FORM_ID_HIDDEN).submit();
 }
 
 // 在datagrid的操作列中生成操作按钮
 function operateBtnHtml(value, row, index) {
 	var id = row.id;
-	if (!id || id == null || id == "null") {
+	if (!id) {
 		return "";
 	} else {
-		return "<a href=\"#\" onclick=\"detail('" + id + "')\"><span class=\"label label-primary\">编辑</span></a>";  
+		return "<a href=\"#\" onclick=\"edit('" + id + "')\"><span class=\"label label-primary\">编辑</span></a>";  
 	}
 }
 /*************************** list end *****************************/
 
 /*************************** detail begin *****************************/
 // 初始化新增页面
-function initDetailPage() {
+function initAddPage() {
 	i18n();
 	
 	readonlyColor("updateUser");

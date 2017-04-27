@@ -3,6 +3,7 @@ package bing.service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import bing.conditions.SysUserCondition;
+import bing.domain.BusinessException;
 import bing.domain.GenericPage;
 import bing.model.SysUser;
 
@@ -21,7 +22,7 @@ public interface SysUserService extends UserDetailsService {
 	 * 
 	 * @param sysUser
 	 */
-	void saveOrUpdate(SysUser sysUser);
+	void saveOrUpdate(SysUser sysUser) throws BusinessException;
 
 	/**
 	 * 主键获取用户

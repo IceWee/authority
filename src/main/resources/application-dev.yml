@@ -10,7 +10,7 @@ server:
 spring:
 # i18n config
   messages:
-    basename: i18n/messages
+    basename: i18n/messages, i18n/codes, i18n/validators
 # Datasource config
   datasource: 
     type: com.alibaba.druid.pool.DruidDataSource

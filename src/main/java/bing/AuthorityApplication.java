@@ -2,6 +2,7 @@ package bing;
 
 import org.apache.catalina.connector.Connector;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
@@ -10,22 +11,40 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import bing.constants.SystemConstants;
 
 @SpringBootApplication
 @EnableCaching
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = SystemConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
-@ComponentScan(basePackages = { "bing" })
+@ComponentScan(basePackages = {"bing"})
 @MapperScan(SystemConstants.MAPPER_SCAN_PACKAGES)
 public class AuthorityApplication {
 
+	@Autowired
+	private MessageSource messageSource;
+
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(AuthorityApplication.class).web(true).run(args);
+	}
+
+	/**
+	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件，
+	 * 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
+	 * 
+	 * @return
+	 */
+	@Bean(name = "mvcValidator")
+	public LocalValidatorFactoryBean validator() {
+		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+		bean.setValidationMessageSource(messageSource);
+		return bean;
 	}
 
 	@Bean
