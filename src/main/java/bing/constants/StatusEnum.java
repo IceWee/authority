@@ -1,6 +1,6 @@
 package bing.constants;
 
-public enum UserStatus {
+public enum StatusEnum {
 
 	NORMAL, LOCKED, DELETED;
 

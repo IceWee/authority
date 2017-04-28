@@ -1,6 +1,6 @@
 package bing.constants;
 
-public enum Hidden {
+public enum HiddenEnum {
 
 	HIDDEN, SHOW;
 

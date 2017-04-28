@@ -4,8 +4,8 @@ import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import bing.constants.Hidden;
-import bing.constants.UserStatus;
+import bing.constants.HiddenEnum;
+import bing.constants.StatusEnum;
 import bing.domain.BaseUser;
 
 public class SysUser extends BaseUser {
@@ -19,9 +19,9 @@ public class SysUser extends BaseUser {
 
 	private String mobile;
 
-	private Integer status = UserStatus.NORMAL.ordinal();
+	private Integer status = StatusEnum.NORMAL.ordinal();
 
-	private Integer hidden = Hidden.HIDDEN.ordinal();
+	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
 
 	private String createUser;
 
@@ -113,22 +113,22 @@ public class SysUser extends BaseUser {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return UserStatus.NORMAL.ordinal() == status;
+		return StatusEnum.NORMAL.ordinal() == status;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return UserStatus.LOCKED.ordinal() != status;
+		return StatusEnum.LOCKED.ordinal() != status;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return UserStatus.NORMAL.ordinal() == status;
+		return StatusEnum.NORMAL.ordinal() == status;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return UserStatus.NORMAL.ordinal() == status;
+		return StatusEnum.NORMAL.ordinal() == status;
 	}
 
 }
