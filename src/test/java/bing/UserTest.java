@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import bing.conditions.SysUserCondition;
-import bing.dao.SysUserDao;
 import bing.domain.GenericPage;
-import bing.model.SysUser;
-import bing.service.SysUserService;
+import bing.system.condition.SysUserCondition;
+import bing.system.dao.SysUserDao;
+import bing.system.model.SysUser;
+import bing.system.service.SysUserService;
 import bing.util.PasswordUtils;
 
 public class UserTest extends BaseTest {

@@ -27,7 +27,7 @@
 		</javaTypeResolver>
 
 		<!-- generate Model -->
-		<javaModelGenerator targetPackage="temp.bing.model"
+		<javaModelGenerator targetPackage="bing.model"
 			targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
@@ -35,18 +35,25 @@
 		</javaModelGenerator>
 
 		<!-- generate xml -->
-		<sqlMapGenerator targetPackage="temp.bing.dao" targetProject="./src/main/java">
+		<sqlMapGenerator targetPackage="bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- generate Mapper -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="temp.bing.dao" targetProject="./src/main/java">
+			targetPackage="bing.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<!-- <property name="rootInterface" value="bing.BaseDao" /> -->
 		</javaClientGenerator>
 
-		<table tableName="SYS_USER" domainObjectName="SysUser"
+		<table tableName="sys_resource_category" domainObjectName="SysResourceCategory"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="sys_role_resource" domainObjectName="SysRoleResource"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
