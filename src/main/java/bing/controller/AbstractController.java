@@ -6,14 +6,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import bing.model.SysUser;
 
-public class BaseController {
+/**
+ * 抽象Controller
+ * 
+ * @author IceWee
+ */
+public abstract class AbstractController {
 
 	/**
 	 * 获取当前登录用户
 	 * 
 	 * @return
 	 */
-	protected Optional<SysUser> currentUser() {
+	protected Optional<SysUser> getCurrentUser() {
 		Optional<SysUser> optional = Optional.ofNullable(null);
 		Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (object instanceof SysUser && object != null) {

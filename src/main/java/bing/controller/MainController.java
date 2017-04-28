@@ -11,11 +11,11 @@ import bing.constants.SystemConstants;
 import bing.model.SysUser;
 
 @Controller
-public class MainController extends BaseController {
+public class MainController extends AbstractController {
 
-	@RequestMapping(value = {"/main", "/"})
+	@RequestMapping(value = { "/main", "/" })
 	public String main(HttpSession session) {
-		Optional<SysUser> optional = currentUser();
+		Optional<SysUser> optional = getCurrentUser();
 		if (optional.isPresent()) {
 			session.setAttribute(SystemConstants.SESSION_ATTRIBUTE_CURRENT_USER, optional.get());
 		} else {

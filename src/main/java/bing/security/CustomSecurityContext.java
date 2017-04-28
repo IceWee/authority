@@ -15,6 +15,11 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 
+/**
+ * 测试使用，读取权限配置文件，实际项目中应从数据库读取
+ * 
+ * @author IceWee
+ */
 public class CustomSecurityContext {
 
 	private static Map<String, Collection<ConfigAttribute>> METADATA_SOURCE_MAP = new HashMap<>();

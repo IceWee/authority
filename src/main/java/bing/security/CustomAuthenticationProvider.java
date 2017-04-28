@@ -24,7 +24,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import bing.constants.RedisKeys;
 import bing.util.PasswordUtils;
 
-//@Component("customAuthenticationProvider")
+/**
+ * 自定义权限认证处理类，加入了验证码校验
+ * 
+ * @author IceWee
+ */
 public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationProvider.class);

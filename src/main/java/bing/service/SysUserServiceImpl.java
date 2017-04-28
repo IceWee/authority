@@ -48,7 +48,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public void saveOrUpdate(SysUser sysUser) {
 		Integer id = sysUser.getId();
-		if (id != null) {
+		if (id != null) { // 更新
 			sysUserDao.updateByPrimaryKeySelective(sysUser);
 		} else {
 			sysUserDao.insert(sysUser);
