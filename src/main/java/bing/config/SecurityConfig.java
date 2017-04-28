@@ -86,6 +86,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			 */
 			@Override
 			public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
+				// TODO
+				// rejectPublic设置为true连login都无法访问，目前滞留后续研究
+				// fsi.setRejectPublicInvocations(true);
 				fsi.setAccessDecisionManager(accessDecisionManager());
 				fsi.setSecurityMetadataSource(securityMetadataSource());
 				return fsi;
