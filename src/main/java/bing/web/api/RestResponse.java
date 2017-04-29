@@ -1,4 +1,4 @@
-package bing.domain;
+package bing.web.api;
 
 import org.apache.commons.lang3.StringUtils;
 

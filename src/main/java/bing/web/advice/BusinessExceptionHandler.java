@@ -1,4 +1,4 @@
-package bing.advice;
+package bing.web.advice;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import bing.domain.BusinessException;
-import bing.domain.RestResponse;
+import bing.exception.BusinessException;
 import bing.service.MessageSourceService;
 import bing.util.ExceptionUtils;
+import bing.web.api.RestResponse;
 
 @RestControllerAdvice
 public class BusinessExceptionHandler {

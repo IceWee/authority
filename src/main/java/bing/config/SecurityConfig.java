@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import bing.constants.SystemConstants;
+import bing.constants.GlobalConstants;
 import bing.security.CustomAccessDecisionManager;
 import bing.security.CustomAuthenticationProvider;
 import bing.security.CustomSecurityMetadataSource;
@@ -73,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// 自定义权限源，实现验证码
 				.authenticationDetailsSource(authenticationDetailsSource).and().logout().permitAll()
 				// 开启cookie保存用户数据
-				.and().rememberMe().rememberMeParameter(SystemConstants.PARAM_REMEMBER_ME).tokenRepository(persistentTokenRepository()).tokenValiditySeconds(86400)
+				.and().rememberMe().rememberMeParameter(GlobalConstants.PARAM_REMEMBER_ME).tokenRepository(persistentTokenRepository()).tokenValiditySeconds(86400)
 				// 设置cookie有效期
 				.tokenValiditySeconds(60 * 60 * 24 * 7)
 				// 设置cookie的私钥

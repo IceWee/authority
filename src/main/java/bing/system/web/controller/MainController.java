@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import bing.constants.SystemConstants;
+import bing.constants.GlobalConstants;
 import bing.system.model.SysUser;
 import bing.web.controller.AbstractController;
 
@@ -18,7 +18,7 @@ public class MainController extends AbstractController {
 	public String main(HttpSession session) {
 		Optional<SysUser> optional = getCurrentUser();
 		if (optional.isPresent()) {
-			session.setAttribute(SystemConstants.SESSION_ATTRIBUTE_CURRENT_USER, optional.get());
+			session.setAttribute(GlobalConstants.SESSION_ATTRIBUTE_CURRENT_USER, optional.get());
 		} else {
 			return "redirect:/login";
 		}

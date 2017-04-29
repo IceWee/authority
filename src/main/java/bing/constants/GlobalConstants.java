@@ -1,6 +1,6 @@
 package bing.constants;
 
-public class SystemConstants {
+public class GlobalConstants {
 
 	/**
 	 * Request parameter name - capthca
@@ -23,6 +23,11 @@ public class SystemConstants {
 	public static final String MAPPER_SCAN_PACKAGES = "bing.**.dao";
 
 	/**
+	 * Components of Spring Management scan packages
+	 */
+	public static final String COMPONENT_SCAN_PACKAGES = "bing";
+
+	/**
 	 * Super manager username - admin
 	 */
 	public static final String ADMIN = "admin";
@@ -32,7 +37,7 @@ public class SystemConstants {
 	 */
 	public static final String SESSION_ATTRIBUTE_CURRENT_USER = "currentUser";
 
-	private SystemConstants() {
+	private GlobalConstants() {
 		super();
 	}
 

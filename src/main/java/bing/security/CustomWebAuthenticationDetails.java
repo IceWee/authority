@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-import bing.constants.SystemConstants;
+import bing.constants.GlobalConstants;
 
 /**
  * 自定义权限类，为了扩展登陆时验证码属性
@@ -22,7 +22,7 @@ public class CustomWebAuthenticationDetails extends WebAuthenticationDetails {
 
 	public CustomWebAuthenticationDetails(HttpServletRequest request) {
 		super(request);
-		captcha = request.getParameter(SystemConstants.PARAM_CAPTCHA);
+		captcha = request.getParameter(GlobalConstants.PARAM_CAPTCHA);
 	}
 
 	public String getCaptcha() {

@@ -3,6 +3,7 @@ package bing.web.controller;
 import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 
 import bing.system.model.SysUser;
 
@@ -26,6 +27,10 @@ public abstract class AbstractController {
 			optional = Optional.of(user);
 		}
 		return optional;
+	}
+
+	protected void setErrors(BindingResult bindingResult) {
+
 	}
 
 }

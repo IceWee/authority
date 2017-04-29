@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import bing.constants.RestResponseCodes;
 import bing.domain.GenericPage;
-import bing.domain.RestResponse;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
 import bing.system.service.SysUserService;
+import bing.web.api.RestResponse;
 import bing.web.controller.AbstractController;
 
 @Controller

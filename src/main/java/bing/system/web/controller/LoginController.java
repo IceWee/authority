@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import bing.constants.GlobalConstants;
 import bing.constants.RedisKeys;
-import bing.constants.SystemConstants;
 import bing.service.MessageSourceService;
 import bing.util.CaptchaUtils;
 import bing.web.controller.AbstractController;
@@ -54,7 +54,7 @@ public class LoginController extends AbstractController {
 		// 设置验证码
 		String captcha = CaptchaUtils.captcha(4);
 		LOGGER.info("生成登录验证码并缓存：{}", captcha);
-		session.setAttribute(SystemConstants.PARAM_CAPTCHA, captcha);
+		session.setAttribute(GlobalConstants.PARAM_CAPTCHA, captcha);
 		String currentSessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
 		stringRedisTemplate.opsForValue().set(RedisKeys.PREFIX_CAPTCHA + currentSessionId, captcha);
 		return "login";
@@ -62,7 +62,6 @@ public class LoginController extends AbstractController {
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.info("visiting logout action...");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);

@@ -2,8 +2,8 @@ package bing.system.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import bing.domain.BusinessException;
 import bing.domain.GenericPage;
+import bing.exception.BusinessException;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
 

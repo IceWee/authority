@@ -18,13 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import bing.constants.SystemConstants;
+import bing.constants.GlobalConstants;
 
 @SpringBootApplication
 @EnableCaching
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = SystemConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
-@ComponentScan(basePackages = {"bing"})
-@MapperScan(SystemConstants.MAPPER_SCAN_PACKAGES)
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = GlobalConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
+@ComponentScan(basePackages = {GlobalConstants.COMPONENT_SCAN_PACKAGES})
+@MapperScan(GlobalConstants.MAPPER_SCAN_PACKAGES)
 public class AuthorityApplication {
 
 	@Autowired
