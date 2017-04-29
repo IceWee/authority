@@ -37,7 +37,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public GenericPage<SysUser> listByPage(SysUserCondition sysUserCondition) {
+	public GenericPage<SysUser> listUserByPage(SysUserCondition sysUserCondition) {
 		Long pageNo = sysUserCondition.getPageNo();
 		PageHelper.startPage(pageNo.intValue(), sysUserCondition.getPageSize().intValue());
 		List<SysUser> list = sysUserDao.listByCondition(sysUserCondition);
@@ -46,17 +46,13 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public void saveOrUpdate(SysUser sysUser) {
-		Integer id = sysUser.getId();
-		if (id != null) { // 更新
-			sysUserDao.updateByPrimaryKeySelective(sysUser);
-		} else {
-			sysUserDao.insert(sysUser);
-		}
+	public void saveUser(SysUser sysUser) {
+		sysUser.setId(null);
+		sysUserDao.insert(sysUser);
 	}
 
 	@Override
-	public SysUser get(Integer id) {
+	public SysUser getUserById(Integer id) {
 		return sysUserDao.selectByPrimaryKey(id);
 	}
 

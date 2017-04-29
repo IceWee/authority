@@ -77,7 +77,7 @@ function cloneSelf(id) {
 // type: success/info/warning/danger
 // timeout: 单位是秒
 function showTips(msg, type, timeout, id) {
-	if (msg) {
+	if (!msg) {
 		console.log("msg is null, nothing to show...")
 		return;
 	}
@@ -157,7 +157,7 @@ function initDatagrid(options) {
 		pageList : [ pageSize, 50, 100 ],
 		singleSelect : singleSelect, //  只允许单选
 		nowrap : true, // 设置为true，当数据长度超出列宽时将会自动截取  
-		striped : true, // 设置为true将交替显示行背景。  
+		striped : true, // 设置为true将交替显示行背景
 		collapsible : true, // 显示可折叠按钮  
 		toolbar : toolbarId, // 自定义工具
 		fitColumns : true, // 允许表格自动缩放，以适应父容器  
@@ -193,7 +193,7 @@ function initDatagrid(options) {
 
 // 列表查询
 function doSearch(url, tableId, formSearchId, tipsId) {
-	var RESPONSE_OK = 200;
+	var RESPONSE_OK = "200";
 	hideTips(tipsId);
 	ajaxLoading($.i18n.prop("load.loading"));
 	var pager = $(tableId).datagrid("getPager");
@@ -208,9 +208,10 @@ function doSearch(url, tableId, formSearchId, tipsId) {
 		type : "GET",
 		url : url,
 		data : data,
+		dataType : "json",
 		success : function(json) {
 			ajaxLoaded();
-			if (json.code == RESPONSE_OK) {
+			if (json.code === RESPONSE_OK) {
 				if (json.data) {
 					var totalRows = json.data.totalRows;
 					var list = json.data.data;

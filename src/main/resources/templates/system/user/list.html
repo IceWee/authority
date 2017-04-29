@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
-<title id="title">用户列表</title>
+<title th:text="#{system.name}">认证与授权管理系统</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/user.css}" />
 <script type="text/javascript" th:src="@{/js/system/user.js}"></script>
 <script type="text/javascript">
@@ -17,7 +17,7 @@
 		<!-- 导航 -->
   		<div class="panel-heading border-none padding-none" style="height:40px">
 			<ol class="breadcrumb">
-			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 用户管理</li>
+			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <span th:text="#{user.manage}">用户管理</span></li>
 			</ol>
 	  	</div>
 	  	<div class="panel-body border-none">

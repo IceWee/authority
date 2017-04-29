@@ -1,8 +1,8 @@
 var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
 var FORM_ID_HIDDEN = "#form_hidden"; // 隐藏表单ID
 var URI_LIST = "/system/user/list"; // 列表页面URI
-var URI_AJAX_LIST = "/system/users"; // 列表页获取列表数据异步URI
-var URI_AJAX_SAVE = "/system/users"; // ajax保存
+var URI_AJAX_LIST = "/ajax/system/users"; // 列表页获取列表数据异步URI
+var URI_AJAX_SAVE = "/ajax/system/users"; // ajax保存
 var ADD_URI = "/system/user/add"; // 新增页面URI
 var EDIT_URI = "/system/user/edit"; // 编辑页面URI
 var BTN_ADD_ID = "#button_add"; // 增加按钮ID

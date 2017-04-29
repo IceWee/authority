@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import bing.constants.HiddenEnum;
 import bing.constants.StatusEnum;
 import bing.security.CustomUserDetails;
@@ -25,10 +27,12 @@ public class SysUser extends CustomUserDetails {
 
 	private String createUser;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date createDate;
 
 	private String updateUser;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date updateDate;
 
 	public SysUser() {

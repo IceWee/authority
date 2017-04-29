@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import bing.domain.AbstractObject;
 
 /**
@@ -32,6 +34,7 @@ public class CustomUserDetails extends AbstractObject implements UserDetails {
 	/**
 	 * 权限集合
 	 */
+	@JsonIgnore
 	protected Collection<? extends GrantedAuthority> authorities = Collections.emptyList();
 
 	public CustomUserDetails() {

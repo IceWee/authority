@@ -23,7 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import bing.constants.GlobalConstants;
 import bing.constants.RedisKeys;
-import bing.service.MessageSourceService;
+import bing.i18n.MessageSourceService;
 import bing.util.CaptchaUtils;
 import bing.web.controller.AbstractController;
 

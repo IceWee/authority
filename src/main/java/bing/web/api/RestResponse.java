@@ -2,8 +2,6 @@ package bing.web.api;
 
 import org.apache.commons.lang3.StringUtils;
 
-import bing.constants.RestResponseCodes;
-
 /**
  * Rest接口返回类
  * 
@@ -11,7 +9,7 @@ import bing.constants.RestResponseCodes;
  */
 public class RestResponse<T> {
 
-	private int code = RestResponseCodes.OK;
+	private String code = "200";
 	private String message = StringUtils.EMPTY;
 	private T data;
 	private long timestamp;
@@ -20,11 +18,11 @@ public class RestResponse<T> {
 		super();
 	}
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

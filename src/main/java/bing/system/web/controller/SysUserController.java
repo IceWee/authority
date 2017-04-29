@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import bing.constants.RestResponseCodes;
 import bing.domain.GenericPage;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
@@ -34,7 +33,10 @@ public class SysUserController extends AbstractController {
 
 	private static final String LIST = "system/user/list";
 	private static final String ADD = "system/user/add";
+	private static final String SAVE = "system/user/save";
 	private static final String EDIT = "system/user/edit";
+	private static final String AJAX_LIST = "ajax/system/users";
+	private static final String AJAX_SAVE = "ajax/system/users";
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -55,10 +57,10 @@ public class SysUserController extends AbstractController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> getUsers(SysUserCondition sysUserCondition) {
+	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> users(SysUserCondition sysUserCondition) {
 		RestResponse<Object> response = new RestResponse<>();
-		GenericPage<SysUser> page = sysUserService.listByPage(sysUserCondition);
+		GenericPage<SysUser> page = sysUserService.listUserByPage(sysUserCondition);
 		response.setData(page);
 		return response;
 	}
@@ -73,6 +75,15 @@ public class SysUserController extends AbstractController {
 		return ADD;
 	}
 
+	@RequestMapping(value = SAVE, method = RequestMethod.POST)
+	public String save(@RequestBody @Valid SysUser sysUser, BindingResult bindingResult, Model model) {
+		if (hasErrors(bindingResult, model)) {
+			return ADD;
+		}
+		sysUserService.saveUser(sysUser);
+		return LIST;
+	}
+
 	/**
 	 * 跳转到编辑用户页面
 	 * 
@@ -80,7 +91,7 @@ public class SysUserController extends AbstractController {
 	 */
 	@RequestMapping(EDIT)
 	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model) {
-		SysUser sysUser = sysUserService.get(id);
+		SysUser sysUser = sysUserService.getUserById(id);
 		model.addAttribute("sysUser", sysUser);
 		return EDIT;
 	}
@@ -91,18 +102,17 @@ public class SysUserController extends AbstractController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/users", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<Object> saveOrUpdate(@RequestBody @Valid SysUser sysUser, BindingResult bindingResult) {
 		RestResponse<Object> response = new RestResponse<>();
 		if (bindingResult.hasErrors() && !bindingResult.getAllErrors().isEmpty()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();
 			String message = errors.get(0).getDefaultMessage();
 			LOGGER.warn("保存用户时，数据未通过校验，详细信息：{}", message);
-			response.setCode(RestResponseCodes.PARAM_INVALID);
 			response.setMessage(message);
 			return response;
 		}
-		sysUserService.saveOrUpdate(sysUser);
+		sysUserService.saveUser(sysUser);
 		return response;
 	}
 

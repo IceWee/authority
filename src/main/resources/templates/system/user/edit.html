@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title id="title">编辑用户</title>
+<title th:text="#{system.name}">认证与授权管理系统</title>用户</title>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/user.css}" />
@@ -13,14 +13,16 @@
 </script>
 </head>
 <body>
-<form id="form_default" th:action="@{/users}" method="post">
+<form id="form_default" th:action="@{/system/user/update}" method="post">
+<input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
+<input type="hidden" th:value="${id}" name="id"></input>
 <div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
 			<ol class="breadcrumb">
-			  	<li><a href="/system/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 用户管理</a></li>
-			  	<li class="active">编辑用户</li>
+			  	<li><a href="/system/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <span th:text="#{user.manage}">用户管理</span></a></li>
+			  	<li class="active" th:text="#{user.edit}">编辑用户</li>
 			</ol>
 	  	</div>
 	  	<div class="panel-body">
@@ -31,13 +33,13 @@
 	    		<div style="margin-top: 20px"></div>
 		    	<div class="row">
 					<div class="col-md-2 text-right">
-						<label>登录账号</label>
+						<label th:text="#{username}">账号</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${sysUser.username}" type="text" name="username" readonly="readonly"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label>用户名称</label>
+						<label th:text="#{name}">姓名</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${sysUser.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
@@ -46,13 +48,13 @@
 				<div style="margin-bottom: 20px"></div>
 				<div class="row">
 					<div class="col-md-2 text-right">
-						<label>手机号码</label>
+						<label th:text="#{mobile}">手机</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${sysUser.mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label>用户状态</label>
+						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<select class="easyui-combobox select-default" th:value="${sysUser.status}" data-options="editable:false" name="status">
@@ -65,13 +67,13 @@
 				<div style="margin-bottom: 20px"></div>
 				<div class="row">
 					<div class="col-md-2 text-right">
-						<label>修改人</label>
+						<label th:text="#{create.user}">创建人</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${sysUser.updateUser}" type="text" id="updateUser" name="updateUser" data-options="readonly:true"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label>修改日期</label>
+						<label th:text="#{create.date}">创建日期</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${#dates.format(sysUser.updateDate,'yyyy-MM-dd')}" type="text" id="updateDate" name="updateDate" data-options="readonly:true"></input>
@@ -79,8 +81,8 @@
 				</div>
 				<div style="margin-bottom: 20px"></div>
 				<div style="text-align:center;padding:5px">
-			    	<a id="button_save" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">保存</a>
-			    	<a id="button_back" href="javascript:void(0)" class="easyui-linkbutton">取消</a>
+			    	<a id="button_save" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true" th:text="#{save}">保存</a>
+			    	<a id="button_back" href="javascript:void(0)" class="easyui-linkbutton" th:text="#{cancel}">取消</a>
 			    </div>
 			    <div style="margin-bottom: 20px"></div>
 		    </div>

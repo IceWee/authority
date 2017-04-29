@@ -9,27 +9,27 @@ public class BusinessException extends RuntimeException {
 
 	private static final long serialVersionUID = 321592438426914748L;
 
-	private int code;
+	protected String code;
 
-	public BusinessException(int code) {
+	public BusinessException(String code) {
 		this.code = code;
 	}
 
-	public BusinessException(int code, Throwable cause) {
+	public BusinessException(String code, Throwable cause) {
 		super(cause);
 		this.code = code;
 	}
 
-	public BusinessException(int code, String message, Throwable cause) {
+	public BusinessException(String code, String message, Throwable cause) {
 		super(message, cause);
 		this.code = code;
 	}
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

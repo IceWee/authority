@@ -1,4 +1,4 @@
-package bing.service;
+package bing.i18n;
 
 import java.util.Locale;
 
