@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
-import bing.constants.Charsets;
+import bing.constant.Charsets;
+import bing.constant.GlobalConstants;
 import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.i18n.MessageSourceService;
+import bing.util.ExceptionUtils;
 import bing.util.JsonUtils;
 import bing.web.api.RestResponse;
 
@@ -38,12 +40,31 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	@ExceptionHandler(value = Throwable.class)
 	public String handler(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
 		response.setCharacterEncoding(Charsets.CHARSET_UTF_8);
+		LOGGER.error(ExceptionUtils.parseStackTrace(e));
 		if (isAjax(request)) {
 			ajax(response, e);
 			return null;
 		} else {
-			return "error";
+			return error(request, e);
 		}
+	}
+
+	/**
+	 * 返回错误页面
+	 * 
+	 * @param request
+	 * @param cause
+	 * @return
+	 */
+	private String error(HttpServletRequest request, Exception cause) {
+		String code = BusinessExceptionCodes.SERVER_ERROR;
+		if (cause instanceof BusinessException) {
+			BusinessException be = (BusinessException) cause;
+			code = be.getCode();
+		}
+		String error = retriveMessage(code);
+		request.setAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
+		return "error";
 	}
 
 	/**
@@ -66,7 +87,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 			writer.write(JsonUtils.toString(restResponse));
 			writer.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(ExceptionUtils.parseStackTrace(e));
 		}
 	}
 
@@ -95,11 +116,12 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	 * @return
 	 */
 	private String retriveMessage(String code) {
-		String message = StringUtils.EMPTY;
+		String message;
 		try {
 			message = messageSourceService.getMessage(code);
-		} catch (Exception e) {
-			LOGGER.warn("请及时向codes.properties文件中补充错误编码：{}", code);
+		} catch (Exception ex) {
+			LOGGER.warn("国际化文件中未配置错误编码：{}，返回未知错误提示", code);
+			message = messageSourceService.getMessage(BusinessExceptionCodes.UNKNOW_ERROR);
 		}
 		return message;
 	}

@@ -1,4 +1,4 @@
-package bing.constants;
+package bing.constant;
 
 /**
  * Redis缓存key定义类，防止缓存key重复

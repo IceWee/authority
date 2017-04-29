@@ -17,11 +17,18 @@ public interface SysUserService extends UserDetailsService {
 	GenericPage<SysUser> listUserByPage(SysUserCondition sysUserCondition);
 
 	/**
-	 * 保存或更新用户
+	 * 保存用户
 	 * 
 	 * @param sysUser
 	 */
 	void saveUser(SysUser sysUser);
+
+	/**
+	 * 更新用户
+	 * 
+	 * @param sysUser
+	 */
+	void updateUser(SysUser sysUser);
 
 	/**
 	 * 主键获取用户
@@ -30,5 +37,13 @@ public interface SysUserService extends UserDetailsService {
 	 * @return
 	 */
 	SysUser getUserById(Integer id);
+
+	/**
+	 * 逻辑删除
+	 * 
+	 * @param id
+	 * @param username 操作人
+	 */
+	void deleteUserById(Integer id, String username);
 
 }

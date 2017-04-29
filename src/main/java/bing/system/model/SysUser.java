@@ -2,12 +2,15 @@ package bing.system.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import bing.constants.HiddenEnum;
-import bing.constants.StatusEnum;
+import bing.constant.HiddenEnum;
+import bing.constant.StatusEnum;
 import bing.security.CustomUserDetails;
 
 public class SysUser extends CustomUserDetails {
@@ -19,6 +22,7 @@ public class SysUser extends CustomUserDetails {
 	@NotBlank(message = "{required.name}")
 	private String name;
 
+	@Pattern(regexp = "^$|^(13|14|15|17|18)[0-9]{9}$", message = "{mobile.illegal}")
 	private String mobile;
 
 	private Integer status = StatusEnum.NORMAL.ordinal();
@@ -28,11 +32,13 @@ public class SysUser extends CustomUserDetails {
 	private String createUser;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createDate;
 
 	private String updateUser;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updateDate;
 
 	public SysUser() {

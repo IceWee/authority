@@ -3,7 +3,7 @@ package bing.system.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import bing.constants.StatusEnum;
+import bing.constant.StatusEnum;
 import bing.domain.AbstractObject;
 
 public class SysUserRole extends AbstractObject implements Serializable {

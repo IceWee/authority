@@ -4,10 +4,14 @@
 <title th:text="#{system.name}">认证与授权管理系统</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/user.css}" />
 <script type="text/javascript" th:src="@{/js/system/user.js}"></script>
-<script type="text/javascript">
+<script th:inline="javascript">
+/*<![CDATA[*/
 	$(function() {
-		initListPage();
+		var error = /*[[${error}]]*/ null;
+		var message = /*[[${message}]]*/ null;
+		initListPage(error, message);
 	});
+/*]]>*/
 </script>
 </head>
 <body>
@@ -52,9 +56,7 @@
 						<label id="label_status" >状态</label>
 						<select class="easyui-combobox" data-options="editable:false" name="status" style="height:25px;width:200px">
 							<option value="" selected>全部</option>
-							<option value="1">正常</option>
-							<option value="2">锁定</option>
-							<option value="3">已删除</option>
+							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
 						</select>
 					    <a id="button_search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
 					    <a id="button_reset" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>

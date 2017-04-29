@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import bing.constants.GlobalConstants;
+import bing.constant.GlobalConstants;
 import bing.system.model.SysUser;
 import bing.web.controller.AbstractController;
 

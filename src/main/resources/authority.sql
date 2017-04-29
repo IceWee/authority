@@ -14,7 +14,7 @@
 # Database Name   	: authority
 # -------------------------------------
 */
-CREATE DATABASE `authority` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE `authority` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
 -- Spring security内置表，用于使用Remember-me功能，将cookie持久化使用
 DROP TABLE IF EXISTS `persistent_logins`;

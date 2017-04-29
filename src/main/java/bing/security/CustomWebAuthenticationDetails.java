@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-import bing.constants.GlobalConstants;
+import bing.constant.GlobalConstants;
 
 /**
  * 自定义权限类，为了扩展登陆时验证码属性

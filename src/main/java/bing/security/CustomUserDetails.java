@@ -3,6 +3,9 @@ package bing.security;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import bing.domain.AbstractObject;
+import bing.domain.CrudGroups;
 
 /**
  * Spring Security用户
@@ -20,10 +24,12 @@ public class CustomUserDetails extends AbstractObject implements UserDetails {
 
 	private static final long serialVersionUID = 5230111703513005505L;
 
-	@NotBlank(message = "{required.username}")
+	@NotBlank(message = "{username.required}")
+	@Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9]+$", message = "{username.illegal}")
+	@Size(min = 6, max = 32, message = "{username.valid.length}")
 	protected String username;
 
-	@NotBlank(message = "{required.password}")
+	@NotBlank(groups = {CrudGroups.Create.class}, message = "{password.required}")
 	protected String password;
 
 	protected boolean enabled = true;

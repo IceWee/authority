@@ -1,8 +1,10 @@
 package bing.system.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +14,14 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
+import bing.exception.BusinessException;
 import bing.system.condition.SysUserCondition;
 import bing.system.dao.SysUserDao;
+import bing.system.exception.UserExceptionCodes;
 import bing.system.model.SysUser;
+import bing.util.PasswordUtils;
 
 @Service("sysUserService")
 public class SysUserServiceImpl implements SysUserService {
@@ -48,12 +54,45 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public void saveUser(SysUser sysUser) {
 		sysUser.setId(null);
+		SysUser persistUser = sysUserDao.getByUsername(sysUser.getUsername());
+		if (persistUser != null) {
+			throw new BusinessException(UserExceptionCodes.USERNAME_REGISTERED);
+		}
+		sysUser.setCreateDate(new Date());
+		sysUser.setUpdateDate(new Date());
+		// 密码加密保存
+		String rawPassword = sysUser.getPassword();
+		String encryptPasswd = PasswordUtils.encrypt(rawPassword);
+		sysUser.setPassword(encryptPasswd);
 		sysUserDao.insert(sysUser);
+	}
+
+	@Override
+	public void updateUser(SysUser sysUser) {
+		SysUser persistUser = sysUserDao.selectByPrimaryKey(sysUser.getId());
+		String origionUsername = persistUser.getUsername();
+		String newUsername = sysUser.getUsername();
+		if (!StringUtils.equals(origionUsername, newUsername)) {
+			throw new BusinessException(UserExceptionCodes.USERNAME_FORBIDDEN_MODIFY);
+		}
+		sysUser.setCreateDate(new Date());
+		sysUser.setUpdateDate(new Date());
+		sysUserDao.updateByPrimaryKeySelective(sysUser);
 	}
 
 	@Override
 	public SysUser getUserById(Integer id) {
 		return sysUserDao.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public void deleteUserById(Integer id, String username) {
+		SysUser sysUser = new SysUser();
+		sysUser.setId(id);
+		sysUser.setStatus(StatusEnum.DELETED.ordinal());
+		sysUser.setUpdateUser(username);
+		sysUser.setUpdateDate(new Date());
+		sysUserDao.updateByPrimaryKeySelective(sysUser);
 	}
 
 }

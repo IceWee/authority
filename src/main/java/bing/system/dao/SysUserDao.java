@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
 
-import bing.constants.EhCacheNames;
+import bing.constant.EhCacheNames;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
 

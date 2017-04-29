@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import bing.constants.RedisKeys;
+import bing.constant.RedisKeys;
 import bing.exception.CaptchaErrorException;
 import bing.util.PasswordUtils;
 

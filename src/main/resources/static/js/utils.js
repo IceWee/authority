@@ -118,7 +118,7 @@ function hideTips(id) {
 
 /* 
  * 初始化easyui datagrid, 依赖_search函数
- * 如果一个面有多个datagrid, 需要传递的参数有: url, tableId, toolbarId, searchFormId, searchBtnId, resetBtnId, tipsId
+ * 如果一个面有多个datagrid, 需要传递的参数有: url, tableId, toolbarId, formSearchId, buttonSearchId, buttonResetId, tipsId
  * 
  * options 类型 JSON, 属性列表
  * url, 必填 , 查询使用
@@ -171,9 +171,14 @@ function initDatagrid(options) {
 	// 自定义分页
 	$(tableId).datagrid("getPager").pagination({
 		onSelectPage : function() { // 翻页
-			doSearch(url, tableId, searchFormId, tipsId);
+			doSearch(url, tableId, formSearchId, tipsId);
 		}
 	});
+	
+	// 开启自动加载数据
+	if (autoLoad) {
+		doSearch(url, tableId, formSearchId, tipsId);
+	}
 	
 	// 查询
 	$(buttonSearchId).click(function() {
@@ -235,5 +240,8 @@ function doSearch(url, tableId, formSearchId, tipsId) {
 
 // 只读背景色
 function readonlyColor(id) {
-	$("#" + id).textbox("textbox").css("background-color", "#F1F1F1");
+	var $this = $("#" + id);
+	if (!$.isEmptyObject($this)) {
+		$($this).textbox("textbox").css("background-color", "#F1F1F1");
+	}
 }

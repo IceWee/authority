@@ -1,4 +1,4 @@
-package bing.constants;
+package bing.constant;
 
 public class GlobalConstants {
 
@@ -41,6 +41,11 @@ public class GlobalConstants {
 	 * message attribute in request scope
 	 */
 	public static final String REQUEST_ATTRIBUTE_MESSAGE = "message";
+
+	/**
+	 * error attribute in request scope
+	 */
+	public static final String REQUEST_ATTRIBUTE_ERROR = "error";
 
 	/**
 	 * Cookie key prefix

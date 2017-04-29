@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import bing.constants.GlobalConstants;
-import bing.constants.RedisKeys;
+import bing.constant.GlobalConstants;
+import bing.constant.RedisKeys;
 import bing.i18n.MessageSourceService;
 import bing.util.CaptchaUtils;
 import bing.web.controller.AbstractController;

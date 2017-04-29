@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import bing.constants.GlobalConstants;
+import bing.constant.GlobalConstants;
 import bing.security.CustomAccessDecisionManager;
 import bing.security.CustomAuthenticationProvider;
 import bing.security.CustomSecurityMetadataSource;

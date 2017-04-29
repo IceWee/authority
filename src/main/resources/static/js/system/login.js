@@ -2,6 +2,8 @@
 function initPage() {
 	i18n();
 	
+	$("#username").focus();
+	
 	$("#button_login").click(function() {
 		if ($.trim($("#username").val()) == "") {
 			$("#tips_login").text($.i18n.prop("login.required.username"));

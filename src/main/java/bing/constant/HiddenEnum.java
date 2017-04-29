@@ -1,4 +1,4 @@
-package bing.constants;
+package bing.constant;
 
 public enum HiddenEnum {
 

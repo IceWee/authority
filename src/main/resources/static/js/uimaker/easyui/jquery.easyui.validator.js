@@ -28,7 +28,7 @@ $.extend($.fn.validatebox.defaults.rules, {
     }, 
     mobile : {// 验证手机号码
         validator : function(value) { 
-            return /^(13|14|15|18)\d{9}$/i.test(value); 
+            return /^(13|14|15|17|18)\d{9}$/i.test(value); 
         }, 
         message : "手机号码格式不正确"
     }, 

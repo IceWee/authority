@@ -36,17 +36,13 @@
 			SELECT
 			LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_user (username, name, password,
-		mobile, status, create_date, update_date)
-		create_date, create_user, update_date, update_user)
+		insert into sys_user (username, name, password, mobile, status, hidden, create_date, create_user, update_date, update_user)
 		values
 		(#{username,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-		#{password,jdbcType=VARCHAR},
-		#{mobile,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
 		#{status,jdbcType=INTEGER}, #{hidden,jdbcType=INTEGER},
 		#{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
-		#{updateDate,jdbcType=TIMESTAMP}),
-		#{updateUser,jdbcType=VARCHAR})
+		#{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="bing.system.model.SysUser">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -158,18 +154,14 @@
 	<update id="updateByPrimaryKey" parameterType="bing.system.model.SysUser">
 		update sys_user
 		set username = #{username,jdbcType=VARCHAR},
-		name =
-		#{name,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR},
 		password = #{password,jdbcType=VARCHAR},
 		mobile = #{mobile,jdbcType=VARCHAR},
-		status =
-		#{status,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
 		hidden = #{hidden,jdbcType=INTEGER},
-		create_date =
-		#{createDate,jdbcType=TIMESTAMP},
+		create_date = #{createDate,jdbcType=TIMESTAMP},
 		create_user = #{createUser,jdbcType=VARCHAR},
-		update_date =
-		#{updateDate,jdbcType=TIMESTAMP}
+		update_date = #{updateDate,jdbcType=TIMESTAMP}
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -185,7 +177,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from sys_user
-		where hidden = 0
+		where hidden = 0 and status != 2
 		<if test="username != null and username != ''">
 			AND username like concat(#{username,jdbcType=VARCHAR}, '%')
 		</if>
