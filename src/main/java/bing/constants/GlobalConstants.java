@@ -37,6 +37,26 @@ public class GlobalConstants {
 	 */
 	public static final String SESSION_ATTRIBUTE_CURRENT_USER = "currentUser";
 
+	/**
+	 * message attribute in request scope
+	 */
+	public static final String REQUEST_ATTRIBUTE_MESSAGE = "message";
+
+	/**
+	 * Cookie key prefix
+	 */
+	public static final String COOKIE_KEY = "authority_";
+
+	/**
+	 * Cookie expire seconds
+	 */
+	public static final int COOKIE_EXPIRE_SECONDS = 60 * 60 * 24 * 7;
+
+	/**
+	 * Public resource paths
+	 */
+	public static final String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
+
 	private GlobalConstants() {
 		super();
 	}

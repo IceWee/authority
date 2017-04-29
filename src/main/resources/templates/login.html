@@ -3,8 +3,8 @@
 <head th:include="common/header :: header(~{::title},~{::link})" />
 <title th:text="#{system.name}">认证与授权管理系统</title>
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/base.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/login/login.css}" />
-<script type="text/javascript" th:src="@{/js/login/login.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/system/login.css}" />
+<script type="text/javascript" th:src="@{/js/system/login.js}"></script>
 <script type="text/javascript">
 	$(function() {
 		initPage();
@@ -12,7 +12,7 @@
 </script>
 </head>
 <body class="white">
-<form action="/login" th:action="@{/login}" method="post" id="login-form">
+<form th:action="@{/login}" method="post" id="form_login">
 	<div class="login-hd">
 		<div class="left-bg"></div>
 		<div class="right-bg"></div>
@@ -29,7 +29,7 @@
 							<h4 th:text="#{login.label.login}">用户登录</h4>
 						</div>
 						<div class="alert alert-error">
-							<i class="iconfont">&#xe62e;</i>&nbsp;<span id="login-tips" th:text="${msg}"></span>
+							<i class="iconfont">&#xe62e;</i>&nbsp;<span id="tips_login" th:text="${msg}"></span>
 						</div>
 						<form>
 							<div class="lg-username input-item clearfix">
@@ -48,8 +48,8 @@
 								<a href="javascript:void(0)" class="forget-pwd" th:text="#{login.label.forgot}">忘记密码？</a>
 							</div>
 							<div class="enter" style="text-align:center">
-								<input type="submit" id="submit-button" style="display:none" />
-								<a href="javascript:void(0)" id="login-button" class="supplier">登&nbsp;&nbsp;录</a>
+								<input type="submit" id="button_submit" style="display:none" />
+								<a href="javascript:void(0)" id="button_login" class="supplier">登&nbsp;&nbsp;录</a>
 							</div>
 						</form>
 						<div class="line line-y"></div>
@@ -67,7 +67,7 @@
 				<a href="javascript:void(0)">服务条款</a> <a href="javascript:void(0)">联系方式</a>
 			</div>
 			<div class="address">地址：北京市海淀区西小口路66号中关村东升科技园&nbsp;Copyright&nbsp;©&nbsp;2017&nbsp;IceWee&nbsp;版权所有</div>
-			<div class="other-info">建议使用IE8及以上版本浏览器&nbsp;京ICP备&nbsp;88888888号&nbsp;E-mail：icewee@126.com</div>
+			<div class="other-info">建议使用IE8及以上版本浏览器&nbsp;京ICP备&nbsp;78600403号&nbsp;E-mail：icewee@126.com</div>
 		</div>
 	</div>
 </form>

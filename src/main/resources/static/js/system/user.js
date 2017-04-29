@@ -1,13 +1,13 @@
-var FORM_ID_DETAIL = "#pageForm"; // 详情页（新增或编辑）表单ID
-var FORM_ID_HIDDEN = "#hiddenForm"; // 隐藏表单ID
-var URI_LIST = "/user/list"; // 列表页面URI
-var URI_AJAX_LIST = "/users"; // 列表页获取列表数据异步URI
-var URI_AJAX_SAVE = "/users"; // ajax保存
-var ADD_URI = "/user/add"; // 新增页面URI
-var EDIT_URI = "/user/edit"; // 编辑页面URI
-var BTN_ADD_ID = "#btn_add"; // 增加按钮ID
-var BTN_SAVE_ID = "#btn_save"; // 保存按钮ID
-var BTN_BACK_ID = "#btn_back"; // 返回按钮ID
+var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
+var FORM_ID_HIDDEN = "#form_hidden"; // 隐藏表单ID
+var URI_LIST = "/system/user/list"; // 列表页面URI
+var URI_AJAX_LIST = "/system/users"; // 列表页获取列表数据异步URI
+var URI_AJAX_SAVE = "/system/users"; // ajax保存
+var ADD_URI = "/system/user/add"; // 新增页面URI
+var EDIT_URI = "/system/user/edit"; // 编辑页面URI
+var BTN_ADD_ID = "#button_add"; // 增加按钮ID
+var BTN_SAVE_ID = "#button_save"; // 保存按钮ID
+var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 
 //返回列表页
 function back2list() {
@@ -20,11 +20,11 @@ function back2list() {
 function initListPage() {
 	i18n();
 	
-	_initDatagrid({url:URI_AJAX_LIST});
+	initDatagrid({url:URI_AJAX_LIST});
 	
 	// 跳转到新增页面
 	$(BTN_ADD_ID).click(function() {
-		add(null);
+		add();
 	});
 }
 
@@ -75,14 +75,14 @@ function initAddPage() {
 					ajaxLoaded();
 					var code = json.code;
 					if (code == CODE_OK) {
-						showSuccessTips($.i18n.prop("saveSuccessful"));
+						showSuccessTips($.i18n.prop("save.success"));
 					} else {
 						showErrorTips(json.message);
 					}
 				},
 				error : function() {
 					ajaxLoaded();
-					showErrorTips($.i18n .prop("requestFailed"));
+					showErrorTips($.i18n .prop("http.request.failed"));
 				}
 			});
 		}

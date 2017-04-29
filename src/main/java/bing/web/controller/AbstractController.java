@@ -1,10 +1,14 @@
 package bing.web.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
+import bing.constants.GlobalConstants;
 import bing.system.model.SysUser;
 
 /**
@@ -29,8 +33,14 @@ public abstract class AbstractController {
 		return optional;
 	}
 
-	protected void setErrors(BindingResult bindingResult) {
-
+	protected boolean hasErrors(BindingResult bindingResult, Model model) {
+		boolean hasErrors = bindingResult.hasErrors() && !bindingResult.getAllErrors().isEmpty();
+		if (hasErrors) {
+			List<ObjectError> errors = bindingResult.getAllErrors();
+			String message = errors.get(0).getDefaultMessage();
+			model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_MESSAGE, message);
+		}
+		return hasErrors;
 	}
 
 }

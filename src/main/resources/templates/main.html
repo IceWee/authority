@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title th:text="#{system.name}">认证与授权管理系统</title>
-<link rel="stylesheet" type="text/css" href="/js/uimaker/css/base.css" th:href="@{/js/uimaker/css/base.css}" />
-<link rel="stylesheet" type="text/css" href="/js/uimaker/css/platform.css" th:href="@{/js/uimaker/css/platform.css}" />
-<link rel="stylesheet" type="text/css" href="/js/uimaker/easyui/easyui.css" th:href="@{/js/uimaker/easyui/easyui.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/base.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/platform.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/easyui/easyui.css}" />
 </head>
 <body>
 	<div class="container">
@@ -142,7 +142,7 @@
 				</ul>
 			</div>
 			<div id="pf-page">
-				<iframe class="page-iframe" th:src="@{/user/list}" frameborder="no" border="no" height="100%" width="100%" scrolling="auto"></iframe>
+				<iframe class="page-iframe" th:src="@{/system/user/list}" frameborder="no" border="no" height="100%" width="100%" scrolling="auto"></iframe>
 			</div>
 		</div>
 

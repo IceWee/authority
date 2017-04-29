@@ -1,16 +1,14 @@
 // 国际化，如果未制定locale则采用浏览器报告的语言编码
-function i18n(locale) {
+function i18n(locale, name) {
 	var browserLocale = getBrowserLocale("_");
 	locale = arguments[0] ? arguments[0] : browserLocale;
+	name = arguments[1] ? arguments[1] : "i18n";
 	jQuery.i18n.properties({
-	    name: 'i18n',
-	    path: '/i18n/',
-	    mode: 'both',
-	    language: "zh_CN",
-		encoding : locale, // 编码
-	    callback: function() {
-	    	
-	    }
+		path: "/i18n/",
+	    name: name,
+	    mode: "map",
+	    language: locale,
+		encoding : "UTF-8"
 	});
 }
 

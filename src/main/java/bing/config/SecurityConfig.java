@@ -59,25 +59,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService);
 	}
 
+	/**
+	 * 配置公共访问资源路径，以下路径无需登录，不拦截
+	 */
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/i18n/**");
+		web.ignoring().antMatchers(GlobalConstants.PUBLIC_RESOURCE_PATHS);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		LOGGER.info("********************* Spring Security*************************");
+		LOGGER.info("********************* Spring Security *************************");
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
-		http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").failureUrl("/login?error").defaultSuccessUrl("/main").permitAll()
+		http.authorizeRequests().antMatchers("/login").permitAll()
+				// 任何其他的请求都需要授权
+				.anyRequest().authenticated()
+				// 配置登录地址，默认也是/login，登录失败地址、登录成功后跳转到的地址，这几个地址都无需授权即可访问
+				.and().formLogin().loginPage("/login").failureUrl("/login?error").defaultSuccessUrl("/main").permitAll()
 				// 自定义权限源，实现验证码
 				.authenticationDetailsSource(authenticationDetailsSource).and().logout().permitAll()
 				// 开启cookie保存用户数据
-				.and().rememberMe().rememberMeParameter(GlobalConstants.PARAM_REMEMBER_ME).tokenRepository(persistentTokenRepository()).tokenValiditySeconds(86400)
+				.and().rememberMe().rememberMeParameter(GlobalConstants.PARAM_REMEMBER_ME)
+				// 设置cookie存放方案为数据库
+				.tokenRepository(persistentTokenRepository())
 				// 设置cookie有效期
-				.tokenValiditySeconds(60 * 60 * 24 * 7)
+				.tokenValiditySeconds(GlobalConstants.COOKIE_EXPIRE_SECONDS)
 				// 设置cookie的私钥
-				.key("authority_");
+				.key(GlobalConstants.COOKIE_KEY);
 
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 

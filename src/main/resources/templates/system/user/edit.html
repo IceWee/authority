@@ -4,8 +4,8 @@
 <title id="title">编辑用户</title>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/base/user.css}" />
-<script type="text/javascript" th:src="@{/js/base/user.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/system/user.css}" />
+<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
 <script type="text/javascript">
 	$(function() {
 		initEditPage();
@@ -13,13 +13,13 @@
 </script>
 </head>
 <body>
-<form id="pageForm" th:action="@{/users}" method="post">
+<form id="form_default" th:action="@{/users}" method="post">
 <div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
 			<ol class="breadcrumb">
-			  	<li><a href="/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 用户管理</a></li>
+			  	<li><a href="/system/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 用户管理</a></li>
 			  	<li class="active">编辑用户</li>
 			</ol>
 	  	</div>
@@ -79,8 +79,8 @@
 				</div>
 				<div style="margin-bottom: 20px"></div>
 				<div style="text-align:center;padding:5px">
-			    	<a id="btn_save" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">保存</a>
-			    	<a id="btn_back" href="javascript:void(0)" class="easyui-linkbutton">取消</a>
+			    	<a id="button_save" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">保存</a>
+			    	<a id="button_back" href="javascript:void(0)" class="easyui-linkbutton">取消</a>
 			    </div>
 			    <div style="margin-bottom: 20px"></div>
 		    </div>

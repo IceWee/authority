@@ -27,9 +27,14 @@ import bing.web.api.RestResponse;
 import bing.web.controller.AbstractController;
 
 @Controller
+@RequestMapping("/")
 public class SysUserController extends AbstractController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SysUserController.class);
+
+	private static final String LIST = "system/user/list";
+	private static final String ADD = "system/user/add";
+	private static final String EDIT = "system/user/edit";
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -39,9 +44,9 @@ public class SysUserController extends AbstractController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/user/list")
+	@RequestMapping(LIST)
 	public String list() {
-		return "user/list";
+		return LIST;
 	}
 
 	/**
@@ -63,9 +68,9 @@ public class SysUserController extends AbstractController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/user/add")
+	@RequestMapping(ADD)
 	public String add() {
-		return "user/add";
+		return ADD;
 	}
 
 	/**
@@ -73,11 +78,11 @@ public class SysUserController extends AbstractController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/user/edit")
+	@RequestMapping(EDIT)
 	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model) {
 		SysUser sysUser = sysUserService.get(id);
 		model.addAttribute("sysUser", sysUser);
-		return "user/edit";
+		return EDIT;
 	}
 
 	/**

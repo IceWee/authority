@@ -73,10 +73,14 @@ function cloneSelf(id) {
 
 // 使用方法，在html中定义一个提示div，样式采用Bootstrap
 // 显示提示信息，除msg外其他参数都为可选，但必须按顺序传递
-// 举例：提示框id是"myTips"，那么type必须指定
 // msg required
 // type: success/info/warning/danger
+// timeout: 单位是秒
 function showTips(msg, type, timeout, id) {
+	if (msg) {
+		console.log("msg is null, nothing to show...")
+		return;
+	}
 	type = arguments[1] ? arguments[1] : "success";
 	timeout = arguments[2] ? arguments[2] : 0;
 	id = arguments[3] ? "#" + arguments[3] : "#tips";
@@ -112,11 +116,6 @@ function hideTips(id) {
 	$(id).slideUp();
 }
 
-// 清空输入条件
-function resetForm(formId) {
-	$("#" + formId).form("reset");
-}
-
 /* 
  * 初始化easyui datagrid, 依赖_search函数
  * 如果一个面有多个datagrid, 需要传递的参数有: url, tableId, toolbarId, searchFormId, searchBtnId, resetBtnId, tipsId
@@ -127,14 +126,15 @@ function resetForm(formId) {
  * singleSelect, 可选, 默认值: true
  * toolbarId, 可选, 默认值: search_tools
  * pageSize, 可选, 默认值: 10
- * searchFormId, 可选, 默认值: search_form
- * searchBtnId, 可选, 默认值: btn_search
- * resetBtnId, 可选, 默认值: btn_reset
+ * formSearchId, 可选, 默认值: form_search
+ * buttonSearchId, 可选, 默认值: button_search
+ * buttonResetId, 可选, 默认值: button_reset
  * minHeight, 可选, 默认值: 300
  * minWidth, 可选, 默认值: 600
  * tipsId, 可选, 默认值: tips
+ * autoLoad, 可选，默认值: false, 是否自动加载数据
  */
-function _initDatagrid(options) {
+function initDatagrid(options) {
 	if (!options.url) {
 		console.log("查询url为空，数据将不会加载...");
 		return;
@@ -144,12 +144,13 @@ function _initDatagrid(options) {
 	var singleSelect = options.singleSelect ? options.singleSelect : true;
 	var toolbarId = options.toolbarId ? "#" + options.toolbarId : "#search_tools";
 	var pageSize = options.pageSize ? options.pageSize : 10;
-	var searchFormId = options.searchFormId ? "#" + options.searchFormId : "#search_form";
-	var searchBtnId = options.searchBtnId ? "#" + options.searchBtnId : "#btn_search";
-	var resetBtnId = options.resetBtnId ? "#" + options.resetBtnId : "#btn_reset";
+	var formSearchId = options.formSearchId ? "#" + options.formSearchId : "#form_search";
+	var buttonSearchId = options.buttonSearchId ? "#" + options.buttonSearchId : "#button_search";
+	var buttonResetId = options.buttonResetId ? "#" + options.buttonResetId : "#button_reset";
 	var minHeight = options.minHeight ? options.minHeight : 300;
 	var minWidth = options.minWidth ? options.minWidth : 600;
 	var tipsId = options.tipsId ? options.tipsId : "tips";
+	var autoLoad = options.autoLoad ? options.autoLoad : false;
 	$(tableId).datagrid({
 		iconCls : "icon-ok",
 		pageSize : pageSize,
@@ -170,18 +171,18 @@ function _initDatagrid(options) {
 	// 自定义分页
 	$(tableId).datagrid("getPager").pagination({
 		onSelectPage : function() { // 翻页
-			_search(url, tableId, searchFormId, tipsId);
+			doSearch(url, tableId, searchFormId, tipsId);
 		}
 	});
 	
 	// 查询
-	$(searchBtnId).click(function() {
-		_search(url, tableId, searchFormId, tipsId);
+	$(buttonSearchId).click(function() {
+		doSearch(url, tableId, formSearchId, tipsId);
 	});
 	
 	// 表单重置
-	$(resetBtnId).click(function() {
-		$(searchFormId).form("reset");
+	$(buttonResetId).click(function() {
+		$(formSearchId).form("reset");
 	});
 	
 	// 当窗口大小发生变化时，调整DataGrid的大小  
@@ -191,17 +192,17 @@ function _initDatagrid(options) {
 }
 
 // 列表查询
-function _search(url, tableId, searchFormId, tipsId) {
+function doSearch(url, tableId, formSearchId, tipsId) {
 	var RESPONSE_OK = 200;
 	hideTips(tipsId);
-	ajaxLoading($.i18n.prop("loading"));
+	ajaxLoading($.i18n.prop("load.loading"));
 	var pager = $(tableId).datagrid("getPager");
 	var pageNo = pager.pagination("options").pageNumber;
 	if (!pageNo) {
 		pageNo = 1;
 	}
 	var pageSize = pager.pagination("options").pageSize;
-	var data = $(searchFormId).serialize();
+	var data = $(formSearchId).serialize();
 	data = data + "&pageNo=" + pageNo + "&pageSize=" + pageSize + "&timestamp=" + new Date().getTime();
 	$.ajax({
 		type : "GET",
@@ -226,7 +227,7 @@ function _search(url, tableId, searchFormId, tipsId) {
 		},
 		error : function() {
 			ajaxLoaded();
-			showErrorTips($.i18n .prop("requestFailed"), tipsId);
+			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
 		}
 	});
 }

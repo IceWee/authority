@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +40,7 @@ public class LoginController extends AbstractController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout,
-			@RequestParam(value = "expired", required = false) String expired, ModelMap model, HttpSession session) {
+			@RequestParam(value = "expired", required = false) String expired, Model model, HttpSession session) {
 		model.addAttribute("msg", messageSourceService.getMessage("login.label.username"));
 		if (error != null) {
 			model.addAttribute("msg", messageSourceService.getMessage("login.tips.invalid"));
