@@ -62,6 +62,9 @@ CREATE TABLE `sys_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色';
 
+-- 系统管理员角色
+INSERT INTO `sys_role` (`code`, `name`, `remark`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '系统管理员', '系统管理员', 1, now(), 'admin', now(), 'admin');
+
 -- 用户角色关联表
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
@@ -75,6 +78,13 @@ CREATE TABLE `sys_user_role` (
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户角色关联';
+
+-- 系统管理员角色授权
+INSERT INTO `sys_user_role` (`user_id`, `role_id`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) 
+VALUES (
+(select `id` from `sys_user` where `username` = 'admin'), 
+(select `id` from `sys_role` where `code` = 'admin'),  
+1, now(), 'admin', now(), 'admin');
 
 -- 资源表
 DROP TABLE IF EXISTS `sys_resource`;
