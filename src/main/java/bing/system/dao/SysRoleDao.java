@@ -1,19 +1,27 @@
 package bing.system.dao;
 
+import java.util.List;
+
+import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
+import bing.system.vo.SysRoleVO;
 
 public interface SysRoleDao {
 
 	int deleteByPrimaryKey(Integer id);
 
-	int insert(SysRole record);
+	int insert(SysRole entity);
 
-	int insertSelective(SysRole record);
+	int insertSelective(SysRole entity);
 
 	SysRole selectByPrimaryKey(Integer id);
 
-	int updateByPrimaryKeySelective(SysRole record);
+	int updateByPrimaryKeySelective(SysRole entity);
 
-	int updateByPrimaryKey(SysRole record);
+	int updateByPrimaryKey(SysRole entity);
+
+	SysRole getByCode(String code);
+
+	List<SysRoleVO> listByCondition(SysRoleCondition condition);
 
 }

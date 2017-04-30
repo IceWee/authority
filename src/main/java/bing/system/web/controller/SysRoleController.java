@@ -25,6 +25,7 @@ import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
 import bing.system.service.SysRoleService;
+import bing.system.vo.SysRoleVO;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
@@ -56,9 +57,9 @@ public class SysRoleController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> roles(SysRoleCondition condition) {
-		RestResponse<Object> response = new RestResponse<>();
-		GenericPage<SysRole> page = sysRoleService.listByPage(condition);
+	public RestResponse<GenericPage<SysRoleVO>> roles(SysRoleCondition condition) {
+		RestResponse<GenericPage<SysRoleVO>> response = new RestResponse<>();
+		GenericPage<SysRoleVO> page = sysRoleService.listByPage(condition);
 		response.setData(page);
 		return response;
 	}

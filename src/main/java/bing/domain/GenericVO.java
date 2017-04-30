@@ -1,38 +1,34 @@
-package bing.system.vo;
+package bing.domain;
 
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import bing.domain.GenericObject;
+import bing.constant.StatusEnum;
 
-public class UserVO extends GenericObject {
+public class GenericVO extends GenericObject {
 
-	private static final long serialVersionUID = -7983749899316231902L;
+	protected static final long serialVersionUID = -6547881868397315449L;
 
-	private Integer id;
+	protected Integer id;
 
-	private String name;
+	protected Integer status;
 
-	private String mobile;
+	protected String statusText;
 
-	private Integer status;
+	protected String createUser;
 
-	private String statusText;
+	protected Date createDate;
 
-	private String createUser;
+	protected String createDateText;
 
-	private Date createDate;
+	protected String updateUser;
 
-	private String createDateText;
+	protected Date updateDate;
 
-	private String updateUser;
+	protected String updateDateText;
 
-	private Date updateDate;
-
-	private String updateDateText;
-
-	public UserVO() {
+	public GenericVO() {
 		super();
 	}
 
@@ -44,22 +40,6 @@ public class UserVO extends GenericObject {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
 	public Integer getStatus() {
 		return status;
 	}
@@ -69,6 +49,13 @@ public class UserVO extends GenericObject {
 	}
 
 	public String getStatusText() {
+		if (StatusEnum.NORMAL.ordinal() == status) {
+			statusText = "正常";
+		} else if (StatusEnum.LOCKED.ordinal() == status) {
+			statusText = "锁定";
+		} else if (StatusEnum.DELETED.ordinal() == status) {
+			statusText = "删除";
+		}
 		return statusText;
 	}
 

@@ -14,27 +14,32 @@
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
+	<resultMap id="VOResultMap" type="bing.system.vo.SysUserVO">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="username" jdbcType="VARCHAR" property="username" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
+		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+	</resultMap>
 	<sql id="Base_Column_List">
-		id, username, name, password, mobile, status, hidden,
-		create_date, create_user, update_date,
-		update_user
+		id, username, name, password, mobile, status, hidden, create_date, create_user, update_date, update_user
 	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from
-		sys_user
-		where id = #{id,jdbcType=INTEGER}
+		delete from sys_user where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="bing.system.model.SysUser">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-			SELECT
-			LAST_INSERT_ID()
+			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into sys_user (username, name, password, mobile, status, hidden, create_date, create_user, update_date, update_user)
 		values
@@ -46,8 +51,7 @@
 	</insert>
 	<insert id="insertSelective" parameterType="bing.system.model.SysUser">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-			SELECT
-			LAST_INSERT_ID()
+			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into sys_user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -165,15 +169,13 @@
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<select id="getByUsername" parameterType="java.lang.String"
-		resultMap="BaseResultMap">
+	<select id="getByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user
 		where username = #{username,jdbcType=VARCHAR}
 	</select>
-	<select id="listByCondition" parameterType="bing.system.condition.SysUserCondition"
-		resultMap="BaseResultMap">
+	<select id="listByCondition" parameterType="bing.system.condition.SysUserCondition" resultMap="VOResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user

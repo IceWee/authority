@@ -21,6 +21,7 @@ import bing.system.condition.SysUserCondition;
 import bing.system.dao.SysUserDao;
 import bing.system.exception.UserExceptionCodes;
 import bing.system.model.SysUser;
+import bing.system.vo.SysUserVO;
 import bing.util.PasswordUtils;
 
 @Service("sysUserService")
@@ -43,41 +44,41 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public GenericPage<SysUser> listByPage(SysUserCondition sysUserCondition) {
-		Long pageNo = sysUserCondition.getPageNo();
-		PageHelper.startPage(pageNo.intValue(), sysUserCondition.getPageSize().intValue());
-		List<SysUser> list = sysUserDao.listByCondition(sysUserCondition);
-		PageInfo<SysUser> pageInfo = new PageInfo<>(list);
+	public GenericPage<SysUserVO> listByPage(SysUserCondition condition) {
+		Long pageNo = condition.getPageNo();
+		PageHelper.startPage(pageNo.intValue(), condition.getPageSize().intValue());
+		List<SysUserVO> list = sysUserDao.listByCondition(condition);
+		PageInfo<SysUserVO> pageInfo = new PageInfo<>(list);
 		return new GenericPage<>(pageNo, pageInfo.getTotal(), list);
 	}
 
 	@Override
-	public void save(SysUser sysUser) {
-		sysUser.setId(null);
-		SysUser persistUser = sysUserDao.getByUsername(sysUser.getUsername());
+	public void save(SysUser entity) {
+		entity.setId(null);
+		SysUser persistUser = sysUserDao.getByUsername(entity.getUsername());
 		if (persistUser != null) {
 			throw new BusinessException(UserExceptionCodes.USERNAME_REGISTERED);
 		}
-		sysUser.setCreateDate(new Date());
-		sysUser.setUpdateDate(new Date());
+		entity.setCreateDate(new Date());
+		entity.setUpdateDate(new Date());
 		// 密码加密保存
-		String rawPassword = sysUser.getPassword();
+		String rawPassword = entity.getPassword();
 		String encryptPasswd = PasswordUtils.encrypt(rawPassword);
-		sysUser.setPassword(encryptPasswd);
-		sysUserDao.insert(sysUser);
+		entity.setPassword(encryptPasswd);
+		sysUserDao.insert(entity);
 	}
 
 	@Override
-	public void update(SysUser sysUser) {
-		SysUser persistUser = sysUserDao.selectByPrimaryKey(sysUser.getId());
+	public void update(SysUser entity) {
+		SysUser persistUser = sysUserDao.selectByPrimaryKey(entity.getId());
 		String origionUsername = persistUser.getUsername();
-		String newUsername = sysUser.getUsername();
+		String newUsername = entity.getUsername();
 		if (!StringUtils.equals(origionUsername, newUsername)) {
 			throw new BusinessException(UserExceptionCodes.USERNAME_FORBIDDEN_MODIFY);
 		}
-		sysUser.setCreateDate(new Date());
-		sysUser.setUpdateDate(new Date());
-		sysUserDao.updateByPrimaryKeySelective(sysUser);
+		entity.setCreateDate(new Date());
+		entity.setUpdateDate(new Date());
+		sysUserDao.updateByPrimaryKeySelective(entity);
 	}
 
 	@Override
@@ -87,12 +88,12 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public void deleteById(Integer id, String username) {
-		SysUser sysUser = new SysUser();
-		sysUser.setId(id);
-		sysUser.setStatus(StatusEnum.DELETED.ordinal());
-		sysUser.setUpdateUser(username);
-		sysUser.setUpdateDate(new Date());
-		sysUserDao.updateByPrimaryKeySelective(sysUser);
+		SysUser entity = new SysUser();
+		entity.setId(id);
+		entity.setStatus(StatusEnum.DELETED.ordinal());
+		entity.setUpdateUser(username);
+		entity.setUpdateDate(new Date());
+		sysUserDao.updateByPrimaryKeySelective(entity);
 	}
 
 }

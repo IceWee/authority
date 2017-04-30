@@ -24,6 +24,7 @@ import bing.domain.GenericPage;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
 import bing.system.service.SysUserService;
+import bing.system.vo.SysUserVO;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
@@ -55,9 +56,9 @@ public class SysUserController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> users(SysUserCondition condition) {
-		RestResponse<Object> response = new RestResponse<>();
-		GenericPage<SysUser> page = sysUserService.listByPage(condition);
+	public RestResponse<GenericPage<SysUserVO>> users(SysUserCondition condition) {
+		RestResponse<GenericPage<SysUserVO>> response = new RestResponse<>();
+		GenericPage<SysUserVO> page = sysUserService.listByPage(condition);
 		response.setData(page);
 		return response;
 	}

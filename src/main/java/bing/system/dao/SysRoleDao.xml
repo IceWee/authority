@@ -12,20 +12,28 @@
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
+	<resultMap id="VOResultMap" type="bing.system.vo.SysRoleVO">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="code" jdbcType="VARCHAR" property="code" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
+		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+	</resultMap>
 	<sql id="Base_Column_List">
-		id, code, name, remark, status, create_date, create_user, update_date,
-		update_user
+		id, code, name, remark, status, create_date, create_user, update_date, update_user
 	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_role
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from sys_role
-		where id = #{id,jdbcType=INTEGER}
+		delete from sys_role where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="bing.system.model.SysRole">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -139,4 +147,25 @@
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	<select id="getByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where code = #{code,jdbcType=VARCHAR}
+	</select>
+	<select id="listByCondition" parameterType="bing.system.condition.SysRoleCondition" resultMap="VOResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where status != 2
+		<if test="code != null and code != ''">
+			AND code like concat(#{code,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="name != null and name != ''">
+			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="status != null">
+			AND status = #{status,jdbcType=INTEGER}
+		</if>
+	</select>
 </mapper>

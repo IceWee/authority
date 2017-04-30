@@ -27,33 +27,26 @@
 		</javaTypeResolver>
 
 		<!-- generate Model -->
-		<javaModelGenerator targetPackage="bing.model"
+		<javaModelGenerator targetPackage="bing.modules.modulename.model"
 			targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
-			<property name="rootClass" value="bing.domain.BaseDomain" />
+			<property name="rootClass" value="bing.domain.GenericObject" />
 		</javaModelGenerator>
 
 		<!-- generate xml -->
-		<sqlMapGenerator targetPackage="bing.dao" targetProject="./src/main/java">
+		<sqlMapGenerator targetPackage="bing.modules.modulename.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- generate Mapper -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="bing.dao" targetProject="./src/main/java">
+			targetPackage="bing.modules.modulename.dao" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<!-- <property name="rootInterface" value="bing.BaseDao" /> -->
 		</javaClientGenerator>
 
-		<table tableName="sys_resource_category" domainObjectName="SysResourceCategory"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table tableName="sys_role_resource" domainObjectName="SysRoleResource"
+		<table tableName="TABLE_NAME" domainObjectName="ModelName"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

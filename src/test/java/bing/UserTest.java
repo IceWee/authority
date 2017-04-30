@@ -10,6 +10,7 @@ import bing.system.condition.SysUserCondition;
 import bing.system.dao.SysUserDao;
 import bing.system.model.SysUser;
 import bing.system.service.SysUserService;
+import bing.system.vo.SysUserVO;
 import bing.util.PasswordUtils;
 
 public class UserTest extends BaseTest {
@@ -38,7 +39,7 @@ public class UserTest extends BaseTest {
 	public void testListByName() {
 		SysUserCondition sysUserCondition = new SysUserCondition();
 		sysUserCondition.setUsername("a");
-		GenericPage<SysUser> page = sysUserService.listByPage(sysUserCondition);
+		GenericPage<SysUserVO> page = sysUserService.listByPage(sysUserCondition);
 		LOGGER.info("Pages: {}", page.getTotalPages());
 		LOGGER.info("Rows: {}", page.getTotalRows());
 	}

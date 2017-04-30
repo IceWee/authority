@@ -7,30 +7,25 @@ import org.springframework.cache.annotation.Cacheable;
 import bing.constant.EhCacheNames;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
+import bing.system.vo.SysUserVO;
 
 public interface SysUserDao {
 
 	int deleteByPrimaryKey(Integer id);
 
-	int insert(SysUser record);
+	int insert(SysUser entity);
 
-	int insertSelective(SysUser record);
+	int insertSelective(SysUser entity);
 
 	SysUser selectByPrimaryKey(Integer id);
 
-	int updateByPrimaryKeySelective(SysUser record);
+	int updateByPrimaryKeySelective(SysUser entity);
 
-	int updateByPrimaryKey(SysUser record);
+	int updateByPrimaryKey(SysUser entity);
 
 	@Cacheable(value = EhCacheNames.USER_CACHE)
 	SysUser getByUsername(String username);
 
-	/**
-	 * 用户列表
-	 * 
-	 * @param sysUserCondition
-	 * @return
-	 */
-	List<SysUser> listByCondition(SysUserCondition sysUserCondition);
+	List<SysUserVO> listByCondition(SysUserCondition condition);
 
 }

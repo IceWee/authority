@@ -10,12 +10,12 @@ public class UserExceptionCodes extends BusinessExceptionCodes {
 	private static final String PREFIX = "USER_";
 
 	/**
-	 * 用户名已被注册
+	 * 账号已被注册
 	 */
 	public static final String USERNAME_REGISTERED = PREFIX + "001";
 
 	/**
-	 * 用户名禁止修改
+	 * 账号禁止修改
 	 */
 	public static final String USERNAME_FORBIDDEN_MODIFY = PREFIX + "002";
 

@@ -1,16 +1,12 @@
 package bing.domain;
 
-import bing.domain.GenericCondition;
-import bing.domain.GenericObject;
-import bing.domain.GenericPage;
+public interface GenericService<T extends GenericObject, V extends GenericObject, E extends GenericCondition> {
 
-public interface GenericService<T extends GenericObject, E extends GenericCondition> {
+	GenericPage<V> listByPage(E condition);
 
-	GenericPage<T> listByPage(E condition);
+	void save(T entity);
 
-	void save(T model);
-
-	void update(T model);
+	void update(T entity);
 
 	T getById(Integer id);
 
