@@ -36,7 +36,7 @@ CREATE TABLE `sys_user` (
   `password` varchar(256) DEFAULT NULL COMMENT '密码',
   `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
-  `hidden` int(255) DEFAULT NULL COMMENT '隐藏（是1否0）',
+  `hidden` int(11) DEFAULT NULL COMMENT '隐藏（是1否0）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
   `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
@@ -55,6 +55,7 @@ CREATE TABLE `sys_role` (
   `name` varchar(32) DEFAULT NULL COMMENT '角色名称',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
+  `hidden` int(11) DEFAULT NULL COMMENT '隐藏（是1否0）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
   `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
@@ -63,7 +64,7 @@ CREATE TABLE `sys_role` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- 系统管理员角色
-INSERT INTO `sys_role` (`code`, `name`, `remark`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '系统管理员', '系统管理员', 1, now(), 'admin', now(), 'admin');
+INSERT INTO `sys_role` (`code`, `name`, `remark`, `status`, `hidden`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '系统管理员', '系统管理员', 0, 1, now(), 'admin', now(), 'admin');
 
 -- 用户角色关联表
 DROP TABLE IF EXISTS `sys_user_role`;

@@ -7,6 +7,7 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="hidden" jdbcType="INTEGER" property="hidden" />
 		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
 		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
@@ -24,7 +25,7 @@
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, code, name, remark, status, create_date, create_user, update_date, update_user
+		id, code, name, remark, status, hidden, create_date, create_user, update_date, update_user
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
@@ -40,11 +41,11 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into sys_role (code, name, remark,
-		status, create_date, create_user,
+		status, hidden, create_date, create_user,
 		update_date, update_user)
 		values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
 		#{remark,jdbcType=VARCHAR},
-		#{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{hidden,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
 		#{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="bing.system.model.SysRole">
@@ -64,6 +65,9 @@
 			</if>
 			<if test="status != null">
 				status,
+			</if>
+			<if test="hidden != null">
+				hidden,
 			</if>
 			<if test="createDate != null">
 				create_date,
@@ -90,6 +94,9 @@
 			</if>
 			<if test="status != null">
 				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="hidden != null">
+				#{hidden,jdbcType=INTEGER},
 			</if>
 			<if test="createDate != null">
 				#{createDate,jdbcType=TIMESTAMP},
@@ -120,6 +127,9 @@
 			<if test="status != null">
 				status = #{status,jdbcType=INTEGER},
 			</if>
+			<if test="hidden != null">
+				hidden = #{hidden,jdbcType=INTEGER},
+			</if>
 			<if test="createDate != null">
 				create_date = #{createDate,jdbcType=TIMESTAMP},
 			</if>
@@ -141,6 +151,7 @@
 		name = #{name,jdbcType=VARCHAR},
 		remark = #{remark,jdbcType=VARCHAR},
 		status = #{status,jdbcType=INTEGER},
+		hidden = #{hidden,jdbcType=INTEGER},
 		create_date = #{createDate,jdbcType=TIMESTAMP},
 		create_user = #{createUser,jdbcType=VARCHAR},
 		update_date = #{updateDate,jdbcType=TIMESTAMP},
@@ -157,7 +168,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from sys_role
-		where status != 2
+		where hidden = 0 and status != 2
 		<if test="code != null and code != ''">
 			AND code like concat(#{code,jdbcType=VARCHAR}, '%')
 		</if>

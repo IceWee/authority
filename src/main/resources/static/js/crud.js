@@ -95,14 +95,10 @@ function initAddPage(error, message) {
 function initEditPage(error, message) {
 	i18n();
 	
-	readonlyColor("username");
-	readonlyColor("createUser");
-	readonlyColor("createDate");
-	
 	showErrorOrMessage(error, message);
 	
 	// 保存
-	$(BTN_SAVE_ID).click(function() {
+	$(BTN_UPDATE_ID).click(function() {
 		if ($(FORM_ID_DETAIL).form("validate")) {
 			ajaxLoading($.i18n.prop("update.updating"));
 			$(FORM_ID_DETAIL).attr("action", URI_UPDATE);

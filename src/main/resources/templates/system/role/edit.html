@@ -5,29 +5,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
-<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/role.js}"></script>
 <script type="text/javascript" th:src="@{/js/crud.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initAddPage(error, message);
+		initEditPage(error, message);
+		initEditPageExt();
 	});
 /*]]>*/
 </script>
 </head>
 <body>
 <form id="form_default" method="post">
-<input type="hidden" th:value="${session.currentUser.username}" name="createUser"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
+<input type="hidden" th:value="${bean.id}" name="id"></input>
 <div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
 			<ol class="breadcrumb">
-			  	<li><a href="/system/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <span th:text="#{user.manage}">用户管理</span></a></li>
-			  	<li class="active" th:text="#{user.add}">新增用户</li>
+			  	<li><a href="/system/role/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <span th:text="#{role.manage}">角色管理</span></a></li>
+			  	<li class="active" th:text="#{role.add}">编辑角色</li>
 			</ol>
 	  	</div>
 	  	<div class="panel-body">
@@ -38,13 +39,13 @@
 	    		<div style="margin-top: 20px"></div>
 		    	<div class="row">
 					<div class="col-md-2 text-right">
-						<label th:text="#{username}">账号</label>
+						<label th:text="#{code}">编码</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.username}" type="text" name="username" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.code}" type="text" id="code" name="code" readonly="readonly" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label th:text="#{surname}">姓名</label>
+						<label th:text="#{name}">名称</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${bean.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
@@ -53,38 +54,23 @@
 				<div style="margin-bottom: 20px"></div>
 				<div class="row">
 					<div class="col-md-2 text-right">
-						<label th:text="#{password}">密码</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" type="password" id="password" name="password" data-options="required:true,validType:['minLength[6]','maxLength[32]']"></input>
-					</div>
-					<div class="col-md-2 text-right">
-						<label th:text="#{repassword}">重复密码</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" type="password" name="rpassword" data-options="required:true,validType:['equals[\'#password\']']"></input>
-					</div>
-				</div>
-				<div style="margin-bottom: 20px"></div>
-				<div class="row">
-					<div class="col-md-2 text-right">
-						<label th:text="#{mobile}">手机</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
-					</div>
-					<div class="col-md-2 text-right">
 						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<select class="easyui-combobox select-default" th:value="${bean.status}"  data-options="editable:false" name="status">
-							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
+							<option th:each="status : ${statusList}" th:selected="${status.value eq bean.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
+					</div>
+					<div class="col-md-2 text-right">
+						<label th:text="#{remark}">备注</label>
+					</div>
+					<div class="col-md-4 text-left">
+		    			<input class="easyui-textbox input-default" th:value="${bean.remark}" type="text" name="remark" data-options="multiline:true"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
 				<div style="text-align:center;padding:5px">
-			    	<a id="button_save" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true" th:text="#{save}">保存</a>
+			    	<a id="button_update" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true" th:text="#{save}">保存</a>
 			    	<a id="button_back" href="javascript:void(0)" class="easyui-linkbutton" th:text="#{cancel}">取消</a>
 			    </div>
 			    <div style="margin-bottom: 20px"></div>

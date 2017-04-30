@@ -3,6 +3,7 @@ package bing.system.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import bing.constant.HiddenEnum;
 import bing.constant.StatusEnum;
 import bing.domain.GenericObject;
 
@@ -19,6 +20,8 @@ public class SysRole extends GenericObject implements Serializable {
 	private String remark;
 
 	private Integer status = StatusEnum.NORMAL.ordinal();
+
+	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
 
 	private Date createDate;
 
@@ -66,6 +69,14 @@ public class SysRole extends GenericObject implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(Integer hidden) {
+		this.hidden = hidden;
 	}
 
 	public Date getCreateDate() {

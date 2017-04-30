@@ -72,14 +72,13 @@ public class SysRoleController extends GenericController {
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String save(@Validated(CrudGroups.Create.class) SysRole entity, BindingResult bindingResult, Model model) {
+		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
-			model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 			return ADD;
 		}
 		try {
 			sysRoleService.save(entity);
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
 			return ADD;
@@ -109,14 +108,13 @@ public class SysRoleController extends GenericController {
 	 */
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String update(@Validated SysRole entity, BindingResult bindingResult, Model model) {
+		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
-			model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 			return EDIT;
 		}
 		try {
 			sysRoleService.update(entity);
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
 			return EDIT;
@@ -135,7 +133,6 @@ public class SysRoleController extends GenericController {
 			}
 			sysRoleService.deleteById(id, username);
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
 		}

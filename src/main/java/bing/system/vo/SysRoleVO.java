@@ -8,7 +8,9 @@ public class SysRoleVO extends GenericVO {
 
 	private String code;
 
-	private String mobile;
+	private String name;
+
+	private String remark;
 
 	public SysRoleVO() {
 		super();
@@ -22,12 +24,20 @@ public class SysRoleVO extends GenericVO {
 		this.code = code;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getName() {
+		return name;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

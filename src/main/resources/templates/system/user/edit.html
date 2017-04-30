@@ -4,7 +4,7 @@
 <title th:text="#{system.name}">认证与授权管理系统</title>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/system/user.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
 <script type="text/javascript" th:src="@{/js/system/user.js}"></script>
 <script type="text/javascript" th:src="@{/js/crud.js}"></script>
 <script th:inline="javascript">
@@ -13,6 +13,7 @@
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
 		initEditPage(error, message);
+		initEditPageExt();
 	});
 /*]]>*/
 </script>
@@ -44,7 +45,7 @@
 		    			<input class="easyui-textbox input-default" th:value="${bean.username}" type="text" id="username" name="username" readonly="readonly"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label th:text="#{name}">姓名</label>
+						<label th:text="#{surname}">姓名</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${bean.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
@@ -84,7 +85,7 @@
 				</div>
 				<div style="margin-bottom: 20px"></div>
 				<div style="text-align:center;padding:5px">
-			    	<a id="button_save" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true" th:text="#{save}">保存</a>
+			    	<a id="button_update" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true" th:text="#{save}">保存</a>
 			    	<a id="button_back" href="javascript:void(0)" class="easyui-linkbutton" th:text="#{cancel}">取消</a>
 			    </div>
 			    <div style="margin-bottom: 20px"></div>

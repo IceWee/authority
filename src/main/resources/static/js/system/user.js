@@ -9,5 +9,12 @@ var URI_UPDATE = "/system/user/update"; // 更新URI
 var URI_DELETE = "/system/user/delete"; // 删除URI
 var BTN_ADD_ID = "#button_add"; // 增加按钮ID
 var BTN_SAVE_ID = "#button_save"; // 保存按钮ID
+var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
+
+function initEditPageExt() {
+	readonlyColor("username");
+	readonlyColor("createUser");
+	readonlyColor("createDate");
+}
