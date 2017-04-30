@@ -3,6 +3,8 @@ package bing.system.vo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import bing.domain.GenericVO;
 
 public class SysResourceCategoryVO extends GenericVO {
@@ -11,7 +13,10 @@ public class SysResourceCategoryVO extends GenericVO {
 
 	private Integer parentId;
 
+	@JsonProperty("text")
 	private String name;
+
+	private String remark;
 
 	private List<SysResourceCategoryVO> children = new ArrayList<>();
 
@@ -45,6 +50,14 @@ public class SysResourceCategoryVO extends GenericVO {
 
 	public void addChild(SysResourceCategoryVO child) {
 		children.add(child);
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

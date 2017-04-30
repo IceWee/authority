@@ -1,10 +1,10 @@
 package bing.system.model;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import bing.constant.HiddenEnum;
-import bing.constant.StatusEnum;
 import bing.domain.GenericObject;
 
 public class SysRole extends GenericObject implements Serializable {
@@ -13,23 +13,15 @@ public class SysRole extends GenericObject implements Serializable {
 
 	private Integer id;
 
+	@NotBlank(message = "{code.required}")
 	private String code;
 
+	@NotBlank(message = "{name.required}")
 	private String name;
 
 	private String remark;
 
-	private Integer status = StatusEnum.NORMAL.ordinal();
-
 	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
-
-	private Date createDate;
-
-	private String createUser;
-
-	private Date updateDate;
-
-	private String updateUser;
 
 	public Integer getId() {
 		return id;
@@ -63,14 +55,6 @@ public class SysRole extends GenericObject implements Serializable {
 		this.remark = remark == null ? null : remark.trim();
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
 	public Integer getHidden() {
 		return hidden;
 	}
@@ -79,35 +63,4 @@ public class SysRole extends GenericObject implements Serializable {
 		this.hidden = hidden;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public String getCreateUser() {
-		return createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser == null ? null : createUser.trim();
-	}
-
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public String getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser == null ? null : updateUser.trim();
-	}
 }

@@ -182,29 +182,14 @@
 		<include refid="Base_Column_List" />
 		from sys_resource
 		where status != 2
-		<if test="catetoryId != null">
-			AND category_id = #{catetoryId,jdbcType=INTEGER}
+		<if test="categoryId != null">
+			AND category_id = #{categoryId,jdbcType=INTEGER}
 		</if>
 		<if test="name != null and name != ''">
 			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="type != null">
 			AND type = #{type,jdbcType=INTEGER}
-		</if>
-		<if test="status != null">
-			AND status = #{status,jdbcType=INTEGER}
-		</if>
-	</select>
-	<select id="listByCondition" parameterType="bing.system.condition.SysRoleCondition" resultMap="VOResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from sys_role
-		where hidden = 0 and status != 2
-		<if test="code != null and code != ''">
-			AND code like concat(#{code,jdbcType=VARCHAR}, '%')
-		</if>
-		<if test="name != null and name != ''">
-			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="status != null">
 			AND status = #{status,jdbcType=INTEGER}

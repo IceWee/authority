@@ -1,13 +1,8 @@
 package bing.system.model;
 
-import java.util.Date;
-
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import bing.constant.HiddenEnum;
 import bing.constant.StatusEnum;
@@ -19,27 +14,13 @@ public class SysUser extends CustomUserDetails {
 
 	private Integer id;
 
-	@NotBlank(message = "{required.name}")
+	@NotBlank(message = "{surname.required}")
 	private String name;
 
 	@Pattern(regexp = "^$|^(13|14|15|17|18)[0-9]{9}$", message = "{mobile.illegal}")
 	private String mobile;
 
-	private Integer status = StatusEnum.NORMAL.ordinal();
-
 	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
-
-	private String createUser;
-
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date createDate;
-
-	private String updateUser;
-
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date updateDate;
 
 	public SysUser() {
 		super();
@@ -73,52 +54,12 @@ public class SysUser extends CustomUserDetails {
 		this.mobile = mobile;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
 	public Integer getHidden() {
 		return hidden;
 	}
 
 	public void setHidden(Integer hidden) {
 		this.hidden = hidden;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public String getCreateUser() {
-		return createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-
-	public String getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
 	}
 
 	@Override

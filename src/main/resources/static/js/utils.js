@@ -129,10 +129,11 @@ function hideTips(id) {
  * formSearchId, 可选, 默认值: form_search
  * buttonSearchId, 可选, 默认值: button_search
  * buttonResetId, 可选, 默认值: button_reset
- * minHeight, 可选, 默认值: 300
- * minWidth, 可选, 默认值: 600
+ * minHeight, 可选, 默认值: 500
+ * minWidth, 可选, 默认值: 400
  * tipsId, 可选, 默认值: tips
  * autoLoad, 可选，默认值: false, 是否自动加载数据
+ * autoResize, 可选，默认值: true, 是否自动调整大小
  */
 function initDatagrid(options) {
 	if (!options.url) {
@@ -141,17 +142,18 @@ function initDatagrid(options) {
 	}
 	var url = options.url;
 	var tableId = options.tableId ? "#" + options.tableId : "#datagrid";
-	var singleSelect = options.singleSelect ? options.singleSelect : true;
+	var singleSelect = options.singleSelect != undefined ? options.singleSelect : true;
 	var toolbarId = options.toolbarId ? "#" + options.toolbarId : "#search_tools";
 	var pageSize = options.pageSize ? options.pageSize : 10;
 	var formSearchId = options.formSearchId ? "#" + options.formSearchId : "#form_search";
 	var buttonSearchId = options.buttonSearchId ? "#" + options.buttonSearchId : "#button_search";
 	var buttonResetId = options.buttonResetId ? "#" + options.buttonResetId : "#button_reset";
-	var minHeight = options.minHeight ? options.minHeight : 300;
-	var minWidth = options.minWidth ? options.minWidth : 600;
+	var minHeight = options.minHeight ? options.minHeight : 500;
+	var minWidth = options.minWidth ? options.minWidth : 400;
 	var tipsId = options.tipsId ? options.tipsId : "tips";
-	var autoLoad = options.autoLoad ? options.autoLoad : false;
+	var autoLoad = options.autoLoad != undefined ? options.autoLoad : false;
 	var rowStyler = options.rowStyler ? options.rowStyler : function(){return "";};
+	var autoResize = options.autoResize != undefined ? options.autoResize : true;
 	$(tableId).datagrid({
 		iconCls : "icon-ok",
 		pageSize : pageSize,
@@ -192,10 +194,12 @@ function initDatagrid(options) {
 		$(formSearchId).form("reset");
 	});
 	
-	// 当窗口大小发生变化时，调整DataGrid的大小  
-    $(window).resize(function() {  
-        $(tableId).resizeDataGrid(0, 0, minHeight, minWidth);  
-    }); 
+	// 当窗口大小发生变化时，调整DataGrid的大小 
+	if (autoResize) {
+		$(window).resize(function() {  
+			$(tableId).resizeDataGrid(0, 0, minHeight, minWidth);  
+		}); 
+	}
 }
 
 // 列表查询

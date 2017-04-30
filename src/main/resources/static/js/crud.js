@@ -39,10 +39,10 @@ function showErrorOrMessage(error, message) {
 
 /*************************** list begin *****************************/
 // 初始化列表页面
-function initListPage(error, message) {
+function initListPage(error, message, autoResize) {
 	i18n();
 	
-	initDatagrid({url:URI_AJAX_LIST,autoLoad:true,rowStyler:statusRowStyler});
+	initDatagrid({url:URI_AJAX_LIST,autoLoad:true,rowStyler:statusRowStyler,autoResize:autoResize});
 	
 	showErrorOrMessage(error, message);
 	

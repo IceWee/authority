@@ -33,8 +33,8 @@
 					<thead>
 						<tr>
 							<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtml">操作</th>
-							<th th:text="#{code}" data-options="field:'code',width:20">编码</th>
 							<th th:text="#{name}" data-options="field:'name',width:10">名称</th>
+							<th th:text="#{type}" data-options="field:'typeText',width:20">类型</th>
 							<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
 							<th th:text="#{create.date}" data-options="field:'createDateText',width:20">创建日期</th>
 							<th th:text="#{create.user}" data-options="field:'createUser',width:20">创建人</th>
@@ -47,18 +47,18 @@
 				<div id="search_tools" style="padding:0 25px;">
 					<div class="conditions">
 					<form action="" method="post" id="form_search">
-						<label id="label_code">编码</label>
+						<label th:text="#{code}">编码</label>
 						<input name="code" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-						<label id="label_name">名称</label>
+						<label th:text="#{name}">名称</label>
 						<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-						<label id="label_status" >状态</label>
+						<label th:text="#{status}">状态</label>
 						<select class="easyui-combobox" data-options="editable:false" name="status" style="height:25px;width:200px">
 							<option value="" selected>全部</option>
 							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
 						</select>
-					    <a id="button_search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
-					    <a id="button_reset" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
-				        <a id="button_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">新增</a>
+					    <a id="button_search" th:text="#{search}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
+					    <a id="button_reset" th:text="#{reset}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+				        <a id="button_add" th:text="#{add}" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">新增</a>
 					</form>
 					</div>
 				</div>

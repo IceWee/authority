@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
-import bing.domain.CrudGroups;
 import bing.domain.GenericPage;
 import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
@@ -71,7 +70,7 @@ public class SysRoleController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated(CrudGroups.Create.class) SysRole entity, BindingResult bindingResult, Model model) {
+	public String save(@Validated SysRole entity, BindingResult bindingResult, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
@@ -98,14 +97,6 @@ public class SysRoleController extends GenericController {
 		return EDIT;
 	}
 
-	/**
-	 * 更新角色
-	 * 
-	 * @param entity
-	 * @param bindingResult
-	 * @param model
-	 * @return
-	 */
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String update(@Validated SysRole entity, BindingResult bindingResult, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);

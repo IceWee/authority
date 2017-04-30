@@ -152,9 +152,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from sys_resource_category where status != 2
-		<if test="parentId != null">
-			AND parent_id = #{parentId,jdbcType=INTEGER}
-		</if>
+		and parent_id = #{parentId,jdbcType=INTEGER}
 	</select>
 	<select id="listAll" resultMap="VOResultMap">
 		select

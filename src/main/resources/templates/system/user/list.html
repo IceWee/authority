@@ -48,20 +48,20 @@
 				<div id="search_tools" style="padding:0 25px;">
 					<div class="conditions">
 					<form action="" method="post" id="form_search">
-						<label id="label_username">账号</label>
+						<label th:text="#{username}">账号</label>
 						<input name="username" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-						<label id="label_name">用户名</label>
+						<label th:text="#{surname}">姓名</label>
 						<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-						<label id="label_mobile">手机号</label>
+						<label th:text="#{mobile}">手机号</label>
 						<input name="mobile" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-						<label id="label_status" >状态</label>
+						<label th:text="#{status}">状态</label>
 						<select class="easyui-combobox" data-options="editable:false" name="status" style="height:25px;width:200px">
 							<option value="" selected>全部</option>
 							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
 						</select>
-					    <a id="button_search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
-					    <a id="button_reset" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
-				        <a id="button_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">新增</a>
+					    <a id="button_search" th:text="#{search}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
+					    <a id="button_reset" th:text="#{reset}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+				        <a id="button_add" th:text="#{add}" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">新增</a>
 					</form>
 					</div>
 				</div>
