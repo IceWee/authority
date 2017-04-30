@@ -151,6 +151,7 @@ function initDatagrid(options) {
 	var minWidth = options.minWidth ? options.minWidth : 600;
 	var tipsId = options.tipsId ? options.tipsId : "tips";
 	var autoLoad = options.autoLoad ? options.autoLoad : false;
+	var rowStyler = options.rowStyler ? options.rowStyler : function(){return "";};
 	$(tableId).datagrid({
 		iconCls : "icon-ok",
 		pageSize : pageSize,
@@ -164,7 +165,8 @@ function initDatagrid(options) {
 		remoteSort : true,
 		pagination : true, // 分页 
 		rownumbers : true,
-		fitColumns : true // 自适应宽度
+		fitColumns : true, // 自适应宽度
+		rowStyler : rowStyler
 	// 行数  
 	});
 	
