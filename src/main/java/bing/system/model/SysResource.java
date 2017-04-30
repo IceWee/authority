@@ -14,7 +14,7 @@ public class SysResource extends GenericObject implements Serializable {
 
 	private String name;
 
-	private Integer parentId;
+	private Integer categoryId;
 
 	private Integer type;
 
@@ -48,12 +48,12 @@ public class SysResource extends GenericObject implements Serializable {
 		this.name = name == null ? null : name.trim();
 	}
 
-	public Integer getParentId() {
-		return parentId;
+	public Integer getCategoryId() {
+		return categoryId;
 	}
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public Integer getType() {

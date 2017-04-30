@@ -18,6 +18,8 @@ public class SysMenu extends GenericObject implements Serializable {
 
 	private String url;
 
+	private Integer sort;
+
 	private Integer status = StatusEnum.NORMAL.ordinal();
 
 	private String remark;
@@ -60,6 +62,14 @@ public class SysMenu extends GenericObject implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url == null ? null : url.trim();
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 
 	public Integer getStatus() {

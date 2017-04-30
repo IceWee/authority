@@ -5,9 +5,10 @@ import bing.domain.GenericCondition;
 public class SysUserCondition extends GenericCondition {
 
 	private String username;
+
 	private String name;
+
 	private String mobile;
-	private Long status;
 
 	public SysUserCondition() {
 		super();
@@ -35,14 +36,6 @@ public class SysUserCondition extends GenericCondition {
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
-	}
-
-	public Long getStatus() {
-		return status;
-	}
-
-	public void setStatus(Long status) {
-		this.status = status;
 	}
 
 }

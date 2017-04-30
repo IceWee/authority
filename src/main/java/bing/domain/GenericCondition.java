@@ -7,15 +7,19 @@ package bing.domain;
  */
 public abstract class GenericCondition {
 
-	protected Long id;
+	protected Integer id;
+
 	protected Long pageNo = 1L;
+
 	protected Long pageSize = 10L;
 
-	public Long getId() {
+	protected Integer status;
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -33,6 +37,14 @@ public abstract class GenericCondition {
 
 	public void setPageSize(Long pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

@@ -12,12 +12,21 @@
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
+	<resultMap id="VOResultMap" type="bing.system.vo.SysResourceCategoryVO">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
+		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, parent_id, status, remark, create_date, create_user,
-		update_date, update_user
+		id, name, parent_id, status, remark, create_date, create_user, update_date, update_user
 	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_resource_category
@@ -139,4 +148,17 @@
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	<select id="listByParentId" parameterType="java.lang.Integer" resultMap="VOResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource_category where status != 2
+		<if test="parentId != null">
+			AND parent_id = #{parentId,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="listAll" resultMap="VOResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource_category where status != 2
+	</select>
 </mapper>

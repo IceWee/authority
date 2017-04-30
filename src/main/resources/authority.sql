@@ -92,7 +92,7 @@ DROP TABLE IF EXISTS `sys_resource`;
 CREATE TABLE `sys_resource` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `name` varchar(32) DEFAULT NULL COMMENT '资源名称',
-  `parent_id` int(11) DEFAULT NULL COMMENT '上级资源ID',
+  `category_id` int(11) DEFAULT NULL COMMENT '资源分类ID',
   `type` int(11) DEFAULT NULL COMMENT '资源类型（功能1，接口2，其他3）',
   `url` varchar(500) DEFAULT NULL COMMENT '资源地址',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
@@ -130,6 +130,7 @@ CREATE TABLE `sys_menu` (
   `name` varchar(32) DEFAULT NULL COMMENT '菜单名称',
   `parent_id` int(11) DEFAULT NULL COMMENT '上级菜单ID',
   `resource_id` int(11) DEFAULT NULL COMMENT '资源ID',
+  `sort` int(11) DEFAULT NULL COMMENT '排序',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',

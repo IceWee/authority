@@ -6,6 +6,7 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
 		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="sort" jdbcType="INTEGER" property="sort" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
@@ -14,35 +15,25 @@
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, parent_id, url, status, remark, create_date, create_user,
-		update_date,
-		update_user
+		id, name, parent_id, url, sort, status, remark, create_date, create_user, update_date, update_user
 	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_menu
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from sys_menu
-		where id = #{id,jdbcType=INTEGER}
+		delete from sys_menu where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="bing.system.model.SysMenu">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_menu (name, parent_id, url,
-		status, remark, create_date,
-		create_user, update_date, update_user
-		)
-		values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER},
-		#{url,jdbcType=VARCHAR},
+		insert into sys_menu (name, parent_id, url, sort, status, remark, create_date, create_user, update_date, update_user)
+		values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
 		#{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-		#{createUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP},
-		#{updateUser,jdbcType=VARCHAR}
-		)
+		#{createUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="bing.system.model.SysMenu">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -58,6 +49,9 @@
 			</if>
 			<if test="url != null">
 				url,
+			</if>
+			<if test="sort != null">
+				sort,
 			</if>
 			<if test="status != null">
 				status,
@@ -87,6 +81,9 @@
 			</if>
 			<if test="url != null">
 				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
 			</if>
 			<if test="status != null">
 				#{status,jdbcType=INTEGER},
@@ -120,6 +117,9 @@
 			<if test="url != null">
 				url = #{url,jdbcType=VARCHAR},
 			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
 			<if test="status != null">
 				status = #{status,jdbcType=INTEGER},
 			</if>
@@ -146,6 +146,7 @@
 		set name = #{name,jdbcType=VARCHAR},
 		parent_id = #{parentId,jdbcType=INTEGER},
 		url = #{url,jdbcType=VARCHAR},
+		sort = #{sort,jdbcType=INTEGER},
 		status = #{status,jdbcType=INTEGER},
 		remark = #{remark,jdbcType=VARCHAR},
 		create_date = #{createDate,jdbcType=TIMESTAMP},

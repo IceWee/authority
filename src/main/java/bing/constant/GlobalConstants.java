@@ -67,6 +67,11 @@ public class GlobalConstants {
 	 */
 	public static final String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
 
+	/**
+	 * 根节点父ID值-0，无ID为0的节点，即为顶级节点
+	 */
+	public static final Integer TOP_PARENT_ID = 0;
+
 	private GlobalConstants() {
 		super();
 	}

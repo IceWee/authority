@@ -1,19 +1,26 @@
 package bing.system.dao;
 
+import java.util.List;
+
 import bing.system.model.SysResourceCategory;
+import bing.system.vo.SysResourceCategoryVO;
 
 public interface SysResourceCategoryDao {
 
 	int deleteByPrimaryKey(Integer id);
 
-	int insert(SysResourceCategory record);
+	int insert(SysResourceCategory entity);
 
-	int insertSelective(SysResourceCategory record);
+	int insertSelective(SysResourceCategory entity);
 
 	SysResourceCategory selectByPrimaryKey(Integer id);
 
-	int updateByPrimaryKeySelective(SysResourceCategory record);
+	int updateByPrimaryKeySelective(SysResourceCategory entity);
 
-	int updateByPrimaryKey(SysResourceCategory record);
+	int updateByPrimaryKey(SysResourceCategory entity);
+
+	List<SysResourceCategoryVO> listByParentId(Integer parentId);
+
+	List<SysResourceCategoryVO> listAll();
 
 }

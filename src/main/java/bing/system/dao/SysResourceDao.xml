@@ -4,7 +4,20 @@
 	<resultMap id="BaseResultMap" type="bing.system.model.SysResource">
 		<id column="id" jdbcType="INTEGER" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
-		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		<result column="category_id" jdbcType="INTEGER" property="categoryId" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
+		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+	</resultMap>
+	<resultMap id="VOResultMap" type="bing.system.vo.SysResourceVO">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="category_id" jdbcType="INTEGER" property="categoryId" />
 		<result column="type" jdbcType="INTEGER" property="type" />
 		<result column="url" jdbcType="VARCHAR" property="url" />
 		<result column="status" jdbcType="INTEGER" property="status" />
@@ -15,30 +28,23 @@
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, parent_id, type, url, status, remark, create_date, create_user,
-		update_date,
-		update_user
+		id, name, category_id, type, url, status, remark, create_date, create_user, update_date, update_user
 	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_resource
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from sys_resource
-		where id = #{id,jdbcType=INTEGER}
+		delete from sys_resource where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="bing.system.model.SysResource">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_resource (name, parent_id, type,
-		url, status, remark,
-		create_date, create_user, update_date,
-		update_user)
-		values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER},
+		insert into sys_resource (name, category_id, type, url, status, remark, create_date, create_user, update_date, update_user)
+		values (#{name,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER},
 		#{type,jdbcType=INTEGER},
 		#{url,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
 		#{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
@@ -54,8 +60,8 @@
 			<if test="name != null">
 				name,
 			</if>
-			<if test="parentId != null">
-				parent_id,
+			<if test="categoryId != null">
+				category_id,
 			</if>
 			<if test="type != null">
 				type,
@@ -86,8 +92,8 @@
 			<if test="name != null">
 				#{name,jdbcType=VARCHAR},
 			</if>
-			<if test="parentId != null">
-				#{parentId,jdbcType=INTEGER},
+			<if test="categoryId != null">
+				#{categoryId,jdbcType=INTEGER},
 			</if>
 			<if test="type != null">
 				#{type,jdbcType=INTEGER},
@@ -121,8 +127,8 @@
 			<if test="name != null">
 				name = #{name,jdbcType=VARCHAR},
 			</if>
-			<if test="parentId != null">
-				parent_id = #{parentId,jdbcType=INTEGER},
+			<if test="categoryId != null">
+				category_id = #{categoryId,jdbcType=INTEGER},
 			</if>
 			<if test="type != null">
 				type = #{type,jdbcType=INTEGER},
@@ -154,7 +160,7 @@
 	<update id="updateByPrimaryKey" parameterType="bing.system.model.SysResource">
 		update sys_resource
 		set name = #{name,jdbcType=VARCHAR},
-		parent_id = #{parentId,jdbcType=INTEGER},
+		category_id = #{categoryId,jdbcType=INTEGER},
 		type = #{type,jdbcType=INTEGER},
 		url = #{url,jdbcType=VARCHAR},
 		status = #{status,jdbcType=INTEGER},
@@ -165,4 +171,43 @@
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	<select id="getByURL" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource
+		where url = #{url,jdbcType=VARCHAR}
+	</select>
+	<select id="listByCondition" parameterType="bing.system.condition.SysResourceCondition" resultMap="VOResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource
+		where status != 2
+		<if test="catetoryId != null">
+			AND category_id = #{catetoryId,jdbcType=INTEGER}
+		</if>
+		<if test="name != null and name != ''">
+			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="type != null">
+			AND type = #{type,jdbcType=INTEGER}
+		</if>
+		<if test="status != null">
+			AND status = #{status,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="listByCondition" parameterType="bing.system.condition.SysRoleCondition" resultMap="VOResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where hidden = 0 and status != 2
+		<if test="code != null and code != ''">
+			AND code like concat(#{code,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="name != null and name != ''">
+			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="status != null">
+			AND status = #{status,jdbcType=INTEGER}
+		</if>
+	</select>
 </mapper>
