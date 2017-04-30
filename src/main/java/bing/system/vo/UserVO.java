@@ -4,9 +4,9 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import bing.domain.AbstractObject;
+import bing.domain.GenericObject;
 
-public class UserVO extends AbstractObject {
+public class UserVO extends GenericObject {
 
 	private static final long serialVersionUID = -7983749899316231902L;
 

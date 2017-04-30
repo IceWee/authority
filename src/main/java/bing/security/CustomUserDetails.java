@@ -12,15 +12,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import bing.domain.AbstractObject;
 import bing.domain.CrudGroups;
+import bing.domain.GenericObject;
 
 /**
  * Spring Security用户
  * 
  * @author IceWee
  */
-public class CustomUserDetails extends AbstractObject implements UserDetails {
+public class CustomUserDetails extends GenericObject implements UserDetails {
 
 	private static final long serialVersionUID = 5230111703513005505L;
 

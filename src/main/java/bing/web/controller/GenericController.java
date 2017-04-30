@@ -27,9 +27,9 @@ import bing.system.model.SysUser;
  * 
  * @author IceWee
  */
-public abstract class AbstractController {
+public abstract class GenericController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericController.class);
 
 	@Autowired
 	protected MessageSourceService messageSourceService;

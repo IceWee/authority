@@ -43,7 +43,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public GenericPage<SysUser> listUserByPage(SysUserCondition sysUserCondition) {
+	public GenericPage<SysUser> listByPage(SysUserCondition sysUserCondition) {
 		Long pageNo = sysUserCondition.getPageNo();
 		PageHelper.startPage(pageNo.intValue(), sysUserCondition.getPageSize().intValue());
 		List<SysUser> list = sysUserDao.listByCondition(sysUserCondition);
@@ -52,7 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public void saveUser(SysUser sysUser) {
+	public void save(SysUser sysUser) {
 		sysUser.setId(null);
 		SysUser persistUser = sysUserDao.getByUsername(sysUser.getUsername());
 		if (persistUser != null) {
@@ -68,7 +68,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public void updateUser(SysUser sysUser) {
+	public void update(SysUser sysUser) {
 		SysUser persistUser = sysUserDao.selectByPrimaryKey(sysUser.getId());
 		String origionUsername = persistUser.getUsername();
 		String newUsername = sysUser.getUsername();
@@ -81,12 +81,12 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public SysUser getUserById(Integer id) {
+	public SysUser getById(Integer id) {
 		return sysUserDao.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public void deleteUserById(Integer id, String username) {
+	public void deleteById(Integer id, String username) {
 		SysUser sysUser = new SysUser();
 		sysUser.setId(id);
 		sysUser.setStatus(StatusEnum.DELETED.ordinal());

@@ -19,7 +19,7 @@
 <body>
 <form id="form_default" method="post">
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
-<input type="hidden" th:value="${sysUser.id}" name="id"></input>
+<input type="hidden" th:value="${bean.id}" name="id"></input>
 <div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
@@ -40,13 +40,13 @@
 						<label th:text="#{username}">账号</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.username}" type="text" id="username" name="username" readonly="readonly"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.username}" type="text" id="username" name="username" readonly="readonly"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{name}">姓名</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -55,14 +55,14 @@
 						<label th:text="#{mobile}">手机</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
-	    					<option th:each="status : ${statusList}" th:selected="${status.value eq sysUser.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
+	    					<option th:each="status : ${statusList}" th:selected="${status.value eq bean.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
 					</div>
 				</div>
@@ -72,13 +72,13 @@
 						<label th:text="#{create.user}">创建人</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.updateUser}" type="text" id="createUser" name="createUser" readonly="readonly"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.updateUser}" type="text" id="createUser" name="createUser" readonly="readonly"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{create.date}">创建日期</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${#dates.format(sysUser.createDate,'yyyy-MM-dd')}" type="text" id="createDate" name="createDate" readonly="readonly"></input>
+		    			<input class="easyui-textbox input-default" th:value="${#dates.format(bean.createDate,'yyyy-MM-dd')}" type="text" id="createDate" name="createDate" readonly="readonly"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>

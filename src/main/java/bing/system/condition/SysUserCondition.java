@@ -2,11 +2,6 @@ package bing.system.condition;
 
 import bing.domain.GenericCondition;
 
-/**
- * 用户查询条件
- * 
- * @author IceWee
- */
 public class SysUserCondition extends GenericCondition {
 
 	private String username;

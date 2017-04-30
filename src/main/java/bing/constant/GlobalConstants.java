@@ -48,6 +48,11 @@ public class GlobalConstants {
 	public static final String REQUEST_ATTRIBUTE_ERROR = "error";
 
 	/**
+	 * bean attribute in request scope
+	 */
+	public static final String REQUEST_ATTRIBUTE_BEAN = "bean";
+
+	/**
 	 * Cookie key prefix
 	 */
 	public static final String COOKIE_KEY = "authority_";

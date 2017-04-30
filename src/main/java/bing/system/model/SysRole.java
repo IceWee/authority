@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 import bing.constant.StatusEnum;
-import bing.domain.AbstractObject;
+import bing.domain.GenericObject;
 
-public class SysRole extends AbstractObject implements Serializable {
+public class SysRole extends GenericObject implements Serializable {
 
 	private static final long serialVersionUID = 745422160006062721L;
 

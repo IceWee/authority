@@ -11,7 +11,7 @@ public abstract class MessageKeys {
 	public static final String SAVE_SUCCESS = "save.success";
 	public static final String UPDATE_SUCCESS = "update.success";
 	public static final String DELETE_SUCCESS = "delete.success";
-	public static final String USER_NOT_EXIST = "user.notexist";
+	public static final String ENTITY_NOT_EXIST = "entity.notexist";
 
 	protected MessageKeys() {
 		super();

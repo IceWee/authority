@@ -9,8 +9,6 @@ import bing.constant.MessageKeys;
  */
 public abstract class UserMessageKeys extends MessageKeys {
 
-	public static final String USER_NOT_EXIST = "user.notexist";
-
 	private UserMessageKeys() {
 		super();
 	}

@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import bing.constant.GlobalConstants;
 import bing.system.model.SysUser;
-import bing.web.controller.AbstractController;
+import bing.web.controller.GenericController;
 
 @Controller
-public class MainController extends AbstractController {
+public class MainController extends GenericController {
 
 	@RequestMapping(value = {"/main", "/"})
 	public String main(HttpSession session) {

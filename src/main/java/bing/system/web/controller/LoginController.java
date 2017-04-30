@@ -25,10 +25,10 @@ import bing.constant.GlobalConstants;
 import bing.constant.RedisKeys;
 import bing.i18n.MessageSourceService;
 import bing.util.CaptchaUtils;
-import bing.web.controller.AbstractController;
+import bing.web.controller.GenericController;
 
 @Controller
-public class LoginController extends AbstractController {
+public class LoginController extends GenericController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 

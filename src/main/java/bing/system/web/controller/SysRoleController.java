@@ -21,22 +21,23 @@ import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.CrudGroups;
 import bing.domain.GenericPage;
-import bing.system.condition.SysUserCondition;
+import bing.system.condition.SysRoleCondition;
+import bing.system.model.SysRole;
 import bing.system.model.SysUser;
-import bing.system.service.SysUserService;
+import bing.system.service.SysRoleService;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
 
 @Controller
 @RequestMapping("/")
-public class SysUserController extends GenericController {
+public class SysRoleController extends GenericController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SysUserController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SysRoleController.class);
 
-	private static final String LOG_PREFIX = LogPrefixes.USER;
-	private static final String PREFIX = "system/user";
-	private static final String AJAX_LIST = "ajax/system/users";
+	private static final String LOG_PREFIX = LogPrefixes.ROLE;
+	private static final String PREFIX = "system/role";
+	private static final String AJAX_LIST = "ajax/system/roles";
 
 	private static final String LIST = PREFIX + "/list";
 	private static final String ADD = PREFIX + "/add";
@@ -46,7 +47,7 @@ public class SysUserController extends GenericController {
 	private static final String DELETE = PREFIX + "/delete";
 
 	@Autowired
-	private SysUserService sysUserService;
+	private SysRoleService sysRoleService;
 
 	@RequestMapping(LIST)
 	public String list() {
@@ -55,27 +56,27 @@ public class SysUserController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> users(SysUserCondition condition) {
+	public RestResponse<Object> roles(SysRoleCondition condition) {
 		RestResponse<Object> response = new RestResponse<>();
-		GenericPage<SysUser> page = sysUserService.listByPage(condition);
+		GenericPage<SysRole> page = sysRoleService.listByPage(condition);
 		response.setData(page);
 		return response;
 	}
 
 	@RequestMapping(ADD)
 	public String add(Model model) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysUser());
+		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysRole());
 		return ADD;
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model) {
+	public String save(@Validated(CrudGroups.Create.class) SysRole entity, BindingResult bindingResult, Model model) {
 		if (hasErrors(bindingResult, model)) {
 			model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 			return ADD;
 		}
 		try {
-			sysUserService.save(entity);
+			sysRoleService.save(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -88,7 +89,7 @@ public class SysUserController extends GenericController {
 
 	@RequestMapping(EDIT)
 	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model) {
-		SysUser entity = sysUserService.getById(id);
+		SysRole entity = sysRoleService.getById(id);
 		if (entity == null) {
 			setError(MessageKeys.ENTITY_NOT_EXIST, model);
 			return LIST;
@@ -97,14 +98,22 @@ public class SysUserController extends GenericController {
 		return EDIT;
 	}
 
+	/**
+	 * 更新角色
+	 * 
+	 * @param entity
+	 * @param bindingResult
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String update(@Validated SysUser entity, BindingResult bindingResult, Model model) {
+	public String update(@Validated SysRole entity, BindingResult bindingResult, Model model) {
 		if (hasErrors(bindingResult, model)) {
 			model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 			return EDIT;
 		}
 		try {
-			sysUserService.update(entity);
+			sysRoleService.update(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -123,7 +132,7 @@ public class SysUserController extends GenericController {
 			if (optional.isPresent()) {
 				username = optional.get().getUsername();
 			}
-			sysUserService.deleteById(id, username);
+			sysRoleService.deleteById(id, username);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));

@@ -40,13 +40,13 @@
 						<label th:text="#{username}">账号</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.username}" type="text" name="username" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.username}" type="text" name="username" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{name}">姓名</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -70,13 +70,13 @@
 						<label th:text="#{mobile}">手机</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${sysUser.mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<select class="easyui-combobox select-default" th:value="${sysUser.status}"  data-options="editable:false" name="status">
+		    			<select class="easyui-combobox select-default" th:value="${bean.status}"  data-options="editable:false" name="status">
 							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
 					</div>

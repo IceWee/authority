@@ -5,7 +5,7 @@ package bing.domain;
  * 
  * @author IceWee
  */
-public class LabelValueBean extends AbstractObject {
+public class LabelValueBean extends GenericObject {
 
 	private static final long serialVersionUID = -14923110827133465L;
 

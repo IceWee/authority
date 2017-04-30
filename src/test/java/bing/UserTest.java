@@ -38,7 +38,7 @@ public class UserTest extends BaseTest {
 	public void testListByName() {
 		SysUserCondition sysUserCondition = new SysUserCondition();
 		sysUserCondition.setUsername("a");
-		GenericPage<SysUser> page = sysUserService.listUserByPage(sysUserCondition);
+		GenericPage<SysUser> page = sysUserService.listByPage(sysUserCondition);
 		LOGGER.info("Pages: {}", page.getTotalPages());
 		LOGGER.info("Rows: {}", page.getTotalRows());
 	}

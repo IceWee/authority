@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-public abstract class AbstractObject implements Serializable {
+public abstract class GenericObject implements Serializable {
 
 	private static final long serialVersionUID = -3001222131707495746L;
 
