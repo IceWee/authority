@@ -1,15 +1,28 @@
 var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
 var FORM_ID_HIDDEN = "#form_hidden"; // 隐藏表单ID
-var URI_LIST = "/system/user/list"; // 列表页面URI
 var URI_AJAX_LIST = "/ajax/system/users"; // 列表页获取列表数据异步URI
-var URI_AJAX_SAVE = "/ajax/system/users"; // ajax保存
-var ADD_URI = "/system/user/add"; // 新增页面URI
-var EDIT_URI = "/system/user/edit"; // 编辑页面URI
-var DELETE_URI = "/system/user/delete"; // 删除URI
+var URI_LIST = "/system/user/list"; // 列表页面URI
+var URI_ADD = "/system/user/add"; // 新增页面URI
+var URI_SAVE = "/system/user/save"; // 保存URI
+var URI_EDIT = "/system/user/edit"; // 编辑页面URI
+var URI_UPDATE = "/system/user/update"; // 更新URI
+var URI_DELETE = "/system/user/delete"; // 删除URI
 var BTN_ADD_ID = "#button_add"; // 增加按钮ID
 var BTN_SAVE_ID = "#button_save"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
+
+// 在datagrid的操作列中生成操作按钮
+function operateBtnHtml(value, row, index) {
+	var id = row.id;
+	var html = "";
+	if (id) {
+		html = html + "<a href=\"#\" onclick=\"edit('" + id + "')\"><span class=\"label label-primary\">编辑</span></a>";  
+		html += "&nbsp;&nbsp;";
+		html = html + "<a href=\"#\" onclick=\"_delete('" + id + "')\"><span class=\"label label-danger\">删除</span></a>";  
+	}
+	return html;
+}
 
 //返回列表页
 function back2list() {
@@ -46,27 +59,15 @@ function initListPage(error, message) {
 
 // 进入新增页
 function add() {
-	$(FORM_ID_HIDDEN).attr("action", ADD_URI);
+	$(FORM_ID_HIDDEN).attr("action", URI_ADD);
 	$(FORM_ID_HIDDEN).submit();
 }
 
 // 进入编辑页
 function edit(id) {
 	$(PARAM_ID).val(id);
-	$(FORM_ID_HIDDEN).attr("action", EDIT_URI);
+	$(FORM_ID_HIDDEN).attr("action", URI_EDIT);
 	$(FORM_ID_HIDDEN).submit();
-}
-
-// 在datagrid的操作列中生成操作按钮
-function operateBtnHtml(value, row, index) {
-	var id = row.id;
-	var html = "";
-	if (id) {
-		html = html + "<a href=\"#\" onclick=\"edit('" + id + "')\"><span class=\"label label-primary\">编辑</span></a>";  
-		html += "&nbsp;&nbsp;";
-		html = html + "<a href=\"#\" onclick=\"_delete('" + id + "')\"><span class=\"label label-danger\">删除</span></a>";  
-	}
-	return html;
 }
 /*************************** list end *****************************/
 
@@ -81,6 +82,7 @@ function initAddPage(error, message) {
 	$(BTN_SAVE_ID).click(function() {
 		if ($(FORM_ID_DETAIL).form("validate")) {
 			ajaxLoading($.i18n.prop("save.saving"));
+			$(FORM_ID_DETAIL).attr("action", URI_SAVE);
 			$(FORM_ID_DETAIL).submit();
 		}
 	});
@@ -108,6 +110,7 @@ function initEditPage(error, message) {
 	$(BTN_SAVE_ID).click(function() {
 		if ($(FORM_ID_DETAIL).form("validate")) {
 			ajaxLoading($.i18n.prop("update.updating"));
+			$(FORM_ID_DETAIL).attr("action", URI_UPDATE);
 			$(FORM_ID_DETAIL).submit();
 		}
 	});
@@ -126,7 +129,7 @@ function _delete(id) {
 	$.messager.confirm($.i18n.prop("tip.info"), $.i18n.prop("delete.prompt"), function(go){
 		if (go){
 			$(PARAM_ID).val(id);
-			$(FORM_ID_HIDDEN).attr("action", DELETE_URI);
+			$(FORM_ID_HIDDEN).attr("action", URI_DELETE);
 			$(FORM_ID_HIDDEN).submit();
 		}
 	});

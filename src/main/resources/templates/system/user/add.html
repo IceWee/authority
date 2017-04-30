@@ -17,7 +17,7 @@
 </script>
 </head>
 <body>
-<form id="form_default" th:action="@{/system/user/save}" method="post">
+<form id="form_default" method="post">
 <input type="hidden" th:value="${session.currentUser.username}" name="createUser"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
 <div class="container-fluid">

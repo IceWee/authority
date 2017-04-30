@@ -17,7 +17,7 @@
 </script>
 </head>
 <body>
-<form id="form_default" th:action="@{/system/user/update}" method="post">
+<form id="form_default" method="post">
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
 <input type="hidden" th:value="${sysUser.id}" name="id"></input>
 <div class="container-fluid">
@@ -61,8 +61,8 @@
 						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<select class="easyui-combobox select-default" th:value="${sysUser.status}" data-options="editable:false" name="status">
-	    					<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
+		    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
+	    					<option th:each="status : ${statusList}" th:selected="${status.value eq sysUser.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
 					</div>
 				</div>

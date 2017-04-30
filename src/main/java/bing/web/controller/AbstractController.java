@@ -44,7 +44,6 @@ public abstract class AbstractController {
 		List<LabelValueBean> statusList = new ArrayList<>();
 		statusList.add(new LabelValueBean("正常", String.valueOf(StatusEnum.NORMAL.ordinal())));
 		statusList.add(new LabelValueBean("锁定", String.valueOf(StatusEnum.LOCKED.ordinal())));
-		statusList.add(new LabelValueBean("删除", String.valueOf(StatusEnum.DELETED.ordinal())));
 		return statusList;
 	}
 
