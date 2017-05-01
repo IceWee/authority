@@ -19,13 +19,12 @@ var PARAM_ID = "#id"; // ID属性名
 
 // 初始化资源分类树
 function initResourceListPage() {
-	var RESPONSE_OK = "200";
 	$.ajax({
 		type : "GET",
 		url : URI_AJAX_CATEGORY_TREE,
 		dataType : "json",
 		success : function(json) {
-			if (json.code === RESPONSE_OK) {
+			if (json.code === "200") {
 				if (json.data) {
 					var array = json.data;
 					initCategoryTree(array);
@@ -164,7 +163,6 @@ function freshCategoryTree(parent) {
 			if (json.code === "200") {
 				if (json.data) {
 					var array = json.data;
-					console.log(JSON.stringify(array));
 					$("#tree_category").tree({data:array});
 					if (parent) {
 						var node = getCategory(parent.id);
@@ -207,3 +205,60 @@ function selectFirstCategory() {
 	$("#selectedCategoryId").val(node.id);
 	initListPage(error, message);
 }
+
+/************************************** add/edit begin ********************************************/
+function initCategoryTreeDialog() {
+	$.ajax({
+		type : "GET",
+		url : URI_AJAX_CATEGORY_TREE,
+		dataType : "json",
+		success : function(json) {
+			if (json.code === "200") {
+				if (json.data) {
+					var array = json.data;
+					$("#tree_category").tree({
+						data: array,
+						animate: true
+					});
+				}
+			} else {
+				showErrorTips(json.message);
+			}
+		},
+		error : function() {
+			showErrorTips($.i18n .prop("http.request.failed"));
+		}
+	});
+	
+	$("#categoryName").textbox("textbox").bind("click", function() {  
+		$("#dialog_category_tree").modal({keyboard:false});
+	});
+	
+	$("#button_tree_cancel").click(function() {
+		$("#dialog_category_tree").modal("hide");
+	});
+	
+	$("#button_tree_select").click(function() {
+		var node = $("#tree_category").tree("getSelected");
+		if (node) {
+			$("#form_default").form("load", {
+				categoryId: node.id,
+				categoryName: node.text
+			});
+			$("#dialog_category_tree").modal("hide");
+		}
+	});
+}
+
+function initAddPageExt(error, message) {
+	initAddPage(error, message);
+	
+	initCategoryTreeDialog();
+}
+
+function initEditPageExt(error, message) {
+	initEditPage(error, message);
+	
+	initCategoryTreeDialog();
+}
+/************************************** add/edit end ********************************************/
