@@ -37,14 +37,15 @@
 		    			<table id="datagrid" style="width:100%;height:auto">
 							<thead>
 								<tr>
-									<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtml">操作</th>
-									<th th:text="#{name}" data-options="field:'name',width:10">名称</th>
-									<th th:text="#{type}" data-options="field:'typeText',width:20">类型</th>
+									<th data-options="field:'_operate',width:15,align:'center',formatter:operateBtnHtml">操作</th>
+									<th th:text="#{name}" data-options="field:'name',width:15">名称</th>
+									<th th:text="#{url}" data-options="field:'url',width:20">名称</th>
+									<th th:text="#{type}" data-options="field:'typeText',align:'center',width:10">类型</th>
 									<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
-									<th th:text="#{create.date}" data-options="field:'createDateText',width:20">创建日期</th>
-									<th th:text="#{create.user}" data-options="field:'createUser',width:20">创建人</th>
-									<th th:text="#{update.date}" data-options="field:'updateDateText',width:20">更新日期</th>
-									<th th:text="#{update.user}" data-options="field:'updateUser',width:20">更新人</th>
+									<th th:text="#{create.date}" data-options="field:'createDateText',align:'center',width:15">创建日期</th>
+									<th th:text="#{create.user}" data-options="field:'createUser',align:'center',width:10">创建人</th>
+									<th th:text="#{update.date}" data-options="field:'updateDateText',align:'center',width:15">更新日期</th>
+									<th th:text="#{update.user}" data-options="field:'updateUser',align:'center',width:10">更新人</th>
 								</tr>
 							</thead>
 						</table>
@@ -52,15 +53,14 @@
 						<div id="search_tools" style="padding:0 25px;">
 							<form action="" method="post" id="form_search">
 							<div class="conditions">
-								<input type="hidden" id="categoryId" name="categoryId"></input>
-								<label th:text="#{code}">编码</label>
-								<input name="code" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
+								<input type="hidden" id="categoryId" name="categoryId" th:value="${categoryId}"></input>
+								<input type="hidden" id="id" name="id"></input>
 								<label th:text="#{name}">名称</label>
 								<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
 								<label th:text="#{type}">类型</label>
 								<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
 									<option value="" selected>全部</option>
-									<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
+									<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
 								</select>
 							    <a id="button_search" th:text="#{search}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
 							    <a id="button_reset" th:text="#{reset}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
@@ -73,9 +73,6 @@
 		    </div>
     	</div>
     </div>
-<form action="" method="get" id="form_hidden">
-<input type="hidden" id="id" name="id" />
-</form>
 </div>
 </div>
 </body>

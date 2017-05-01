@@ -1,6 +1,7 @@
 package bing.system.vo;
 
 import bing.domain.GenericVO;
+import bing.system.constant.ResourceTypeEnum;
 
 public class SysResourceVO extends GenericVO {
 
@@ -15,6 +16,8 @@ public class SysResourceVO extends GenericVO {
 	private String url;
 
 	private Integer categoryId;
+
+	private String remark;
 
 	public SysResourceVO() {
 		super();
@@ -37,6 +40,15 @@ public class SysResourceVO extends GenericVO {
 	}
 
 	public String getTypeText() {
+		if (type != null) {
+			if (type == ResourceTypeEnum.FUNCTION.ordinal()) {
+				typeText = "一般功能";
+			} else if (type == ResourceTypeEnum.FUNCTION.ordinal()) {
+				typeText = "数据接口";
+			} else {
+				typeText = "其他";
+			}
+		}
 		return typeText;
 	}
 
@@ -58,6 +70,14 @@ public class SysResourceVO extends GenericVO {
 
 	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

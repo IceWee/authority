@@ -5,7 +5,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
-<script type="text/javascript" th:src="@{/js/system/role.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/resource.js}"></script>
 <script type="text/javascript" th:src="@{/js/crud.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
@@ -13,7 +13,6 @@
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
 		initEditPage(error, message);
-		initEditPageExt();
 	});
 /*]]>*/
 </script>
@@ -21,14 +20,15 @@
 <body>
 <form id="form_default" method="post">
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
+<input type="hidden" th:value="${category.id}" name="categoryId"></input>
 <input type="hidden" th:value="${bean.id}" name="id"></input>
 <div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
 			<ol class="breadcrumb">
-			  	<li><a href="/system/role/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <span th:text="#{role.manage}">角色管理</span></a></li>
-			  	<li class="active" th:text="#{role.add}">编辑角色</li>
+			  	<li><a href="/system/resource/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <span th:text="#{resource.manage}">资源管理</span></a></li>
+			  	<li class="active" th:text="#{resource.edit}">编辑资源</li>
 			</ol>
 	  	</div>
 	  	<div class="panel-body">
@@ -39,16 +39,33 @@
 	    		<div style="margin-top: 20px"></div>
 		    	<div class="row">
 					<div class="col-md-2 text-right">
-						<label th:text="#{code}">编码</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.code}" type="text" id="code" name="code" readonly="readonly"></input>
-					</div>
-					<div class="col-md-2 text-right">
 						<label th:text="#{name}">名称</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" th:value="${bean.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
+					</div>
+					<div class="col-md-2 text-right">
+						<label th:text="#{type}">类型</label>
+					</div>
+					<div class="col-md-4 text-left">
+						<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
+							<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
+						</select>
+					</div>
+				</div>
+				<div style="margin-top: 20px"></div>
+		    	<div class="row">
+					<div class="col-md-2 text-right">
+						<label th:text="#{url}">URL</label>
+					</div>
+					<div class="col-md-4 text-left">
+		    			<input class="easyui-textbox input-default" th:value="${bean.url}" type="text" name="url" data-options="required:true,validType:['maxLength[500]']"></input>
+					</div>
+					<div class="col-md-2 text-right">
+						<label th:text="#{resource.category}">资源分类</label>
+					</div>
+					<div class="col-md-4 text-left">
+		    			<input class="easyui-textbox input-default" th:value="${category.name}" type="text" name="categoryName" readonly="readonly"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -58,7 +75,7 @@
 					</div>
 					<div class="col-md-4 text-left">
 		    			<select class="easyui-combobox select-default" th:value="${bean.status}"  data-options="editable:false" name="status">
-							<option th:each="status : ${statusList}" th:selected="${status.value eq bean.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
+							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
 					</div>
 					<div class="col-md-2 text-right">

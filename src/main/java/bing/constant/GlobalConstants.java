@@ -48,6 +48,11 @@ public class GlobalConstants {
 	public static final String REQUEST_ATTRIBUTE_ERROR = "error";
 
 	/**
+	 * error attribute in request scope
+	 */
+	public static final String REQUEST_ATTRIBUTE_STACK = "stack";
+
+	/**
 	 * bean attribute in request scope
 	 */
 	public static final String REQUEST_ATTRIBUTE_BEAN = "bean";
@@ -71,6 +76,11 @@ public class GlobalConstants {
 	 * 根节点父ID值-0，无ID为0的节点，即为顶级节点
 	 */
 	public static final Integer TOP_PARENT_ID = 0;
+
+	/**
+	 * 默认无效ID，鉴于有些请求必须包含ID，但参数有没有值的时候使用该无效的ID
+	 */
+	public static final Integer DEFAULT_INVALID_ID = -1;
 
 	private GlobalConstants() {
 		super();

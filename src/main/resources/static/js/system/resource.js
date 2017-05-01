@@ -1,5 +1,5 @@
 var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
-var FORM_ID_HIDDEN = "#form_hidden"; // 隐藏表单ID
+var FORM_ID_HIDDEN = "#form_search"; // 隐藏表单ID
 var URI_AJAX_LIST = "/ajax/system/resources"; // 列表页获取列表数据异步URI
 var URI_AJAX_CATEGORY_TREE = "/ajax/system/category/tree"; // 列表页获取列表数据异步URI
 var URI_LIST = "/system/resource/list"; // 列表页面URI
@@ -32,12 +32,11 @@ function initResourceListPage() {
 							$("#categoryId").val(node.id);
 						}
 					});
-					var categoryId = -1;
-					var selectedNode = $("#tree_category").tree("getSelected");
-					if (selectedNode) {
-						categoryId =  selectedNode.id;
+					var categoryId = $("#categoryId").val();
+					if (categoryId != -1) {
+						var node = $("#tree_category").tree("find", categoryId);
+						$("#tree_category").tree("select", node.target);
 					}
-					$("#categoryId").val(categoryId);
 					initListPage(error, message);
 				}
 			} else {

@@ -1,8 +1,7 @@
 package bing.system.model;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 import bing.constant.HiddenEnum;
 import bing.constant.StatusEnum;
@@ -14,7 +13,7 @@ public class SysUser extends CustomUserDetails {
 
 	private Integer id;
 
-	@NotBlank(message = "{surname.required}")
+	@NotNull(message = "{surname.required}")
 	private String name;
 
 	@Pattern(regexp = "^$|^(13|14|15|17|18)[0-9]{9}$", message = "{mobile.illegal}")

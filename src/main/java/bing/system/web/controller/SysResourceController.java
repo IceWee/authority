@@ -1,5 +1,6 @@
 package bing.system.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +23,12 @@ import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.GenericPage;
+import bing.domain.LabelValueBean;
 import bing.system.condition.SysResourceCondition;
+import bing.system.constant.ResourceTypeEnum;
+import bing.system.constant.SystemMessageKeys;
 import bing.system.model.SysResource;
+import bing.system.model.SysResourceCategory;
 import bing.system.model.SysUser;
 import bing.system.service.SysResourceService;
 import bing.system.vo.SysResourceCategoryVO;
@@ -49,11 +55,24 @@ public class SysResourceController extends GenericController {
 	private static final String UPDATE = PREFIX + "/update";
 	private static final String DELETE = PREFIX + "/delete";
 
+	private static final String REQUEST_ATTRIBUTE_CATEGORY_ID = "categoryId";
+	private static final String REQUEST_ATTRIBUTE_CATEGORY = "category";
+
 	@Autowired
 	private SysResourceService sysResourceService;
 
+	@ModelAttribute("typeList")
+	protected List<LabelValueBean> typeList() {
+		List<LabelValueBean> typeList = new ArrayList<>();
+		typeList.add(new LabelValueBean("一般功能", String.valueOf(ResourceTypeEnum.FUNCTION.ordinal())));
+		typeList.add(new LabelValueBean("数据接口", String.valueOf(ResourceTypeEnum.DATA_API.ordinal())));
+		typeList.add(new LabelValueBean("其他", String.valueOf(ResourceTypeEnum.OTHER.ordinal())));
+		return typeList;
+	}
+
 	@RequestMapping(LIST)
-	public String list() {
+	public String list(Model model) {
+		prepareCategoryTree(model);
 		return LIST;
 	}
 
@@ -76,8 +95,15 @@ public class SysResourceController extends GenericController {
 	}
 
 	@RequestMapping(ADD)
-	public String add(Model model) {
+	public String add(@RequestParam(value = "categoryId", required = true) Integer categoryId, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysResource());
+		SysResourceCategory category = sysResourceService.getCategoryById(categoryId);
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY, category);
+		if (category == null) {
+			setError(SystemMessageKeys.RESOURCE_CATEGORY_NOT_EXIST, model);
+			prepareCategoryTree(model);
+			return LIST;
+		}
 		return ADD;
 	}
 
@@ -85,6 +111,7 @@ public class SysResourceController extends GenericController {
 	public String save(@Validated SysResource entity, BindingResult bindingResult, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
+			prepareCategory(entity.getCategoryId(), model);
 			return ADD;
 		}
 		try {
@@ -92,9 +119,11 @@ public class SysResourceController extends GenericController {
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
+			prepareCategory(entity.getCategoryId(), model);
 			return ADD;
 		}
 		setMessage(MessageKeys.SAVE_SUCCESS, model);
+		prepareCategoryTree(model);
 		return LIST;
 	}
 
@@ -103,9 +132,11 @@ public class SysResourceController extends GenericController {
 		SysResource entity = sysResourceService.getById(id);
 		if (entity == null) {
 			setError(MessageKeys.ENTITY_NOT_EXIST, model);
+			prepareCategoryTree(model);
 			return LIST;
 		}
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		prepareCategory(entity.getCategoryId(), model);
 		return EDIT;
 	}
 
@@ -113,6 +144,7 @@ public class SysResourceController extends GenericController {
 	public String update(@Validated SysResource entity, BindingResult bindingResult, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
+			prepareCategory(entity.getCategoryId(), model);
 			return EDIT;
 		}
 		try {
@@ -120,9 +152,11 @@ public class SysResourceController extends GenericController {
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
+			prepareCategory(entity.getCategoryId(), model);
 			return EDIT;
 		}
 		setMessage(MessageKeys.UPDATE_SUCCESS, model);
+		prepareCategoryTree(model);
 		return LIST;
 	}
 
@@ -140,7 +174,33 @@ public class SysResourceController extends GenericController {
 			setError(e, model);
 		}
 		setMessage(MessageKeys.DELETE_SUCCESS, model);
+		prepareCategoryTree(model);
 		return LIST;
+	}
+
+	/**
+	 * 准备资源分类树数据
+	 * 
+	 * @param model
+	 */
+	private void prepareCategoryTree(Model model) {
+		List<SysResourceCategoryVO> categories = sysResourceService.getCategoryTree();
+		Integer categoryId = GlobalConstants.DEFAULT_INVALID_ID;
+		if (!categories.isEmpty()) {
+			categoryId = categories.get(0).getId();
+		}
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+	}
+
+	/**
+	 * 准备资源分类对象，用于前端页面显示
+	 * 
+	 * @param categoryId
+	 * @param model
+	 */
+	private void prepareCategory(Integer categoryId, Model model) {
+		SysResourceCategory category = sysResourceService.getCategoryById(categoryId);
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY, category);
 	}
 
 }

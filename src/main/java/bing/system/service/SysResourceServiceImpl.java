@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -15,11 +16,17 @@ import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
 import bing.exception.BusinessException;
+import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
 import bing.system.dao.SysResourceCategoryDao;
 import bing.system.dao.SysResourceDao;
+import bing.system.dao.SysRoleDao;
+import bing.system.dao.SysRoleResourceDao;
 import bing.system.exception.ResourceExceptionCodes;
 import bing.system.model.SysResource;
+import bing.system.model.SysResourceCategory;
+import bing.system.model.SysRole;
+import bing.system.model.SysRoleResource;
 import bing.system.vo.SysResourceCategoryVO;
 import bing.system.vo.SysResourceVO;
 
@@ -27,7 +34,13 @@ import bing.system.vo.SysResourceVO;
 public class SysResourceServiceImpl implements SysResourceService {
 
 	@Autowired
+	private SysRoleDao sysRoleDao;
+
+	@Autowired
 	private SysResourceDao sysResourceDao;
+
+	@Autowired
+	private SysRoleResourceDao sysRoleResourceDao;
 
 	@Autowired
 	private SysResourceCategoryDao sysResourceCategoryDao;
@@ -41,16 +54,36 @@ public class SysResourceServiceImpl implements SysResourceService {
 		return new GenericPage<>(pageNo, pageInfo.getTotal(), list);
 	}
 
+	/**
+	 * 特别说明： 系统每增加一个资源都需自动为admin授权
+	 */
 	@Override
+	@Transactional
 	public void save(SysResource entity) {
 		entity.setId(null);
 		SysResource persistResource = sysResourceDao.getByURL(entity.getUrl());
 		if (persistResource != null) {
 			throw new BusinessException(ResourceExceptionCodes.URL_USED);
 		}
-		entity.setCreateDate(new Date());
-		entity.setUpdateDate(new Date());
+		Date now = new Date();
+		entity.setCreateDate(now);
+		entity.setUpdateDate(now);
+		// 自动为admin授权
 		sysResourceDao.insert(entity);
+		Integer resourceId = entity.getId();
+		SysRole admin = sysRoleDao.getByCode(GlobalConstants.ADMIN);
+		if (admin == null) {
+			throw new BusinessException(BusinessExceptionCodes.ROLE_ADMIN_MISSING);
+		}
+		Integer roleId = admin.getId();
+		SysRoleResource sysRoleResource = new SysRoleResource();
+		sysRoleResource.setResourceId(resourceId);
+		sysRoleResource.setRoleId(roleId);
+		sysRoleResource.setCreateDate(now);
+		sysRoleResource.setUpdateDate(now);
+		sysRoleResource.setCreateUser(GlobalConstants.ADMIN);
+		sysRoleResource.setUpdateUser(GlobalConstants.ADMIN);
+		sysRoleResourceDao.insert(sysRoleResource);
 	}
 
 	@Override
@@ -88,6 +121,11 @@ public class SysResourceServiceImpl implements SysResourceService {
 		categories.removeAll(topCategories);
 		buildTree(topCategories, categories);
 		return topCategories;
+	}
+
+	@Override
+	public SysResourceCategory getCategoryById(Integer categoryId) {
+		return sysResourceCategoryDao.selectByPrimaryKey(categoryId);
 	}
 
 	private void buildTree(List<SysResourceCategoryVO> topCategories, List<SysResourceCategoryVO> categories) {

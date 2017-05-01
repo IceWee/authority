@@ -2,7 +2,8 @@ package bing.system.model;
 
 import java.io.Serializable;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import bing.constant.HiddenEnum;
 import bing.domain.GenericObject;
@@ -13,10 +14,11 @@ public class SysRole extends GenericObject implements Serializable {
 
 	private Integer id;
 
-	@NotBlank(message = "{code.required}")
+	@NotNull(message = "{code.required}")
+	@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{code.illegal}")
 	private String code;
 
-	@NotBlank(message = "{name.required}")
+	@NotNull(message = "{name.required}")
 	private String name;
 
 	private String remark;

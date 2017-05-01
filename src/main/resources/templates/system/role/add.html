@@ -41,7 +41,7 @@
 						<label th:text="#{code}">编码</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.code}" type="text" name="code" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${bean.code}" type="text" name="code" data-options="required:true,validType:['code','minLength[6]','maxLength[32]']"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{name}">名称</label>

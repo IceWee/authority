@@ -128,7 +128,7 @@ function hideTips(id) {
  * formSearchId, 可选, 默认值: form_search
  * buttonSearchId, 可选, 默认值: button_search
  * buttonResetId, 可选, 默认值: button_reset
- * minHeight, 可选, 默认值: 400
+ * minHeight, 可选, 默认值: 500
  * minWidth, 可选, 默认值: 400
  * tipsId, 可选, 默认值: tips
  * autoLoad, 可选，默认值: false, 是否自动加载数据
@@ -147,7 +147,7 @@ function initDatagrid(options) {
 	var formSearchId = options.formSearchId ? "#" + options.formSearchId : "#form_search";
 	var buttonSearchId = options.buttonSearchId ? "#" + options.buttonSearchId : "#button_search";
 	var buttonResetId = options.buttonResetId ? "#" + options.buttonResetId : "#button_reset";
-	var minHeight = options.minHeight ? options.minHeight : 400;
+	var minHeight = options.minHeight ? options.minHeight : 500;
 	var minWidth = options.minWidth ? options.minWidth : 400;
 	var tipsId = options.tipsId ? options.tipsId : "tips";
 	var autoLoad = options.autoLoad != undefined ? options.autoLoad : false;

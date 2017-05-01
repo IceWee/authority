@@ -63,7 +63,9 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 			code = be.getCode();
 		}
 		String error = retriveMessage(code);
+		String stack = ExceptionUtils.parseStackTrace(cause);
 		request.setAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
+		request.setAttribute(GlobalConstants.REQUEST_ATTRIBUTE_STACK, stack);
 		return "error";
 	}
 
