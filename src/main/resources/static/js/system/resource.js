@@ -38,7 +38,7 @@ function initResourceListPage() {
 						categoryId =  selectedNode.id;
 					}
 					$("#categoryId").val(categoryId);
-					initListPage(error, message, false);
+					initListPage(error, message);
 				}
 			} else {
 				showErrorTips(json.message);
