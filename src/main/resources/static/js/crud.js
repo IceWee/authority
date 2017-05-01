@@ -3,7 +3,7 @@ function operateBtnHtml(value, row, index) {
 	var id = row.id;
 	var html = "";
 	if (id) {
-		html = html + "<a href=\"#\" onclick=\"edit('" + id + "')\"><span class=\"label label-primary\">编辑</span></a>";  
+		html = html + "<a href=\"#\" onclick=\"_edit('" + id + "')\"><span class=\"label label-primary\">编辑</span></a>";  
 		html += "&nbsp;&nbsp;";
 		html = html + "<a href=\"#\" onclick=\"_delete('" + id + "')\"><span class=\"label label-danger\">删除</span></a>";  
 	}
@@ -39,27 +39,30 @@ function showErrorOrMessage(error, message) {
 
 /*************************** list begin *****************************/
 // 初始化列表页面
-function initListPage(error, message, autoResize) {
+function initListPage(error, message, autoLoad, autoResize) {
+	autoLoad = arguments[2] != undefined ? arguments[2] : true;
+	autoResize = arguments[3] != undefined ? arguments[3] : true;
+	
 	i18n();
 	
-	initDatagrid({url:URI_AJAX_LIST,autoLoad:true,rowStyler:statusRowStyler,autoResize:autoResize});
+	initDatagrid({url:URI_AJAX_LIST,autoLoad:autoLoad,rowStyler:statusRowStyler,autoResize:autoResize});
 	
 	showErrorOrMessage(error, message);
 	
 	// 跳转到新增页面
 	$(BTN_ADD_ID).click(function() {
-		add();
+		_add();
 	});
 }
 
 // 进入新增页
-function add() {
+function _add() {
 	$(FORM_ID_HIDDEN).attr("action", URI_ADD);
 	$(FORM_ID_HIDDEN).submit();
 }
 
 // 进入编辑页
-function edit(id) {
+function _edit(id) {
 	$(PARAM_ID).val(id);
 	$(FORM_ID_HIDDEN).attr("action", URI_EDIT);
 	$(FORM_ID_HIDDEN).submit();

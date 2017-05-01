@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,16 @@ public abstract class GenericController {
 	 * 表单校验是否有错误
 	 * 
 	 * @param bindingResult
+	 * @return
+	 */
+	protected boolean hasErrors(BindingResult bindingResult) {
+		return bindingResult.hasErrors() && !bindingResult.getAllErrors().isEmpty();
+	}
+
+	/**
+	 * 表单校验是否有错误
+	 * 
+	 * @param bindingResult
 	 * @param model
 	 * @return
 	 */
@@ -77,6 +88,21 @@ public abstract class GenericController {
 			model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
 		}
 		return hasErrors;
+	}
+
+	/**
+	 * 解析校验错误信息
+	 * 
+	 * @param bindingResult
+	 * @return
+	 */
+	protected String getError(BindingResult bindingResult) {
+		String error = StringUtils.EMPTY;
+		List<ObjectError> errors = bindingResult.getAllErrors();
+		if (hasErrors(bindingResult)) {
+			error = errors.get(0).getDefaultMessage();
+		}
+		return error;
 	}
 
 	/**

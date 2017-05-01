@@ -195,4 +195,7 @@
 			AND status = #{status,jdbcType=INTEGER}
 		</if>
 	</select>
+	<select id="countByCategoryId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1) from sys_resource where status != 2 and category_id = #{categoryId,jdbcType=INTEGER}
+	</select>
 </mapper>

@@ -23,4 +23,6 @@ public interface SysResourceCategoryDao {
 
 	List<SysResourceCategoryVO> listAll();
 
+	int countByParentId(Integer parentId);
+
 }

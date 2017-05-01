@@ -120,7 +120,7 @@ CREATE TABLE `sys_resource_category` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源分类';
 
 -- 资源分类初始化数据
-INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类', 0, 1, '资源分类', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类', 0, 0, '资源分类', now(), 'admin', now(), 'admin');
 
 
 -- 菜单表

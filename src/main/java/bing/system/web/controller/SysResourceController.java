@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,7 @@ import bing.system.vo.SysResourceCategoryVO;
 import bing.system.vo.SysResourceVO;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
+import bing.web.api.RestResponseCodes;
 import bing.web.controller.GenericController;
 
 @Controller
@@ -47,6 +50,9 @@ public class SysResourceController extends GenericController {
 	private static final String PREFIX = "system/resource";
 	private static final String AJAX_LIST = "ajax/system/resources";
 	private static final String AJAX_CATEGORY_TREE = "ajax/system/category/tree";
+	private static final String AJAX_CATEGORY_SAVE = "ajax/system/category/save";
+	private static final String AJAX_CATEGORY_UPDATE = "ajax/system/category/update";
+	private static final String AJAX_CATEGORY_DELETE = "ajax/system/category/delete";
 
 	private static final String LIST = PREFIX + "/list";
 	private static final String ADD = PREFIX + "/add";
@@ -91,6 +97,45 @@ public class SysResourceController extends GenericController {
 		RestResponse<List<SysResourceCategoryVO>> response = new RestResponse<>();
 		List<SysResourceCategoryVO> categories = sysResourceService.getCategoryTree();
 		response.setData(categories);
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = AJAX_CATEGORY_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> categorySave(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult) {
+		RestResponse<Object> response = new RestResponse<>();
+		if (hasErrors(bindingResult)) {
+			response.setCode(RestResponseCodes.VALIDATE_FAILED);
+			response.setMessage(getError(bindingResult));
+			return response;
+		}
+		sysResourceService.saveCategory(entity);
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = AJAX_CATEGORY_UPDATE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> categoryUpdate(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult) {
+		RestResponse<Object> response = new RestResponse<>();
+		if (hasErrors(bindingResult)) {
+			response.setCode(RestResponseCodes.VALIDATE_FAILED);
+			response.setMessage(getError(bindingResult));
+			return response;
+		}
+		sysResourceService.updateCategory(entity);
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = AJAX_CATEGORY_DELETE + "/{categoryId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> categoryDelete(@PathVariable Integer categoryId) {
+		RestResponse<Object> response = new RestResponse<>();
+		Optional<SysUser> optional = getCurrentUser();
+		String username = StringUtils.EMPTY;
+		if (optional.isPresent()) {
+			username = optional.get().getUsername();
+		}
+		sysResourceService.deleteCategoryById(categoryId, username);
 		return response;
 	}
 

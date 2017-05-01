@@ -159,4 +159,7 @@
 		<include refid="Base_Column_List" />
 		from sys_resource_category where status != 2
 	</select>
+	<select id="countByParentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1) from sys_resource_category where status != 2 and parent_id = #{parentId,jdbcType=INTEGER}
+	</select>
 </mapper>

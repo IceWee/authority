@@ -15,4 +15,10 @@ public interface SysResourceService extends GenericService<SysResource, SysResou
 
 	SysResourceCategory getCategoryById(Integer categoryId);
 
+	void saveCategory(SysResourceCategory category);
+
+	void updateCategory(SysResourceCategory category);
+
+	void deleteCategoryById(Integer categoryId, String username);
+
 }

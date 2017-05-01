@@ -149,7 +149,7 @@ function initDatagrid(options) {
 	var minHeight = options.minHeight ? options.minHeight : 500;
 	var minWidth = options.minWidth ? options.minWidth : 400;
 	var tipsId = options.tipsId ? options.tipsId : "tips";
-	var autoLoad = options.autoLoad != undefined ? options.autoLoad : false;
+	var autoLoad = options.autoLoad != undefined ? options.autoLoad : true;
 	var rowStyler = options.rowStyler ? options.rowStyler : function(){return "";};
 	var autoResize = options.autoResize != undefined ? options.autoResize : true;
 	$(tableId).datagrid({
@@ -159,7 +159,7 @@ function initDatagrid(options) {
 		singleSelect : singleSelect, //  只允许单选
 		nowrap : true, // 设置为true，当数据长度超出列宽时将会自动截取  
 		striped : true, // 设置为true将交替显示行背景
-		collapsible : true, // 显示可折叠按钮  
+		collapsible : false, // 显示可折叠按钮  
 		toolbar : toolbarId, // 自定义工具
 		fitColumns : true, // 允许表格自动缩放，以适应父容器  
 		remoteSort : true,
@@ -202,6 +202,14 @@ function initDatagrid(options) {
 
 // 列表查询
 function doSearch(url, tableId, formSearchId, tipsId) {
+	url = arguments[0] ? arguments[0] : null;
+	tableId = arguments[1] ? arguments[1] : "#datagrid";
+	formSearchId = arguments[2] ? arguments[2] : "#form_search";
+	tipsId = arguments[3] ? arguments[3] : "tips";
+	if (url == null) {
+		console.log("url是空，无法执行查询操作...")
+		return;
+	}
 	var RESPONSE_OK = "200";
 	hideTips(tipsId);
 	ajaxLoading($.i18n.prop("load.loading"));

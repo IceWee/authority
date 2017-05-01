@@ -2,6 +2,8 @@ package bing.system.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import bing.domain.GenericObject;
 
 public class SysResourceCategory extends GenericObject implements Serializable {
@@ -10,6 +12,7 @@ public class SysResourceCategory extends GenericObject implements Serializable {
 
 	private Integer id;
 
+	@NotNull(message = "{name.required}")
 	private String name;
 
 	private Integer parentId;

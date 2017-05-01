@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class RestResponse<T> {
 
-	private String code = "200";
+	private String code = RestResponseCodes.OK;
 	private String message = StringUtils.EMPTY;
 	private T data;
 	private long timestamp;

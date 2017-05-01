@@ -24,4 +24,6 @@ public interface SysResourceDao {
 
 	List<SysResourceVO> listByCondition(SysResourceCondition condition);
 
+	int countByCategoryId(Integer categoryId);
+
 }

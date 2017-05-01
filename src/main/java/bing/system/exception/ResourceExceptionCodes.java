@@ -19,6 +19,16 @@ public class ResourceExceptionCodes extends BusinessExceptionCodes {
 	 */
 	public static final String URL_FORBIDDEN_MODIFY = PREFIX + "002";
 
+	/**
+	 * 分类下包含资源
+	 */
+	public static final String CATEGORY_CONTAINS_RESOURCE = PREFIX + "003";
+
+	/**
+	 * 包含子分类
+	 */
+	public static final String CATEGORY_CONTAINS_SUBCATEGORY = PREFIX + "004";
+
 	private ResourceExceptionCodes() {
 		super();
 	}

@@ -94,7 +94,6 @@ public class SysResourceServiceImpl implements SysResourceService {
 		if (!StringUtils.equals(origionUrl, newUrl)) {
 			throw new BusinessException(ResourceExceptionCodes.URL_FORBIDDEN_MODIFY);
 		}
-		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
 		sysResourceDao.updateByPrimaryKeySelective(entity);
 	}
@@ -126,6 +125,37 @@ public class SysResourceServiceImpl implements SysResourceService {
 	@Override
 	public SysResourceCategory getCategoryById(Integer categoryId) {
 		return sysResourceCategoryDao.selectByPrimaryKey(categoryId);
+	}
+
+	@Override
+	public void saveCategory(SysResourceCategory category) {
+		category.setCreateDate(new Date());
+		category.setUpdateDate(new Date());
+		sysResourceCategoryDao.insert(category);
+	}
+
+	@Override
+	public void updateCategory(SysResourceCategory category) {
+		category.setUpdateDate(new Date());
+		sysResourceCategoryDao.updateByPrimaryKey(category);
+	}
+
+	@Override
+	public void deleteCategoryById(Integer categoryId, String username) {
+		Integer resourceCount = sysResourceDao.countByCategoryId(categoryId);
+		if (resourceCount > 0) {
+			throw new BusinessException(ResourceExceptionCodes.CATEGORY_CONTAINS_RESOURCE);
+		}
+		Integer subCategoryCount = sysResourceCategoryDao.countByParentId(categoryId);
+		if (subCategoryCount > 0) {
+			throw new BusinessException(ResourceExceptionCodes.CATEGORY_CONTAINS_SUBCATEGORY);
+		}
+		SysResourceCategory entity = new SysResourceCategory();
+		entity.setId(categoryId);
+		entity.setStatus(StatusEnum.DELETED.ordinal());
+		entity.setUpdateUser(username);
+		entity.setUpdateDate(new Date());
+		sysResourceCategoryDao.updateByPrimaryKeySelective(entity);
 	}
 
 	private void buildTree(List<SysResourceCategoryVO> topCategories, List<SysResourceCategoryVO> categories) {
