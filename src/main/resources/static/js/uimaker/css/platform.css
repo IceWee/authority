@@ -1,6 +1,6 @@
 html {
 	height: 100%;
-	background: #007cb6;
+	background: #347AB6;
 	min-width: 1200px;
 	overflow: hidden
 }
@@ -9,7 +9,7 @@ html {
 	height: 70px;
 	position: relative;
 	z-index: 2;
-	background-color: #007cb6;
+	background-color: #347AB6;
 	background: url('../images/main/xg_left.png?1464005190') left center
 		no-repeat, url('../images/main/xg_right.png?1464005212') right center
 		no-repeat, url('../images/main/top_bottombg.png?1464006836') left
@@ -21,7 +21,7 @@ html {
 	padding: 0 15px;
 	height: 100%;
 	width: 230px;
-	border-right: 1px solid #007cb6;
+	border-right: 1px solid #347AB6;
 	line-height: 70px
 }
 
@@ -48,7 +48,7 @@ html {
 	height: 70px;
 	color: #fff;
 	padding: 0 15px;
-	border-right: 1px solid #007cb6
+	border-right: 1px solid #347AB6
 }
 
 #pf-hd .pf-nav .pf-nav-item a {
@@ -92,7 +92,7 @@ html {
 	width: 26px;
 	height: 23px;
 	border-radius: 3px 3px 0 0;
-	background: #007cb6;
+	background: #347AB6;
 	color: #fff;
 	text-decoration: none;
 	text-align: center;
@@ -101,7 +101,7 @@ html {
 
 #pf-hd .pf-nav-prev:hover, #pf-hd .pf-nav-next:hover {
 	background: #fff;
-	color: #007cb6
+	color: #347AB6
 }
 
 #pf-hd .pf-nav-prev.disabled, #pf-hd .pf-nav-next.disabled {
@@ -184,7 +184,7 @@ html {
 }
 
 #pf-hd .pf-user .pf-user-panel li:hover .iconfont {
-	color: #007cb6
+	color: #347AB6
 }
 
 #pf-hd .pf-user:hover {
@@ -302,13 +302,13 @@ html {
 #pf-bd #pf-sider .sider-nav>li .sider-nav-icon {
 	float: left;
 	margin: 0 10px 0 0;
-	color: #007cb6;
+	color: #347AB6;
 	font-size: 20px
 }
 
 #pf-bd #pf-sider .sider-nav>li.current {
 	border-bottom: none;
-	background: #007cb6
+	background: #347AB6
 }
 
 #pf-bd #pf-sider .sider-nav>li.current>a {
@@ -339,7 +339,7 @@ html {
 }
 
 #pf-bd #pf-sider .sider-nav>li .sider-nav-s li.active a {
-	color: #007cb6;
+	color: #347AB6;
 	font-weight: bold
 }
 
@@ -394,7 +394,7 @@ html {
 }
 
 #pf-bd #pf-page .easyui-tabs1 .tabs li.tabs-selected {
-	border-top: 3px solid #007cb6
+	border-top: 3px solid #347AB6
 }
 
 #pf-bd #pf-page .easyui-tabs1 .tabs-panels {
@@ -436,7 +436,7 @@ html {
 }
 
 #pf-ft .system-name .iconfont, #pf-ft .copyright-name .iconfont {
-	color: #007cb6;
+	color: #347AB6;
 	margin-right: 3px
 }
 
@@ -449,6 +449,6 @@ html {
 }
 
 .menu .menu-active {
-	background: #007cb6;
+	background: #347AB6;
 	color: #fff
 }

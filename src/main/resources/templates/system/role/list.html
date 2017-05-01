@@ -56,9 +56,15 @@
 							<option value="" selected>全部</option>
 							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
 						</select>
-					    <a id="button_search" th:text="#{search}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" data-options="selected:true">查询</a>
-					    <a id="button_reset" th:text="#{reset}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
-				        <a id="button_add" th:text="#{add}" href="javascript:void(0)" class="easyui-linkbutton" data-options="selected:true">新增</a>
+						<button type="button" id="button_search" class="btn btn-primary">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<span th:text="#{search}">查询</span>
+						</button>
+						<button type="button" id="button_reset" class="btn btn-default">
+							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;<span th:text="#{reset}">重置</span>
+						</button>
+						<button type="button" id="button_add" class="btn btn-primary">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">新增</span>
+						</button>
 					</form>
 					</div>
 				</div>

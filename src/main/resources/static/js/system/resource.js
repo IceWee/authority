@@ -25,18 +25,7 @@ function initResourceListPage() {
 			if (json.code === RESPONSE_OK) {
 				if (json.data) {
 					var array = json.data;
-					$("#tree_category").tree({
-						data: array,
-						animate: true,
-						onClick: function(node){
-							$("#categoryId").val(node.id);
-						}
-					});
-					var categoryId = $("#categoryId").val();
-					if (categoryId != -1) {
-						var node = $("#tree_category").tree("find", categoryId);
-						$("#tree_category").tree("select", node.target);
-					}
+					initCategoryTree(array);
 					initListPage(error, message);
 				}
 			} else {
@@ -47,4 +36,51 @@ function initResourceListPage() {
 			showErrorTips($.i18n .prop("http.request.failed"));
 		}
 	});
+}
+
+// 初始化资源分类树
+function initCategoryTree(data) {
+	$("#tree_category").tree({
+		data: data,
+		animate: true,
+		onClick: function(node){
+			$("#categoryId").val(node.id);
+		},
+		onContextMenu: function(e, node){
+			e.preventDefault();
+			$(this).tree("select", node.target);
+			$("#categoryId").val(node.id);
+			$("#menu_category").menu("show", {left: e.pageX, top: e.pageY});
+		}
+	});
+	// 选中默认节点
+	var categoryId = $("#categoryId").val();
+	if (categoryId != -1) {
+		var node = $("#tree_category").tree("find", categoryId);
+		$("#tree_category").tree("select", node.target);
+	}
+}
+
+function addCategory() {
+	alert("add");
+}
+
+function editCategory() {
+	alert("edit");
+}
+
+function deleteCategory() {
+	alert("delete");
+}
+function removeit(){
+	var node = $('#tree_category').tree('getSelected');
+	$('#tree_category').tree('remove', node.target);
+}
+function collapse(){
+	var node = $('#tree_category').tree('getSelected');
+	$('#tree_category').tree('collapse',node.target);
+}
+function expand(){
+	var node = $('#tree_category').tree('getSelected');
+	$('#tree_category').tree('expand',node.target);
 }

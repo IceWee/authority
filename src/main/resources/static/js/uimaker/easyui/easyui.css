@@ -308,7 +308,7 @@ a:focus {
 	padding: 0;
 	position: relative;
 	border: 0;
-	border-top: 2px solid #007cb6;
+	border-top: 2px solid #347AB6;
 	-moz-border-radius: 5px 5px 0 0;
 	-webkit-border-radius: 5px 5px 0 0;
 	border-radius: 5px 5px 0 0
@@ -325,8 +325,8 @@ a:focus {
 	white-space: nowrap;
 	border-width: 1px;
 	border-style: solid;
-	background-color: #007cb6;
-	border: 1px solid #007cb6;
+	background-color: #347AB6;
+	border: 1px solid #347AB6;
 	border-top: 2px;
 	color: #fff;
 	font-size: 13px;
@@ -652,7 +652,7 @@ a:focus {
 
 .tabs li a.tabs-inner {
 	color: #fff;
-	background-color: #007cb6
+	background-color: #347AB6
 }
 
 .tabs-header, .tabs-tool {
@@ -1320,7 +1320,7 @@ a:focus {
 }
 
 .calendar-today {
-	color: #007cb6
+	color: #347AB6
 }
 
 .calendar-menu-year {
@@ -1360,9 +1360,9 @@ a:focus {
 }
 
 .calendar-selected {
-	background-color: #007cb6;
+	background-color: #347AB6;
 	color: #fff;
-	border: 1px solid #007cb6;
+	border: 1px solid #347AB6;
 	padding: 0
 }
 
@@ -1956,16 +1956,16 @@ a:focus {
 }
 
 .l-btn-selected, .l-btn-selected:hover {
-	background: #007cb6;
+	background: #347AB6;
 	filter: none;
 	color: #fff;
-	border: 1px solid #007cb6
+	border: 1px solid #347AB6
 }
 
 .l-btn-plain-selected, .l-btn-plain-selected:hover {
-	background: #007cb6;
+	background: #347AB6;
 	color: #fff;
-	border: 1px solid #007cb6
+	border: 1px solid #347AB6
 }
 
 .layout {
@@ -2564,9 +2564,9 @@ a:hover.pagination-link {
 }
 
 .pagination table .l-btn-plain:hover {
-	background: #007cb6;
+	background: #347AB6;
 	color: #fff;
-	border: 1px solid #007cb6;
+	border: 1px solid #347AB6;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
 	border-radius: 0
@@ -3412,7 +3412,7 @@ a:hover.pagination-link {
 }
 
 .switchbutton-on {
-	background: #007cb6;
+	background: #347AB6;
 	color: #fff
 }
 
@@ -3597,7 +3597,7 @@ a:hover.pagination-link {
 }
 
 .combobox-item-selected {
-	background-color: #007cb6;
+	background-color: #347AB6;
 	color: #fff
 }
 

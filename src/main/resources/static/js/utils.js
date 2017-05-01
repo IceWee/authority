@@ -43,7 +43,6 @@ $.fn.extend({
     resizeDataGrid : function(heightMargin, widthMargin, minHeight, minWidth) {  
         var height = $(".panel.datagrid").parent().height() - heightMargin;
         var width = $(".panel.datagrid").parent().width() - widthMargin;
-        console.log("height = " + height + ", width = " + width);
         height = height < minHeight ? minHeight : height;  
         width = width < minWidth ? minWidth : width;  
         $(this).datagrid('resize', {  

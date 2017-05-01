@@ -45,7 +45,7 @@ body.white .login-bd .lg-zone .lg-box .lg-label h4 {
 .login-hd {
 	position: relative;
 	height: 94px;
-	background: #007cb6;
+	background: #347AB6;
 	line-height: 94px;
 	min-width: 1200px
 }
@@ -172,7 +172,7 @@ body.white .login-bd .lg-zone .lg-box .lg-label h4 {
 }
 
 .login-bd .bd-inner .inner-wrap .lg-zone .lg-box .lg-label h4 {
-	border-left: 4px solid #007cb6
+	border-left: 4px solid #347AB6
 }
 
 .login-bd .bd-inner .inner-wrap .lg-zone .lg-box .input-item {
@@ -268,7 +268,7 @@ body.white .login-bd .lg-zone .lg-box .lg-label h4 {
 }
 
 .login-bd .bd-inner .inner-wrap .lg-zone .lg-box .tips a.register {
-	color: #007cb6;
+	color: #347AB6;
 	margin-left: 12px;
 	margin-right: 34px
 }
@@ -296,7 +296,7 @@ body.white .login-bd .lg-zone .lg-box .lg-label h4 {
 }
 
 .login-bd .bd-inner .inner-wrap .lg-zone .lg-box .enter a.supplier {
-	background-color: #007cb6
+	background-color: #347AB6
 }
 
 .login-bd .bd-inner .inner-wrap .lg-poster {
