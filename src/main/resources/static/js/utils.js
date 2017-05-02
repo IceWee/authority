@@ -140,7 +140,7 @@ function initDatagrid(options) {
 	}
 	var url = options.url;
 	var tableId = options.tableId ? "#" + options.tableId : "#datagrid";
-	var singleSelect = options.singleSelect != undefined ? options.singleSelect : true;
+	var singleSelect = options.singleSelect;
 	var toolbarId = options.toolbarId ? "#" + options.toolbarId : "#search_tools";
 	var pageSize = options.pageSize ? options.pageSize : 10;
 	var formSearchId = options.formSearchId ? "#" + options.formSearchId : "#form_search";
@@ -149,9 +149,9 @@ function initDatagrid(options) {
 	var minHeight = options.minHeight ? options.minHeight : 500;
 	var minWidth = options.minWidth ? options.minWidth : 400;
 	var tipsId = options.tipsId ? options.tipsId : "tips";
-	var autoLoad = options.autoLoad != undefined ? options.autoLoad : true;
+	var autoLoad = options.autoLoad;
 	var rowStyler = options.rowStyler ? options.rowStyler : function(){return "";};
-	var autoResize = options.autoResize != undefined ? options.autoResize : true;
+	var autoResize = options.autoResize;
 	$(tableId).datagrid({
 		iconCls : "icon-ok",
 		pageSize : pageSize,
