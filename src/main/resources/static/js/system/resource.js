@@ -1,5 +1,6 @@
 var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
 var FORM_ID_HIDDEN = "#form_search"; // 隐藏表单ID
+var FORM_ID_CATEGORY = "#form_category"; // 资源分类表单ID
 var URI_AJAX_LIST = "/ajax/system/resources"; // 列表页获取列表数据异步URI
 var URI_AJAX_CATEGORY_TREE = "/ajax/system/category/tree"; // 列表页获取列表数据异步URI
 var URI_AJAX_CATEGORY_SAVE = "/ajax/system/category/save"; // 列表页获取列表数据异步URI
@@ -16,6 +17,8 @@ var BTN_SAVE_ID = "#button_save"; // 保存按钮ID
 var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
+var TREE_ID_RESOURCE_CATEGORY = "tree_category";
+var DIALOG_ID_CATEGORY = "#dialog_category";
 
 // 初始化资源分类树
 function initResourceListPage() {
@@ -27,7 +30,24 @@ function initResourceListPage() {
 			if (json.code === "200") {
 				if (json.data) {
 					var array = json.data;
-					initCategoryTree(array);
+					$("#tree_category").tree({
+						data: array,
+						animate: true,
+						onClick: function(node){
+							selectCategory(node);
+						},
+						// 右键菜单
+						onContextMenu: function(e, node){
+							e.preventDefault();
+							selectCategory(node);
+							$("#menu_category").menu("show", {left: e.pageX, top: e.pageY});
+						}
+					});
+					// 选中第一个节点
+					$("#_easyui_tree_1").addClass("tree-node-selected"); // 设置第一个节点高亮 
+					var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
+					$("#selectedCategoryId").val(node.id);
+					initListPage(error, message);
 				}
 			} else {
 				showErrorTips(json.message);
@@ -40,17 +60,17 @@ function initResourceListPage() {
 	
 	// 关闭分类弹出框
 	$("#button_dialog_category_cancel").click(function() {
-		$("#dialog_category").modal("hide");
+		$(DIALOG_ID_CATEGORY).modal("hide");
 	});
 	
 	readonlyColor("parentCategoryName");
 	
 	// 保存分类
 	$("#button_dialog_category_save").click(function(){
-		var url = $("#form_category").attr("action");
-		var data = JSON.stringify($("#form_category").serializeJson());
-		var node = getSelectedCategory();
-		if ($("#form_category").form("validate")) {
+		var url = $(FORM_ID_CATEGORY).attr("action");
+		var data = JSON.stringify($(FORM_ID_CATEGORY).serializeJson());
+		var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
+		if ($(FORM_ID_CATEGORY).form("validate")) {
 			ajaxLoading($.i18n.prop("save.saving"));
 			$.ajax({
 				type : "POST",
@@ -61,7 +81,7 @@ function initResourceListPage() {
 				success : function(json) {
 					ajaxLoaded();
 					if (json.code === "200") {
-						$("#dialog_category").modal("hide");
+						$(DIALOG_ID_CATEGORY).modal("hide");
 						freshCategoryTree(node);
 						showSuccessTips($.i18n .prop("save.success"));
 					} else {
@@ -77,30 +97,12 @@ function initResourceListPage() {
 	});
 }
 
-// 初始化资源分类树
-function initCategoryTree(data) {
-	$("#tree_category").tree({
-		data: data,
-		animate: true,
-		onClick: function(node){
-			selectCategory(node);
-		},
-		onContextMenu: function(e, node){
-			e.preventDefault();
-			selectCategory(node);
-			$("#menu_category").menu("show", {left: e.pageX, top: e.pageY});
-		}
-	});
-	// 选中第一个节点
-	selectFirstCategory();
-}
-
 // 新增资源分类
 function addCategory() {
-	$("#form_category").attr("action", URI_AJAX_CATEGORY_SAVE);
-	$("#dialog_category").modal({keyboard:false});
-	var node = getSelectedCategory();
-	$("#form_category").form("load", {
+	$(FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_SAVE);
+	$(DIALOG_ID_CATEGORY).modal({keyboard:false});
+	var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
+	$(FORM_ID_CATEGORY).form("load", {
 		parentId: node.id,
 		parentCategoryName: node.text,
 		name: null,
@@ -110,15 +112,15 @@ function addCategory() {
 
 // 编辑资源分类
 function editCategory() {
-	$("#form_category").attr("action", URI_AJAX_CATEGORY_UPDATE);
-	$("#dialog_category").modal({keyboard:false});
-	var node = getSelectedCategory();
-	var parent = getParentCategory(node);
+	$(FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_UPDATE);
+	$(DIALOG_ID_CATEGORY).modal({keyboard:false});
+	var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
+	var parent = getParentTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
 	var parentCategoryName = null
 	if (parent) {
 		parentCategoryName = parent.text;
 	}
-	$("#form_category").form("load", {
+	$(FORM_ID_CATEGORY).form("load", {
 		parentId: node.parentId,
 		parentCategoryName: parentCategoryName,
 		name: node.text,
@@ -129,8 +131,8 @@ function editCategory() {
 
 // 删除资源分类
 function deleteCategory() {
-	var node = getSelectedCategory();
-	var parent = getParentCategory(node);
+	var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
+	var parent = getParentTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
 	$.messager.confirm($.i18n.prop("tip.info"), $.i18n.prop("delete.prompt"), function(go){
 		if (go){
 			$.ajax({
@@ -162,10 +164,9 @@ function freshCategoryTree(parent) {
 		success : function(json) {
 			if (json.code === "200") {
 				if (json.data) {
-					var array = json.data;
-					$("#tree_category").tree({data:array});
+					loadTreeData(TREE_ID_RESOURCE_CATEGORY, json.data);
 					if (parent) {
-						var node = getCategory(parent.id);
+						var node = getTreeNode(TREE_ID_RESOURCE_CATEGORY, parent.id);
 						selectCategory(node);
 					}
 				}
@@ -179,86 +180,34 @@ function freshCategoryTree(parent) {
 	});
 }
 
-function getCategory(id) {
-	return $("#tree_category").tree("find", id);
-}
-
-function getSelectedCategory() {
-	return $("#tree_category").tree("getSelected");
-}
-
-function getParentCategory(node) {
-	return $("#tree_category").tree("getParent", node.target);
-}
-
+// 选中资源分类
 function selectCategory(node) {
 	if (node) {
-		$("#tree_category").tree("select", node.target);
+		selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
+		
 		$("#selectedCategoryId").val(node.id);
+		
 		doSearch(URI_AJAX_LIST);
 	}
 }
 
-function selectFirstCategory() {
-	$("#_easyui_tree_1").addClass("tree-node-selected"); // 设置第一个节点高亮 
-	var node = getSelectedCategory();
-	$("#selectedCategoryId").val(node.id);
-	initListPage(error, message);
-}
-
 /************************************** add/edit begin ********************************************/
-function initCategoryTreeDialog() {
-	$.ajax({
-		type : "GET",
-		url : URI_AJAX_CATEGORY_TREE,
-		dataType : "json",
-		success : function(json) {
-			if (json.code === "200") {
-				if (json.data) {
-					var array = json.data;
-					$("#tree_category").tree({
-						data: array,
-						animate: true
-					});
-				}
-			} else {
-				showErrorTips(json.message);
-			}
-		},
-		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"));
-		}
-	});
-	
-	$("#categoryName").textbox("textbox").bind("click", function() {  
-		$("#dialog_category_tree").modal({keyboard:false});
-	});
-	
-	$("#button_tree_cancel").click(function() {
-		$("#dialog_category_tree").modal("hide");
-	});
-	
-	$("#button_tree_select").click(function() {
-		var node = $("#tree_category").tree("getSelected");
-		if (node) {
-			$("#form_default").form("load", {
-				categoryId: node.id,
-				categoryName: node.text
-			});
-			$("#dialog_category_tree").modal("hide");
-		}
-	});
-}
-
 function initAddPageExt(error, message) {
 	initAddPage(error, message);
 	
-	initCategoryTreeDialog();
+	initResourceCategoryTree({triggerInputId:"categoryName", onSelectClickCall:onSelectClickCallForDetail});
 }
 
 function initEditPageExt(error, message) {
 	initEditPage(error, message);
 	
-	initCategoryTreeDialog();
+	initResourceCategoryTree({triggerInputId:"categoryName", onSelectClickCall:onSelectClickCallForDetail});
+}
+
+function onSelectClickCallForDetail(node) {
+	$(FORM_ID_DETAIL).form("load", {
+		categoryId: node.id,
+		categoryName: node.text
+	});
 }
 /************************************** add/edit end ********************************************/
