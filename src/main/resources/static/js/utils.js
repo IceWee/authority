@@ -48,7 +48,7 @@ $.fn.extend({
         $(this).datagrid('resize', {  
             height : height,  
             width : width  
-        });  
+        });
     }  
 });
 
