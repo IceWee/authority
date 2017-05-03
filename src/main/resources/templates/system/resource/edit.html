@@ -67,7 +67,7 @@
 						<label th:text="#{resource.category}">资源分类</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${category.name}" type="text" data-options="iconCls:'icon-filter'" id="categoryName" name="categoryName" readonly="readonly"></input>
+		    			<input class="easyui-textbox input-default" th:value="${category.name}" type="text" data-options="required:true,iconCls:'icon-filter'" id="categoryName" name="categoryName" readonly="readonly"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -104,6 +104,6 @@
 </form>
 </div>
 <!-- 资源分类树 -->
-<div th:replace="/common/tree :: tree_resource_category"></div>
+<div th:replace="/system/resource/tree :: tree_resource_category"></div>
 </body>
 </html>
