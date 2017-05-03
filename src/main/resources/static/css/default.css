@@ -22,3 +22,22 @@ body {
 a:link, a:hover, a:active, a:visited {
 	text-decoration: none;
 }
+
+/*bootstrap兼容问题和easyui的bug*/
+.panel-header, .panel-body {
+	border-width: 0px;
+}
+
+.datagrid, .combo-p {
+	border: solid 1px #D4D4D4;
+}
+
+.datagrid * {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+.datalist {
+	z-index: 1000;
+}

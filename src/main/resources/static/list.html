@@ -1,10 +1,23 @@
 <!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="/common/header :: header(~{::title},~{::link})" />
 <title th:text="#{system.name}">认证与授权管理系统</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
-<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
-<script type="text/javascript" th:src="@{/js/crud.js}"></script>
+<title th:replace="${title}">标题</title>
+<link rel="stylesheet" type="text/css" href="/js/bootstrap-3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/js/uimaker/easyui/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/js/uimaker/icon.css" />
+<link rel="stylesheet" type="text/css" href="/css/default.css" />
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/jquery.i18n.properties-1.0.9.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/i18n.js"></script>
+<script type="text/javascript" src="/js/utils.js"></script>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/jquery.easyui.validator.js"></script>
+<script type="text/javascript" src="/js/uimaker/easyui/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/system/default.css" />
+<script type="text/javascript" src="/js/system/user.js"></script>
+<script type="text/javascript" src="/js/crud.js"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
@@ -82,6 +95,31 @@
 </div>
 </div>
 <!-- 用户角色授权弹出框框 -->
-<div th:replace="/system/user/lrListBox :: dialog_lr_list_box"></div>
+
+		    	<div class="container-fluid" style="width: 100%">
+			   		<div class="row">
+			    		<div id="_tips_lr_list_box" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
+			   		</div>
+			   		<div class="row">
+						<div class="col-md-5">
+							<div id="_lr_list_box_left" class="easyui-datalist" th:title="#{unselect}" title="未选" style="width:330px;height:250px">
+			  				</div>
+						</div>
+						<div class="col-md-2" style="height:250px;padding-top:100px;padding-left:35px">
+			    			<button id="_button_lr_list_box_left" class="btn btn-primary">
+			                    <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span th:text="#{add}">添加</span>
+			                </button>
+			                <br/><br/>
+			                <button id="_button_lr_list_box_right" class="btn btn-primary">
+			                    <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span th:text="#{remove}">移除</span>
+			                </button>
+						</div>
+						<div class="col-md-5">
+							<div id="_lr_list_box_right" class="easyui-datalist" th:title="#{selected}" title="已选" style="width:330px;height:250px">
+							</div>
+						</div>
+				    </div>
+				</div>
+	    	
 </body> 
 </html>

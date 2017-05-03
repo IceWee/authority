@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import bing.constant.HiddenEnum;
 import bing.domain.GenericObject;
 
@@ -12,12 +14,14 @@ public class SysRole extends GenericObject implements Serializable {
 
 	private static final long serialVersionUID = 745422160006062721L;
 
+	@JsonProperty("value")
 	private Integer id;
 
 	@NotNull(message = "{code.required}")
 	@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{code.illegal}")
 	private String code;
 
+	@JsonProperty("text")
 	@NotNull(message = "{name.required}")
 	private String name;
 
