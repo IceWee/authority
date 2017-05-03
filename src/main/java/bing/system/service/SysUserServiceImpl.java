@@ -22,15 +22,13 @@ import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
 import bing.exception.BusinessException;
 import bing.system.condition.SysUserCondition;
-import bing.system.dao.SysRoleDao;
 import bing.system.dao.SysUserDao;
 import bing.system.dao.SysUserRoleDao;
 import bing.system.exception.UserExceptionCodes;
-import bing.system.model.SysRole;
 import bing.system.model.SysUser;
 import bing.system.model.SysUserRole;
+import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
-import bing.system.vo.UserRoleVO;
 import bing.util.PasswordUtils;
 
 @Service("sysUserService")
@@ -38,9 +36,6 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private SysUserDao sysUserDao;
-
-	@Autowired
-	private SysRoleDao sysRoleDao;
 
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
@@ -114,23 +109,23 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public UserRoleVO getUserRoles(Integer userId) {
-		List<SysRole> roles = sysRoleDao.listAll();
-		List<SysRole> selectedRoles = sysRoleDao.listByUserId(userId);
-		roles.removeAll(selectedRoles);
-		UserRoleVO userRoles = new UserRoleVO();
-		userRoles.setUserId(userId);
-		userRoles.setUnselectRoles(roles);
-		userRoles.setSelectedRoles(selectedRoles);
-		return userRoles;
+	public RoleUserVO getRoleUsers(Integer roleId) {
+		List<SysUser> users = sysUserDao.listAll();
+		List<SysUser> selectedUsers = sysUserDao.listByRoleId(roleId);
+		users.removeAll(selectedUsers);
+		RoleUserVO roleUsers = new RoleUserVO();
+		roleUsers.setRoleId(roleId);
+		roleUsers.setUnselectUsers(users);
+		roleUsers.setSelectedUsers(selectedUsers);
+		return roleUsers;
 	}
 
 	@Override
 	@Transactional
-	public void saveUserRoles(Integer userId, Integer[] roleIds, String username) {
-		sysUserRoleDao.deleteByUserId(userId);
-		if (ArrayUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+	public void saveRoleUsers(Integer roleId, Integer[] userIds, String username) {
+		sysUserRoleDao.deleteByRoleId(roleId);
+		if (ArrayUtils.isNotEmpty(userIds)) {
+			List<SysUserRole> entities = Arrays.asList(userIds).stream().map(userId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}

@@ -2,10 +2,12 @@
 function operateBtnHtml(value, row, index) {
 	var id = row.id;
 	var html = "";
+	var label_edit = $.i18n .prop("operate.edit");
+	var label_delete = $.i18n .prop("operate.delete");
 	if (id) {
-		html = html + "<a href=\"#\" onclick=\"_edit('" + id + "')\"><span class=\"label label-primary\">编辑</span></a>";  
+		html = html + "<a href=\"#\" onclick=\"_edit('" + id + "')\"><span class=\"label label-primary\">" + label_edit + "</span></a>";  
 		html += "&nbsp;&nbsp;";
-		html = html + "<a href=\"#\" onclick=\"_delete('" + id + "')\"><span class=\"label label-danger\">删除</span></a>";  
+		html = html + "<a href=\"#\" onclick=\"_delete('" + id + "')\"><span class=\"label label-danger\">" + label_delete + "</span></a>";  
 	}
 	return html;
 }

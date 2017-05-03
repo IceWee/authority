@@ -5,26 +5,26 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import bing.domain.GenericService;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
+import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
-import bing.system.vo.UserRoleVO;
 
 public interface SysUserService extends UserDetailsService, GenericService<SysUser, SysUserVO, SysUserCondition> {
 
 	/**
-	 * 获取用户权角色对象
+	 * 获取角色用户对象
 	 * 
-	 * @param userId
+	 * @param roleId
 	 * @return
 	 */
-	UserRoleVO getUserRoles(Integer userId);
+	RoleUserVO getRoleUsers(Integer roleId);
 
 	/**
-	 * 保存用户角色
+	 * 保存角色用户
 	 * 
-	 * @param userId
-	 * @param roleIds
+	 * @param roleId
+	 * @param userIds
 	 * @param username
 	 */
-	void saveUserRoles(Integer userId, Integer[] roleIds, String username);
+	void saveRoleUsers(Integer roleId, Integer[] userIds, String username);
 
 }

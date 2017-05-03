@@ -32,29 +32,13 @@ public class SysRoleResourceServiceImpl implements SysRoleResourceService {
 
 	@Override
 	public void save(SysRoleResource entity) {
-		Integer roleId = entity.getRoleId();
-		Integer resourceId = entity.getResourceId();
-		SysRoleResourceCondition condition = new SysRoleResourceCondition();
-		condition.setRoleId(roleId);
-		condition.setResourceId(resourceId);
-		List<SysRoleResource> list = sysRoleResourceDao.listByCondition(condition);
-		if (list.isEmpty()) {
-			sysRoleResourceDao.insert(entity);
-		} else { // 已授权
-			Integer status;
-			for (SysRoleResource sysRoleResource : list) {
-				status = sysRoleResource.getStatus();
-				if (StatusEnum.LOCKED.ordinal() == status || StatusEnum.DELETED.ordinal() == status) {
-					sysRoleResource.setStatus(StatusEnum.NORMAL.ordinal());
-					update(sysRoleResource);
-				}
-			}
-		}
+		entity.setCreateDate(new Date());
+		entity.setUpdateDate(new Date());
+		sysRoleResourceDao.insert(entity);
 	}
 
 	@Override
 	public void update(SysRoleResource entity) {
-		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
 		sysRoleResourceDao.updateByPrimaryKeySelective(entity);
 	}

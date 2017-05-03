@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 左右多选框弹出框 -->
+<div th:fragment="dialog_lr_list_box" id="_dialog_lr_list_box" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+        		<h4 class="modal-title" id="_title_lr_list_box">标题</h4>
+      		</div>
+      		<div class="modal-body">
+		    	<div class="container-fluid" style="width: 100%">
+		    		<div class="row">
+			    		<div id="_tips_lr_list_box" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
+		    		</div>
+		    		<div class="row">
+						<div class="col-md-5">
+							<div id="_lr_list_box_left" class="easyui-datalist" th:title="#{unselect}" title="未选" style="width:330px;height:250px">
+	    					</div>
+						</div>
+						<div class="col-md-2" style="height:250px;padding-top:100px;padding-left:35px">
+			    			<button id="_button_lr_list_box_left" class="btn btn-primary">
+			                    <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span th:text="#{add}">添加</span>
+			                </button>
+			                <br/><br/>
+			                <button id="_button_lr_list_box_right" class="btn btn-primary">
+			                    <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span th:text="#{remove}">移除</span>
+			                </button>
+						</div>
+						<div class="col-md-5">
+							<div id="_lr_list_box_right" class="easyui-datalist" th:title="#{selected}" title="已选" style="width:330px;height:250px">
+							</div>
+						</div>
+				    </div>
+				</div>
+	    	</div>
+	    	<div class="modal-footer">
+	    		<button id="_button_lr_list_box_cancel" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+                </button>
+                <button id="_button_lr_list_box_save" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span th:text="#{save}">保存</span>
+                </button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+</html>

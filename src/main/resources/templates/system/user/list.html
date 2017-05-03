@@ -10,7 +10,7 @@
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initListPage(error, message);
+		initListPageExt(error, message);
 	});
 /*]]>*/
 </script>
@@ -32,7 +32,7 @@
 				<table id="datagrid" style="width:100%;height:auto">
 					<thead>
 						<tr>
-							<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtml">操作</th>
+							<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtmlExt">操作</th>
 							<th th:text="#{username}" data-options="field:'username',width:20">账号</th>
 							<th th:text="#{surname}" data-options="field:'name',width:10">姓名</th>
 							<th th:text="#{mobile}" data-options="field:'mobile',width:20">手机</th>
@@ -77,8 +77,11 @@
 	</div>
 <form action="" method="get" id="form_hidden">
 <input type="hidden" id="id" name="id" />
+<input type="hidden" id="userId" />
 </form>
 </div>
 </div>
+<!-- 用户角色授权弹出框框 -->
+<div th:replace="/system/user/lrListBox2 :: dialog_lr_list_box"></div>
 </body> 
 </html>

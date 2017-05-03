@@ -19,6 +19,11 @@ public class RoleExceptionCodes extends BusinessExceptionCodes {
 	 */
 	public static final String CODE_FORBIDDEN_MODIFY = PREFIX + "002";
 
+	/**
+	 * 角色已被授权给用户
+	 */
+	public static final String AUTHORIZED_TO_USER = PREFIX + "003";
+
 	private RoleExceptionCodes() {
 		super();
 	}

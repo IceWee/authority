@@ -24,4 +24,6 @@ public interface SysUserRoleDao {
 
 	int insertBatch(List<SysUserRole> entities);
 
+	int countByRoleId(Integer roleId);
+
 }

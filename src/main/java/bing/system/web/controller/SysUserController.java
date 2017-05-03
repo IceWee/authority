@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ import bing.domain.GenericPage;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
 import bing.system.service.SysUserService;
+import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
@@ -60,6 +62,15 @@ public class SysUserController extends GenericController {
 		RestResponse<GenericPage<SysUserVO>> response = new RestResponse<>();
 		GenericPage<SysUserVO> page = sysUserService.listByPage(condition);
 		response.setData(page);
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = AJAX_LIST + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<RoleUserVO> getRoleUsers(@PathVariable Integer roleId) {
+		RestResponse<RoleUserVO> response = new RestResponse<>();
+		RoleUserVO data = sysUserService.getRoleUsers(roleId);
+		response.setData(data);
 		return response;
 	}
 
