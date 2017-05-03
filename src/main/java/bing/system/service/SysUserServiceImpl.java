@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,10 +19,15 @@ import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
 import bing.exception.BusinessException;
 import bing.system.condition.SysUserCondition;
+import bing.system.dao.SysRoleDao;
 import bing.system.dao.SysUserDao;
+import bing.system.dao.SysUserRoleDao;
 import bing.system.exception.UserExceptionCodes;
+import bing.system.model.SysRole;
 import bing.system.model.SysUser;
+import bing.system.model.SysUserRole;
 import bing.system.vo.SysUserVO;
+import bing.system.vo.UserRoleVO;
 import bing.util.PasswordUtils;
 
 @Service("sysUserService")
@@ -29,6 +35,12 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private SysUserDao sysUserDao;
+
+	@Autowired
+	private SysRoleDao sysRoleDao;
+
+	@Autowired
+	private SysUserRoleDao sysUserRoleDao;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -94,6 +106,33 @@ public class SysUserServiceImpl implements SysUserService {
 		entity.setUpdateUser(username);
 		entity.setUpdateDate(new Date());
 		sysUserDao.updateByPrimaryKeySelective(entity);
+	}
+
+	@Override
+	public UserRoleVO getUserRoles(Integer userId) {
+		List<SysRole> roles = sysRoleDao.listAll();
+		List<SysRole> selectedRoles = sysRoleDao.listByUserId(userId);
+		roles.removeAll(selectedRoles);
+		UserRoleVO userRoles = new UserRoleVO();
+		userRoles.setUserId(userId);
+		userRoles.setUnselectRoles(roles);
+		userRoles.setSelectedRoles(selectedRoles);
+		return userRoles;
+	}
+
+	@Override
+	@Transactional
+	public void saveUserRoles(Integer userId, Integer[] roleIds) {
+		sysUserRoleDao.deleteByUserId(userId);
+		if (roleIds.length > 0) {
+			List<SysUserRole> entities = new ArrayList<>();
+			SysUserRole entity;
+			for (Integer roleId : roleIds) {
+				entity = new SysUserRole(userId, roleId);
+				entities.add(entity);
+			}
+			sysUserRoleDao.insertBatch(entities);
+		}
 	}
 
 }

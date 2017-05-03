@@ -38,7 +38,7 @@ public class SysRole extends GenericObject implements Serializable {
 	}
 
 	public void setCode(String code) {
-		this.code = code == null ? null : code.trim();
+		this.code = code;
 	}
 
 	public String getName() {
@@ -46,7 +46,7 @@ public class SysRole extends GenericObject implements Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name == null ? null : name.trim();
+		this.name = name;
 	}
 
 	public String getRemark() {
@@ -63,6 +63,31 @@ public class SysRole extends GenericObject implements Serializable {
 
 	public void setHidden(Integer hidden) {
 		this.hidden = hidden;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SysRole other = (SysRole) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

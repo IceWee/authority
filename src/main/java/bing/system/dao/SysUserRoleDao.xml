@@ -12,29 +12,23 @@
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, user_id, role_id, status, create_date, create_user, update_date,
-		update_user
+		id, user_id, role_id, status, create_date, create_user, update_date, update_user
 	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user_role
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from sys_user_role
-		where id = #{id,jdbcType=INTEGER}
+		delete from sys_user_role where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="bing.system.model.SysUserRole">
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_user_role (user_id, role_id, status,
-		create_date, create_user, update_date,
-		update_user)
-		values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER},
-		#{status,jdbcType=INTEGER},
+		insert into sys_user_role (user_id, role_id, status, create_date, create_user, update_date, update_user)
+		values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
 		#{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP},
 		#{updateUser,jdbcType=VARCHAR})
 	</insert>
@@ -128,4 +122,21 @@
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from sys_user_role where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByRoleId" parameterType="java.lang.Integer">
+		delete from sys_user_role where role_id = #{roleId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertBatch" parameterType="java.util.List">  
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+    	insert into sys_user_role (user_id, role_id, status, create_date, create_user, update_date, update_user) values  
+	    <foreach collection="list" item="entity" index="index" separator=",">
+	    	(#{entity.userId,jdbcType=INTEGER}, #{entity.roleId,jdbcType=INTEGER}, #{entity.status,jdbcType=INTEGER}, 
+	    	#{entity.createDate,jdbcType=TIMESTAMP}, #{entity.createUser,jdbcType=VARCHAR}, 
+	    	#{entity.updateDate,jdbcType=TIMESTAMP}, #{entity.updateUser,jdbcType=VARCHAR}) 
+	    </foreach>  
+</insert>  
 </mapper>

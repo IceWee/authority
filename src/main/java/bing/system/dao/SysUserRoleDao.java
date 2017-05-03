@@ -1,19 +1,27 @@
 package bing.system.dao;
 
+import java.util.List;
+
 import bing.system.model.SysUserRole;
 
 public interface SysUserRoleDao {
 
 	int deleteByPrimaryKey(Integer id);
 
-	int insert(SysUserRole record);
+	int insert(SysUserRole eneity);
 
-	int insertSelective(SysUserRole record);
+	int insertSelective(SysUserRole eneity);
 
 	SysUserRole selectByPrimaryKey(Integer id);
 
-	int updateByPrimaryKeySelective(SysUserRole record);
+	int updateByPrimaryKeySelective(SysUserRole eneity);
 
-	int updateByPrimaryKey(SysUserRole record);
+	int updateByPrimaryKey(SysUserRole eneity);
+
+	void deleteByUserId(Integer userId);
+
+	void deleteByRoleId(Integer roleId);
+
+	int insertBatch(List<SysUserRole> entities);
 
 }

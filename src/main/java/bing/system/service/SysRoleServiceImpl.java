@@ -1,5 +1,6 @@
 package bing.system.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +16,13 @@ import bing.domain.GenericPage;
 import bing.exception.BusinessException;
 import bing.system.condition.SysRoleCondition;
 import bing.system.dao.SysRoleDao;
+import bing.system.dao.SysUserDao;
+import bing.system.dao.SysUserRoleDao;
 import bing.system.exception.RoleExceptionCodes;
 import bing.system.model.SysRole;
+import bing.system.model.SysUser;
+import bing.system.model.SysUserRole;
+import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysRoleVO;
 
 @Service("sysRoleService")
@@ -24,6 +30,11 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 	@Autowired
 	private SysRoleDao sysRoleDao;
+
+	@Autowired
+	private SysUserDao sysUserDao;
+
+	private SysUserRoleDao sysUserRoleDao;
 
 	@Override
 	public GenericPage<SysRoleVO> listByPage(SysRoleCondition condition) {
@@ -72,6 +83,32 @@ public class SysRoleServiceImpl implements SysRoleService {
 		entity.setUpdateUser(username);
 		entity.setUpdateDate(new Date());
 		sysRoleDao.updateByPrimaryKeySelective(entity);
+	}
+
+	@Override
+	public RoleUserVO getRoleUsers(Integer roleId) {
+		List<SysUser> users = sysUserDao.listAll();
+		List<SysUser> selectedUsers = sysUserDao.listByRoleId(roleId);
+		users.removeAll(selectedUsers);
+		RoleUserVO roleUsers = new RoleUserVO();
+		roleUsers.setRoleId(roleId);
+		roleUsers.setUnselectUsers(users);
+		roleUsers.setSelectedUsers(selectedUsers);
+		return roleUsers;
+	}
+
+	@Override
+	public void saveRoleUsers(Integer roleId, Integer[] userIds) {
+		sysUserRoleDao.deleteByRoleId(roleId);
+		if (userIds.length > 0) {
+			List<SysUserRole> entities = new ArrayList<>();
+			SysUserRole entity;
+			for (Integer userId : userIds) {
+				entity = new SysUserRole(userId, roleId);
+				entities.add(entity);
+			}
+			sysUserRoleDao.insertBatch(entities);
+		}
 	}
 
 }

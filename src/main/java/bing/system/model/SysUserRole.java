@@ -14,6 +14,16 @@ public class SysUserRole extends GenericObject implements Serializable {
 
 	private Integer roleId;
 
+	public SysUserRole() {
+		super();
+	}
+
+	public SysUserRole(Integer userId, Integer roleId) {
+		super();
+		this.userId = userId;
+		this.roleId = roleId;
+	}
+
 	public Integer getId() {
 		return id;
 	}

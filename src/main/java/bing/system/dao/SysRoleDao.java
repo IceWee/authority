@@ -24,4 +24,8 @@ public interface SysRoleDao {
 
 	List<SysRoleVO> listByCondition(SysRoleCondition condition);
 
+	List<SysRole> listAll();
+
+	List<SysRole> listByUserId(Integer userId);
+
 }

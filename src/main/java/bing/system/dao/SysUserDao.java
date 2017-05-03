@@ -28,4 +28,8 @@ public interface SysUserDao {
 
 	List<SysUserVO> listByCondition(SysUserCondition condition);
 
+	List<SysUser> listAll();
+
+	List<SysUser> listByRoleId(Integer userId);
+
 }
