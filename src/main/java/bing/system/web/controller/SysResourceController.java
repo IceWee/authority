@@ -61,7 +61,6 @@ public class SysResourceController extends GenericController {
 	private static final String UPDATE = PREFIX + "/update";
 	private static final String DELETE = PREFIX + "/delete";
 
-	private static final String REQUEST_ATTRIBUTE_CATEGORY_ID = "categoryId";
 	private static final String REQUEST_ATTRIBUTE_CATEGORY = "category";
 
 	@Autowired
@@ -78,7 +77,6 @@ public class SysResourceController extends GenericController {
 
 	@RequestMapping(LIST)
 	public String list(Model model) {
-		prepareCategoryTree(model);
 		return LIST;
 	}
 
@@ -146,7 +144,6 @@ public class SysResourceController extends GenericController {
 		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY, category);
 		if (category == null) {
 			setError(SystemMessageKeys.RESOURCE_CATEGORY_NOT_EXIST, model);
-			prepareCategoryTree(model);
 			return LIST;
 		}
 		return ADD;
@@ -168,7 +165,6 @@ public class SysResourceController extends GenericController {
 			return ADD;
 		}
 		setMessage(MessageKeys.SAVE_SUCCESS, model);
-		prepareCategoryTree(model);
 		return LIST;
 	}
 
@@ -177,7 +173,6 @@ public class SysResourceController extends GenericController {
 		SysResource entity = sysResourceService.getById(id);
 		if (entity == null) {
 			setError(MessageKeys.ENTITY_NOT_EXIST, model);
-			prepareCategoryTree(model);
 			return LIST;
 		}
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
@@ -201,7 +196,6 @@ public class SysResourceController extends GenericController {
 			return EDIT;
 		}
 		setMessage(MessageKeys.UPDATE_SUCCESS, model);
-		prepareCategoryTree(model);
 		return LIST;
 	}
 
@@ -219,22 +213,7 @@ public class SysResourceController extends GenericController {
 			setError(e, model);
 		}
 		setMessage(MessageKeys.DELETE_SUCCESS, model);
-		prepareCategoryTree(model);
 		return LIST;
-	}
-
-	/**
-	 * 准备资源分类树数据
-	 * 
-	 * @param model
-	 */
-	private void prepareCategoryTree(Model model) {
-		List<SysResourceCategoryVO> categories = sysResourceService.getCategoryTree();
-		Integer categoryId = GlobalConstants.DEFAULT_INVALID_ID;
-		if (!categories.isEmpty()) {
-			categoryId = categories.get(0).getId();
-		}
-		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 	}
 
 	/**

@@ -23,7 +23,8 @@ public interface SysUserService extends UserDetailsService, GenericService<SysUs
 	 * 
 	 * @param userId
 	 * @param roleIds
+	 * @param username
 	 */
-	void saveUserRoles(Integer userId, Integer[] roleIds);
+	void saveUserRoles(Integer userId, Integer[] roleIds, String username);
 
 }

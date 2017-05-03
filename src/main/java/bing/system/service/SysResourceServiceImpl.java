@@ -1,8 +1,9 @@
 package bing.system.service;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,6 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public List<SysResourceCategoryVO> getCategoryTree() {
 		List<SysResourceCategoryVO> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategoryVO> categories = sysResourceCategoryDao.listAll();
-		categories.removeAll(topCategories);
 		buildTree(topCategories, categories);
 		return topCategories;
 	}
@@ -159,24 +159,18 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	private void buildTree(List<SysResourceCategoryVO> topCategories, List<SysResourceCategoryVO> categories) {
-		SysResourceCategoryVO topCategory;
-		SysResourceCategoryVO category;
-		for (Iterator<SysResourceCategoryVO> topIterator = topCategories.iterator(); topIterator.hasNext();) {
-			topCategory = topIterator.next();
-			for (Iterator<SysResourceCategoryVO> iterator = categories.iterator(); iterator.hasNext();) {
-				category = iterator.next();
-				if (category.getParentId() == topCategory.getId()) {
-					topCategory.addChild(category);
-					iterator.remove();
+		List<Integer> topCategoryIds = topCategories.stream().map(topCate -> topCate.getId()).collect(Collectors.toList());
+		List<SysResourceCategoryVO> subCategories = categories.stream().filter(cate -> topCategoryIds.contains(cate.getParentId())).collect(Collectors.toList());
+		topCategories.forEach(topCate -> {
+			subCategories.forEach(subCate -> {
+				if (Objects.equals(topCate.getId(), subCate.getParentId())) {
+					topCate.addChild(subCate);
 				}
+			});
+			if (!topCate.getChildren().isEmpty()) {
+				buildTree(topCate.getChildren(), subCategories);
 			}
-		}
-		for (Iterator<SysResourceCategoryVO> iterator = topCategories.iterator(); iterator.hasNext();) {
-			topCategory = iterator.next();
-			if (!topCategory.getChildren().isEmpty()) {
-				buildTree(topCategory.getChildren(), categories);
-			}
-		}
+		});
 	}
 
 }

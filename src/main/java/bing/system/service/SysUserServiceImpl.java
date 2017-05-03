@@ -1,9 +1,12 @@
 package bing.system.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -122,17 +125,22 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	@Transactional
-	public void saveUserRoles(Integer userId, Integer[] roleIds) {
+	public void saveUserRoles(Integer userId, Integer[] roleIds, String username) {
 		sysUserRoleDao.deleteByUserId(userId);
-		if (roleIds.length > 0) {
-			List<SysUserRole> entities = new ArrayList<>();
-			SysUserRole entity;
-			for (Integer roleId : roleIds) {
-				entity = new SysUserRole(userId, roleId);
-				entities.add(entity);
-			}
+		if (ArrayUtils.isNotEmpty(roleIds)) {
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
+	}
+
+	private SysUserRole createUserRole(Integer userId, Integer roleId, String username) {
+		SysUserRole entity = new SysUserRole(userId, roleId);
+		Date now = new Date();
+		entity.setCreateDate(now);
+		entity.setCreateUser(username);
+		entity.setUpdateDate(now);
+		entity.setUpdateUser(username);
+		return entity;
 	}
 
 }

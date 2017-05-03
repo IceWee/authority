@@ -138,5 +138,5 @@
 	    	#{entity.createDate,jdbcType=TIMESTAMP}, #{entity.createUser,jdbcType=VARCHAR}, 
 	    	#{entity.updateDate,jdbcType=TIMESTAMP}, #{entity.updateUser,jdbcType=VARCHAR}) 
 	    </foreach>  
-</insert>  
+	</insert>  
 </mapper>

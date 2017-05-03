@@ -21,7 +21,8 @@ public interface SysRoleService extends GenericService<SysRole, SysRoleVO, SysRo
 	 * 
 	 * @param roleId
 	 * @param userIds
+	 * @param username
 	 */
-	void saveRoleUsers(Integer roleId, Integer[] userIds);
+	void saveRoleUsers(Integer roleId, Integer[] userIds, String username);
 
 }
