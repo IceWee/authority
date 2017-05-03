@@ -102,6 +102,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Integer id, String username) {
 		SysUser entity = new SysUser();
 		entity.setId(id);
@@ -109,6 +110,7 @@ public class SysUserServiceImpl implements SysUserService {
 		entity.setUpdateUser(username);
 		entity.setUpdateDate(new Date());
 		sysUserDao.updateByPrimaryKeySelective(entity);
+		sysUserRoleDao.deleteByUserId(id);
 	}
 
 	@Override
