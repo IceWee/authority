@@ -112,10 +112,11 @@ public class SysUserServiceImpl implements SysUserService {
 	public RoleUserVO getRoleUsers(Integer roleId) {
 		List<SysUser> users = sysUserDao.listAll();
 		List<SysUser> selectedUsers = sysUserDao.listByRoleId(roleId);
-		users.removeAll(selectedUsers);
+		List<Integer> selectedUserIds = selectedUsers.stream().map(selectedUser -> selectedUser.getId()).collect(Collectors.toList());
+		List<SysUser> unselectUsers = users.stream().filter(user -> !selectedUserIds.contains(user.getId())).collect(Collectors.toList());
 		RoleUserVO roleUsers = new RoleUserVO();
 		roleUsers.setRoleId(roleId);
-		roleUsers.setUnselectUsers(users);
+		roleUsers.setUnselectUsers(unselectUsers);
 		roleUsers.setSelectedUsers(selectedUsers);
 		return roleUsers;
 	}

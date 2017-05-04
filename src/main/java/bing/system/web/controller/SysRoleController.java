@@ -25,6 +25,8 @@ import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
 import bing.system.service.SysRoleService;
+import bing.system.service.SysUserService;
+import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysRoleVO;
 import bing.system.vo.UserRoleVO;
 import bing.util.ExceptionUtils;
@@ -51,6 +53,9 @@ public class SysRoleController extends GenericController {
 	@Autowired
 	private SysRoleService sysRoleService;
 
+	@Autowired
+	private SysUserService sysUserService;
+
 	@RequestMapping(LIST)
 	public String list() {
 		return LIST;
@@ -71,6 +76,19 @@ public class SysRoleController extends GenericController {
 		RestResponse<UserRoleVO> response = new RestResponse<>();
 		UserRoleVO data = sysRoleService.getUserRoles(userId);
 		response.setData(data);
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = AJAX_LIST + "/users", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<RoleUserVO> saveRoleUsers(Integer roleId, Integer[] userIds) {
+		RestResponse<RoleUserVO> response = new RestResponse<>();
+		Optional<SysUser> optional = getCurrentUser();
+		String username = StringUtils.EMPTY;
+		if (optional.isPresent()) {
+			username = optional.get().getUsername();
+		}
+		sysUserService.saveRoleUsers(roleId, userIds, username);
 		return response;
 	}
 

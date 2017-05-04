@@ -26,12 +26,12 @@ function initListPageExt(error, message) {
 function operateBtnHtmlExt(value, row, index) {
 	var html = operateBtnHtml(value, row, index);
 	var label_auth = $.i18n .prop("operate.authorize");
-	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openUserRoleAuth('" + row.id + "')\"><span class=\"label label-warning\">" + label_auth + "</span></a>";
+	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openUserRoleAuth('" + row.id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_auth + "</span></a>";
 	return html;
 }
 
 // 用户角色授权
-function openUserRoleAuth(userId) {
+function openUserRoleAuth(userId, name) {
 	$("#userId").val(userId);
 	var tipsId = "_tips_lr_list_box";
 	$.ajax({
@@ -42,6 +42,9 @@ function openUserRoleAuth(userId) {
 			if (json.code === "200") {
 				if (json.data) {
 					openLRListBoxDialog({
+						title: name,
+						leftTitle: $.i18n .prop("role.unselect"),
+						rightTitle: $.i18n .prop("role.selected"),
 						valueField: "id",
 					    textField: "name",
 					    leftList: json.data.unselectRoles,

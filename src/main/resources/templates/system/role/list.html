@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
 <script type="text/javascript" th:src="@{/js/system/role.js}"></script>
 <script type="text/javascript" th:src="@{/js/crud.js}"></script>
+<script type="text/javascript" th:src="@{/js/lrListBox.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
@@ -32,7 +33,7 @@
 				<table id="datagrid" style="width:100%;height:auto">
 					<thead>
 						<tr>
-							<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtml">操作</th>
+							<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtmlExt">操作</th>
 							<th th:text="#{name}" data-options="field:'name',width:10">名称</th>
 							<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
 							<th th:text="#{create.date}" data-options="field:'createDate',width:20">创建日期</th>
@@ -75,8 +76,11 @@
 	</div>
 <form action="" method="get" id="form_hidden">
 <input type="hidden" id="id" name="id" />
+<input type="hidden" id="roleId" />
 </form>
 </div>
 </div>
+<!-- 配置角色下的用户弹出框框 -->
+<div th:replace="/common/lrListBox :: dialog_lr_list_box"></div>
 </body> 
 </html>

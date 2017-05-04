@@ -14,11 +14,83 @@ var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 //自定义常量
-var URI_AJAX_CATEGORY_TREE = "/ajax/system/roles"; // 列表页获取列表数据异步URI
+var URI_AJAX_USER_LIST = "/ajax/system/users"; // 获取用户列表
+var URI_AJAX_ROLE_USER = "/ajax/system/roles/users"; // 保存角色用户关系
 
 //列表页面初始化
 function initListPageExt(error, message) {
 	initListPage(error, message);
+}
+
+//操作按钮扩展
+function operateBtnHtmlExt(value, row, index) {
+	var html = operateBtnHtml(value, row, index);
+	var label_user = $.i18n .prop("operate.authorize.user");
+	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openConfigUser('" + row.id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_user + "</span></a>";
+	return html;
+}
+
+// 配置用户
+function openConfigUser(roleId, roleName) {
+	$("#roleId").val(roleId);
+	var tipsId = "_tips_lr_list_box";
+	$.ajax({
+		type : "GET",
+		url : URI_AJAX_USER_LIST + "/" + roleId,
+		dataType : "json",
+		success : function(json) {
+			if (json.code === "200") {
+				if (json.data) {
+					openLRListBoxDialog({
+						title: roleName,
+						leftTitle: $.i18n .prop("user.unselect"),
+						rightTitle: $.i18n .prop("user.selected"),
+						valueField: "id",
+					    textField: "name",
+					    leftList: json.data.unselectUsers,
+					    rightList: json.data.selectedUsers,
+					    saveCallback: function(checkedRows) {
+					    	saveRoleUsers(roleId, checkedRows);
+					    }
+					});
+				}
+			} else {
+				showErrorTips(json.message, tipsId);
+			}
+		},
+		error : function() {
+			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+		}
+	});
+}
+
+// 保存角色用户授权
+function saveRoleUsers(roleId, checkedRows) {
+	var userIdArray = [];
+	for (var i = 0; i < checkedRows.length; i++) {
+		userIdArray.push(checkedRows[i].id);
+	}
+	var data = {roleId: roleId, userIds: userIdArray};
+	var tipsId = "_tips_lr_list_box";
+	$.ajax({
+		type : "POST",
+		url : URI_AJAX_ROLE_USER,
+		dataType : "json",
+		data : data,
+		traditional: true,
+		success : function(json) {
+			var code = json.code;
+			if (code === "200") {
+				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
+			} else {
+				var msg = json.message;
+				showErrorTips(msg, tipsId);
+			}
+		},
+		error : function() {
+			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+		}
+	});
 }
 
 //编辑页面初始化扩展

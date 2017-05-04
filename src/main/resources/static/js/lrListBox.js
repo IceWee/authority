@@ -2,11 +2,16 @@
 // 依赖Bootstrap样式和脚本/EasyUI样式和脚本/utils.js
 // 需要在页面中引入html-lrListBox
 function openLRListBoxDialog(options) {
+	var title =  options.title ? options.title : "";
+	var leftTitle =  options.leftTitle;
+	var rightTitle =  options.rightTitle;
 	var leftList = $.isArray(options.leftList) ? options.leftList : [];
 	var rightList = $.isArray(options.rightList) ? options.rightList : [];
 	var saveCallback = options.saveCallback;
 	var valueField = options.valueField ? options.valueField : "id";
 	var textField = options.textField ? options.textField : "name";
+	
+	$("#_title_lr_list_box").text(title);
 	
 	// 显示模态框
 	$("#_dialog_lr_list_box").modal({
@@ -23,6 +28,9 @@ function openLRListBoxDialog(options) {
 	    data: leftList,
 	    lines: true
 	});
+	if (leftTitle) {
+		$("#_lr_list_box_left").datalist("getPanel").panel("setTitle", leftTitle);
+	}
 	
 	// 初始化右列表
 	$("#_lr_list_box_right").datalist({
@@ -33,6 +41,9 @@ function openLRListBoxDialog(options) {
 	    data: rightList,
 	    lines: true
 	});
+	if (rightTitle) {
+		$("#_lr_list_box_right").datalist("getPanel").panel("setTitle", rightTitle);
+	}
 	
 	// 添加元素
 	$("#_button_lr_list_box_left").on("click", function() {
