@@ -19,6 +19,7 @@ import bing.domain.GenericTreeNode;
 import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
+import bing.system.constant.ResourceTreeNodeTypeEnum;
 import bing.system.dao.SysResourceCategoryDao;
 import bing.system.dao.SysResourceDao;
 import bing.system.dao.SysRoleDao;
@@ -172,6 +173,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 			treeNode.setId(sysResourceCategory.getId());
 			treeNode.setParentId(sysResourceCategory.getParentId());
 			treeNode.setText(sysResourceCategory.getName());
+			treeNode.setType(ResourceTreeNodeTypeEnum.CATEGORY.name());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;
