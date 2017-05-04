@@ -65,30 +65,27 @@ function openLRListBoxDialog(options) {
 	var valueField = options.valueField ? options.valueField : "id";
 	var textField = options.textField ? options.textField : "name";
 	
+	$("#_dialog_lr_list_box").modal({
+		backdrop: false, // 点击空白区域不关闭弹出框
+		keyboard: false	 // 按ESC键不关闭弹出框
+	});
+	
 	$("#_lr_list_box_left").datalist({
 		singleSelect: false,
 	    checkbox: true,
-//	    valueField: valueField,
-//	    textField: textField,
+	    valueField: valueField,
+	    textField: textField,
 	    data: leftList,
 	    lines: true
 	});
-	
 	$("#_lr_list_box_right").datalist({
 		singleSelect: false,
 	    checkbox: true,
-//	    valueField: valueField,
-//	    textField: textField,
+	    valueField: valueField,
+	    textField: textField,
 	    data: rightList,
 	    lines: true
 	});
-	
-//	$(".datagrid-view").css("height", "238px");
-//	$(".datagrid-view1").css("width", "28px");
-	$(".datagrid-body").css("width", "28px");
-	$(".datagrid-footer").css("width", "300px");
-	$(".datagrid-view2").css("width", "300px");
-	$(".datagrid-header").css("width", "300px");
 	
 	// 添加
 	$("#_button_lr_list_box_left").click(function() {
@@ -124,11 +121,6 @@ function openLRListBoxDialog(options) {
 			var checkedRows = $("#_lr_list_box_right").datalist("getRows");
 			saveCallback(checkedRows);
 		}
-	});
-	
-	$("#_dialog_lr_list_box").modal({
-		backdrop: false, // 点击空白区域不关闭弹出框
-		keyboard: false	 // 按ESC键不关闭弹出框
 	});
 }
 
