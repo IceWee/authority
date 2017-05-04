@@ -78,7 +78,7 @@ public class SysUserServiceImpl implements SysUserService {
 		entity.setPassword(encryptPasswd);
 		sysUserDao.insert(entity);
 		Integer userId = entity.getId();
-		String username = entity.getUsername();
+		String username = entity.getUpdateUser();
 		// 前端选择了角色
 		Integer[] roleIds = entity.getRoleIds();
 		if (ArrayUtils.isNotEmpty(roleIds)) {
@@ -98,6 +98,15 @@ public class SysUserServiceImpl implements SysUserService {
 		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
 		sysUserDao.updateByPrimaryKeySelective(entity);
+		Integer userId = entity.getId();
+		String username = entity.getUpdateUser();
+		// 重新授权角色
+		sysUserRoleDao.deleteByUserId(userId);
+		Integer[] roleIds = entity.getRoleIds();
+		if (ArrayUtils.isNotEmpty(roleIds)) {
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+			sysUserRoleDao.insertBatch(entities);
+		}
 	}
 
 	@Override

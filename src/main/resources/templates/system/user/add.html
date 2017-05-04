@@ -19,9 +19,9 @@
 </head>
 <body>
 <form id="form_default" method="post">
+<div class="container-fluid" th:object="${bean}">
 <input type="hidden" th:value="${session.currentUser.username}" name="createUser"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
-<div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
@@ -41,13 +41,13 @@
 						<label th:text="#{username}">账号</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.username}" type="text" name="username" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="*{username}" type="text" name="username" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{surname}">姓名</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -59,7 +59,7 @@
 		    			<input class="easyui-textbox input-default" type="password" id="password" name="password" data-options="required:true,validType:['minLength[6]','maxLength[32]']"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label th:text="#{repassword}">重复密码</label>
+						<label th:text="#{repassword}">确认密码</label>
 					</div>
 					<div class="col-md-4 text-left">
 		    			<input class="easyui-textbox input-default" type="password" name="rpassword" data-options="required:true,validType:['equals[\'#password\']']"></input>
@@ -71,14 +71,14 @@
 						<label th:text="#{mobile}">手机</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
+		    			<input class="easyui-textbox input-default" th:value="*{mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<select class="easyui-combobox select-default" th:value="${bean.status}" data-options="editable:false" name="status">
-							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
+		    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
+							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
 					</div>
 				</div>

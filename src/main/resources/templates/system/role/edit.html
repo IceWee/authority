@@ -19,9 +19,9 @@
 </head>
 <body>
 <form id="form_default" method="post">
+<div class="container-fluid" th:object="${bean}">
+<input type="hidden" th:value="*{id}" name="id"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
-<input type="hidden" th:value="${bean.id}" name="id"></input>
-<div class="container-fluid">
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
@@ -41,13 +41,13 @@
 						<label th:text="#{code}">编码</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.code}" type="text" id="code" name="code" readonly="readonly"></input>
+		    			<input class="easyui-textbox input-default" th:value="*{code}" type="text" id="code" name="code" readonly="readonly"></input>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{name}">名称</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -56,15 +56,15 @@
 						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<select class="easyui-combobox select-default" th:value="${bean.status}"  data-options="editable:false" name="status">
-							<option th:each="status : ${statusList}" th:selected="${status.value eq bean.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
+		    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
+							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:selected="${status.value eq bean.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
 					</div>
 					<div class="col-md-2 text-right">
 						<label th:text="#{remark}">备注</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${bean.remark}" type="text" name="remark" data-options="multiline:true"></input>
+		    			<input class="easyui-textbox input-default" th:value="*{remark}" type="text" name="remark" data-options="multiline:true"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
