@@ -1,8 +1,8 @@
 package bing.system.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
+import bing.domain.GenericTreeNode;
 import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
@@ -27,7 +28,6 @@ import bing.system.model.SysResource;
 import bing.system.model.SysResourceCategory;
 import bing.system.model.SysRole;
 import bing.system.model.SysRoleResource;
-import bing.system.vo.SysResourceCategoryVO;
 import bing.system.vo.SysResourceVO;
 
 @Service("sysResourceService")
@@ -114,11 +114,12 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
-	public List<SysResourceCategoryVO> getCategoryTree() {
-		List<SysResourceCategoryVO> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
-		List<SysResourceCategoryVO> categories = sysResourceCategoryDao.listAll();
-		buildCategoryTree(topCategories, categories);
-		return topCategories;
+	public List<GenericTreeNode> getCategoryTree() {
+		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
+		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
+		List<GenericTreeNode> treeNodes = convert(topCategories);
+		GenericTreeNode.buildGenericTree(treeNodes, convert(categories));
+		return treeNodes;
 	}
 
 	@Override
@@ -158,22 +159,22 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	/**
-	 * 递归构造资源分类树
+	 * 将资源分类列表转换为节点列表
 	 * 
-	 * @param parentCategories 上级资源分类
-	 * @param categories 全部资源分类
+	 * @param sysResourceCategories
+	 * @return
 	 */
-	private void buildCategoryTree(List<SysResourceCategoryVO> parentCategories, List<SysResourceCategoryVO> categories) {
-		parentCategories.forEach(parentCategory -> {
-			categories.forEach(category -> {
-				if (Objects.equals(parentCategory.getId(), category.getParentId())) {
-					parentCategory.addChild(category);
-				}
-			});
-			if (!parentCategory.getChildren().isEmpty()) {
-				buildCategoryTree(parentCategory.getChildren(), categories);
-			}
-		});
+	private List<GenericTreeNode> convert(List<SysResourceCategory> sysResourceCategories) {
+		List<GenericTreeNode> treeNodes = new ArrayList<>();
+		GenericTreeNode treeNode;
+		for (SysResourceCategory sysResourceCategory : sysResourceCategories) {
+			treeNode = new GenericTreeNode();
+			treeNode.setId(sysResourceCategory.getId());
+			treeNode.setParentId(sysResourceCategory.getParentId());
+			treeNode.setText(sysResourceCategory.getName());
+			treeNodes.add(treeNode);
+		}
+		return treeNodes;
 	}
 
 }

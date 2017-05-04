@@ -25,6 +25,7 @@ import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.GenericPage;
+import bing.domain.GenericTreeNode;
 import bing.domain.LabelValueBean;
 import bing.system.condition.SysResourceCondition;
 import bing.system.constant.ResourceTypeEnum;
@@ -33,7 +34,6 @@ import bing.system.model.SysResource;
 import bing.system.model.SysResourceCategory;
 import bing.system.model.SysUser;
 import bing.system.service.SysResourceService;
-import bing.system.vo.SysResourceCategoryVO;
 import bing.system.vo.SysResourceVO;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
@@ -89,11 +89,16 @@ public class SysResourceController extends GenericController {
 		return response;
 	}
 
+	/**
+	 * 资源分类树
+	 * 
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_CATEGORY_TREE, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<List<SysResourceCategoryVO>> categoryTree() {
-		RestResponse<List<SysResourceCategoryVO>> response = new RestResponse<>();
-		List<SysResourceCategoryVO> categories = sysResourceService.getCategoryTree();
+	public RestResponse<List<GenericTreeNode>> categoryTree() {
+		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
+		List<GenericTreeNode> categories = sysResourceService.getCategoryTree();
 		response.setData(categories);
 		return response;
 	}

@@ -3,7 +3,6 @@ package bing.system.dao;
 import java.util.List;
 
 import bing.system.model.SysResourceCategory;
-import bing.system.vo.SysResourceCategoryVO;
 
 public interface SysResourceCategoryDao {
 
@@ -19,9 +18,9 @@ public interface SysResourceCategoryDao {
 
 	int updateByPrimaryKey(SysResourceCategory entity);
 
-	List<SysResourceCategoryVO> listByParentId(Integer parentId);
+	List<SysResourceCategory> listByParentId(Integer parentId);
 
-	List<SysResourceCategoryVO> listAll();
+	List<SysResourceCategory> listAll();
 
 	int countByParentId(Integer parentId);
 
