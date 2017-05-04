@@ -3,7 +3,6 @@ package bing.system.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +117,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public List<SysResourceCategoryVO> getCategoryTree() {
 		List<SysResourceCategoryVO> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategoryVO> categories = sysResourceCategoryDao.listAll();
-		buildTree(topCategories, categories);
+		buildCategoryTree(topCategories, categories);
 		return topCategories;
 	}
 
@@ -158,17 +157,21 @@ public class SysResourceServiceImpl implements SysResourceService {
 		sysResourceCategoryDao.updateByPrimaryKeySelective(entity);
 	}
 
-	private void buildTree(List<SysResourceCategoryVO> topCategories, List<SysResourceCategoryVO> categories) {
-		List<Integer> topCategoryIds = topCategories.stream().map(topCate -> topCate.getId()).collect(Collectors.toList());
-		List<SysResourceCategoryVO> subCategories = categories.stream().filter(cate -> topCategoryIds.contains(cate.getParentId())).collect(Collectors.toList());
-		topCategories.forEach(topCate -> {
-			subCategories.forEach(subCate -> {
-				if (Objects.equals(topCate.getId(), subCate.getParentId())) {
-					topCate.addChild(subCate);
+	/**
+	 * 递归构造资源分类树
+	 * 
+	 * @param parentCategories 上级资源分类
+	 * @param categories 全部资源分类
+	 */
+	private void buildCategoryTree(List<SysResourceCategoryVO> parentCategories, List<SysResourceCategoryVO> categories) {
+		parentCategories.forEach(parentCategory -> {
+			categories.forEach(category -> {
+				if (Objects.equals(parentCategory.getId(), category.getParentId())) {
+					parentCategory.addChild(category);
 				}
 			});
-			if (!topCate.getChildren().isEmpty()) {
-				buildTree(topCate.getChildren(), subCategories);
+			if (!parentCategory.getChildren().isEmpty()) {
+				buildCategoryTree(parentCategory.getChildren(), categories);
 			}
 		});
 	}
