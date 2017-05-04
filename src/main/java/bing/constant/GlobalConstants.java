@@ -70,7 +70,7 @@ public class GlobalConstants {
 	/**
 	 * Public resource paths
 	 */
-	public static final String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
+	public static final String[] PUBLIC_RESOURCE_PATHS = { "/js/**", "/css/**", "/images/**", "/i18n/**" };
 
 	/**
 	 * 根节点父ID值-0，无ID为0的节点，即为顶级节点
@@ -81,6 +81,11 @@ public class GlobalConstants {
 	 * 默认无效ID，鉴于有些请求必须包含ID，但参数有没有值的时候使用该无效的ID
 	 */
 	public static final Integer DEFAULT_INVALID_ID = -1;
+
+	/**
+	 * 日期时间格式化
+	 */
+	public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	private GlobalConstants() {
 		super();

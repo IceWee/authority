@@ -8,8 +8,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import bing.constant.StatusEnum;
 
 public abstract class GenericObject implements Serializable {
@@ -20,13 +18,11 @@ public abstract class GenericObject implements Serializable {
 
 	protected String createUser;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	protected Date createDate;
 
 	protected String updateUser;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	protected Date updateDate;
 

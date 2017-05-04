@@ -1,5 +1,6 @@
 # HTTPS config
-#server:
+server:
+  port: 80
 #  port: 8443
 #  ssl.key-store: classpath:keystore.p12
 #  ssl.key-store-password: tomcat
@@ -9,12 +10,12 @@
 spring:
 # i18n config
   messages:
-    basename: i18n/messages
+    basename: i18n/messages, i18n/codes, i18n/validators
 # Datasource config
   datasource: 
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/authority?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/authority?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: root
 # Thymeleaf config
@@ -32,6 +33,9 @@ spring:
   redis:
     host: localhost
     port: 6379
+# Jackson config
+  jackson:
+    date-format: yyyy-MM-dd
 
 # MyBatis cofig
 mybatis: 
