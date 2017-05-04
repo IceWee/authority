@@ -59,7 +59,7 @@ function openUserRoleAuth(userId, name) {
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
 		}
 	});
 }
@@ -88,8 +88,20 @@ function saveUserRoleAuth(userId, checkedRows) {
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
 		}
+	});
+}
+
+// 新增页面初始化
+function initAddPageExt(error, message) {
+	initAddPage(error, message);
+	
+	$("#roleIds").chosen({
+		disable_search_threshold: true, 
+		allow_single_deselect: true, 
+		no_results_text: $.i18n.prop("result.nomatch"),
+		width: "200px"
 	});
 }
 
@@ -99,4 +111,11 @@ function initEditPageExt(error, message) {
 	readonlyColor("username");
 	readonlyColor("createUser");
 	readonlyColor("createDate");
+	
+	$("#roleIds").chosen({
+		disable_search_threshold: true, 
+		allow_single_deselect: true, 
+		no_results_text: $.i18n.prop("result.nomatch"),
+		width: "200px"
+	});
 }

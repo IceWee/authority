@@ -111,6 +111,11 @@ public class SysRoleServiceImpl implements SysRoleService {
 		}
 	}
 
+	@Override
+	public List<SysRole> listAll() {
+		return sysRoleDao.listAll();
+	}
+
 	private SysUserRole createUserRole(Integer userId, Integer roleId, String usernmae) {
 		SysUserRole entity = new SysUserRole(userId, roleId);
 		Date now = new Date();

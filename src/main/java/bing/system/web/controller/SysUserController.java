@@ -1,6 +1,8 @@
 package bing.system.web.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,11 +26,13 @@ import bing.constant.MessageKeys;
 import bing.domain.CrudGroups;
 import bing.domain.GenericPage;
 import bing.system.condition.SysUserCondition;
+import bing.system.model.SysRole;
 import bing.system.model.SysUser;
 import bing.system.service.SysRoleService;
 import bing.system.service.SysUserService;
 import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
+import bing.system.vo.UserRoleVO;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
@@ -54,6 +59,11 @@ public class SysUserController extends GenericController {
 
 	@Autowired
 	private SysRoleService sysRoleService;
+
+	@ModelAttribute("roleList")
+	protected List<SysRole> roleList() {
+		return sysRoleService.listAll();
+	}
 
 	@RequestMapping(LIST)
 	public String list() {
@@ -121,6 +131,12 @@ public class SysUserController extends GenericController {
 			setError(MessageKeys.ENTITY_NOT_EXIST, model);
 			return LIST;
 		}
+		UserRoleVO userRoleVO = sysRoleService.getUserRoles(id);
+		List<SysRole> roles = userRoleVO.getSelectedRoles();
+		List<Integer> roleIdList = roles.stream().map(role -> role.getId()).collect(Collectors.toList());
+		Integer[] roleIds = new Integer[roleIdList.size()];
+		roleIdList.toArray(roleIds);
+		entity.setRoleIds(roleIds);
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		return EDIT;
 	}

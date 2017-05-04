@@ -59,7 +59,7 @@ function openConfigUser(roleId, roleName) {
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
 		}
 	});
 }
@@ -88,7 +88,7 @@ function saveRoleUsers(roleId, checkedRows) {
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
 		}
 	});
 }

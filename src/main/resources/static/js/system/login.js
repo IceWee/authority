@@ -1,7 +1,5 @@
 // 绑定登陆页面事件
 function initPage() {
-	i18n();
-	
 	$("#username").focus();
 	
 	$("#button_login").click(function() {

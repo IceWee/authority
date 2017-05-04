@@ -1,5 +1,7 @@
 package bing.system.service;
 
+import java.util.List;
+
 import bing.domain.GenericService;
 import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
@@ -24,5 +26,12 @@ public interface SysRoleService extends GenericService<SysRole, SysRoleVO, SysRo
 	 * @param username
 	 */
 	void saveUserRoles(Integer userId, Integer[] roleIds, String username);
+
+	/**
+	 * 获取全部角色
+	 * 
+	 * @return
+	 */
+	List<SysRole> listAll();
 
 }

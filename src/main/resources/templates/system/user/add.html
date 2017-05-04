@@ -12,7 +12,7 @@
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initAddPage(error, message);
+		initAddPageExt(error, message);
 	});
 /*]]>*/
 </script>
@@ -77,8 +77,19 @@
 						<label th:text="#{status}">状态</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<select class="easyui-combobox select-default" th:value="${bean.status}"  data-options="editable:false" name="status">
+		    			<select class="easyui-combobox select-default" th:value="${bean.status}" data-options="editable:false" name="status">
 							<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
+	    				</select>
+					</div>
+				</div>
+				<div style="margin-bottom: 20px"></div>
+				<div class="row">
+					<div class="col-md-2 text-right">
+						<label th:text="#{roles}">角色</label>
+					</div>
+					<div class="col-md-10 text-left">
+		    			<select name="roleIds" id="roleIds" multiple class="chosen-select" data-placeholder=" ">
+							<option th:each="role : ${roleList}" th:text="${role.name}" th:value="${role.id}"></option>
 	    				</select>
 					</div>
 				</div>
@@ -87,6 +98,7 @@
 					<button type="button" id="button_back" class="btn btn-default">
 						<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
 					</button>
+					&nbsp;&nbsp;
 			    	<button type="button" id="button_save" class="btn btn-primary">
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
 					</button>

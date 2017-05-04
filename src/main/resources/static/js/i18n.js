@@ -22,3 +22,5 @@ function getBrowserLocale(seprator) {
 	}
 	return locale;
 }
+
+i18n();

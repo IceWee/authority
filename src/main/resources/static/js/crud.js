@@ -45,8 +45,6 @@ function initListPage(error, message, autoLoad, autoResize) {
 	autoLoad = arguments[2] != undefined ? arguments[2] : true;
 	autoResize = arguments[3] != undefined ? arguments[3] : true;
 	
-	i18n();
-	
 	initDatagrid({url:URI_AJAX_LIST,autoLoad:autoLoad,rowStyler:statusRowStyler,autoResize:autoResize});
 	
 	showErrorOrMessage(error, message);
@@ -74,8 +72,6 @@ function _edit(id) {
 /*************************** add begin *****************************/
 // 初始化新增页面
 function initAddPage(error, message) {
-	i18n();
-	
 	showErrorOrMessage(error, message);
 	
 	// 保存
@@ -98,8 +94,6 @@ function initAddPage(error, message) {
 /*************************** edit begin *****************************/
 // 初始化编辑页面
 function initEditPage(error, message) {
-	i18n();
-	
 	showErrorOrMessage(error, message);
 	
 	// 保存

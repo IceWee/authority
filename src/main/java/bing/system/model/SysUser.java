@@ -21,6 +21,16 @@ public class SysUser extends CustomUserDetails {
 
 	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
 
+	private Integer[] roleIds;
+
+	public Integer[] getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(Integer[] roleIds) {
+		this.roleIds = roleIds;
+	}
+
 	public SysUser() {
 		super();
 	}

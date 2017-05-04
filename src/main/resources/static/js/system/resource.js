@@ -56,7 +56,7 @@ function initResourceListPage() {
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"));
+			showErrorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 	
@@ -92,7 +92,7 @@ function initResourceListPage() {
 				},
 				error : function() {
 					ajaxLoaded();
-					showErrorTips($.i18n .prop("http.request.failed"), "tips_category");
+					showErrorTips($.i18n.prop("http.request.failed"), "tips_category");
 				}
 			});
 		}
@@ -150,7 +150,7 @@ function deleteCategory() {
 					}
 				},
 				error : function() {
-					showErrorTips($.i18n .prop("http.request.failed"));
+					showErrorTips($.i18n.prop("http.request.failed"));
 				}
 			});
 		}
@@ -177,7 +177,7 @@ function freshCategoryTree(parent) {
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"));
+			showErrorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 }

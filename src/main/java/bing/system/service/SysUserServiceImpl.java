@@ -63,6 +63,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
+	@Transactional
 	public void save(SysUser entity) {
 		entity.setId(null);
 		SysUser persistUser = sysUserDao.getByUsername(entity.getUsername());
@@ -76,6 +77,14 @@ public class SysUserServiceImpl implements SysUserService {
 		String encryptPasswd = PasswordUtils.encrypt(rawPassword);
 		entity.setPassword(encryptPasswd);
 		sysUserDao.insert(entity);
+		Integer userId = entity.getId();
+		String username = entity.getUsername();
+		// 前端选择了角色
+		Integer[] roleIds = entity.getRoleIds();
+		if (ArrayUtils.isNotEmpty(roleIds)) {
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+			sysUserRoleDao.insertBatch(entities);
+		}
 	}
 
 	@Override
