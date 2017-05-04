@@ -22,7 +22,7 @@
 		<!-- 导航 -->
   		<div class="panel-heading border-none padding-none" style="height:40px">
 			<ol class="breadcrumb">
-			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <span th:text="#{role.manage}">角色管理</span></li>
+			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{role.manage}">角色管理</span></li>
 			</ol>
 	  	</div>
 	  	<div class="panel-body border-none">
@@ -34,7 +34,6 @@
 						<tr>
 							<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtml">操作</th>
 							<th th:text="#{name}" data-options="field:'name',width:10">名称</th>
-							<th th:text="#{type}" data-options="field:'typeText',width:20">类型</th>
 							<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
 							<th th:text="#{create.date}" data-options="field:'createDate',width:20">创建日期</th>
 							<th th:text="#{create.user}" data-options="field:'createUser',width:20">创建人</th>
