@@ -24,6 +24,7 @@ import bing.domain.CrudGroups;
 import bing.domain.GenericPage;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
+import bing.system.service.SysRoleService;
 import bing.system.service.SysUserService;
 import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
@@ -51,6 +52,9 @@ public class SysUserController extends GenericController {
 	@Autowired
 	private SysUserService sysUserService;
 
+	@Autowired
+	private SysRoleService sysRoleService;
+
 	@RequestMapping(LIST)
 	public String list() {
 		return LIST;
@@ -71,6 +75,19 @@ public class SysUserController extends GenericController {
 		RestResponse<RoleUserVO> response = new RestResponse<>();
 		RoleUserVO data = sysUserService.getRoleUsers(roleId);
 		response.setData(data);
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = AJAX_LIST + "/roles", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<RoleUserVO> saveUserRoles(Integer userId, Integer[] roleIds) {
+		RestResponse<RoleUserVO> response = new RestResponse<>();
+		Optional<SysUser> optional = getCurrentUser();
+		String username = StringUtils.EMPTY;
+		if (optional.isPresent()) {
+			username = optional.get().getUsername();
+		}
+		sysRoleService.saveUserRoles(userId, roleIds, username);
 		return response;
 	}
 

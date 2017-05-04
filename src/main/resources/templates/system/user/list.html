@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
 <script type="text/javascript" th:src="@{/js/system/user.js}"></script>
 <script type="text/javascript" th:src="@{/js/crud.js}"></script>
+<script type="text/javascript" th:src="@{/js/lrListBox.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
@@ -82,6 +83,6 @@
 </div>
 </div>
 <!-- 用户角色授权弹出框框 -->
-<div th:replace="/system/user/lrListBox :: dialog_lr_list_box"></div>
+<div th:replace="/common/lrListBox :: dialog_lr_list_box"></div>
 </body> 
 </html>

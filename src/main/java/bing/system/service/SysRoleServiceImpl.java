@@ -92,10 +92,11 @@ public class SysRoleServiceImpl implements SysRoleService {
 	public UserRoleVO getUserRoles(Integer userId) {
 		List<SysRole> roles = sysRoleDao.listAll();
 		List<SysRole> selectedRoles = sysRoleDao.listByUserId(userId);
-		roles.removeAll(selectedRoles);
+		List<Integer> selectedRoleIds = selectedRoles.stream().map(selectedRole -> selectedRole.getId()).collect(Collectors.toList());
+		List<SysRole> unselectRoles = roles.stream().filter(role -> !selectedRoleIds.contains(role.getId())).collect(Collectors.toList());
 		UserRoleVO userRoles = new UserRoleVO();
 		userRoles.setUserId(userId);
-		userRoles.setUnselectRoles(roles);
+		userRoles.setUnselectRoles(unselectRoles);
 		userRoles.setSelectedRoles(selectedRoles);
 		return userRoles;
 	}
