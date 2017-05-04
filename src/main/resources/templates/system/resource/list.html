@@ -52,28 +52,30 @@
 						</table>
 						<!-- 查询条件 -->
 						<div id="search_tools" style="padding:0 25px;">
-							<form action="" method="post" id="form_search">
 							<div class="conditions">
-								<input type="hidden" id="selectedCategoryId" name="categoryId"></input>
-								<input type="hidden" id="id" name="id"></input>
-								<label th:text="#{name}">名称</label>
-								<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-								<label th:text="#{type}">类型</label>
-								<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
-									<option value="" selected>全部</option>
-									<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
-								</select>
-								<button type="button" id="button_search" class="btn btn-primary">
-									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<span th:text="#{search}">查询</span>
-								</button>
-								<button type="button" id="button_reset" class="btn btn-default">
-									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;<span th:text="#{reset}">重置</span>
-								</button>
-								<button type="button" id="button_add" class="btn btn-primary">
+								<form action="" method="post" id="form_search">
+									<input type="hidden" id="selectedCategoryId" name="categoryId"></input>
+									<input type="hidden" id="id" name="id"></input>
+									<label th:text="#{name}">名称</label>
+									<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
+									<label th:text="#{type}">类型</label>
+									<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
+										<option value="" selected>全部</option>
+										<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
+									</select>
+									<button type="button" id="button_search" class="btn btn-primary">
+										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<span th:text="#{search}">查询</span>
+									</button>
+									<button type="button" id="button_reset" class="btn btn-default">
+										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;<span th:text="#{reset}">重置</span>
+									</button>
+								</form>
+							</div>
+							<div class="opt-buttons">
+								<button type="button" id="button_add" class="btn btn-primary btn-sm">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">新增</span>
 								</button>
 							</div>
-							</form>
 						</div>
 					</div>
 				</div>
