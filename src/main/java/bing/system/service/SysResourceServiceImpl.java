@@ -164,27 +164,26 @@ public class SysResourceServiceImpl implements SysResourceService {
 	@Override
 	public List<GenericTreeNode> getResourceTree(Integer roleId) {
 		List<SysResource> resources = sysResourceDao.listAll();
-		List<GenericTreeNode> treeNodes = convertResource(resources);
+		List<GenericTreeNode> resourceTreeNodes = convertResource(resources);
 		List<SysResource> ownSysResources = sysResourceDao.listByRoleId(roleId);
-		List<GenericTreeNode> checkedNodes = convertResource(ownSysResources);
+		List<GenericTreeNode> checkedResourceNodes = convertResource(ownSysResources);
 		// 迭代全部资源并自动勾选已授权的节点
-		treeNodes.forEach(treeNode -> {
-			checkedNodes.forEach(checkedNode -> {
+		resourceTreeNodes.forEach(treeNode -> {
+			checkedResourceNodes.forEach(checkedNode -> {
 				if (Objects.equals(treeNode.getAttribute(GlobalConstants.ATTRIBUT_ID), checkedNode.getAttribute(GlobalConstants.ATTRIBUT_ID))) {
 					treeNode.setChecked(true);
 				}
 			});
 		});
 		// 遍历资源分类挂接资源
-		List<GenericTreeNode> branches = getCategoryTree();
-		branches.forEach(branch -> {
-			treeNodes.forEach(leaf -> {
-				if (Objects.equals(branch.getAttribute(GlobalConstants.ATTRIBUT_ID), leaf.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID))) {
-					branch.addChild(leaf);
-				}
-			});
-		});
-		return branches;
+		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
+		List<GenericTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
+		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
+		List<GenericTreeNode> categoryTreeNodes = convertResourceCategory(categories);
+		// 将资源分类节点与资源节点合并递归构造树形结构
+		categoryTreeNodes.addAll(resourceTreeNodes);
+		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);
+		return topCategoryTreeNodes;
 	}
 
 	/**

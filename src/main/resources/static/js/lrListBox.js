@@ -11,16 +11,26 @@ function openLRListBoxDialog(options) {
 	var valueField = options.valueField ? options.valueField : "id";
 	var textField = options.textField ? options.textField : "name";
 	
-	$("#_title_lr_list_box").text(title);
+	var TITLE = "#_title_lr_list_box";
+	var BOX_LEFT = "#_lr_list_box_left";
+	var BOX_RIGHT = "#_lr_list_box_right";
+	var DIALOG = "#_dialog_lr_list_box";
+	var BUTTON_LEFT = "#_button_lr_list_box_left";
+	var BUTTON_RIGHT = "#_button_lr_list_box_right";
+	var BUTTON_CANCEL = "#_button_lr_list_box_cancel";
+	var BUTTON_SAVE = "#_button_lr_list_box_save";
+	var TIPS = "_tips_lr_list_box";
+	
+	$(TITLE).text(title);
 	
 	// 显示模态框
-	$("#_dialog_lr_list_box").modal({
+	$(DIALOG).modal({
 		backdrop: false, // 点击空白区域不关闭弹出框
 		keyboard: false	 // 按ESC键不关闭弹出框
 	});
 	
 	// 初始化左列表
-	$("#_lr_list_box_left").datalist({
+	$(BOX_LEFT).datalist({
 		singleSelect: false,
 	    checkbox: true,
 	    valueField: valueField,
@@ -29,11 +39,11 @@ function openLRListBoxDialog(options) {
 	    lines: true
 	});
 	if (leftTitle) {
-		$("#_lr_list_box_left").datalist("getPanel").panel("setTitle", leftTitle);
+		$(BOX_LEFT).datalist("getPanel").panel("setTitle", leftTitle);
 	}
 	
 	// 初始化右列表
-	$("#_lr_list_box_right").datalist({
+	$(BOX_RIGHT).datalist({
 		singleSelect: false,
 	    checkbox: true,
 	    valueField: valueField,
@@ -42,42 +52,42 @@ function openLRListBoxDialog(options) {
 	    lines: true
 	});
 	if (rightTitle) {
-		$("#_lr_list_box_right").datalist("getPanel").panel("setTitle", rightTitle);
+		$(BOX_RIGHT).datalist("getPanel").panel("setTitle", rightTitle);
 	}
 	
 	// 添加元素
-	$("#_button_lr_list_box_left").on("click", function() {
-		var checkedRows = $("#_lr_list_box_left").datalist("getChecked");
+	$(BUTTON_LEFT).on("click", function() {
+		var checkedRows = $(BOX_LEFT).datalist("getChecked");
 		var rowIndex;
 		for (var i = 0; i < checkedRows.length; i++) {
-			rowIndex = $("#_lr_list_box_left").datalist("getRowIndex", checkedRows[i]);
-			$("#_lr_list_box_left").datalist("deleteRow", rowIndex);
-			$("#_lr_list_box_right").datalist("appendRow", checkedRows[i]);
+			rowIndex = $(BOX_LEFT).datalist("getRowIndex", checkedRows[i]);
+			$(BOX_LEFT).datalist("deleteRow", rowIndex);
+			$(BOX_RIGHT).datalist("appendRow", checkedRows[i]);
 		}
 	});
 		
 	// 删除元素
-	$("#_button_lr_list_box_right").on("click", function() {
-		var checkedRows = $("#_lr_list_box_right").datalist("getChecked");
+	$(BUTTON_RIGHT).on("click", function() {
+		var checkedRows = $(BOX_RIGHT).datalist("getChecked");
 		var rowIndex;
 		for (var i = 0; i < checkedRows.length; i++) {
-			rowIndex = $("#_lr_list_box_right").datalist("getRowIndex", checkedRows[i]);
-			$("#_lr_list_box_right").datalist("deleteRow", rowIndex);
-			$("#_lr_list_box_left").datalist("appendRow", checkedRows[i]);
+			rowIndex = $(BOX_RIGHT).datalist("getRowIndex", checkedRows[i]);
+			$(BOX_RIGHT).datalist("deleteRow", rowIndex);
+			$(BOX_LEFT).datalist("appendRow", checkedRows[i]);
 		}
 	});
 	
 	// 取消
-	$("#_button_lr_list_box_cancel").on("click", function() {
-		$("#_dialog_lr_list_box").modal("hide");
+	$(BUTTON_CANCEL).on("click", function() {
+		$(DIALOG).modal("hide");
 		$("button[id^=_button_lr_list_box]").off();
-		hideTips("_tips_lr_list_box");
+		hideTips(TIPS);
 	});
 	
 	// 保存
-	$("#_button_lr_list_box_save").on("click", function() {
+	$(BUTTON_SAVE).on("click", function() {
 		if ($.isFunction(saveCallback)) {
-			var checkedRows = $("#_lr_list_box_right").datalist("getRows");
+			var checkedRows = $(BOX_RIGHT).datalist("getRows");
 			saveCallback(checkedRows);
 		}
 	});

@@ -1,8 +1,11 @@
 package bing.system.service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +59,25 @@ public class SysRoleResourceServiceImpl implements SysRoleResourceService {
 		entity.setUpdateUser(username);
 		entity.setUpdateDate(new Date());
 		sysRoleResourceDao.updateByPrimaryKeySelective(entity);
+	}
+
+	@Override
+	public void saveRoleResources(Integer roleId, Integer[] resourceIds, String username) {
+		sysRoleResourceDao.deleteByRoleId(roleId);
+		if (ArrayUtils.isNotEmpty(resourceIds)) {
+			List<SysRoleResource> entities = Arrays.asList(resourceIds).stream().map(resourceId -> createRoleResource(roleId, resourceId, username)).collect(Collectors.toList());
+			sysRoleResourceDao.insertBatch(entities);
+		}
+	}
+
+	private SysRoleResource createRoleResource(Integer roleId, Integer resourceId, String username) {
+		SysRoleResource entity = new SysRoleResource(roleId, resourceId);
+		Date now = new Date();
+		entity.setCreateDate(now);
+		entity.setCreateUser(username);
+		entity.setUpdateDate(now);
+		entity.setUpdateUser(username);
+		return entity;
 	}
 
 }

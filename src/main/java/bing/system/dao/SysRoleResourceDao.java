@@ -21,4 +21,8 @@ public interface SysRoleResourceDao {
 
 	List<SysRoleResource> listByCondition(SysRoleResourceCondition condition);
 
+	void deleteByRoleId(Integer roleId);
+
+	int insertBatch(List<SysRoleResource> entities);
+
 }

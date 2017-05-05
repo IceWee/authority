@@ -1,5 +1,6 @@
 package bing.system.web.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -20,12 +21,14 @@ import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.GenericPage;
+import bing.domain.GenericTreeNode;
 import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
+import bing.system.service.SysResourceService;
+import bing.system.service.SysRoleResourceService;
 import bing.system.service.SysRoleService;
 import bing.system.service.SysUserService;
-import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysRoleVO;
 import bing.system.vo.UserRoleVO;
 import bing.util.ExceptionUtils;
@@ -42,6 +45,9 @@ public class SysRoleController extends GenericController {
 	private static final String LOG_PREFIX = LogPrefixes.ROLE;
 	private static final String PREFIX = "system/role";
 	private static final String AJAX_LIST = "ajax/system/roles";
+	private static final String AJAX_ROLE_USERS = "ajax/system/role/users";
+	private static final String AJAX_ROLE_RESOURCES = "ajax/system/role/resources";
+	private static final String AJAX_RESOURCE_TREE = "ajax/system/role/resources/tree";
 
 	private static final String LIST = PREFIX + "/list";
 	private static final String ADD = PREFIX + "/add";
@@ -55,6 +61,12 @@ public class SysRoleController extends GenericController {
 
 	@Autowired
 	private SysUserService sysUserService;
+
+	@Autowired
+	private SysResourceService sysResourceService;
+
+	@Autowired
+	private SysRoleResourceService sysRoleResourceService;
 
 	@RequestMapping(LIST)
 	public String list() {
@@ -70,6 +82,12 @@ public class SysRoleController extends GenericController {
 		return response;
 	}
 
+	/**
+	 * 获取用户角色列表
+	 * 
+	 * @param userId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_LIST + "/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<UserRoleVO> getUserRoles(@PathVariable Integer userId) {
@@ -79,16 +97,57 @@ public class SysRoleController extends GenericController {
 		return response;
 	}
 
+	/**
+	 * 保存角色用户关联关系
+	 * 
+	 * @param roleId
+	 * @param userIds
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST + "/users", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<RoleUserVO> saveRoleUsers(Integer roleId, Integer[] userIds) {
-		RestResponse<RoleUserVO> response = new RestResponse<>();
+	@RequestMapping(value = AJAX_ROLE_USERS, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> saveRoleUsers(Integer roleId, Integer[] userIds) {
+		RestResponse<Object> response = new RestResponse<>();
 		Optional<SysUser> optional = getCurrentUser();
 		String username = StringUtils.EMPTY;
 		if (optional.isPresent()) {
 			username = optional.get().getUsername();
 		}
 		sysUserService.saveRoleUsers(roleId, userIds, username);
+		return response;
+	}
+
+	/**
+	 * 保存角色资源关联关系
+	 * 
+	 * @param roleId
+	 * @param resourceIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_ROLE_RESOURCES, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> saveRoleResources(Integer roleId, Integer[] resourceIds) {
+		RestResponse<Object> response = new RestResponse<>();
+		Optional<SysUser> optional = getCurrentUser();
+		String username = StringUtils.EMPTY;
+		if (optional.isPresent()) {
+			username = optional.get().getUsername();
+		}
+		sysRoleResourceService.saveRoleResources(roleId, resourceIds, username);
+		return response;
+	}
+
+	/**
+	 * 资源树
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_RESOURCE_TREE + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<List<GenericTreeNode>> resourceTree(@PathVariable Integer roleId) {
+		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
+		List<GenericTreeNode> resources = sysResourceService.getResourceTree(roleId);
+		response.setData(resources);
 		return response;
 	}
 

@@ -10,6 +10,11 @@ function getSelectedTreeNode(treeId) {
 	return $("#" + treeId).tree("getSelected");
 }
 
+// 获得全部选中树节点
+function getCheckedTreeNodes(treeId) {
+	return $("#" + treeId).tree("getChecked");
+}
+
 // 获得EasyUI Tree上级节点
 function getParentTreeNode(treeId, node) {
 	return $("#" + treeId).tree("getParent", node.target);
@@ -63,7 +68,7 @@ function loadTreeData(options) {
 // completeCallback 加载完成后回调函数
 // selectedId 需要选中的节点ID
 // tipsId 错误提示DIV的ID, 默认值tips
-// selectFirst 是否选中第一个节点
+// checkbox 默认false
 function initTree(options) {
 	var url = options.url;
 	if (!url) {
@@ -81,7 +86,7 @@ function initTree(options) {
 	var completeCallback = options.completeCallback;
 	var selectedId = options.selectedId;
 	var tipsId = options.tipsId ? options.tipsId : "tips";
-	var selectFirst = options.selectFirst;
+	var checkbox = options.checkbox === undefined ? false : options.checkbox;
 	
 	$.ajax({
 		type : "GET",
@@ -94,6 +99,7 @@ function initTree(options) {
 					$("#" + treeId).tree({
 						data: array,
 						animate: true,
+						checkbox: checkbox,
 						onClick: function(node) {
 							if ($.isFunction(selectCallback)) { // 选择树节点
 								selectCallback(node);
@@ -176,24 +182,29 @@ function refreshTree(options) {
 // 初始化弹出框树
 // 依赖 i18n/utils
 // url 必须
-// triggerInputId 必须, 用于绑定click事件, 必须使用EasyUI的form, 即元素的class="easyui-textbox"
+// triggerInputId 用于绑定click事件, 必须使用EasyUI的form, 即元素的class="easyui-textbox"
 // selectCallback 选择树节点回调函数, 回调参数会将当前选中的节点对象返回
 // contextMenuCallback 右键菜单回调函数
 // confirmCallback 确认按钮回调函数
 // showFooter 是否选择弹出框页脚, 默认值 true
-// tipsId 错误提示DIV的ID, 默认值tips
+// tipsId 错误提示DIV的ID, 默认值_tips_dialog_tree
 // title 弹出框标题
 // selectedId 需要选中的节点ID
+// showImmediately 立刻显示
+// checkbox 默认false
+// autoClose 默认true, 点击确定后自动关闭
 function initDialogTree(options) {
 	var url = options.url;
 	var triggerInputId = options.triggerInputId;
-	if (!url || !triggerInputId) {
-		console.log("树请求url为空或触发弹出框的文本款ID为空");
+	if (!url) {
+		console.log("树请求url为空");
 		return;
 	}
-	triggerInputId = "#" + triggerInputId;
+	if (triggerInputId) {
+		triggerInputId = "#" + triggerInputId;
+	}
 	
-	console.log(triggerInputId)
+	var showImmediately = options.showImmediately;
 	
 	var BUTTON_CONFIRM = "#_button_dialog_tree_confirm"; // 确认按钮
 	var BUTTON_CANCEL = "#_button_dialog_tree_cancel"; // 取消按钮
@@ -207,10 +218,16 @@ function initDialogTree(options) {
 	var selectCallback = options.selectCallback;
 	var contextMenuCallback = options.contextMenuCallback;
 	var confirmCallback = options.confirmCallback;
-	var tipsId = options.tipsId ? options.tipsId : "tips";
+	var tipsId = options.tipsId ? options.tipsId : "_tips_dialog_tree";
 	var showFooter = options.showFooter;
 	var title = options.title;
 	var selectedId = options.selectedId;
+	var checkbox = options.checkbox === undefined ? false : options.checkbox;
+	var autoClose = options.autoClose === undefined ? true : options.autoClose;
+	
+	if (showImmediately) {
+		$(DIALOG_ID).modal({keyboard:false});
+	}
 	
 	$.ajax({
 		type : "GET",
@@ -223,6 +240,7 @@ function initDialogTree(options) {
 					$(TREE_ID).tree({
 						data: array,
 						animate: true,
+						checkbox: checkbox,
 						onClick: function(node){
 							if ($.isFunction(selectCallback)) {
 								selectCallback(node, RAW_DIALOG_ID);
@@ -230,7 +248,7 @@ function initDialogTree(options) {
 						},
 						onContextMenu: function(e, node) {
 							e.preventDefault();
-							if ($.isFunction(contextMenuCall)) {
+							if ($.isFunction(contextMenuCallback)) {
 								contextMenuCallback(e, node);
 							}
 						},
@@ -252,9 +270,11 @@ function initDialogTree(options) {
 	});
 	
 	// 绑定点击事件到提供的textbox上
-	$(triggerInputId).textbox("textbox").bind("click", function() {  
-		$(DIALOG_ID).modal({keyboard:false});
-	});
+	if (triggerInputId) {
+		$(triggerInputId).textbox("textbox").bind("click", function() {  
+			$(DIALOG_ID).modal({keyboard:false});
+		});
+	}
 	
 	$(DIALOG_TITLE_ID).text(title);
 	
@@ -262,17 +282,36 @@ function initDialogTree(options) {
 		// 取消
 		$(BUTTON_CANCEL).click(function() {
 			$(DIALOG_ID).modal("hide");
+			$(BUTTON_CONFIRM).off(); // 注意：隐藏弹出框后必须关闭click事件，否则再次弹出后会触发多次click事件
+			if (triggerInputId) {
+				$(triggerInputId).textbox("textbox").unbind("click");  
+			}
 		});
 		
 		// 确认
-		$(BUTTON_CONFIRM).click(function() {
-			var node = $(TREE_ID).tree("getSelected");
-			if (node) {
-				if ($.isFunction(confirmCallback)) {
-					confirmCallback(node);
+		$(BUTTON_CONFIRM).on("click", function() {
+			if (!checkbox) { // 单选
+				var node = getSelectedTreeNode(RAW_TREE_ID);
+				if (node) {
+					if ($.isFunction(confirmCallback)) {
+						confirmCallback(node);
+					}
+					if (autoClose) {
+						$(DIALOG_ID).modal("hide");
+					}
 				}
-				$(DIALOG_ID).modal("hide");
+			} else { // 复选
+				var nodes = getCheckedTreeNodes(RAW_TREE_ID);
+				if (nodes.length > 0) {
+					if ($.isFunction(confirmCallback)) {
+						confirmCallback(nodes);
+					}
+					if (autoClose) {
+						$(DIALOG_ID).modal("hide");
+					}
+				}
 			}
+			
 		});
 	} else {
 		$("#_footer_dialog_tree").hide();

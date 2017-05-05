@@ -14,6 +14,16 @@ public class SysRoleResource extends GenericObject implements Serializable {
 
 	private Integer resourceId;
 
+	public SysRoleResource() {
+		super();
+	}
+
+	public SysRoleResource(Integer roleId, Integer resourceId) {
+		super();
+		this.roleId = roleId;
+		this.resourceId = resourceId;
+	}
+
 	public Integer getId() {
 		return id;
 	}

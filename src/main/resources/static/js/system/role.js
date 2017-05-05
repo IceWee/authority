@@ -15,7 +15,9 @@ var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 //自定义常量
 var URI_AJAX_USER_LIST = "/ajax/system/users"; // 获取用户列表
-var URI_AJAX_ROLE_USER = "/ajax/system/roles/users"; // 保存角色用户关系
+var URI_AJAX_ROLE_USER = "/ajax/system/role/users"; // 保存角色用户关系
+var URI_AJAX_RESOURCE_TREE = "/ajax/system/role/resources/tree"; // 资源树
+var URI_AJAX_ROLE_RESOURCES = "/ajax/system/role/resources"; // 保存角色资源关系
 
 //列表页面初始化
 function initListPageExt(error, message) {
@@ -34,7 +36,55 @@ function operateBtnHtmlExt(value, row, index) {
 
 // 配置资源
 function openConfigRes(roleId, roleName) {
-	
+	initDialogTree({
+		url: URI_AJAX_RESOURCE_TREE + "/" + roleId,
+		title: roleName,
+		checkbox: true,
+		showFooter: true,
+		autoClose: false,
+		showImmediately: true,
+		confirmCallback: function(checkedRows) {
+			saveRoleResources(roleId, checkedRows);
+	    }
+	});
+}
+
+// 保存角色资源授权
+// 注意：所选节点中需要区分资源分类和资源
+function saveRoleResources(roleId, checkedNodes) {
+	var node, type;
+	var resourceIdArray = [];
+	var RESOURCE_TYPE = 1;
+	var resourceId;
+	for (var i = 0; i < checkedNodes.length; i++) {
+		node = checkedNodes[i];
+		type = node.attributes.type;
+		resourceId = node.attributes.id;
+		if (type === RESOURCE_TYPE) {
+			resourceIdArray.push(resourceId);
+		}
+	}
+	var data = {roleId: roleId, resourceIds: resourceIdArray};
+	var tipsId = "_tips_dialog_tree";
+	$.ajax({
+		type : "POST",
+		url : URI_AJAX_ROLE_RESOURCES,
+		dataType : "json",
+		data : data,
+		traditional: true,
+		success : function(json) {
+			var code = json.code;
+			if (code === "200") {
+				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
+			} else {
+				var msg = json.message;
+				showErrorTips(msg, tipsId);
+			}
+		},
+		error : function() {
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
+		}
+	});
 }
 
 // 配置用户
