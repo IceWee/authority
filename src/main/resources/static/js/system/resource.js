@@ -14,7 +14,7 @@ var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 //自定义常量
-var URI_AJAX_CATEGORY_TREE = "/ajax/system/category/tree"; // 列表页获取列表数据异步URI
+var URI_AJAX_CATEGORY_TREE = "/ajax/system/category/tree"; // 资源分类树
 var URI_AJAX_CATEGORY_SAVE = "/ajax/system/category/save"; // 列表页获取列表数据异步URI
 var URI_AJAX_CATEGORY_UPDATE = "/ajax/system/category/update"; // 列表页获取列表数据异步URI
 var URI_AJAX_CATEGORY_DELETE = "/ajax/system/category/delete"; // 列表页获取列表数据异步URI
@@ -194,19 +194,34 @@ function selectCategory(node) {
 }
 
 /************************************** add/edit begin ********************************************/
+// 初始化新增页面扩展
 function initAddPageExt(error, message) {
 	initAddPage(error, message);
 	
-	initResourceCategoryTree({triggerInputId:"categoryName", onSelectClickCall:onSelectClickCallForDetail});
+	initDialogTree({
+		url: URI_AJAX_CATEGORY_TREE,
+		title: $.i18n.prop("resource.category.tree"),
+		showFooter: true,
+		triggerInputId: "categoryName",
+		confirmCallback: confirmCallbackForDetail
+	});
 }
 
+//初始化编辑页面扩展
 function initEditPageExt(error, message) {
 	initEditPage(error, message);
 	
-	initResourceCategoryTree({triggerInputId:"categoryName", onSelectClickCall:onSelectClickCallForDetail});
+	initDialogTree({
+		url: URI_AJAX_CATEGORY_TREE,
+		title: $.i18n.prop("resource.category.tree"),
+		showFooter: true,
+		triggerInputId: "categoryName",
+		confirmCallback: confirmCallbackForDetail
+	});
 }
 
-function onSelectClickCallForDetail(node) {
+// 选择树节点事件
+function confirmCallbackForDetail(node) {
 	$(FORM_ID_DETAIL).form("load", {
 		categoryId: node.id,
 		categoryName: node.text
