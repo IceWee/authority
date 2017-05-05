@@ -181,16 +181,16 @@
 		from sys_user
 		where hidden = 0 and status != 2
 		<if test="username != null and username != ''">
-			AND username like concat(#{username,jdbcType=VARCHAR}, '%')
+			and username like concat(#{username,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="name != null and name != ''">
-			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
+			and name like concat(#{name,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="mobile != null and mobile != ''">
-			AND mobile like concat(#{mobile,jdbcType=VARCHAR}, '%')
+			and mobile like concat(#{mobile,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="status != null">
-			AND status = #{status,jdbcType=INTEGER}
+			and status = #{status,jdbcType=INTEGER}
 		</if>
 	</select>
 	<select id="listAll" resultMap="BaseResultMap">

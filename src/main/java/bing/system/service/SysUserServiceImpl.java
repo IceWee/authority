@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +29,7 @@ import bing.system.model.SysUserRole;
 import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
 import bing.util.PasswordUtils;
+import bing.util.StringUtils;
 
 @Service("sysUserService")
 public class SysUserServiceImpl implements SysUserService {

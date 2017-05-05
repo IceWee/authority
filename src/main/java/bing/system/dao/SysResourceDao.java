@@ -26,4 +26,8 @@ public interface SysResourceDao {
 
 	int countByCategoryId(Integer categoryId);
 
+	List<SysResource> listByRoleId(Integer roleId);
+
+	List<SysResource> listAll();
+
 }

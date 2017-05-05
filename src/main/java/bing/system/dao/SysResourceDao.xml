@@ -183,19 +183,29 @@
 		from sys_resource
 		where status != 2
 		<if test="categoryId != null">
-			AND category_id = #{categoryId,jdbcType=INTEGER}
+			and category_id = #{categoryId,jdbcType=INTEGER}
 		</if>
 		<if test="name != null and name != ''">
-			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
+			and name like concat(#{name,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="type != null">
-			AND type = #{type,jdbcType=INTEGER}
+			and type = #{type,jdbcType=INTEGER}
 		</if>
 		<if test="status != null">
-			AND status = #{status,jdbcType=INTEGER}
+			and status = #{status,jdbcType=INTEGER}
 		</if>
 	</select>
 	<select id="countByCategoryId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		select count(1) from sys_resource where status != 2 and category_id = #{categoryId,jdbcType=INTEGER}
+	</select>
+	<select id="listByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select r.id, r.name, r.category_id, r.type, r.url, r.status, r.remark, r.create_date, r.create_user, r.update_date, r.update_user
+		from sys_resource r, sys_role_resource rr where r.id = rr.resource_id and r.status != 2
+		and rr.role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+	<select id="listAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource where status != 2
 	</select>
 </mapper>

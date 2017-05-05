@@ -21,4 +21,12 @@ public interface SysResourceService extends GenericService<SysResource, SysResou
 
 	void deleteCategoryById(Integer categoryId, String username);
 
+	/**
+	 * 获取资源树，节点中有资源分类和资源，角色ID是用来自动勾选使用
+	 * 
+	 * @param roleId
+	 * @return
+	 */
+	List<GenericTreeNode> getResourceTree(Integer roleId);
+
 }

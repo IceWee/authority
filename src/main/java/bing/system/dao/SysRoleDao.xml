@@ -170,13 +170,13 @@
 		from sys_role
 		where hidden = 0 and status != 2
 		<if test="code != null and code != ''">
-			AND code like concat(#{code,jdbcType=VARCHAR}, '%')
+			and code like concat(#{code,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="name != null and name != ''">
-			AND name like concat(#{name,jdbcType=VARCHAR}, '%')
+			and name like concat(#{name,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="status != null">
-			AND status = #{status,jdbcType=INTEGER}
+			and status = #{status,jdbcType=INTEGER}
 		</if>
 	</select>
 	<select id="listAll" resultMap="BaseResultMap">

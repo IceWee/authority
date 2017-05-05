@@ -1,6 +1,5 @@
 package bing.security;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -24,6 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import bing.constant.RedisKeys;
 import bing.exception.CaptchaErrorException;
 import bing.util.PasswordUtils;
+import bing.util.StringUtils;
 
 /**
  * 自定义权限认证处理类，加入了验证码校验

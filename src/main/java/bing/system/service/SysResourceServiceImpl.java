@@ -3,8 +3,8 @@ package bing.system.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +30,7 @@ import bing.system.model.SysResourceCategory;
 import bing.system.model.SysRole;
 import bing.system.model.SysRoleResource;
 import bing.system.vo.SysResourceVO;
+import bing.util.StringUtils;
 
 @Service("sysResourceService")
 public class SysResourceServiceImpl implements SysResourceService {
@@ -118,8 +119,8 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public List<GenericTreeNode> getCategoryTree() {
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
-		List<GenericTreeNode> treeNodes = convert(topCategories);
-		GenericTreeNode.buildGenericTree(treeNodes, convert(categories));
+		List<GenericTreeNode> treeNodes = convertResourceCategory(topCategories);
+		GenericTreeNode.buildGenericTree(treeNodes, convertResourceCategory(categories));
 		return treeNodes;
 	}
 
@@ -159,21 +160,69 @@ public class SysResourceServiceImpl implements SysResourceService {
 		sysResourceCategoryDao.updateByPrimaryKeySelective(entity);
 	}
 
+	@Override
+	public List<GenericTreeNode> getResourceTree(Integer roleId) {
+		List<SysResource> resources = sysResourceDao.listAll();
+		List<GenericTreeNode> treeNodes = convertResource(resources);
+		List<SysResource> ownSysResources = sysResourceDao.listByRoleId(roleId);
+		List<GenericTreeNode> checkedNodes = convertResource(ownSysResources);
+		// 迭代全部资源并自动勾选已授权的节点
+		treeNodes.forEach(treeNode -> {
+			checkedNodes.forEach(checkedNode -> {
+				if (Objects.equals(treeNode.getId(), checkedNode.getId())) {
+					treeNode.setChecked(true);
+				}
+			});
+		});
+		// 遍历资源分类挂接资源
+		List<GenericTreeNode> branches = getCategoryTree();
+		branches.forEach(branch -> {
+			treeNodes.forEach(leaf -> {
+				if (Objects.equals(branch.getId(), leaf.getParentId())) {
+					branch.addChild(leaf);
+				}
+			});
+		});
+		return branches;
+	}
+
 	/**
 	 * 将资源分类列表转换为节点列表
 	 * 
 	 * @param sysResourceCategories
 	 * @return
 	 */
-	private List<GenericTreeNode> convert(List<SysResourceCategory> sysResourceCategories) {
+	private List<GenericTreeNode> convertResourceCategory(List<SysResourceCategory> sysResourceCategories) {
 		List<GenericTreeNode> treeNodes = new ArrayList<>();
 		GenericTreeNode treeNode;
 		for (SysResourceCategory sysResourceCategory : sysResourceCategories) {
 			treeNode = new GenericTreeNode();
 			treeNode.setId(sysResourceCategory.getId());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, sysResourceCategory.getId());
 			treeNode.setParentId(sysResourceCategory.getParentId());
 			treeNode.setText(sysResourceCategory.getName());
 			treeNode.setType(ResourceTreeNodeTypeEnum.CATEGORY.name());
+			treeNodes.add(treeNode);
+		}
+		return treeNodes;
+	}
+
+	/**
+	 * 将资源列表转换为节点列表
+	 * 
+	 * @param sysResources
+	 * @return
+	 */
+	private List<GenericTreeNode> convertResource(List<SysResource> sysResources) {
+		List<GenericTreeNode> treeNodes = new ArrayList<>();
+		GenericTreeNode treeNode;
+		for (SysResource sysResource : sysResources) {
+			treeNode = new GenericTreeNode();
+			treeNode.setId(sysResource.getId());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, sysResource.getId());
+			treeNode.setParentId(sysResource.getCategoryId());
+			treeNode.setText(sysResource.getName());
+			treeNode.setType(ResourceTreeNodeTypeEnum.RESOURCE.name());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;

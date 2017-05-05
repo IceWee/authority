@@ -1,6 +1,6 @@
 package bing.web.api;
 
-import org.apache.commons.lang3.StringUtils;
+import bing.util.StringUtils;
 
 /**
  * Rest接口返回类

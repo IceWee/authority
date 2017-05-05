@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +24,7 @@ import bing.system.model.SysRole;
 import bing.system.model.SysUserRole;
 import bing.system.vo.SysRoleVO;
 import bing.system.vo.UserRoleVO;
+import bing.util.StringUtils;
 
 @Service("sysRoleService")
 public class SysRoleServiceImpl implements SysRoleService {

@@ -25,9 +25,16 @@ function initListPageExt(error, message) {
 //操作按钮扩展
 function operateBtnHtmlExt(value, row, index) {
 	var html = operateBtnHtml(value, row, index);
-	var label_user = $.i18n .prop("operate.authorize.user");
+	var label_user = $.i18n.prop("operate.authorize.user");
+	var label_res = $.i18n.prop("operate.authorize.resource");
 	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openConfigUser('" + row.id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_user + "</span></a>";
+	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openConfigRes('" + row.id + "', '" + row.name + "')\"><span class=\"label label-success\">" + label_res + "</span></a>";
 	return html;
+}
+
+// 配置资源
+function openConfigRes(roleId, roleName) {
+	
 }
 
 // 配置用户

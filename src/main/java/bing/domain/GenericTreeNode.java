@@ -1,7 +1,9 @@
 package bing.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -18,6 +20,10 @@ public class GenericTreeNode {
 	protected String text;
 
 	protected String type;
+
+	protected boolean checked = false;
+
+	protected Map<String, Object> attributes = new HashMap<>();
 
 	protected List<GenericTreeNode> children = new ArrayList<>();
 
@@ -46,6 +52,10 @@ public class GenericTreeNode {
 				buildGenericTree(parentNode.getChildren(), treeNodes);
 			}
 		});
+	}
+
+	public void setAttribute(String name, Object value) {
+		attributes.put(name, value);
 	}
 
 	public Integer getId() {
@@ -78,6 +88,22 @@ public class GenericTreeNode {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
 	}
 
 	public List<GenericTreeNode> getChildren() {
