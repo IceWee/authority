@@ -21,22 +21,42 @@ var URI_AJAX_CATEGORY_DELETE = "/ajax/system/category/delete"; // 列表页获�
 var TREE_ID_RESOURCE_CATEGORY = "tree_category";
 var DIALOG_ID_CATEGORY = "#dialog_category";
 var FORM_ID_HIDDEN = "#form_search"; // 隐藏表单ID
-var MENU_ID_CATEGORY = "#menu_category"; // 隐藏表单ID
 
 // 初始化资源分类树
-function initResourceListPage(error, message) {
-	initTree({
-		url: URI_AJAX_CATEGORY_TREE,
-		treeId: TREE_ID_RESOURCE_CATEGORY,
-		selectCallback: selectCategory,
-		contextMenuCallback: function(e, node) {
-			selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
-			$(MENU_ID_CATEGORY).menu("show", {left: e.pageX, top: e.pageY});
+function initResourceListPage() {
+	$.ajax({
+		type : "GET",
+		url : URI_AJAX_CATEGORY_TREE,
+		dataType : "json",
+		success : function(json) {
+			if (json.code === "200") {
+				if (json.data) {
+					var array = json.data;
+					$("#tree_category").tree({
+						data: array,
+						animate: true,
+						onClick: function(node){
+							selectCategory(node);
+						},
+						// 右键菜单
+						onContextMenu: function(e, node){
+							e.preventDefault();
+							selectCategory(node);
+							$("#menu_category").menu("show", {left: e.pageX, top: e.pageY});
+						}
+					});
+					// 选中第一个节点
+					$("#_easyui_tree_1").addClass("tree-node-selected"); // 设置第一个节点高亮 
+					var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
+					$("#selectedCategoryId").val(node.id);
+					initListPage(error, message);
+				}
+			} else {
+				showErrorTips(json.message);
+			}
 		},
-		completeCallback: function() {
-			var firstNode = selectFirstTreeNode(TREE_ID_RESOURCE_CATEGORY);
-			$("#selectedCategoryId").val(firstNode.id);
-			initListPage(error, message);
+		error : function() {
+			showErrorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 	
@@ -64,7 +84,7 @@ function initResourceListPage(error, message) {
 					ajaxLoaded();
 					if (json.code === "200") {
 						$(DIALOG_ID_CATEGORY).modal("hide");
-						freshCategoryTree(node.id);
+						freshCategoryTree(node);
 						showSuccessTips($.i18n .prop("save.success"));
 					} else {
 						showErrorTips(json.message, "tips_category");
@@ -123,9 +143,7 @@ function deleteCategory() {
 				dataType : "json",
 				success : function(json) {
 					if (json.code === "200") {
-						if (parent) {
-							freshCategoryTree(parent.id);
-						}
+						freshCategoryTree(parent);
 						showSuccessTips($.i18n .prop("delete.success"));
 					} else {
 						showErrorTips(json.message);
@@ -140,15 +158,26 @@ function deleteCategory() {
 }
 
 // 刷新分类树
-function freshCategoryTree(nodeId) {
-	refreshTree({
-		url: URI_AJAX_CATEGORY_TREE,
-		treeId: TREE_ID_RESOURCE_CATEGORY,
-		completeCallback: function() {
-			if (nodeId) {
-				var node = getTreeNode(TREE_ID_RESOURCE_CATEGORY, nodeId);
-				selectCategory(node);
+function freshCategoryTree(parent) {
+	$.ajax({
+		type : "GET",
+		url : URI_AJAX_CATEGORY_TREE,
+		dataType : "json",
+		success : function(json) {
+			if (json.code === "200") {
+				if (json.data) {
+					loadTreeData(TREE_ID_RESOURCE_CATEGORY, json.data);
+					if (parent) {
+						var node = getTreeNode(TREE_ID_RESOURCE_CATEGORY, parent.id);
+						selectCategory(node);
+					}
+				}
+			} else {
+				showErrorTips(json.message);
 			}
+		},
+		error : function() {
+			showErrorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 }
@@ -157,7 +186,9 @@ function freshCategoryTree(nodeId) {
 function selectCategory(node) {
 	if (node) {
 		selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
+		
 		$("#selectedCategoryId").val(node.id);
+		
 		doSearch(URI_AJAX_LIST);
 	}
 }

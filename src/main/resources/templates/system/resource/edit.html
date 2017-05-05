@@ -22,7 +22,7 @@
 <form id="form_default" method="post">
 <div class="container-fluid" th:object="${bean}">
 <input type="hidden" th:value="${bean.id}" name="id"></input>
-<input type="hidden" th:value="${category.id}" name="categoryId"></input>
+<input type="hidden" th:value="${category.id}" name="categoryId" id="categoryId"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
 <div class="row">
 	<div class="panel panel-default">

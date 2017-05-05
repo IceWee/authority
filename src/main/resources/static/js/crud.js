@@ -44,7 +44,6 @@ function showErrorOrMessage(error, message) {
 function initListPage(error, message, autoLoad, autoResize) {
 	autoLoad = arguments[2] != undefined ? arguments[2] : true;
 	autoResize = arguments[3] != undefined ? arguments[3] : true;
-	
 	initDatagrid({url:URI_AJAX_LIST,autoLoad:autoLoad,rowStyler:statusRowStyler,autoResize:autoResize});
 	
 	showErrorOrMessage(error, message);
