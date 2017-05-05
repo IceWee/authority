@@ -34,8 +34,14 @@ function initResourceListPage(error, message) {
 			$(MENU_ID_CATEGORY).menu("show", {left: e.pageX, top: e.pageY});
 		},
 		completeCallback: function() {
-			var firstNode = selectFirstTreeNode(TREE_ID_RESOURCE_CATEGORY);
-			$("#selectedCategoryId").val(firstNode.id);
+			var selectedCategoryId = $("#selectedCategoryId").val();
+			if (!selectedCategoryId) {
+				var firstNode = selectFirstTreeNode(TREE_ID_RESOURCE_CATEGORY);
+				$("#selectedCategoryId").val(firstNode.id);
+			} else {
+				var node = getTreeNode(TREE_ID_RESOURCE_CATEGORY, selectedCategoryId);
+				selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
+			}
 			initListPage(error, message);
 		}
 	});

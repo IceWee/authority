@@ -20,6 +20,12 @@ function selectTreeNode(treeId, node) {
 	$("#" + treeId).tree("select", node.target);
 }
 
+// 根据节点ID选择节点
+function selectTreeNodeById(treeId, nodeId) {
+	var node = getTreeNode(treeId, nodeId);
+	selectTreeNode(treeId, node);
+}
+
 
 //获取第一个树节点
 function selectFirstTreeNode(treeId) {

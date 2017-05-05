@@ -62,6 +62,7 @@ public class SysResourceController extends GenericController {
 	private static final String DELETE = PREFIX + "/delete";
 
 	private static final String REQUEST_ATTRIBUTE_CATEGORY = "category";
+	private static final String REQUEST_ATTRIBUTE_CATEGORY_ID = "categoryId";
 
 	@Autowired
 	private SysResourceService sysResourceService;
@@ -170,6 +171,7 @@ public class SysResourceController extends GenericController {
 			return ADD;
 		}
 		setMessage(MessageKeys.SAVE_SUCCESS, model);
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, entity.getCategoryId());
 		return LIST;
 	}
 
