@@ -203,6 +203,7 @@ public class SysResourceController extends GenericController {
 			return EDIT;
 		}
 		setMessage(MessageKeys.UPDATE_SUCCESS, model);
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, entity.getCategoryId());
 		return LIST;
 	}
 
