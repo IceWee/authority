@@ -116,7 +116,7 @@ function hideTips(id) {
 
 /* 
  * 初始化easyui datagrid, 依赖_search函数
- * 如果一个面有多个datagrid, 需要传递的参数有: url, tableId, toolbarId, formSearchId, buttonSearchId, buttonResetId, tipsId
+ * 如果一个面有多个datagrid, 需要传递的参数有: url, tableId, toolbarId, formListId, buttonSearchId, buttonResetId, tipsId
  * 
  * options 类型 JSON, 属性列表
  * url, 必填 , 查询使用
@@ -124,7 +124,7 @@ function hideTips(id) {
  * singleSelect, 可选, 默认值: true
  * toolbarId, 可选, 默认值: search_tools
  * pageSize, 可选, 默认值: 10
- * formSearchId, 可选, 默认值: form_search
+ * formListId, 可选, 默认值: form_list
  * buttonSearchId, 可选, 默认值: button_search
  * buttonResetId, 可选, 默认值: button_reset
  * minHeight, 可选, 默认值: 500
@@ -143,7 +143,7 @@ function initDatagrid(options) {
 	var singleSelect = options.singleSelect;
 	var toolbarId = options.toolbarId ? "#" + options.toolbarId : "#search_tools";
 	var pageSize = options.pageSize ? options.pageSize : 10;
-	var formSearchId = options.formSearchId ? "#" + options.formSearchId : "#form_search";
+	var formListId = options.formListId ? "#" + options.formListId : "#form_list";
 	var buttonSearchId = options.buttonSearchId ? "#" + options.buttonSearchId : "#button_search";
 	var buttonResetId = options.buttonResetId ? "#" + options.buttonResetId : "#button_reset";
 	var minHeight = options.minHeight ? options.minHeight : 500;
@@ -173,23 +173,23 @@ function initDatagrid(options) {
 	// 自定义分页
 	$(tableId).datagrid("getPager").pagination({
 		onSelectPage : function() { // 翻页
-			doSearch(url, tableId, formSearchId, tipsId);
+			doSearch(url, tableId, formListId, tipsId);
 		}
 	});
 	
 	// 开启自动加载数据
 	if (autoLoad) {
-		doSearch(url, tableId, formSearchId, tipsId);
+		doSearch(url, tableId, formListId, tipsId);
 	}
 	
 	// 查询
 	$(buttonSearchId).click(function() {
-		doSearch(url, tableId, formSearchId, tipsId);
+		doSearch(url, tableId, formListId, tipsId);
 	});
 	
 	// 表单重置
 	$(buttonResetId).click(function() {
-		$(formSearchId).form("reset");
+		$(formListId).form("reset");
 	});
 	
 	// 当窗口大小发生变化时，调整DataGrid的大小 
@@ -201,10 +201,10 @@ function initDatagrid(options) {
 }
 
 // 列表查询
-function doSearch(url, tableId, formSearchId, tipsId) {
+function doSearch(url, tableId, formListId, tipsId) {
 	url = arguments[0] ? arguments[0] : null;
 	tableId = arguments[1] ? arguments[1] : "#datagrid";
-	formSearchId = arguments[2] ? arguments[2] : "#form_search";
+	formListId = arguments[2] ? arguments[2] : "#form_list";
 	tipsId = arguments[3] ? arguments[3] : "tips";
 	if (url == null) {
 		console.log("url是空，无法执行查询操作...")
@@ -219,7 +219,7 @@ function doSearch(url, tableId, formSearchId, tipsId) {
 		pageNo = 1;
 	}
 	var pageSize = pager.pagination("options").pageSize;
-	var data = $(formSearchId).serialize();
+	var data = $(formListId).serialize();
 	data = data + "&pageNo=" + pageNo + "&pageSize=" + pageSize + "&timestamp=" + new Date().getTime();
 	$.ajax({
 		type : "GET",

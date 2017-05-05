@@ -77,7 +77,8 @@ public class SysResourceController extends GenericController {
 	}
 
 	@RequestMapping(LIST)
-	public String list(Model model) {
+	public String list(@RequestParam(name = "categoryId", required = false) Integer categoryId, Model model) {
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 		return LIST;
 	}
 

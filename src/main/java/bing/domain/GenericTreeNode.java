@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import bing.constant.GlobalConstants;
+
 /**
  * 通用树节点
  * 
@@ -13,13 +15,9 @@ import java.util.Objects;
  */
 public class GenericTreeNode {
 
-	protected Integer id;
-
-	protected Integer parentId;
+	protected String id;
 
 	protected String text;
-
-	protected String type;
 
 	protected boolean checked = false;
 
@@ -44,7 +42,7 @@ public class GenericTreeNode {
 	public static void buildGenericTree(List<GenericTreeNode> parentTreeNodes, List<GenericTreeNode> treeNodes) {
 		parentTreeNodes.forEach(parentNode -> {
 			treeNodes.forEach(node -> {
-				if (Objects.equals(parentNode.getId(), node.getParentId())) {
+				if (Objects.equals(parentNode.getAttribute(GlobalConstants.ATTRIBUT_ID), node.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID))) {
 					parentNode.addChild(node);
 				}
 			});
@@ -54,24 +52,20 @@ public class GenericTreeNode {
 		});
 	}
 
+	public Object getAttribute(String name) {
+		return attributes.get(name);
+	}
+
 	public void setAttribute(String name, Object value) {
 		attributes.put(name, value);
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public Integer getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
 	}
 
 	public String getText() {
@@ -80,14 +74,6 @@ public class GenericTreeNode {
 
 	public void setText(String text) {
 		this.text = text;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public boolean isChecked() {

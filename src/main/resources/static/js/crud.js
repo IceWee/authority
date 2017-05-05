@@ -56,15 +56,15 @@ function initListPage(error, message, autoLoad, autoResize) {
 
 // 进入新增页
 function _add() {
-	$(FORM_ID_HIDDEN).attr("action", URI_ADD);
-	$(FORM_ID_HIDDEN).submit();
+	$(FORM_ID_LIST).attr("action", URI_ADD);
+	$(FORM_ID_LIST).submit();
 }
 
 // 进入编辑页
 function _edit(id) {
 	$(PARAM_ID).val(id);
-	$(FORM_ID_HIDDEN).attr("action", URI_EDIT);
-	$(FORM_ID_HIDDEN).submit();
+	$(FORM_ID_LIST).attr("action", URI_EDIT);
+	$(FORM_ID_LIST).submit();
 }
 /*************************** list end *****************************/
 
@@ -118,8 +118,8 @@ function _delete(id) {
 	$.messager.confirm($.i18n.prop("tip.info"), $.i18n.prop("delete.prompt"), function(go){
 		if (go){
 			$(PARAM_ID).val(id);
-			$(FORM_ID_HIDDEN).attr("action", URI_DELETE);
-			$(FORM_ID_HIDDEN).submit();
+			$(FORM_ID_LIST).attr("action", URI_DELETE);
+			$(FORM_ID_LIST).submit();
 		}
 	});
 	

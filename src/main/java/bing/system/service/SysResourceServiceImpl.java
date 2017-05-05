@@ -20,6 +20,7 @@ import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
 import bing.system.constant.ResourceTreeNodeTypeEnum;
+import bing.system.constant.TreeNodeIdPrefixes;
 import bing.system.dao.SysResourceCategoryDao;
 import bing.system.dao.SysResourceDao;
 import bing.system.dao.SysRoleDao;
@@ -169,7 +170,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		// 迭代全部资源并自动勾选已授权的节点
 		treeNodes.forEach(treeNode -> {
 			checkedNodes.forEach(checkedNode -> {
-				if (Objects.equals(treeNode.getId(), checkedNode.getId())) {
+				if (Objects.equals(treeNode.getAttribute(GlobalConstants.ATTRIBUT_ID), checkedNode.getAttribute(GlobalConstants.ATTRIBUT_ID))) {
 					treeNode.setChecked(true);
 				}
 			});
@@ -178,7 +179,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		List<GenericTreeNode> branches = getCategoryTree();
 		branches.forEach(branch -> {
 			treeNodes.forEach(leaf -> {
-				if (Objects.equals(branch.getId(), leaf.getParentId())) {
+				if (Objects.equals(branch.getAttribute(GlobalConstants.ATTRIBUT_ID), leaf.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID))) {
 					branch.addChild(leaf);
 				}
 			});
@@ -195,13 +196,15 @@ public class SysResourceServiceImpl implements SysResourceService {
 	private List<GenericTreeNode> convertResourceCategory(List<SysResourceCategory> sysResourceCategories) {
 		List<GenericTreeNode> treeNodes = new ArrayList<>();
 		GenericTreeNode treeNode;
+		Integer id;
 		for (SysResourceCategory sysResourceCategory : sysResourceCategories) {
+			id = sysResourceCategory.getId();
 			treeNode = new GenericTreeNode();
-			treeNode.setId(sysResourceCategory.getId());
+			treeNode.setId(TreeNodeIdPrefixes.RESOURCE_CATEGORY + id);
 			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, sysResourceCategory.getId());
-			treeNode.setParentId(sysResourceCategory.getParentId());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysResourceCategory.getParentId());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, ResourceTreeNodeTypeEnum.CATEGORY.ordinal());
 			treeNode.setText(sysResourceCategory.getName());
-			treeNode.setType(ResourceTreeNodeTypeEnum.CATEGORY.name());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;
@@ -216,13 +219,15 @@ public class SysResourceServiceImpl implements SysResourceService {
 	private List<GenericTreeNode> convertResource(List<SysResource> sysResources) {
 		List<GenericTreeNode> treeNodes = new ArrayList<>();
 		GenericTreeNode treeNode;
+		Integer id;
 		for (SysResource sysResource : sysResources) {
+			id = sysResource.getId();
 			treeNode = new GenericTreeNode();
-			treeNode.setId(sysResource.getId());
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, sysResource.getId());
-			treeNode.setParentId(sysResource.getCategoryId());
+			treeNode.setId(TreeNodeIdPrefixes.RESOURCE + id);
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, id);
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysResource.getCategoryId());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, ResourceTreeNodeTypeEnum.RESOURCE.ordinal());
 			treeNode.setText(sysResource.getName());
-			treeNode.setType(ResourceTreeNodeTypeEnum.RESOURCE.name());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;

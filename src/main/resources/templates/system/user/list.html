@@ -48,7 +48,8 @@
 				<!-- 查询条件 -->
 				<div id="search_tools" style="padding:0 25px;">
 					<div class="conditions">
-						<form action="" method="post" id="form_search">
+						<form action="" method="post" id="form_list">
+							<input type="hidden" id="id" name="id" />
 							<label th:text="#{username}">账号</label>
 							<input name="username" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
 							<label th:text="#{surname}">姓名</label>
@@ -79,10 +80,6 @@
 	    	</div>
 	    </div>
 	</div>
-<form action="" method="get" id="form_hidden">
-<input type="hidden" id="id" name="id" />
-<input type="hidden" id="userId" />
-</form>
 </div>
 </div>
 <!-- 用户角色授权弹出框框 -->
