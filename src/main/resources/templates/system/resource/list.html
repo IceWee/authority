@@ -13,7 +13,7 @@
 	var error = /*[[${error}]]*/ null;
 	var message = /*[[${message}]]*/ null;
 	$(function() {
-		initResourceListPage(error, message);
+		initListPageExt(error, message);
 	});
 /*]]>*/
 </script>
@@ -40,7 +40,7 @@
 								<tr>
 									<th data-options="field:'_operate',width:15,align:'center',formatter:operateBtnHtml">操作</th>
 									<th th:text="#{name}" data-options="field:'name',width:15">名称</th>
-									<th th:text="#{url}" data-options="field:'url',width:20">名称</th>
+									<th th:text="#{url}" data-options="field:'url',width:20">地址</th>
 									<th th:text="#{type}" data-options="field:'typeText',align:'center',width:10">类型</th>
 									<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
 									<th th:text="#{create.date}" data-options="field:'createDate',align:'center',width:15">创建日期</th>

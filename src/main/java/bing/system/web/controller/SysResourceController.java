@@ -49,6 +49,7 @@ public class SysResourceController extends GenericController {
 	private static final String LOG_PREFIX = LogPrefixes.RESOURCE;
 	private static final String PREFIX = "system/resource";
 	private static final String AJAX_LIST = "ajax/system/resources";
+	private static final String AJAX_RESOURCE_TREE = "ajax/system/resource/tree";
 	private static final String AJAX_CATEGORY_TREE = "ajax/system/category/tree";
 	private static final String AJAX_CATEGORY_SAVE = "ajax/system/category/save";
 	private static final String AJAX_CATEGORY_UPDATE = "ajax/system/category/update";
@@ -74,12 +75,6 @@ public class SysResourceController extends GenericController {
 		typeList.add(new LabelValueBean("数据接口", String.valueOf(ResourceTypeEnum.DATA_API.ordinal())));
 		typeList.add(new LabelValueBean("其他", String.valueOf(ResourceTypeEnum.OTHER.ordinal())));
 		return typeList;
-	}
-
-	@RequestMapping(LIST)
-	public String list(@RequestParam(name = "categoryId", required = false) Integer categoryId, Model model) {
-		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
-		return LIST;
 	}
 
 	@ResponseBody
@@ -144,15 +139,44 @@ public class SysResourceController extends GenericController {
 		return response;
 	}
 
+	/**
+	 * 资源树
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_RESOURCE_TREE + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<List<GenericTreeNode>> resourceTreeByRole(@PathVariable Integer roleId) {
+		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
+		List<GenericTreeNode> resources = sysResourceService.getResourceTree(roleId);
+		response.setData(resources);
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = AJAX_RESOURCE_TREE, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<List<GenericTreeNode>> resourceTree() {
+		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
+		List<GenericTreeNode> resources = sysResourceService.getResourceTree();
+		response.setData(resources);
+		return response;
+	}
+
+	@RequestMapping(LIST)
+	public String list(@RequestParam(name = "categoryId", required = false) Integer categoryId, Model model) {
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+		return LIST;
+	}
+
 	@RequestMapping(ADD)
 	public String add(@RequestParam(value = "categoryId", required = true) Integer categoryId, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysResource());
 		SysResourceCategory category = sysResourceService.getCategoryById(categoryId);
-		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY, category);
 		if (category == null) {
 			setError(SystemMessageKeys.RESOURCE_CATEGORY_NOT_EXIST, model);
 			return LIST;
 		}
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY, category);
 		return ADD;
 	}
 
@@ -172,7 +196,6 @@ public class SysResourceController extends GenericController {
 			return ADD;
 		}
 		setMessage(MessageKeys.SAVE_SUCCESS, model);
-		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, entity.getCategoryId());
 		return LIST;
 	}
 
@@ -204,12 +227,12 @@ public class SysResourceController extends GenericController {
 			return EDIT;
 		}
 		setMessage(MessageKeys.UPDATE_SUCCESS, model);
-		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, entity.getCategoryId());
 		return LIST;
 	}
 
 	@RequestMapping(DELETE)
-	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String delete(@RequestParam(value = "id", required = true) Integer id, @RequestParam(value = "categoryId", required = false) Integer categoryId, Model model) {
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 		try {
 			Optional<SysUser> optional = getCurrentUser();
 			String username = StringUtils.EMPTY;

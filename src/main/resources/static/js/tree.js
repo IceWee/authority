@@ -284,7 +284,7 @@ function initDialogTree(options) {
 			$(DIALOG_ID).modal("hide");
 			$(BUTTON_CONFIRM).off(); // 注意：隐藏弹出框后必须关闭click事件，否则再次弹出后会触发多次click事件
 			if (triggerInputId) {
-				$(triggerInputId).textbox("textbox").unbind("click");  
+//				$(triggerInputId).textbox("textbox").unbind("click");  
 			}
 		});
 		

@@ -121,7 +121,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
 		List<GenericTreeNode> treeNodes = convertResourceCategory(topCategories);
-		GenericTreeNode.buildGenericTree(treeNodes, convertResourceCategory(categories));
+		GenericTreeNode.buildGenericTree(convertResourceCategory(topCategories), convertResourceCategory(categories));
 		return treeNodes;
 	}
 
@@ -175,6 +175,21 @@ public class SysResourceServiceImpl implements SysResourceService {
 				}
 			});
 		});
+		// 遍历资源分类挂接资源
+		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
+		List<GenericTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
+		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
+		List<GenericTreeNode> categoryTreeNodes = convertResourceCategory(categories);
+		// 将资源分类节点与资源节点合并递归构造树形结构
+		categoryTreeNodes.addAll(resourceTreeNodes);
+		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);
+		return topCategoryTreeNodes;
+	}
+
+	@Override
+	public List<GenericTreeNode> getResourceTree() {
+		List<SysResource> resources = sysResourceDao.listAll();
+		List<GenericTreeNode> resourceTreeNodes = convertResource(resources);
 		// 遍历资源分类挂接资源
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<GenericTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);

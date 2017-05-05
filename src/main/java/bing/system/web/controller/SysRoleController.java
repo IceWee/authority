@@ -1,6 +1,5 @@
 package bing.system.web.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -21,11 +20,9 @@ import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.GenericPage;
-import bing.domain.GenericTreeNode;
 import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
-import bing.system.service.SysResourceService;
 import bing.system.service.SysRoleResourceService;
 import bing.system.service.SysRoleService;
 import bing.system.service.SysUserService;
@@ -47,7 +44,6 @@ public class SysRoleController extends GenericController {
 	private static final String AJAX_LIST = "ajax/system/roles";
 	private static final String AJAX_ROLE_USERS = "ajax/system/role/users";
 	private static final String AJAX_ROLE_RESOURCES = "ajax/system/role/resources";
-	private static final String AJAX_RESOURCE_TREE = "ajax/system/role/resources/tree";
 
 	private static final String LIST = PREFIX + "/list";
 	private static final String ADD = PREFIX + "/add";
@@ -61,9 +57,6 @@ public class SysRoleController extends GenericController {
 
 	@Autowired
 	private SysUserService sysUserService;
-
-	@Autowired
-	private SysResourceService sysResourceService;
 
 	@Autowired
 	private SysRoleResourceService sysRoleResourceService;
@@ -134,20 +127,6 @@ public class SysRoleController extends GenericController {
 			username = optional.get().getUsername();
 		}
 		sysRoleResourceService.saveRoleResources(roleId, resourceIds, username);
-		return response;
-	}
-
-	/**
-	 * 资源树
-	 * 
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = AJAX_RESOURCE_TREE + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<List<GenericTreeNode>> resourceTree(@PathVariable Integer roleId) {
-		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
-		List<GenericTreeNode> resources = sysResourceService.getResourceTree(roleId);
-		response.setData(resources);
 		return response;
 	}
 

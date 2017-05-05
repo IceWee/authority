@@ -12,6 +12,11 @@ public class TreeNodeIdPrefixes {
 	 */
 	public static final String RESOURCE = "rs_";
 
+	/**
+	 * 菜单树节点ID前缀
+	 */
+	public static final String MENU = "mn_";
+
 	private TreeNodeIdPrefixes() {
 		super();
 	}

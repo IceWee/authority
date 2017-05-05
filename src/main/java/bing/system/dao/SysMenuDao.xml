@@ -15,7 +15,7 @@
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, parent_id, url, sort, status, remark, create_date, create_user, update_date, update_user
+		id, name, parent_id, resource_id, sort, status, remark, create_date, create_user, update_date, update_user
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
@@ -155,4 +155,31 @@
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	<select id="listByCondition" parameterType="bing.system.condition.SysMenuCondition" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_menu where status != 2
+		<if test="parentId != null">
+			and parent_id = #{parentId,jdbcType=INTEGER}
+		</if>
+		<if test="name != null and name != ''">
+			and name like concat(#{name,jdbcType=VARCHAR}, '%')
+		</if>
+		<if test="status != null">
+			and status = #{status,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="listByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_menu where status != 2 and parent_id = #{parentId,jdbcType=INTEGER}
+	</select>
+	<select id="listAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_menu where status != 2
+	</select>
+	<select id="countByParentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1) from sys_menu where status != 2 and parent_id = #{parentId,jdbcType=INTEGER}
+	</select>
 </mapper>

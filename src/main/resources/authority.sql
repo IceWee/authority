@@ -122,7 +122,6 @@ CREATE TABLE `sys_resource_category` (
 -- 资源分类初始化数据
 INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类', 0, 0, '资源分类', now(), 'admin', now(), 'admin');
 
-
 -- 菜单表
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
@@ -141,8 +140,7 @@ CREATE TABLE `sys_menu` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='菜单';
 
 -- 菜单初始化数据
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统菜单', 0, NULL, 1, '系统菜单', now(), 'admin', now(), 'admin');
-
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统菜单', 0, NULL, 0, 0, '系统菜单', now(), 'admin', now(), 'admin');
 
 -- 角色资源关联表
 DROP TABLE IF EXISTS `sys_role_resource`;

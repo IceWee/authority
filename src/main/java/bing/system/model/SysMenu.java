@@ -2,6 +2,8 @@ package bing.system.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import bing.domain.GenericObject;
 
 public class SysMenu extends GenericObject implements Serializable {
@@ -10,13 +12,15 @@ public class SysMenu extends GenericObject implements Serializable {
 
 	private Integer id;
 
+	@NotNull(message = "{name.required}")
 	private String name;
 
+	@NotNull(message = "{menu.parent.required}")
 	private Integer parentId;
 
-	private String url;
+	private Integer resourceId;
 
-	private Integer sort;
+	private Integer sort = 1;
 
 	private String remark;
 
@@ -44,12 +48,12 @@ public class SysMenu extends GenericObject implements Serializable {
 		this.parentId = parentId;
 	}
 
-	public String getUrl() {
-		return url;
+	public Integer getResourceId() {
+		return resourceId;
 	}
 
-	public void setUrl(String url) {
-		this.url = url == null ? null : url.trim();
+	public void setResourceId(Integer resourceId) {
+		this.resourceId = resourceId;
 	}
 
 	public Integer getSort() {

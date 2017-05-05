@@ -15,17 +15,18 @@ var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 //自定义常量
 var URI_AJAX_CATEGORY_TREE = "/ajax/system/category/tree"; // 资源分类树
-var URI_AJAX_CATEGORY_SAVE = "/ajax/system/category/save"; // 列表页获取列表数据异步URI
-var URI_AJAX_CATEGORY_UPDATE = "/ajax/system/category/update"; // 列表页获取列表数据异步URI
-var URI_AJAX_CATEGORY_DELETE = "/ajax/system/category/delete"; // 列表页获取列表数据异步URI
+var URI_AJAX_CATEGORY_SAVE = "/ajax/system/category/save"; // 保存资源分类
+var URI_AJAX_CATEGORY_UPDATE = "/ajax/system/category/update"; // 更新资源分类
+var URI_AJAX_CATEGORY_DELETE = "/ajax/system/category/delete"; // 删除资源分类
 var TREE_ID_RESOURCE_CATEGORY = "tree_category";
 var DIALOG_ID_CATEGORY = "#dialog_category";
 var FORM_ID_CATEGORY = "#form_category"; // 资源分类表单ID
 var MENU_ID_CATEGORY = "#menu_category"; // 隐藏表单ID
 var CATEGORY_NODE_ID_PREFIX = "rc_"; // 资源分类节点ID前缀
+var HIDDEN_CATEGORY_ID = "#selectedCategoryId";
 
 // 初始化资源分类树
-function initResourceListPage(error, message) {
+function initListPageExt(error, message) {
 	initTree({
 		url: URI_AJAX_CATEGORY_TREE,
 		treeId: TREE_ID_RESOURCE_CATEGORY,
@@ -35,10 +36,10 @@ function initResourceListPage(error, message) {
 			$(MENU_ID_CATEGORY).menu("show", {left: e.pageX, top: e.pageY});
 		},
 		completeCallback: function() {
-			var selectedCategoryId = $("#selectedCategoryId").val();
+			var selectedCategoryId = $(HIDDEN_CATEGORY_ID).val();
 			if (!selectedCategoryId) {
 				var firstNode = selectFirstTreeNode(TREE_ID_RESOURCE_CATEGORY);
-				$("#selectedCategoryId").val(firstNode.attributes.id);
+				$(HIDDEN_CATEGORY_ID).val(firstNode.attributes.id);
 			} else {
 				var node = getTreeNode(TREE_ID_RESOURCE_CATEGORY, CATEGORY_NODE_ID_PREFIX + selectedCategoryId);
 				selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
@@ -164,7 +165,7 @@ function freshCategoryTree(nodeId) {
 function selectCategory(node) {
 	if (node) {
 		selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
-		$("#selectedCategoryId").val(node.attributes.id);
+		$(HIDDEN_CATEGORY_ID).val(node.attributes.id);
 		doSearch(URI_AJAX_LIST);
 	}
 }
@@ -183,7 +184,7 @@ function initAddPageExt(error, message) {
 	});
 }
 
-//初始化编辑页面扩展
+// 初始化编辑页面扩展
 function initEditPageExt(error, message) {
 	initEditPage(error, message);
 	

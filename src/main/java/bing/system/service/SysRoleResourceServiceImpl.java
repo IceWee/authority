@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -62,6 +63,7 @@ public class SysRoleResourceServiceImpl implements SysRoleResourceService {
 	}
 
 	@Override
+	@Transactional
 	public void saveRoleResources(Integer roleId, Integer[] resourceIds, String username) {
 		sysRoleResourceDao.deleteByRoleId(roleId);
 		if (ArrayUtils.isNotEmpty(resourceIds)) {

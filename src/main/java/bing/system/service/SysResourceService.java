@@ -29,4 +29,6 @@ public interface SysResourceService extends GenericService<SysResource, SysResou
 	 */
 	List<GenericTreeNode> getResourceTree(Integer roleId);
 
+	List<GenericTreeNode> getResourceTree();
+
 }

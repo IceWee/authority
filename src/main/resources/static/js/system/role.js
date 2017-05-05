@@ -16,7 +16,7 @@ var PARAM_ID = "#id"; // ID属性名
 //自定义常量
 var URI_AJAX_USER_LIST = "/ajax/system/users"; // 获取用户列表
 var URI_AJAX_ROLE_USER = "/ajax/system/role/users"; // 保存角色用户关系
-var URI_AJAX_RESOURCE_TREE = "/ajax/system/role/resources/tree"; // 资源树
+var URI_AJAX_RESOURCE_TREE = "/ajax/system/resource/tree/role"; // 资源树
 var URI_AJAX_ROLE_RESOURCES = "/ajax/system/role/resources"; // 保存角色资源关系
 
 //列表页面初始化

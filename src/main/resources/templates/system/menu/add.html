@@ -5,7 +5,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:include="/common/header :: header(~{::title},~{::link})" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
-<script type="text/javascript" th:src="@{/js/system/resource.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/menu.js}"></script>
 <script type="text/javascript" th:src="@{/js/crud.js}"></script>
 <script type="text/javascript" th:src="@{/js/tree.js}"></script>
 <script th:inline="javascript">
@@ -13,7 +13,7 @@
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initEditPageExt(error, message);
+		initAddPageExt(error, message);
 	});
 /*]]>*/
 </script>
@@ -21,15 +21,16 @@
 <body>
 <form id="form_default" method="post">
 <div class="container-fluid" th:object="${bean}">
-<input type="hidden" th:value="${bean.id}" name="id"></input>
-<input type="hidden" th:value="${category.id}" name="categoryId" id="categoryId"></input>
+<input type="hidden" th:value="${parentMenu.id}" name="parentId"></input>
+<input type="hidden" name="resourceId" id="resourceId"></input>
+<input type="hidden" th:value="${session.currentUser.username}" name="createUser"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
 <div class="row">
 	<div class="panel panel-default">
   		<div class="panel-heading padding-none" style="height:40px">
 			<ol class="breadcrumb">
-			  	<li><a href="/system/resource/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{resource.manage}">资源管理</span></a></li>
-			  	<li class="active" th:text="#{resource.edit}">编辑资源</li>
+			  	<li><a href="/system/menu/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{menu.manage}">菜单管理</span></a></li>
+			  	<li class="active" th:text="#{menu.add}">新增菜单</li>
 			</ol>
 	  	</div>
 	  	<div class="panel-body panel-min-height-default">
@@ -46,27 +47,25 @@
 		    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label th:text="#{type}">类型</label>
+						<label th:text="#{resource.choose}">选择资源</label>
 					</div>
 					<div class="col-md-4 text-left">
-						<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
-							<option th:each="type : ${typeList}" th:selected="${type.value eq #object.type + ''}" th:text="${type.label}" th:value="${type.value}"></option>
-						</select>
+						<input class="easyui-textbox input-default" type="text" data-options="iconCls:'icon-filter'" id="resourceName" name="resourceName" readonly="readonly"></input>
 					</div>
 				</div>
 				<div style="margin-top: 20px"></div>
 		    	<div class="row">
 					<div class="col-md-2 text-right">
-						<label th:text="#{url}">URL</label>
+						<label th:text="#{menu.parent}">上级菜单</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="*{url}" type="text" name="url" data-options="required:true,validType:['maxLength[500]']"></input>
+		    			<input class="easyui-textbox input-default" th:value="${parentMenu.name}"  type="text" name="parentMenuName" id="parentMenuName" readonly="readonly"></input>
 					</div>
 					<div class="col-md-2 text-right">
-						<label th:text="#{resource.category}">资源分类</label>
+						<label th:text="#{sort}">排序</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${category.name}" type="text" data-options="required:true,iconCls:'icon-filter'" id="categoryName" name="categoryName" readonly="readonly"></input>
+		    			<input class="easyui-textbox input-default" th:value="*{sort}" type="text" data-options="validType:['integer']" name="sort"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -92,7 +91,7 @@
 						<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
 					</button>
 					&nbsp;&nbsp;
-			    	<button type="button" id="button_update" class="btn btn-primary">
+			    	<button type="button" id="button_save" class="btn btn-primary">
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
 					</button>
 			    </div>
@@ -101,8 +100,8 @@
     	</div>
     </div>
 </div>
-</form>
 </div>
+</form>
 <!-- 资源分类树 -->
 <div th:replace="/common/tree :: dialog_tree"></div>
 </body>
