@@ -23,6 +23,10 @@ a:link, a:hover, a:active, a:visited {
 	text-decoration: none;
 }
 
-.panel-height-default {
+.panel-min-height-default {
 	min-height: 600px;
+}
+
+.tree-panel-max-height-default {
+	max-height: 100px
 }
