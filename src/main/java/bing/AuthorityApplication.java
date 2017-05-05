@@ -23,7 +23,7 @@ import bing.constant.GlobalConstants;
 @SpringBootApplication
 @EnableCaching
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = GlobalConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
-@ComponentScan(basePackages = {GlobalConstants.COMPONENT_SCAN_PACKAGES})
+@ComponentScan(basePackages = { GlobalConstants.COMPONENT_SCAN_PACKAGES })
 @MapperScan(GlobalConstants.MAPPER_SCAN_PACKAGES)
 public class AuthorityApplication {
 
@@ -35,8 +35,7 @@ public class AuthorityApplication {
 	}
 
 	/**
-	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件，
-	 * 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
+	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件， 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
 	 * 
 	 * @return
 	 */
@@ -66,6 +65,7 @@ public class AuthorityApplication {
 	public EmbeddedServletContainerFactory servletContainer() {
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
 
+			// 打开注释开启HTTPS，同时需要解开配置文件中ssl开头的配置，并将server端口改为8443
 			// @Override
 			// protected void postProcessContext(Context context) {
 			// SecurityConstraint constraint = new SecurityConstraint();
@@ -78,7 +78,7 @@ public class AuthorityApplication {
 
 		};
 
-		// tomcat.addAdditionalTomcatConnectors(httpConnector());
+		// tomcat.addAdditionalTomcatConnectors(httpConnector()); // 打开注释开启HTTP转发到HTTPS
 		tomcat.setSessionTimeout(5);
 		return tomcat;
 	}
