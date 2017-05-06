@@ -80,7 +80,11 @@ function initAddPageExt(error, message) {
 function initEditPageExt(error, message) {
 	initEditPage(error, message);
 	
-	var resourceId = $("#resource").val();
+	var resourceId = $("#resourceId").val();
+	if (resourceId) {
+		resourceId = RESOURCE_NODE_ID_PREFIX + resourceId;
+	}
+	
 	// 资源树
 	initDialogTree({
 		url: URI_AJAX_RESOURCE_TREE,
@@ -89,13 +93,14 @@ function initEditPageExt(error, message) {
 		autoClose: true,
 		triggerInputId: "resourceName",
 		confirmCallback: confirmCallbackForResource,
-		selectedId: RESOURCE_NODE_ID_PREFIX + resourceId // 选中
+		selectedId: resourceId // 选中
 	});
 	
 	var parentMenuId = $("#parentId").val();
+	var id = $("#id").val();
 	// 菜单树
 	initDialogTree({
-		url: URI_AJAX_MENU_TREE,
+		url: URI_AJAX_MENU_TREE + "/" + id,
 		title: $.i18n.prop("menu.tree"),
 		showFooter: true,
 		autoClose: true,

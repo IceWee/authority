@@ -42,6 +42,8 @@ public class GenericTreeNode {
 	 * @param treeNodes 全部节点
 	 */
 	public static void buildGenericTree(List<GenericTreeNode> parentTreeNodes, List<GenericTreeNode> treeNodes) {
+		parentTreeNodes.forEach(parentTreeNode -> System.out.print(parentTreeNode.getAttribute("id") + ","));
+		treeNodes.forEach(treeNode -> System.out.print(treeNode.getAttribute("id") + ","));
 		parentTreeNodes.forEach(parentNode -> {
 			treeNodes.forEach(node -> {
 				if (Objects.equals(parentNode.getAttribute(GlobalConstants.ATTRIBUT_ID), node.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID))) {

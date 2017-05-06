@@ -226,6 +226,7 @@ function initDialogTree(options) {
 }
 
 // 初始化按钮点击事件
+// initDialogTree方法专用
 function _initializeButtonEvents(options) {
 	var BUTTON_CONFIRM = "#_button_dialog_tree_confirm"; // 确认按钮
 	var BUTTON_CANCEL = "#_button_dialog_tree_cancel"; // 取消按钮
@@ -277,6 +278,7 @@ function _initializeButtonEvents(options) {
 }
 
 // 初始化树
+// initDialogTree方法专用
 function _initializeEasyUITree(options) {
 	var url = options.url;
 	if (!url) {
@@ -319,8 +321,8 @@ function _initializeEasyUITree(options) {
 						},
 						onLoadSuccess: function() {
 							if (selectedId) {
-								var node = getTreeNode(treeId, selectedId);
-								selectTreeNode(treeId, node);
+								var node = getTreeNode(RAW_TREE_ID, selectedId);
+								selectTreeNode(RAW_TREE_ID, node);
 							}
 						}
 					});

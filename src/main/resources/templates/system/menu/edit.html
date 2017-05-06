@@ -21,8 +21,8 @@
 <body>
 <form id="form_default" method="post">
 <div class="container-fluid" th:object="${bean}">
-<input type="hidden" th:value="*{id}" name="id"></input>
-<input type="hidden" th:value="${parentMenu.id}" name="parentId"></input>
+<input type="hidden" th:value="*{id}" name="id" id="id"></input>
+<input type="hidden" th:value="${parentMenu.id}" name="parentId" id="parentId"></input>
 <input type="hidden" name="resourceId" id="resourceId" th:value="*{resourceId}"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
 <div class="row">

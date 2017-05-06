@@ -16,4 +16,12 @@ public interface SysMenuService extends GenericService<SysMenu, SysMenu, SysMenu
 	 */
 	List<GenericTreeNode> getMenuTree();
 
+	/**
+	 * 菜单树(排除自己)
+	 * 
+	 * @param id
+	 * @return
+	 */
+	List<GenericTreeNode> getMenuTree(Integer id);
+
 }

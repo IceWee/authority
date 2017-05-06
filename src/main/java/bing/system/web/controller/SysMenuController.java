@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,6 +81,20 @@ public class SysMenuController extends GenericController {
 	public RestResponse<List<GenericTreeNode>> menuTree() {
 		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
 		List<GenericTreeNode> menus = sysMenuService.getMenuTree();
+		response.setData(menus);
+		return response;
+	}
+
+	/**
+	 * 菜单树(排除自己)
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_MENU_TREE + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<List<GenericTreeNode>> menuTreeExclude(@PathVariable(required = true) Integer id) {
+		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
+		List<GenericTreeNode> menus = sysMenuService.getMenuTree(id);
 		response.setData(menus);
 		return response;
 	}

@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
@@ -76,12 +75,23 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
+	// @Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
 	public List<GenericTreeNode> getMenuTree() {
 		List<SysMenu> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenu> menus = sysMenuDao.listAll();
 		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
 		GenericTreeNode.buildGenericTree(treeNodes, convertMenu(menus));
+		return treeNodes;
+	}
+
+	@Override
+	public List<GenericTreeNode> getMenuTree(Integer id) {
+		List<SysMenu> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
+		List<SysMenu> menus = sysMenuDao.listAll();
+		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
+		List<GenericTreeNode> allTreeNodes = convertMenu(menus);
+		List<GenericTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !Objects.equals(treeNode.getAttribute(GlobalConstants.ATTRIBUT_ID), id)).collect(Collectors.toList());
+		GenericTreeNode.buildGenericTree(treeNodes, treeNodesExclude);
 		return treeNodes;
 	}
 
