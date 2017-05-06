@@ -32,7 +32,9 @@
 	    		<div class="row">
 		    		<div id="tips" class="alert" style="display:none;margin-bottom:0"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
 					<div class="col-md-2 padding-none">
-						<ul id="tree_menu" class="easyui-tree"></ul>
+						<div style="min-height:400px;max-height:600px;overflow:auto">
+							<ul id="tree_menu" class="easyui-tree"></ul>
+						</div>
 					</div>
 					<div class="col-md-10 padding-none">
 		    			<table id="datagrid" th:title="#{resource.list}" title="资源列表" style="width:100%;height:auto">

@@ -14,7 +14,6 @@ import bing.constant.GlobalConstants;
 import bing.domain.GenericTreeNode;
 import bing.system.model.SysUser;
 import bing.system.service.SysMenuService;
-import bing.util.JsonUtils;
 import bing.web.controller.GenericController;
 
 @Controller
@@ -33,7 +32,6 @@ public class MainController extends GenericController {
 		}
 		SysUser sysUser = optional.get();
 		List<GenericTreeNode> menus = sysMenuService.listMenuByUserId(sysUser.getId());
-		System.out.println(JsonUtils.toString(menus));
 		model.addAttribute("menus", menus);
 		return "main";
 	}
