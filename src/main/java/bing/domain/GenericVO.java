@@ -2,11 +2,11 @@ package bing.domain;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
-import bing.util.StringUtils;
 
 public class GenericVO extends GenericObject {
 

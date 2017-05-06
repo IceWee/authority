@@ -2,6 +2,7 @@ package bing.system.web.controller;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ import bing.system.service.SysUserService;
 import bing.system.vo.SysRoleVO;
 import bing.system.vo.UserRoleVO;
 import bing.util.ExceptionUtils;
-import bing.util.StringUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
 

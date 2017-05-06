@@ -210,7 +210,6 @@ function doSearch(url, tableId, formListId, tipsId) {
 		console.log("url是空，无法执行查询操作...")
 		return;
 	}
-	var RESPONSE_OK = "200";
 	hideTips(tipsId);
 	ajaxLoading($.i18n.prop("load.loading"));
 	var pager = $(tableId).datagrid("getPager");
@@ -228,7 +227,7 @@ function doSearch(url, tableId, formListId, tipsId) {
 		dataType : "json",
 		success : function(json) {
 			ajaxLoaded();
-			if (json.code === RESPONSE_OK) {
+			if (json.code == CODE_OK) {
 				if (json.data) {
 					var totalRows = json.data.totalRows;
 					var list = json.data.data;

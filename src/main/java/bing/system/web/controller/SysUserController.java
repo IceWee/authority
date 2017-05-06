@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,6 @@ import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
 import bing.system.vo.UserRoleVO;
 import bing.util.ExceptionUtils;
-import bing.util.StringUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
 
@@ -46,6 +46,8 @@ public class SysUserController extends GenericController {
 	private static final String LOG_PREFIX = LogPrefixes.USER;
 	private static final String PREFIX = "system/user";
 	private static final String AJAX_LIST = "ajax/system/users";
+	private static final String AJAX_USER_ROLES = "ajax/system/user/roles";
+	private static final String AJAX_USER_PASSWORD = "ajax/system/user/password";
 
 	private static final String LIST = PREFIX + "/list";
 	private static final String ADD = PREFIX + "/add";
@@ -53,6 +55,8 @@ public class SysUserController extends GenericController {
 	private static final String EDIT = PREFIX + "/edit";
 	private static final String UPDATE = PREFIX + "/update";
 	private static final String DELETE = PREFIX + "/delete";
+	private static final String PASSWORD = PREFIX + "/password"; // 修改密码
+	private static final String MINE = PREFIX + "/mine"; // 我的信息
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -89,16 +93,15 @@ public class SysUserController extends GenericController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST + "/roles", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_USER_ROLES, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<RoleUserVO> saveUserRoles(Integer userId, Integer[] roleIds) {
-		RestResponse<RoleUserVO> response = new RestResponse<>();
 		Optional<SysUser> optional = getCurrentUser();
 		String username = StringUtils.EMPTY;
 		if (optional.isPresent()) {
 			username = optional.get().getUsername();
 		}
 		sysRoleService.saveUserRoles(userId, roleIds, username);
-		return response;
+		return new RestResponse<>();
 	}
 
 	@RequestMapping(ADD)
@@ -173,6 +176,28 @@ public class SysUserController extends GenericController {
 		}
 		setMessage(MessageKeys.DELETE_SUCCESS, model);
 		return LIST;
+	}
+
+	/**
+	 * 当前登录用户修改密码
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = PASSWORD, method = RequestMethod.GET)
+	public String changePassword() {
+		return PASSWORD;
+	}
+
+	/**
+	 * 保存修改密码
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_USER_PASSWORD + "/{userId}", method = RequestMethod.PUT)
+	public RestResponse<Object> savePassword(@PathVariable Integer userId, String oldPassword, String newPassword) {
+		sysUserService.changePassword(userId, oldPassword, newPassword);
+		return new RestResponse<>();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,6 @@ import bing.system.model.SysResourceCategory;
 import bing.system.model.SysRole;
 import bing.system.model.SysRoleResource;
 import bing.system.vo.SysResourceVO;
-import bing.util.JsonUtils;
-import bing.util.StringUtils;
 
 @Service("sysResourceService")
 public class SysResourceServiceImpl implements SysResourceService {
@@ -189,7 +188,6 @@ public class SysResourceServiceImpl implements SysResourceService {
 		// 将资源分类节点与资源节点合并递归构造树形结构
 		categoryTreeNodes.addAll(resourceTreeNodes);
 		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);
-		System.out.println(JsonUtils.toString(topCategoryTreeNodes));
 		return topCategoryTreeNodes;
 	}
 

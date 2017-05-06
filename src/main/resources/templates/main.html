@@ -6,8 +6,8 @@
 <title th:text="#{system.name}">认证与授权管理系统</title>
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/base.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/platform.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/easyui/easyui.css}" />
 <script type="text/javascript" th:src="@{/js/jquery-1.12.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/uimaker/easyui/jquery.easyui.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/uimaker/js/main.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.i18n.properties-1.0.9.min.js}"></script>
@@ -68,5 +68,7 @@
 			</div>
 		</div>
 	</div>
+<!-- 修改密码 -->
+<div th:replace="/password :: change_password"></div>
 </body>
 </html>

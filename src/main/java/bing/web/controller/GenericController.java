@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.i18n.MessageSourceService;
 import bing.system.model.SysUser;
-import bing.util.StringUtils;
 
 /**
  * 抽象Controller

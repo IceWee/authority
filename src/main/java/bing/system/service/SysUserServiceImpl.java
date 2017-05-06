@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +30,6 @@ import bing.system.model.SysUserRole;
 import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
 import bing.util.PasswordUtils;
-import bing.util.StringUtils;
 
 @Service("sysUserService")
 public class SysUserServiceImpl implements SysUserService {
@@ -147,6 +147,17 @@ public class SysUserServiceImpl implements SysUserService {
 			List<SysUserRole> entities = Arrays.asList(userIds).stream().map(userId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
+	}
+
+	@Override
+	public void changePassword(Integer userId, String oldPassword, String newPassword) {
+		SysUser user = sysUserDao.selectByPrimaryKey(userId);
+		if (!PasswordUtils.match(oldPassword, user.getPassword())) {
+			throw new BusinessException(UserExceptionCodes.ORIGION_PASSWORD_WRONG);
+		}
+		String encryptPasswd = PasswordUtils.encrypt(newPassword);
+		user.setPassword(encryptPasswd);
+		sysUserDao.updateByPrimaryKeySelective(user);
 	}
 
 	private SysUserRole createUserRole(Integer userId, Integer roleId, String username) {

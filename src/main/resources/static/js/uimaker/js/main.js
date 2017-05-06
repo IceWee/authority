@@ -41,12 +41,12 @@ var mainPlatform = {
 
 		// 修改密码
 		$(document).on("click", ".pf-modify-pwd", function() {
-			$("#pf-page").find("iframe").eq(0).attr("src", "/modifyPassword");
+			$("#pf-page").find("iframe").eq(0).attr("src", "/system/user/password");
 		});
 
 		// 用户信息
 		$(document).on("click", "#user_info", function() {
-			$("#pf-page").find("iframe").eq(0).attr("src", "/userInfo");
+			$("#pf-page").find("iframe").eq(0).attr("src", "/system/user/info");
 		});
 	}
 

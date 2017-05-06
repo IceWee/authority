@@ -27,4 +27,13 @@ public interface SysUserService extends UserDetailsService, GenericService<SysUs
 	 */
 	void saveRoleUsers(Integer roleId, Integer[] userIds, String username);
 
+	/**
+	 * 修改密码
+	 * 
+	 * @param userId
+	 * @param oldPassword
+	 * @param newPassword
+	 */
+	void changePassword(Integer userId, String oldPassword, String newPassword);
+
 }

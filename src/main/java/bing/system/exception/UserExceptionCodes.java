@@ -19,6 +19,11 @@ public class UserExceptionCodes extends BusinessExceptionCodes {
 	 */
 	public static final String USERNAME_FORBIDDEN_MODIFY = PREFIX + "002";
 
+	/**
+	 * 原始密码错误
+	 */
+	public static final String ORIGION_PASSWORD_WRONG = PREFIX + "003";
+
 	private UserExceptionCodes() {
 		super();
 	}

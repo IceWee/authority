@@ -15,7 +15,8 @@ var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 // 自定义常量
 var URI_AJAX_ROLE_LIST = "/ajax/system/roles";
-var URI_AJAX_USER_ROLE = "/ajax/system/users/roles";
+var URI_AJAX_USER_ROLE = "/ajax/system/user/roles";
+var URI_AJAX_USER_PASSWORD = "/ajax/system/user/password"
 
 // 列表页面初始化
 function initListPageExt(error, message) {
@@ -116,5 +117,37 @@ function initEditPageExt(error, message) {
 		allow_single_deselect: true, 
 		no_results_text: $.i18n.prop("result.nomatch"),
 		width: "200px"
+	});
+}
+
+// 修改密码页面初始化
+function initPasswordPage(error, message) {
+	showErrorOrMessage(error, message);
+	
+	// 保存
+	$(BTN_SAVE_ID).click(function() {
+		var userId = $("#userId").val();
+		if ($(FORM_ID_DETAIL).form("validate")) {
+			ajaxLoading($.i18n.prop("save.saving"));
+			var data = $(FORM_ID_DETAIL).serialize();
+			$.ajax({
+				type : "PUT",
+				url : URI_AJAX_USER_PASSWORD + "/" + userId,
+				data : data,
+				dataType : "json",
+				success : function(json) {
+					ajaxLoaded();
+					if (json.code == CODE_OK) {
+						showSuccessTips($.i18n.prop("save.success"));
+					} else {
+						showErrorTips(json.message);
+					}
+				},
+				error : function() {
+					ajaxLoaded();
+					showErrorTips($.i18n.prop("http.request.failed"));
+				}
+			});
+		}
 	});
 }

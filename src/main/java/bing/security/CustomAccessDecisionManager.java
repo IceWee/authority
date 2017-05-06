@@ -3,6 +3,7 @@ package bing.security;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -10,8 +11,6 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
-
-import bing.util.StringUtils;
 
 /**
  * 自定义访问决策管理器，主要实现URL访问的权限控制
