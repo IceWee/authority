@@ -63,7 +63,7 @@
 						</div>
 						<div class="col-md-4 text-left">
 			    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
-		    					<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}"></option>
+		    					<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
 		    				</select>
 						</div>
 					</div>

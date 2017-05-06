@@ -31,6 +31,7 @@ import bing.system.model.SysResourceCategory;
 import bing.system.model.SysRole;
 import bing.system.model.SysRoleResource;
 import bing.system.vo.SysResourceVO;
+import bing.util.JsonUtils;
 import bing.util.StringUtils;
 
 @Service("sysResourceService")
@@ -121,7 +122,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
 		List<GenericTreeNode> treeNodes = convertResourceCategory(topCategories);
-		GenericTreeNode.buildGenericTree(convertResourceCategory(topCategories), convertResourceCategory(categories));
+		GenericTreeNode.buildGenericTree(treeNodes, convertResourceCategory(categories));
 		return treeNodes;
 	}
 
@@ -174,15 +175,18 @@ public class SysResourceServiceImpl implements SysResourceService {
 					treeNode.setChecked(true);
 				}
 			});
+			treeNode.setIconCls(GlobalConstants.EASYUI_ICON_CLS_LEAF);
 		});
 		// 遍历资源分类挂接资源
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<GenericTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
 		List<GenericTreeNode> categoryTreeNodes = convertResourceCategory(categories);
+		categoryTreeNodes.forEach(branch -> branch.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
 		// 将资源分类节点与资源节点合并递归构造树形结构
 		categoryTreeNodes.addAll(resourceTreeNodes);
 		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);
+		System.out.println(JsonUtils.toString(topCategoryTreeNodes));
 		return topCategoryTreeNodes;
 	}
 
@@ -190,11 +194,13 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public List<GenericTreeNode> getResourceTree() {
 		List<SysResource> resources = sysResourceDao.listAll();
 		List<GenericTreeNode> resourceTreeNodes = convertResource(resources);
+		resourceTreeNodes.forEach(leaf -> leaf.setIconCls(GlobalConstants.EASYUI_ICON_CLS_LEAF));
 		// 遍历资源分类挂接资源
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<GenericTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
 		List<GenericTreeNode> categoryTreeNodes = convertResourceCategory(categories);
+		categoryTreeNodes.forEach(branch -> branch.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
 		// 将资源分类节点与资源节点合并递归构造树形结构
 		categoryTreeNodes.addAll(resourceTreeNodes);
 		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);

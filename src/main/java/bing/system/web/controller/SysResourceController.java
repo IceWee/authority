@@ -35,6 +35,7 @@ import bing.system.model.SysUser;
 import bing.system.service.SysResourceService;
 import bing.system.vo.SysResourceVO;
 import bing.util.ExceptionUtils;
+import bing.util.JsonUtils;
 import bing.util.StringUtils;
 import bing.web.api.RestResponse;
 import bing.web.api.RestResponseCodes;
@@ -96,6 +97,7 @@ public class SysResourceController extends GenericController {
 	public RestResponse<List<GenericTreeNode>> categoryTree() {
 		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
 		List<GenericTreeNode> categories = sysResourceService.getCategoryTree();
+		System.out.println(JsonUtils.toString(categories));
 		response.setData(categories);
 		return response;
 	}

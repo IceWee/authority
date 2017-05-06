@@ -66,7 +66,7 @@
 						<label th:text="#{resource.category}">资源分类</label>
 					</div>
 					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="${category.name}" type="text" data-options="required:true,iconCls:'icon-filter'" id="categoryName" name="categoryName" readonly="readonly"></input>
+		    			<input class="easyui-textbox input-default" th:value="${category.name}" type="text" data-options="required:true,iconCls:'icon-tree'" id="categoryName" name="categoryName" readonly="readonly"></input>
 					</div>
 				</div>
 				<div style="margin-bottom: 20px"></div>
@@ -76,7 +76,7 @@
 					</div>
 					<div class="col-md-4 text-left">
 		    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
-							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}"></option>
+							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
 	    				</select>
 					</div>
 					<div class="col-md-2 text-right">

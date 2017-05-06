@@ -5,7 +5,7 @@
 		<id column="id" jdbcType="INTEGER" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
-		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="resource_id" jdbcType="INTEGER" property="resourceId" />
 		<result column="sort" jdbcType="INTEGER" property="sort" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -30,8 +30,8 @@
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_menu (name, parent_id, url, sort, status, remark, create_date, create_user, update_date, update_user)
-		values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+		insert into sys_menu (name, parent_id, resource_id, sort, status, remark, create_date, create_user, update_date, update_user)
+		values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{resourceId,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
 		#{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
 		#{createUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
 	</insert>
@@ -48,7 +48,7 @@
 				parent_id,
 			</if>
 			<if test="url != null">
-				url,
+				resource_id,
 			</if>
 			<if test="sort != null">
 				sort,
@@ -79,8 +79,8 @@
 			<if test="parentId != null">
 				#{parentId,jdbcType=INTEGER},
 			</if>
-			<if test="url != null">
-				#{url,jdbcType=VARCHAR},
+			<if test="resourceId != null">
+				#{resourceId,jdbcType=INTEGER},
 			</if>
 			<if test="sort != null">
 				#{sort,jdbcType=INTEGER},
@@ -114,8 +114,8 @@
 			<if test="parentId != null">
 				parent_id = #{parentId,jdbcType=INTEGER},
 			</if>
-			<if test="url != null">
-				url = #{url,jdbcType=VARCHAR},
+			<if test="resourceId != null">
+				resource_id = #{resourceId,jdbcType=INTEGER},
 			</if>
 			<if test="sort != null">
 				sort = #{sort,jdbcType=INTEGER},
@@ -145,7 +145,7 @@
 		update sys_menu
 		set name = #{name,jdbcType=VARCHAR},
 		parent_id = #{parentId,jdbcType=INTEGER},
-		url = #{url,jdbcType=VARCHAR},
+		resource_id = #{resourceId,jdbcType=INTEGER},
 		sort = #{sort,jdbcType=INTEGER},
 		status = #{status,jdbcType=INTEGER},
 		remark = #{remark,jdbcType=VARCHAR},

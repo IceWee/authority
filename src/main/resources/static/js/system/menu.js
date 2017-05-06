@@ -75,7 +75,7 @@ function initEditPageExt(error, message) {
 	var resourceId = $("#resource").val();
 	
 	initDialogTree({
-		url: URI_AJAX_MENU_TREE,
+		url: URI_AJAX_RESOURCE_TREE,
 		title: $.i18n.prop("resource.tree"),
 		showFooter: true,
 		autoClose: false,

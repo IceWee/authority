@@ -21,6 +21,8 @@ public class GenericTreeNode {
 
 	protected boolean checked = false;
 
+	protected String iconCls;
+
 	protected Map<String, Object> attributes = new HashMap<>();
 
 	protected List<GenericTreeNode> children = new ArrayList<>();
@@ -82,6 +84,14 @@ public class GenericTreeNode {
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
 	}
 
 	public Map<String, Object> getAttributes() {

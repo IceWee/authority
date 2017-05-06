@@ -193,6 +193,9 @@ public class SysMenuController extends GenericController {
 	 */
 	private void prepareResource(Integer resourceId, Model model) {
 		SysResource resource = sysResourceService.getById(resourceId);
+		if (resource == null) {
+			resource = new SysResource();
+		}
 		model.addAttribute(REQUEST_ATTRIBUTE_RESOURCE, resource);
 	}
 

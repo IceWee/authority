@@ -70,7 +70,7 @@ public class GlobalConstants {
 	/**
 	 * Public resource paths
 	 */
-	public static final String[] PUBLIC_RESOURCE_PATHS = { "/js/**", "/css/**", "/images/**", "/i18n/**" };
+	public static final String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
 
 	/**
 	 * 根节点父ID值-0，无ID为0的节点，即为顶级节点
@@ -90,6 +90,9 @@ public class GlobalConstants {
 	public static final String ATTRIBUT_ID = "id";
 	public static final String ATTRIBUT_PARENT_ID = "parentId";
 	public static final String ATTRIBUT_TYPE = "type";
+
+	public static final String EASYUI_ICON_CLS_BRANCH = "icon-branch";
+	public static final String EASYUI_ICON_CLS_LEAF = "icon-leaf";
 
 	private GlobalConstants() {
 		super();
