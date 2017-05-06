@@ -29,6 +29,7 @@ import bing.system.model.SysResource;
 import bing.system.model.SysUser;
 import bing.system.service.SysMenuService;
 import bing.system.service.SysResourceService;
+import bing.system.vo.SysMenuVO;
 import bing.util.ExceptionUtils;
 import bing.util.StringUtils;
 import bing.web.api.RestResponse;
@@ -64,9 +65,9 @@ public class SysMenuController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<GenericPage<SysMenu>> menus(SysMenuCondition condition) {
-		RestResponse<GenericPage<SysMenu>> response = new RestResponse<>();
-		GenericPage<SysMenu> page = sysMenuService.listByPage(condition);
+	public RestResponse<GenericPage<SysMenuVO>> menus(SysMenuCondition condition) {
+		RestResponse<GenericPage<SysMenuVO>> response = new RestResponse<>();
+		GenericPage<SysMenuVO> page = sysMenuService.listByPage(condition);
 		response.setData(page);
 		return response;
 	}

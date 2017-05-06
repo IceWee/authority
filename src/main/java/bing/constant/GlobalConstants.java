@@ -90,6 +90,7 @@ public class GlobalConstants {
 	public static final String ATTRIBUT_ID = "id";
 	public static final String ATTRIBUT_PARENT_ID = "parentId";
 	public static final String ATTRIBUT_TYPE = "type";
+	public static final String ATTRIBUT_URL = "url";
 
 	public static final String EASYUI_ICON_CLS_BRANCH = "icon-branch";
 	public static final String EASYUI_ICON_CLS_LEAF = "icon-leaf";

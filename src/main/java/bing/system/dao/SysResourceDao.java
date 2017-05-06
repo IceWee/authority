@@ -30,4 +30,12 @@ public interface SysResourceDao {
 
 	List<SysResource> listAll();
 
+	/**
+	 * 获取用户具备的资源ID列表
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	List<Integer> listResourceIdByUserId(Integer userId);
+
 }

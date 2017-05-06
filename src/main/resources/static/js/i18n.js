@@ -23,4 +23,6 @@ function getBrowserLocale(seprator) {
 	return locale;
 }
 
-i18n();
+$(function() {
+	i18n();
+});

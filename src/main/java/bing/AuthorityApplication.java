@@ -10,7 +10,6 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.ErrorPage;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,9 +20,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import bing.constant.GlobalConstants;
 
 @SpringBootApplication
-@EnableCaching
+// @EnableCaching
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = GlobalConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
-@ComponentScan(basePackages = { GlobalConstants.COMPONENT_SCAN_PACKAGES })
+@ComponentScan(basePackages = {GlobalConstants.COMPONENT_SCAN_PACKAGES})
 @MapperScan(GlobalConstants.MAPPER_SCAN_PACKAGES)
 public class AuthorityApplication {
 
@@ -35,7 +34,8 @@ public class AuthorityApplication {
 	}
 
 	/**
-	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件， 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
+	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件，
+	 * 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
 	 * 
 	 * @return
 	 */
@@ -78,7 +78,8 @@ public class AuthorityApplication {
 
 		};
 
-		// tomcat.addAdditionalTomcatConnectors(httpConnector()); // 打开注释开启HTTP转发到HTTPS
+		// tomcat.addAdditionalTomcatConnectors(httpConnector()); //
+		// 打开注释开启HTTP转发到HTTPS
 		tomcat.setSessionTimeout(5);
 		return tomcat;
 	}

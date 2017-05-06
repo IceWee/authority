@@ -6,20 +6,22 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
+import bing.constant.TreeNodeTypeEnum;
 import bing.domain.GenericPage;
 import bing.domain.GenericTreeNode;
 import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
-import bing.system.constant.ResourceTreeNodeTypeEnum;
 import bing.system.constant.TreeNodeIdPrefixes;
 import bing.system.dao.SysResourceCategoryDao;
 import bing.system.dao.SysResourceDao;
@@ -118,7 +120,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
-	// @Cacheable(cacheNames = {EhCacheNames.CATEGORY_TREE_CACHE})
+	@Cacheable(cacheNames = {EhCacheNames.CATEGORY_TREE_CACHE})
 	public List<GenericTreeNode> getCategoryTree() {
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
@@ -192,7 +194,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
-	// @Cacheable(cacheNames = {EhCacheNames.RESOURCE_TREE_CACHE})
+	@Cacheable(cacheNames = {EhCacheNames.RESOURCE_TREE_CACHE})
 	public List<GenericTreeNode> getResourceTree() {
 		List<SysResource> resources = sysResourceDao.listAll();
 		List<GenericTreeNode> resourceTreeNodes = convertResource(resources);
@@ -203,8 +205,14 @@ public class SysResourceServiceImpl implements SysResourceService {
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
 		List<GenericTreeNode> categoryTreeNodes = convertResourceCategory(categories);
 		categoryTreeNodes.forEach(branch -> branch.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
-		// 将资源分类节点与资源节点合并递归构造树形结构
-		categoryTreeNodes.addAll(resourceTreeNodes);
+		// 挂接资源
+		categoryTreeNodes.forEach(branch -> {
+			resourceTreeNodes.forEach(leaf -> {
+				if (Objects.equals(branch.getAttribute(GlobalConstants.ATTRIBUT_ID), leaf.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID))) {
+					branch.addChild(leaf);
+				}
+			});
+		});
 		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);
 		return topCategoryTreeNodes;
 	}
@@ -225,7 +233,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 			treeNode.setId(TreeNodeIdPrefixes.RESOURCE_CATEGORY + id);
 			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, sysResourceCategory.getId());
 			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysResourceCategory.getParentId());
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, ResourceTreeNodeTypeEnum.CATEGORY.ordinal());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, TreeNodeTypeEnum.BRANCH.ordinal());
 			treeNode.setText(sysResourceCategory.getName());
 			treeNodes.add(treeNode);
 		}
@@ -248,7 +256,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 			treeNode.setId(TreeNodeIdPrefixes.RESOURCE + id);
 			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, id);
 			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysResource.getCategoryId());
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, ResourceTreeNodeTypeEnum.RESOURCE.ordinal());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, TreeNodeTypeEnum.LEAF.ordinal());
 			treeNode.setText(sysResource.getName());
 			treeNodes.add(treeNode);
 		}

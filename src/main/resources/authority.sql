@@ -155,5 +155,3 @@ CREATE TABLE `sys_role_resource` (
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色资源关联';
-
-

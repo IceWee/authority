@@ -14,8 +14,25 @@
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
+	<resultMap id="VOResultMap" type="bing.system.vo.SysMenuVO">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		<result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+		<result column="sort" jdbcType="INTEGER" property="sort" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
+		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+	</resultMap>
 	<sql id="Base_Column_List">
 		id, name, parent_id, resource_id, sort, status, remark, create_date, create_user, update_date, update_user
+	</sql>
+	<sql id="VO_Column_List">
+		m.id, m.name, m.parent_id, m.resource_id, m.sort, m.status, m.remark, m.create_date, m.create_user, m.update_date, m.update_user, r.url
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
@@ -155,29 +172,32 @@
 		update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<select id="listByCondition" parameterType="bing.system.condition.SysMenuCondition" resultMap="BaseResultMap">
+	<select id="listByCondition" parameterType="bing.system.condition.SysMenuCondition" resultMap="VOResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from sys_menu where status != 2
+		<include refid="VO_Column_List" />
+		from sys_menu m left join sys_resource r on m.resource_id = r.id
+		where m.status != 2
 		<if test="parentId != null">
-			and parent_id = #{parentId,jdbcType=INTEGER}
+			and m.parent_id = #{parentId,jdbcType=INTEGER}
 		</if>
 		<if test="name != null and name != ''">
-			and name like concat(#{name,jdbcType=VARCHAR}, '%')
+			and m.name like concat(#{name,jdbcType=VARCHAR}, '%')
 		</if>
 		<if test="status != null">
-			and status = #{status,jdbcType=INTEGER}
+			and m.status = #{status,jdbcType=INTEGER} order by sort
 		</if>
 	</select>
-	<select id="listByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	<select id="listByParentId" parameterType="java.lang.Integer" resultMap="VOResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from sys_menu where status != 2 and parent_id = #{parentId,jdbcType=INTEGER}
+		<include refid="VO_Column_List" />
+		from sys_menu m left join sys_resource r on m.resource_id = r.id
+		where m.status != 2 and m.parent_id = #{parentId,jdbcType=INTEGER} order by sort
 	</select>
-	<select id="listAll" resultMap="BaseResultMap">
+	<select id="listAll" resultMap="VOResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from sys_menu where status != 2
+		<include refid="VO_Column_List" />
+		from sys_menu m left join sys_resource r on m.resource_id = r.id
+		where m.status != 2 order by sort
 	</select>
 	<select id="countByParentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		select count(1) from sys_menu where status != 2 and parent_id = #{parentId,jdbcType=INTEGER}

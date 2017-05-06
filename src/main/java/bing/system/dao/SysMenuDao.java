@@ -4,6 +4,7 @@ import java.util.List;
 
 import bing.system.condition.SysMenuCondition;
 import bing.system.model.SysMenu;
+import bing.system.vo.SysMenuVO;
 
 public interface SysMenuDao {
 
@@ -19,11 +20,11 @@ public interface SysMenuDao {
 
 	int updateByPrimaryKey(SysMenu entity);
 
-	List<SysMenu> listByCondition(SysMenuCondition condition);
+	List<SysMenuVO> listByCondition(SysMenuCondition condition);
 
-	List<SysMenu> listByParentId(Integer parentId);
+	List<SysMenuVO> listByParentId(Integer parentId);
 
-	List<SysMenu> listAll();
+	List<SysMenuVO> listAll();
 
 	int countByParentId(Integer parentId);
 

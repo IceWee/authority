@@ -338,6 +338,10 @@ html {
 	background: #fff
 }
 
+#pf-bd #pf-sider .sider-nav>li .sider-nav-s li.msover {
+	background: #fff
+}
+
 #pf-bd #pf-sider .sider-nav>li .sider-nav-s li.active a {
 	color: #347AB6;
 	font-weight: bold

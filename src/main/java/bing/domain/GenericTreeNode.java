@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import bing.constant.GlobalConstants;
+import bing.constant.TreeNodeTypeEnum;
 
 /**
  * 通用树节点
@@ -42,11 +43,12 @@ public class GenericTreeNode {
 	 * @param treeNodes 全部节点
 	 */
 	public static void buildGenericTree(List<GenericTreeNode> parentTreeNodes, List<GenericTreeNode> treeNodes) {
-		parentTreeNodes.forEach(parentTreeNode -> System.out.print(parentTreeNode.getAttribute("id") + ","));
-		treeNodes.forEach(treeNode -> System.out.print(treeNode.getAttribute("id") + ","));
 		parentTreeNodes.forEach(parentNode -> {
+			Object parentId = parentNode.getAttribute(GlobalConstants.ATTRIBUT_ID);
+			Object parentType = parentNode.getAttribute(GlobalConstants.ATTRIBUT_TYPE);
 			treeNodes.forEach(node -> {
-				if (Objects.equals(parentNode.getAttribute(GlobalConstants.ATTRIBUT_ID), node.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID))) {
+				Object subParentId = node.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID);
+				if (Objects.equals(TreeNodeTypeEnum.BRANCH.ordinal(), parentType) && Objects.equals(parentId, subParentId)) {
 					parentNode.addChild(node);
 				}
 			});

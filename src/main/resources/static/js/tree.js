@@ -205,9 +205,11 @@ function initDialogTree(options) {
 	}
 	var showImmediately = options.showImmediately;
 	var title = options.title;
+	var tipsId = options.tipsId ? options.tipsId : "_tips_dialog_tree";
 	
 	// 立即显示
 	if (showImmediately) {
+		hideTips(tipsId);
 		$(DIALOG_TITLE_ID).text(title);
 		$(DIALOG_ID).modal({keyboard:false});
 		_initializeEasyUITree(options);
@@ -216,6 +218,7 @@ function initDialogTree(options) {
 	
 	// 绑定点击事件到提供的textbox上
 	if (triggerInputId) {
+		hideTips(tipsId);
 		$(triggerInputId).textbox("textbox").bind("click", function() {  
 			$(DIALOG_TITLE_ID).text(title);
 			$(DIALOG_ID).modal({keyboard:false});
@@ -295,6 +298,8 @@ function _initializeEasyUITree(options) {
 	var selectedId = options.selectedId;
 	var checkbox = options.checkbox == undefined ? false : options.checkbox;
 	var tipsId = options.tipsId ? options.tipsId : "_tips_dialog_tree";
+	
+	loadTreeData({treeId:RAW_TREE_ID}); // 清空缓存
 	
 	$.ajax({
 		type : "GET",

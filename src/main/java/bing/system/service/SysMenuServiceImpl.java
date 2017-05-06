@@ -7,21 +7,26 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
+import bing.constant.TreeNodeTypeEnum;
 import bing.domain.GenericPage;
 import bing.domain.GenericTreeNode;
 import bing.exception.BusinessException;
 import bing.system.condition.SysMenuCondition;
 import bing.system.constant.TreeNodeIdPrefixes;
 import bing.system.dao.SysMenuDao;
+import bing.system.dao.SysResourceDao;
 import bing.system.exception.MenuExceptionCodes;
 import bing.system.model.SysMenu;
+import bing.system.vo.SysMenuVO;
 
 @Service("sysMenuService")
 public class SysMenuServiceImpl implements SysMenuService {
@@ -29,12 +34,15 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysMenuDao sysMenuDao;
 
+	@Autowired
+	private SysResourceDao sysResourceDao;
+
 	@Override
-	public GenericPage<SysMenu> listByPage(SysMenuCondition condition) {
+	public GenericPage<SysMenuVO> listByPage(SysMenuCondition condition) {
 		Long pageNo = condition.getPageNo();
 		PageHelper.startPage(pageNo.intValue(), condition.getPageSize().intValue());
-		List<SysMenu> list = sysMenuDao.listByCondition(condition);
-		PageInfo<SysMenu> pageInfo = new PageInfo<>(list);
+		List<SysMenuVO> list = sysMenuDao.listByCondition(condition);
+		PageInfo<SysMenuVO> pageInfo = new PageInfo<>(list);
 		return new GenericPage<>(pageNo, pageInfo.getTotal(), list);
 	}
 
@@ -75,10 +83,10 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	// @Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
+	@Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
 	public List<GenericTreeNode> getMenuTree() {
-		List<SysMenu> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
-		List<SysMenu> menus = sysMenuDao.listAll();
+		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
+		List<SysMenuVO> menus = sysMenuDao.listAll();
 		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
 		GenericTreeNode.buildGenericTree(treeNodes, convertMenu(menus));
 		return treeNodes;
@@ -86,12 +94,24 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	public List<GenericTreeNode> getMenuTree(Integer id) {
-		List<SysMenu> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
-		List<SysMenu> menus = sysMenuDao.listAll();
+		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
+		List<SysMenuVO> menus = sysMenuDao.listAll();
 		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
 		List<GenericTreeNode> allTreeNodes = convertMenu(menus);
 		List<GenericTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !Objects.equals(treeNode.getAttribute(GlobalConstants.ATTRIBUT_ID), id)).collect(Collectors.toList());
 		GenericTreeNode.buildGenericTree(treeNodes, treeNodesExclude);
+		return treeNodes;
+	}
+
+	@Override
+	public List<GenericTreeNode> listMenuByUserId(Integer userId) {
+		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
+		List<SysMenuVO> menus = sysMenuDao.listAll();
+		List<Integer> ownResourceIds = sysResourceDao.listResourceIdByUserId(userId);
+		// 迭代全部菜单，未绑定资源的忽略，绑定资源的需要与用户具备的资源比较，不包含则删除菜单
+		List<SysMenuVO> ownMenus = menus.stream().filter(menu -> (menu.getResourceId() == null) || (ownResourceIds.contains(menu.getResourceId()))).collect(Collectors.toList());
+		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
+		GenericTreeNode.buildGenericTree(treeNodes, convertMenu(ownMenus));
 		return treeNodes;
 	}
 
@@ -101,16 +121,19 @@ public class SysMenuServiceImpl implements SysMenuService {
 	 * @param sysResourceCategories
 	 * @return
 	 */
-	private List<GenericTreeNode> convertMenu(List<SysMenu> sysMenus) {
+	private List<GenericTreeNode> convertMenu(List<SysMenuVO> sysMenus) {
 		List<GenericTreeNode> treeNodes = new ArrayList<>();
 		GenericTreeNode treeNode;
 		Integer id;
-		for (SysMenu sysMenu : sysMenus) {
+		for (SysMenuVO sysMenu : sysMenus) {
 			id = sysMenu.getId();
 			treeNode = new GenericTreeNode();
 			treeNode.setId(TreeNodeIdPrefixes.MENU + id);
 			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, id);
 			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysMenu.getParentId());
+			// 一定要设置type为branch否则禁止添加leaf
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, TreeNodeTypeEnum.BRANCH.ordinal());
+			treeNode.setAttribute(GlobalConstants.ATTRIBUT_URL, sysMenu.getUrl());
 			treeNode.setText(sysMenu.getName());
 			treeNodes.add(treeNode);
 		}
