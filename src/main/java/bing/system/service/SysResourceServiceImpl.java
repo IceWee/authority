@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
@@ -118,6 +120,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = {EhCacheNames.CATEGORY_TREE_CACHE})
 	public List<GenericTreeNode> getCategoryTree() {
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
@@ -191,6 +194,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = {EhCacheNames.RESOURCE_TREE_CACHE})
 	public List<GenericTreeNode> getResourceTree() {
 		List<SysResource> resources = sysResourceDao.listAll();
 		List<GenericTreeNode> resourceTreeNodes = convertResource(resources);

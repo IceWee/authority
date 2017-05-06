@@ -44,8 +44,8 @@ function initListPageExt(error, message) {
 // 选中菜单节点
 function selectMenu(node) {
 	if (node) {
-		selectTreeNode(URI_AJAX_MENU_TREE, node);
-		$(HIDDEN_MENU_ID).val(node.id);
+		selectTreeNode(TREE_ID_MENU, node);
+		$(HIDDEN_MENU_ID).val(node.attributes.id);
 		doSearch(URI_AJAX_LIST);
 	}
 }
@@ -55,15 +55,24 @@ function selectMenu(node) {
 function initAddPageExt(error, message) {
 	initAddPage(error, message);
 	
-	readonlyColor("parentMenuName");
-	
+	// 资源树
 	initDialogTree({
 		url: URI_AJAX_RESOURCE_TREE,
 		title: $.i18n.prop("resource.tree"),
 		showFooter: true,
-		autoClose: false,
+		autoClose: true,
 		triggerInputId: "resourceName",
-		confirmCallback: confirmCallbackForDetail
+		confirmCallback: confirmCallbackForResource
+	});
+	
+	// 菜单树
+	initDialogTree({
+		url: URI_AJAX_MENU_TREE,
+		title: $.i18n.prop("menu.tree"),
+		showFooter: true,
+		autoClose: true,
+		triggerInputId: "parentMenuName",
+		confirmCallback: confirmCallbackForMenu
 	});
 }
 
@@ -71,33 +80,57 @@ function initAddPageExt(error, message) {
 function initEditPageExt(error, message) {
 	initEditPage(error, message);
 	
-	readonlyColor("parentMenuName");
 	var resourceId = $("#resource").val();
-	
+	// 资源树
 	initDialogTree({
 		url: URI_AJAX_RESOURCE_TREE,
 		title: $.i18n.prop("resource.tree"),
 		showFooter: true,
-		autoClose: false,
+		autoClose: true,
 		triggerInputId: "resourceName",
-		confirmCallback: confirmCallbackForDetail,
+		confirmCallback: confirmCallbackForResource,
 		selectedId: RESOURCE_NODE_ID_PREFIX + resourceId // 选中
+	});
+	
+	var parentMenuId = $("#parentId").val();
+	// 菜单树
+	initDialogTree({
+		url: URI_AJAX_MENU_TREE,
+		title: $.i18n.prop("menu.tree"),
+		showFooter: true,
+		autoClose: true,
+		triggerInputId: "parentMenuName",
+		confirmCallback: confirmCallbackForMenu,
+		selectedId: MENU_NODE_ID_PREFIX + parentMenuId // 选中
 	});
 }
 
-// 选择树节点事件
-function confirmCallbackForDetail(node) {
+// 选择资源树节点事件
+function confirmCallbackForResource(node) {
 	var tipsId = "_tips_dialog_tree";
 	hideTips(tipsId);
-	var id = node.id;
 	var type = node.attributes.type;
 	if (type == 0) { // 资源分类节点
-		showErrorTips($.i18n.prop("resource.node.select"), tipsId);
+		showTips($.i18n.prop("menu.bind.category.invalid"), "warning", 3);
+		$(FORM_ID_DETAIL).form("load", {
+			resourceId: null,
+			resourceName: node.text
+		});
 	} else {
 		$(FORM_ID_DETAIL).form("load", {
 			resourceId: node.attributes.id,
 			resourceName: node.text
 		});
 	}
+}
+
+// 选择菜单树节点事件
+function confirmCallbackForMenu(node) {
+	var tipsId = "_tips_dialog_tree";
+	hideTips(tipsId);
+	$(FORM_ID_DETAIL).form("load", {
+		parentId: node.attributes.id,
+		parentMenuName: node.text
+	});
 }
 /************************************** add/edit end ********************************************/

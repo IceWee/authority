@@ -80,7 +80,6 @@ function initTree(options) {
 		console.log("树ID为空");
 		return;
 	}
-	var OK = "200";
 	var selectCallback = options.selectCallback;
 	var contextMenuCallback = options.contextMenuCallback;
 	var completeCallback = options.completeCallback;
@@ -93,7 +92,7 @@ function initTree(options) {
 		url : url,
 		dataType : "json",
 		success : function(json) {
-			if (json.code === OK) {
+			if (json.code == CODE_OK) {
 				if (json.data) {
 					var array = json.data;
 					$("#" + treeId).tree({
@@ -154,14 +153,12 @@ function refreshTree(options) {
 	var tipsId = options.tipsId ? options.tipsId : "tips";
 	var completeCallback = options.completeCallback;
 	
-	var OK = "200";
-	
 	$.ajax({
 		type : "GET",
 		url : url,
 		dataType : "json",
 		success : function(json) {
-			if (json.code === OK) {
+			if (json.code == CODE_OK) {
 				if (json.data) {
 					loadTreeData({
 						treeId: treeId,
@@ -195,97 +192,58 @@ function refreshTree(options) {
 // autoClose 默认true, 点击确定后自动关闭
 function initDialogTree(options) {
 	var url = options.url;
-	var triggerInputId = options.triggerInputId;
 	if (!url) {
 		console.log("树请求url为空");
 		return;
 	}
+	var DIALOG_TITLE_ID = "#_title_dialog_tree";
+	var DIALOG_ID = "#_modal_dialog_tree"; // 弹出框ID
+	
+	var triggerInputId = options.triggerInputId;
 	if (triggerInputId) {
 		triggerInputId = "#" + triggerInputId;
 	}
-	
 	var showImmediately = options.showImmediately;
-	
-	var BUTTON_CONFIRM = "#_button_dialog_tree_confirm"; // 确认按钮
-	var BUTTON_CANCEL = "#_button_dialog_tree_cancel"; // 取消按钮
-	var RAW_TREE_ID = "_dialog_tree"; // 树ID
-	var TREE_ID = "#" + RAW_TREE_ID; // 树ID
-	var RAW_DIALOG_ID = "_modal_dialog_tree";
-	var DIALOG_ID = "#" + RAW_DIALOG_ID; // 弹出框ID
-	var DIALOG_TITLE_ID = "#_title_dialog_tree";
-	var OK = "200";
-	
-	var selectCallback = options.selectCallback;
-	var contextMenuCallback = options.contextMenuCallback;
-	var confirmCallback = options.confirmCallback;
-	var tipsId = options.tipsId ? options.tipsId : "_tips_dialog_tree";
-	var showFooter = options.showFooter;
 	var title = options.title;
-	var selectedId = options.selectedId;
-	var checkbox = options.checkbox === undefined ? false : options.checkbox;
-	var autoClose = options.autoClose === undefined ? true : options.autoClose;
 	
+	// 立即显示
 	if (showImmediately) {
+		$(DIALOG_TITLE_ID).text(title);
 		$(DIALOG_ID).modal({keyboard:false});
+		_initializeEasyUITree(options);
+		_initializeButtonEvents(options);
 	}
-	
-	$.ajax({
-		type : "GET",
-		url : url,
-		dataType : "json",
-		success : function(json) {
-			if (json.code === OK) {
-				if (json.data) {
-					var array = json.data;
-					$(TREE_ID).tree({
-						data: array,
-						animate: true,
-						checkbox: checkbox,
-						onClick: function(node){
-							if ($.isFunction(selectCallback)) {
-								selectCallback(node, RAW_DIALOG_ID);
-							}
-						},
-						onContextMenu: function(e, node) {
-							e.preventDefault();
-							if ($.isFunction(contextMenuCallback)) {
-								contextMenuCallback(e, node);
-							}
-						},
-						onLoadSuccess: function() {
-							if (selectedId) {
-								var node = getTreeNode(RAW_TREE_ID, selectedId);
-								selectTreeNode(RAW_TREE_ID, node);
-							}
-						}
-					});
-				}
-			} else {
-				showErrorTips(json.message, tipsId);
-			}
-		},
-		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
-		}
-	});
 	
 	// 绑定点击事件到提供的textbox上
 	if (triggerInputId) {
 		$(triggerInputId).textbox("textbox").bind("click", function() {  
+			$(DIALOG_TITLE_ID).text(title);
 			$(DIALOG_ID).modal({keyboard:false});
+			_initializeEasyUITree(options);
+			_initializeButtonEvents(options);
 		});
 	}
+}
+
+// 初始化按钮点击事件
+function _initializeButtonEvents(options) {
+	var BUTTON_CONFIRM = "#_button_dialog_tree_confirm"; // 确认按钮
+	var BUTTON_CANCEL = "#_button_dialog_tree_cancel"; // 取消按钮
+	var DIALOG_ID = "#_modal_dialog_tree"; // 弹出框ID
+	var RAW_TREE_ID = "_dialog_tree"; // 树ID
+	var FOOTER_ID = "#_footer_dialog_tree";
 	
-	$(DIALOG_TITLE_ID).text(title);
+	var showFooter = options.showFooter;
+	var checkbox = options.checkbox == undefined ? false : options.checkbox;
+	var autoClose = options.autoClose == undefined ? true : options.autoClose;
+	var confirmCallback = options.confirmCallback;
 	
 	if (showFooter) {
+		$(BUTTON_CONFIRM).off(); // 注意：隐藏弹出框后必须关闭click事件，否则再次弹出后会触发多次click事件
+		
 		// 取消
 		$(BUTTON_CANCEL).click(function() {
 			$(DIALOG_ID).modal("hide");
-			$(BUTTON_CONFIRM).off(); // 注意：隐藏弹出框后必须关闭click事件，否则再次弹出后会触发多次click事件
-			if (triggerInputId) {
-//				$(triggerInputId).textbox("textbox").unbind("click");  
-			}
 		});
 		
 		// 确认
@@ -314,6 +272,65 @@ function initDialogTree(options) {
 			
 		});
 	} else {
-		$("#_footer_dialog_tree").hide();
+		$(FOOTER_ID).hide();
 	}
+}
+
+// 初始化树
+function _initializeEasyUITree(options) {
+	var url = options.url;
+	if (!url) {
+		console.log("树请求url为空");
+		return;
+	}
+	
+	var RAW_TREE_ID = "_dialog_tree"; // 树ID
+	var TREE_ID = "#" + RAW_TREE_ID; // 树ID
+	var RAW_DIALOG_ID = "_modal_dialog_tree";
+	
+	var selectCallback = options.selectCallback;
+	var contextMenuCallback = options.contextMenuCallback;
+	var selectedId = options.selectedId;
+	var checkbox = options.checkbox == undefined ? false : options.checkbox;
+	var tipsId = options.tipsId ? options.tipsId : "_tips_dialog_tree";
+	
+	$.ajax({
+		type : "GET",
+		url : url,
+		dataType : "json",
+		success : function(json) {
+			if (json.code == CODE_OK) {
+				if (json.data) {
+					var array = json.data;
+					$(TREE_ID).tree({
+						data: array,
+						animate: true,
+						checkbox: checkbox,
+						onClick: function(node){
+							if ($.isFunction(selectCallback)) {
+								selectCallback(node, RAW_DIALOG_ID);
+							}
+						},
+						onContextMenu: function(e, node) {
+							e.preventDefault();
+							if ($.isFunction(contextMenuCallback)) {
+								contextMenuCallback(e, node);
+							}
+						},
+						onLoadSuccess: function() {
+							if (selectedId) {
+								var node = getTreeNode(treeId, selectedId);
+								selectTreeNode(treeId, node);
+							}
+						}
+					});
+				}
+			} else {
+				showErrorTips(json.message, tipsId);
+			}
+		},
+		error : function() {
+			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+		}
+	});
 }

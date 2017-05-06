@@ -1,4 +1,4 @@
-var CODE_OK = 200; // 请求状态码，正常
+var CODE_OK = "200"; // 请求状态码，正常
 
 // 将表单序列化成JSON对象
 // 依赖JQuery的serializeArray方法

@@ -24,4 +24,13 @@
 	<cache name="userCache" eternal="false" maxElementsInMemory="10000"
 		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
 		timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU" />
+	<cache name="menuTreeCache" eternal="false" maxElementsInMemory="10000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU" />
+	<cache name="resourceTreeCache" eternal="false" maxElementsInMemory="10000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU" />
+	<cache name="categoryTreeCache" eternal="false" maxElementsInMemory="10000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU" />
 </ehcache>
