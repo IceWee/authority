@@ -41,8 +41,8 @@
 							<thead>
 								<tr>
 									<th data-options="field:'_operate',width:15,align:'center',formatter:operateBtnHtml">操作</th>
-									<th th:text="#{name}" data-options="field:'name',width:15">名称</th>
-									<th th:text="#{url}" data-options="field:'url',width:20">地址</th>
+									<th th:text="#{name}" data-options="field:'name',width:25">名称</th>
+									<th th:text="#{url}" data-options="field:'url',width:30">地址</th>
 									<th th:text="#{type}" data-options="field:'typeText',align:'center',width:10">类型</th>
 									<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
 									<th th:text="#{create.date}" data-options="field:'createDate',align:'center',width:15">创建日期</th>
@@ -98,7 +98,7 @@
 <form action="" id="form_category">
 <input type="hidden" th:value="${session.currentUser.username}" name="createUser" id="categoryCreateUser"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser" id="categoryUpdateUser"></input>
-<input type="hidden" name="parentId"></input>
+<input type="hidden" name="parentId" id="parentId"></input>
 <input type="hidden" name="id"></input>
 	<div class="modal-dialog" role="document">
     	<div class="modal-content">

@@ -1,7 +1,7 @@
 // 固定常量，必须这样命名，否则crud.js无法正常运行
 var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
 var FORM_ID_LIST = "#form_list"; // 列表页表单ID
-var URI_AJAX_LIST = "/ajax/system/resources"; // 列表页获取列表数据异步URI
+var URI_AJAX_LIST = "/ajax/system/resource/list"; // 列表页获取列表数据异步URI
 var URI_LIST = "/system/resource/list"; // 列表页面URI
 var URI_ADD = "/system/resource/add"; // 新增页面URI
 var URI_SAVE = "/system/resource/save"; // 保存URI

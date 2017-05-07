@@ -34,6 +34,7 @@ import bing.system.model.SysResource;
 import bing.system.model.SysResourceCategory;
 import bing.system.model.SysUser;
 import bing.system.service.SysResourceService;
+import bing.system.service.SysRoleResourceService;
 import bing.system.vo.SysResourceVO;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
@@ -48,8 +49,10 @@ public class SysResourceController extends GenericController {
 
 	private static final String LOG_PREFIX = LogPrefixes.RESOURCE;
 	private static final String PREFIX = "system/resource";
-	private static final String AJAX_LIST = "ajax/system/resources";
 	private static final String AJAX_RESOURCE_TREE = "ajax/system/resource/tree";
+	private static final String AJAX_RESOURCE_LIST = "ajax/system/resource/list";
+	private static final String AJAX_RESOURCE_SAVE = "ajax/system/resource/save";
+
 	private static final String AJAX_CATEGORY_TREE = "ajax/system/category/tree";
 	private static final String AJAX_CATEGORY_SAVE = "ajax/system/category/save";
 	private static final String AJAX_CATEGORY_UPDATE = "ajax/system/category/update";
@@ -68,6 +71,9 @@ public class SysResourceController extends GenericController {
 	@Autowired
 	private SysResourceService sysResourceService;
 
+	@Autowired
+	private SysRoleResourceService sysRoleResourceService;
+
 	@ModelAttribute("typeList")
 	protected List<LabelValueBean> typeList() {
 		List<LabelValueBean> typeList = new ArrayList<>();
@@ -78,11 +84,31 @@ public class SysResourceController extends GenericController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_RESOURCE_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<GenericPage<SysResourceVO>> resouces(SysResourceCondition condition) {
 		RestResponse<GenericPage<SysResourceVO>> response = new RestResponse<>();
 		GenericPage<SysResourceVO> page = sysResourceService.listByPage(condition);
 		response.setData(page);
+		return response;
+	}
+
+	/**
+	 * 保存角色资源关联关系
+	 * 
+	 * @param roleId
+	 * @param resourceIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_RESOURCE_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> saveRoleResources(Integer roleId, Integer[] resourceIds) {
+		RestResponse<Object> response = new RestResponse<>();
+		Optional<SysUser> optional = getCurrentUser();
+		String username = StringUtils.EMPTY;
+		if (optional.isPresent()) {
+			username = optional.get().getUsername();
+		}
+		sysRoleResourceService.saveRoleResources(roleId, resourceIds, username);
 		return response;
 	}
 
@@ -183,8 +209,9 @@ public class SysResourceController extends GenericController {
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String save(@Validated SysResource entity, BindingResult bindingResult, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
-			prepareCategory(entity.getCategoryId(), model);
+			prepareCategory(categoryId, model);
 			return ADD;
 		}
 		try {
@@ -192,18 +219,20 @@ public class SysResourceController extends GenericController {
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
-			prepareCategory(entity.getCategoryId(), model);
+			prepareCategory(categoryId, model);
 			return ADD;
 		}
 		setMessage(MessageKeys.SAVE_SUCCESS, model);
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 		return LIST;
 	}
 
 	@RequestMapping(EDIT)
-	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String edit(@RequestParam(value = "categoryId", required = false) Integer categoryId, @RequestParam(value = "id", required = true) Integer id, Model model) {
 		SysResource entity = sysResourceService.getById(id);
 		if (entity == null) {
 			setError(MessageKeys.ENTITY_NOT_EXIST, model);
+			model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 			return LIST;
 		}
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
@@ -214,8 +243,9 @@ public class SysResourceController extends GenericController {
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String update(@Validated SysResource entity, BindingResult bindingResult, Model model) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
-			prepareCategory(entity.getCategoryId(), model);
+			prepareCategory(categoryId, model);
 			return EDIT;
 		}
 		try {
@@ -223,10 +253,11 @@ public class SysResourceController extends GenericController {
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
-			prepareCategory(entity.getCategoryId(), model);
+			prepareCategory(categoryId, model);
 			return EDIT;
 		}
 		setMessage(MessageKeys.UPDATE_SUCCESS, model);
+		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 		return LIST;
 	}
 

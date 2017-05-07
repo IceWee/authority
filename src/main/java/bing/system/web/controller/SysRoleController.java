@@ -24,9 +24,8 @@ import bing.domain.GenericPage;
 import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
-import bing.system.service.SysRoleResourceService;
 import bing.system.service.SysRoleService;
-import bing.system.service.SysUserService;
+import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysRoleVO;
 import bing.system.vo.UserRoleVO;
 import bing.util.ExceptionUtils;
@@ -41,9 +40,8 @@ public class SysRoleController extends GenericController {
 
 	private static final String LOG_PREFIX = LogPrefixes.ROLE;
 	private static final String PREFIX = "system/role";
-	private static final String AJAX_LIST = "ajax/system/roles";
-	private static final String AJAX_ROLE_USERS = "ajax/system/role/users";
-	private static final String AJAX_ROLE_RESOURCES = "ajax/system/role/resources";
+	private static final String AJAX_ROLE_LIST = "ajax/system/role/list";
+	private static final String AJAX_ROLE_SAVE = "ajax/system/role/save";
 
 	private static final String LIST = PREFIX + "/list";
 	private static final String ADD = PREFIX + "/add";
@@ -55,19 +53,13 @@ public class SysRoleController extends GenericController {
 	@Autowired
 	private SysRoleService sysRoleService;
 
-	@Autowired
-	private SysUserService sysUserService;
-
-	@Autowired
-	private SysRoleResourceService sysRoleResourceService;
-
 	@RequestMapping(LIST)
 	public String list() {
 		return LIST;
 	}
 
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_ROLE_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<GenericPage<SysRoleVO>> roles(SysRoleCondition condition) {
 		RestResponse<GenericPage<SysRoleVO>> response = new RestResponse<>();
 		GenericPage<SysRoleVO> page = sysRoleService.listByPage(condition);
@@ -82,7 +74,7 @@ public class SysRoleController extends GenericController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST + "/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_ROLE_LIST + "/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<UserRoleVO> getUserRoles(@PathVariable Integer userId) {
 		RestResponse<UserRoleVO> response = new RestResponse<>();
 		UserRoleVO data = sysRoleService.getUserRoles(userId);
@@ -91,43 +83,22 @@ public class SysRoleController extends GenericController {
 	}
 
 	/**
-	 * 保存角色用户关联关系
+	 * 保存用户角色列表
 	 * 
-	 * @param roleId
-	 * @param userIds
+	 * @param userId
+	 * @param roleIds
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = AJAX_ROLE_USERS, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> saveRoleUsers(Integer roleId, Integer[] userIds) {
-		RestResponse<Object> response = new RestResponse<>();
+	@RequestMapping(value = AJAX_ROLE_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<RoleUserVO> saveUserRoles(Integer userId, Integer[] roleIds) {
 		Optional<SysUser> optional = getCurrentUser();
 		String username = StringUtils.EMPTY;
 		if (optional.isPresent()) {
 			username = optional.get().getUsername();
 		}
-		sysUserService.saveRoleUsers(roleId, userIds, username);
-		return response;
-	}
-
-	/**
-	 * 保存角色资源关联关系
-	 * 
-	 * @param roleId
-	 * @param resourceIds
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = AJAX_ROLE_RESOURCES, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> saveRoleResources(Integer roleId, Integer[] resourceIds) {
-		RestResponse<Object> response = new RestResponse<>();
-		Optional<SysUser> optional = getCurrentUser();
-		String username = StringUtils.EMPTY;
-		if (optional.isPresent()) {
-			username = optional.get().getUsername();
-		}
-		sysRoleResourceService.saveRoleResources(roleId, resourceIds, username);
-		return response;
+		sysRoleService.saveUserRoles(userId, roleIds, username);
+		return new RestResponse<>();
 	}
 
 	@RequestMapping(ADD)

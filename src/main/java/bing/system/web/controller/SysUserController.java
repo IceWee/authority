@@ -45,8 +45,8 @@ public class SysUserController extends GenericController {
 
 	private static final String LOG_PREFIX = LogPrefixes.USER;
 	private static final String PREFIX = "system/user";
-	private static final String AJAX_LIST = "ajax/system/users";
-	private static final String AJAX_USER_ROLES = "ajax/system/user/roles";
+	private static final String AJAX_USER_LIST = "ajax/system/user/list";
+	private static final String AJAX_USER_SAVE = "ajax/system/user/save";
 	private static final String AJAX_USER_PASSWORD = "ajax/system/user/password";
 
 	private static final String LIST = PREFIX + "/list";
@@ -75,7 +75,7 @@ public class SysUserController extends GenericController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_USER_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<GenericPage<SysUserVO>> users(SysUserCondition condition) {
 		RestResponse<GenericPage<SysUserVO>> response = new RestResponse<>();
 		GenericPage<SysUserVO> page = sysUserService.listByPage(condition);
@@ -84,7 +84,7 @@ public class SysUserController extends GenericController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_USER_LIST + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<RoleUserVO> getRoleUsers(@PathVariable Integer roleId) {
 		RestResponse<RoleUserVO> response = new RestResponse<>();
 		RoleUserVO data = sysUserService.getRoleUsers(roleId);
@@ -92,16 +92,24 @@ public class SysUserController extends GenericController {
 		return response;
 	}
 
+	/**
+	 * 保存角色用户关联关系
+	 * 
+	 * @param roleId
+	 * @param userIds
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(value = AJAX_USER_ROLES, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<RoleUserVO> saveUserRoles(Integer userId, Integer[] roleIds) {
+	@RequestMapping(value = AJAX_USER_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> saveRoleUsers(Integer roleId, Integer[] userIds) {
+		RestResponse<Object> response = new RestResponse<>();
 		Optional<SysUser> optional = getCurrentUser();
 		String username = StringUtils.EMPTY;
 		if (optional.isPresent()) {
 			username = optional.get().getUsername();
 		}
-		sysRoleService.saveUserRoles(userId, roleIds, username);
-		return new RestResponse<>();
+		sysUserService.saveRoleUsers(roleId, userIds, username);
+		return response;
 	}
 
 	@RequestMapping(ADD)

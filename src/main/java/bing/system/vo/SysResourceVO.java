@@ -43,7 +43,7 @@ public class SysResourceVO extends GenericVO {
 		if (type != null) {
 			if (type == ResourceTypeEnum.FUNCTION.ordinal()) {
 				typeText = "一般功能";
-			} else if (type == ResourceTypeEnum.FUNCTION.ordinal()) {
+			} else if (type == ResourceTypeEnum.DATA_API.ordinal()) {
 				typeText = "数据接口";
 			} else {
 				typeText = "其他";

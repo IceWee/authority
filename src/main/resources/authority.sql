@@ -47,6 +47,7 @@ CREATE TABLE `sys_user` (
 -- 系统管理员用户
 INSERT INTO `sys_user` (`username`, `name`, `password`, `mobile`, `status`, `hidden`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '超级管理员', '2630d0280856135d2c7a19aee22ce42b37a060a99f512801ddb5ff522b33efcb34a3be20435ace78', '13800013800', 0, 1, now(), 'admin', now(), 'admin');
 
+
 -- 角色表
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
@@ -65,6 +66,7 @@ CREATE TABLE `sys_role` (
 
 -- 系统管理员角色
 INSERT INTO `sys_role` (`code`, `name`, `remark`, `status`, `hidden`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '系统管理员', '系统管理员', 0, 1, now(), 'admin', now(), 'admin');
+
 
 -- 用户角色关联表
 DROP TABLE IF EXISTS `sys_user_role`;
@@ -87,22 +89,6 @@ VALUES (
 (select `id` from `sys_role` where `code` = 'admin'),  
 1, now(), 'admin', now(), 'admin');
 
--- 资源表
-DROP TABLE IF EXISTS `sys_resource`;
-CREATE TABLE `sys_resource` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `name` varchar(32) DEFAULT NULL COMMENT '资源名称',
-  `category_id` int(11) DEFAULT NULL COMMENT '资源分类ID',
-  `type` int(11) DEFAULT NULL COMMENT '资源类型（功能1，接口2，其他3）',
-  `url` varchar(500) DEFAULT NULL COMMENT '资源地址',
-  `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
-  `remark` varchar(256) DEFAULT NULL COMMENT '备注',
-  `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
-  `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
-  `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源';
 
 -- 资源分类表
 DROP TABLE IF EXISTS `sys_resource_category`;
@@ -120,7 +106,71 @@ CREATE TABLE `sys_resource_category` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源分类';
 
 -- 资源分类初始化数据
-INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类', 0, 0, '资源分类', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类', '0', '0', '资源分类', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统管理', (select t.id from (select id from sys_resource_category where parent_id = 0) t), '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户管理', (select t.id from (select id from sys_resource_category where name = '系统管理') t), '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('角色管理', (select t.id from (select id from sys_resource_category where name = '系统管理') t), '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源管理', (select t.id from (select id from sys_resource_category where name = '系统管理') t), '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('菜单管理', (select t.id from (select id from sys_resource_category where name = '系统管理') t), '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类管理', (select t.id from (select id from sys_resource_category where name = '系统管理') t), '0', '', now(), 'admin', now(), 'admin');
+
+
+-- 资源表
+DROP TABLE IF EXISTS `sys_resource`;
+CREATE TABLE `sys_resource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `name` varchar(32) DEFAULT NULL COMMENT '资源名称',
+  `category_id` int(11) DEFAULT NULL COMMENT '资源分类ID',
+  `type` int(11) DEFAULT NULL COMMENT '资源类型（功能1，接口2，其他3）',
+  `url` varchar(500) DEFAULT NULL COMMENT '资源地址',
+  `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
+  `remark` varchar(256) DEFAULT NULL COMMENT '备注',
+  `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
+  `create_user` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
+  `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源';
+
+-- 资源数据初始化
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户列表', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('新增用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/add', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('编辑用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/edit', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('更新用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/update', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('删除用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/delete', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户列表数据', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '1', '/ajax/system/user/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存用户数据', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '1', '/ajax/system/user/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('角色列表', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('新增角色', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/add', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存角色', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('编辑角色', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/edit', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('更新角色', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/update', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('删除角色', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/delete', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('角色列表数据', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '1', '/ajax/system/role/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存角色数据', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '1', '/ajax/system/role/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('菜单列表', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '0', '/system/menu/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('新增菜单', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '0', '/system/menu/add', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('编辑菜单', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '0', '/system/menu/edit', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存菜单', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '0', '/system/menu/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('更新菜单', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '0', '/system/menu/update', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('删除菜单', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '0', '/system/menu/delete', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('菜单列表数据', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '1', '/ajax/system/menu/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('菜单树数据', (select t.id from (select id from sys_resource_category where name = '菜单管理') t), '1', '/ajax/system/menu/tree', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源列表', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '0', '/system/resource/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('新增资源', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '0', '/system/resource/add', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存资源', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '0', '/system/resource/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('编辑资源', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '0', '/system/resource/edit', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('更新资源', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '0', '/system/resource/update', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('删除资源', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '0', '/system/resource/delete', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源列表数据', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '1', '/ajax/system/resource/list', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源树数据', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '1', '/ajax/system/resource/tree', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存资源数据', (select t.id from (select id from sys_resource_category where name = '资源管理') t), '1', '/ajax/system/resource/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类树数据', (select t.id from (select id from sys_resource_category where name = '资源分类管理') t), '1', '/ajax/system/category/tree', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存资源分类数据', (select t.id from (select id from sys_resource_category where name = '资源分类管理') t), '1', '/ajax/system/category/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('更新资源分类数据', (select t.id from (select id from sys_resource_category where name = '资源分类管理') t), '1', '/ajax/system/category/update', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('删除资源分类数据', (select t.id from (select id from sys_resource_category where name = '资源分类管理') t), '1', '/ajax/system/category/delete', '0', '', now(), 'admin', now(), 'admin');
+
 
 -- 菜单表
 DROP TABLE IF EXISTS `sys_menu`;
@@ -140,7 +190,13 @@ CREATE TABLE `sys_menu` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='菜单';
 
 -- 菜单初始化数据
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统菜单', 0, NULL, 0, 0, '系统菜单', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统菜单', '0', NULL, '0', '0', '系统菜单', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统管理', (select t.id from (select id from sys_menu where parent_id = 0) t), NULL, '1', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '用户列表'), '1', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('角色管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '角色列表'), '2', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '资源列表'), '3', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('菜单管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '菜单列表'), '4', '0', '', now(), 'admin', now(), 'admin');
+
 
 -- 角色资源关联表
 DROP TABLE IF EXISTS `sys_role_resource`;
@@ -155,3 +211,11 @@ CREATE TABLE `sys_role_resource` (
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色资源关联';
+
+-- 角色资源关系数据初始化
+insert into `sys_role_resource` (`resource_id`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) 
+select `id`, '0', now(), 'admin', now(), 'admin' from `sys_resource`;
+
+update `sys_role_resource` set `role_id` = (select id from sys_role where code = 'admin');
+
+

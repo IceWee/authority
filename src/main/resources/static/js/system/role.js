@@ -1,7 +1,7 @@
 // 固定常量，必须这样命名，否则crud.js无法正常运行
 var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
 var FORM_ID_LIST = "#form_list"; // 列表页表单ID
-var URI_AJAX_LIST = "/ajax/system/roles"; // 列表页获取列表数据异步URI
+var URI_AJAX_LIST = "/ajax/system/role/list"; // 列表页获取列表数据异步URI
 var URI_LIST = "/system/role/list"; // 列表页面URI
 var URI_ADD = "/system/role/add"; // 新增页面URI
 var URI_SAVE = "/system/role/save"; // 保存URI
@@ -14,10 +14,10 @@ var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 //自定义常量
-var URI_AJAX_USER_LIST = "/ajax/system/users"; // 获取用户列表
-var URI_AJAX_ROLE_USER = "/ajax/system/role/users"; // 保存角色用户关系
+var URI_AJAX_USER_LIST = "/ajax/system/user/list"; // 获取用户列表
+var URI_AJAX_USER_SAVE = "/ajax/system/user/save"; // 保存角色用户关系
 var URI_AJAX_RESOURCE_TREE = "/ajax/system/resource/tree"; // 资源树
-var URI_AJAX_ROLE_RESOURCES = "/ajax/system/role/resources"; // 保存角色资源关系
+var URI_AJAX_RESOURCE_SAVE = "/ajax/system/resource/save"; // 保存角色资源关系
 
 //列表页面初始化
 function initListPageExt(error, message) {
@@ -68,13 +68,13 @@ function saveRoleResources(roleId, checkedNodes) {
 	var tipsId = "_tips_dialog_tree";
 	$.ajax({
 		type : "POST",
-		url : URI_AJAX_ROLE_RESOURCES,
+		url : URI_AJAX_RESOURCE_SAVE,
 		dataType : "json",
 		data : data,
 		traditional: true,
 		success : function(json) {
 			var code = json.code;
-			if (code === "200") {
+			if (code == CODE_OK) {
 				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
 			} else {
 				var msg = json.message;
@@ -96,7 +96,7 @@ function openConfigUser(roleId, roleName) {
 		url : URI_AJAX_USER_LIST + "/" + roleId,
 		dataType : "json",
 		success : function(json) {
-			if (json.code === "200") {
+			if (json.code == CODE_OK) {
 				if (json.data) {
 					openLRListBoxDialog({
 						title: roleName,
@@ -131,13 +131,13 @@ function saveRoleUsers(roleId, checkedRows) {
 	var tipsId = "_tips_lr_list_box";
 	$.ajax({
 		type : "POST",
-		url : URI_AJAX_ROLE_USER,
+		url : URI_AJAX_USER_SAVE,
 		dataType : "json",
 		data : data,
 		traditional: true,
 		success : function(json) {
 			var code = json.code;
-			if (code === "200") {
+			if (code == CODE_OK) {
 				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
 			} else {
 				var msg = json.message;

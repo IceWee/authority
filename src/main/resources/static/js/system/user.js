@@ -1,7 +1,7 @@
 // 固定常量，必须这样命名，否则crud.js无法正常运行
 var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
 var FORM_ID_LIST = "#form_list"; // 列表页表单ID
-var URI_AJAX_LIST = "/ajax/system/users";
+var URI_AJAX_LIST = "/ajax/system/user/list";
 var URI_LIST = "/system/user/list"; // 列表页面URI
 var URI_ADD = "/system/user/add"; // 新增页面URI
 var URI_SAVE = "/system/user/save"; // 保存URI
@@ -14,8 +14,8 @@ var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 // 自定义常量
-var URI_AJAX_ROLE_LIST = "/ajax/system/roles";
-var URI_AJAX_USER_ROLE = "/ajax/system/user/roles";
+var URI_AJAX_ROLE_LIST = "/ajax/system/role/list";
+var URI_AJAX_ROLE_SAVE = "/ajax/system/role/save";
 var URI_AJAX_USER_PASSWORD = "/ajax/system/user/password"
 
 // 列表页面初始化
@@ -39,7 +39,7 @@ function openUserRoleAuth(userId, name) {
 		url : URI_AJAX_ROLE_LIST + "/" + userId,
 		dataType : "json",
 		success : function(json) {
-			if (json.code === "200") {
+			if (json.code == CODE_OK) {
 				if (json.data) {
 					openLRListBoxDialog({
 						title: name,
@@ -74,13 +74,13 @@ function saveUserRoleAuth(userId, checkedRows) {
 	var tipsId = "_tips_lr_list_box";
 	$.ajax({
 		type : "POST",
-		url : URI_AJAX_USER_ROLE,
+		url : URI_AJAX_ROLE_SAVE,
 		dataType : "json",
 		data : data,
 		traditional: true,
 		success : function(json) {
 			var code = json.code;
-			if (code === "200") {
+			if (code == CODE_OK) {
 				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
 			} else {
 				var msg = json.message;

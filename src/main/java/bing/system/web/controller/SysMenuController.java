@@ -43,7 +43,7 @@ public class SysMenuController extends GenericController {
 
 	private static final String LOG_PREFIX = LogPrefixes.MENU;
 	private static final String PREFIX = "system/menu";
-	private static final String AJAX_LIST = "ajax/system/menus";
+	private static final String AJAX_MENU_LIST = "ajax/system/menu/list";
 	private static final String AJAX_MENU_TREE = "ajax/system/menu/tree";
 
 	private static final String LIST = PREFIX + "/list";
@@ -64,7 +64,7 @@ public class SysMenuController extends GenericController {
 	private SysResourceService sysResourceService;
 
 	@ResponseBody
-	@RequestMapping(value = AJAX_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = AJAX_MENU_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public RestResponse<GenericPage<SysMenuVO>> menus(SysMenuCondition condition) {
 		RestResponse<GenericPage<SysMenuVO>> response = new RestResponse<>();
 		GenericPage<SysMenuVO> page = sysMenuService.listByPage(condition);
