@@ -149,6 +149,26 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 	}
 
+	@Override
+	public void lockById(Integer id, String username) {
+		SysUser entity = new SysUser();
+		entity.setId(id);
+		entity.setStatus(StatusEnum.LOCKED.ordinal());
+		entity.setUpdateUser(username);
+		entity.setUpdateDate(new Date());
+		sysUserDao.updateByPrimaryKeySelective(entity);
+	}
+
+	@Override
+	public void unlockById(Integer id, String username) {
+		SysUser entity = new SysUser();
+		entity.setId(id);
+		entity.setStatus(StatusEnum.NORMAL.ordinal());
+		entity.setUpdateUser(username);
+		entity.setUpdateDate(new Date());
+		sysUserDao.updateByPrimaryKeySelective(entity);
+	}
+
 	private SysUserRole createUserRole(Integer userId, Integer roleId, String username) {
 		SysUserRole entity = new SysUserRole(userId, roleId);
 		Date now = new Date();

@@ -337,7 +337,7 @@ function _initializeEasyUITree(options) {
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
 		}
 	});
 }

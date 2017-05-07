@@ -60,6 +60,8 @@ public class SysUserController extends GenericController {
 	private static final String DELETE = PREFIX + "/delete";
 	private static final String PASSWORD = PREFIX + "/password"; // 修改密码
 	private static final String MINE = PREFIX + "/mine"; // 我的信息
+	private static final String LOCK = PREFIX + "/lock"; // 锁定用户
+	private static final String UNLOCK = PREFIX + "/unlock"; // 解除锁定用户
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -237,6 +239,54 @@ public class SysUserController extends GenericController {
 		}
 		sysUserService.update(mine);
 		return new RestResponse<>();
+	}
+
+	/**
+	 * 锁定用户
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(LOCK)
+	public String lock(@RequestParam(value = "id", required = true) Integer id, Model model) {
+		try {
+			Optional<SysUser> optional = getCurrentUser();
+			String username = StringUtils.EMPTY;
+			if (optional.isPresent()) {
+				username = optional.get().getUsername();
+			}
+			sysUserService.lockById(id, username);
+		} catch (Exception e) {
+			LOGGER.error("{}锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
+			setError(e, model);
+		}
+		setMessage(MessageKeys.LOCK_SUCCESS, model);
+		return LIST;
+	}
+
+	/**
+	 * 解除锁定用户
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(UNLOCK)
+	public String unlock(@RequestParam(value = "id", required = true) Integer id, Model model) {
+		try {
+			Optional<SysUser> optional = getCurrentUser();
+			String username = StringUtils.EMPTY;
+			if (optional.isPresent()) {
+				username = optional.get().getUsername();
+			}
+			sysUserService.unlockById(id, username);
+		} catch (Exception e) {
+			LOGGER.error("{}解除锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
+			setError(e, model);
+		}
+		setMessage(MessageKeys.UNLOCK_SUCCESS, model);
+		return LIST;
 	}
 
 }

@@ -73,7 +73,7 @@ function initListPageExt(error, message) {
 					if (json.code == CODE_OK) {
 						$(DIALOG_ID_CATEGORY).modal("hide");
 						freshCategoryTree(node.id);
-						showSuccessTips($.i18n .prop("save.success"));
+						showSuccessTips($.i18n.prop("save.success"));
 					} else {
 						showErrorTips(json.message, "tips_category");
 					}
@@ -134,7 +134,7 @@ function deleteCategory() {
 						if (parent) {
 							freshCategoryTree(parent.id);
 						}
-						showSuccessTips($.i18n .prop("delete.success"));
+						showSuccessTips($.i18n.prop("delete.success"));
 					} else {
 						showErrorTips(json.message);
 					}

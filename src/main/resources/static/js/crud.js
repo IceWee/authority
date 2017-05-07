@@ -2,8 +2,8 @@
 function operateBtnHtml(value, row, index) {
 	var id = row.id;
 	var html = "";
-	var label_edit = $.i18n .prop("operate.edit");
-	var label_delete = $.i18n .prop("operate.delete");
+	var label_edit = $.i18n.prop("operate.edit");
+	var label_delete = $.i18n.prop("operate.delete");
 	if (id) {
 		html = html + "<a href=\"#\" onclick=\"_edit('" + id + "')\"><span class=\"label label-primary\">" + label_edit + "</span></a>";  
 		html += "&nbsp;&nbsp;";
@@ -122,7 +122,6 @@ function _delete(id) {
 			$(FORM_ID_LIST).submit();
 		}
 	});
-	
 }
 /*************************** remove end *****************************/
 

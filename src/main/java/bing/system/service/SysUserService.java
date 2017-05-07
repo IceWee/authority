@@ -41,4 +41,20 @@ public interface SysUserService extends GenericService<SysUser, SysUserVO, SysUs
 	 */
 	void updateWithRole(SysUser entity);
 
+	/**
+	 * 锁定用户
+	 * 
+	 * @param id
+	 * @param username
+	 */
+	void lockById(Integer id, String username);
+
+	/**
+	 * 解除锁定用户
+	 * 
+	 * @param id
+	 * @param username
+	 */
+	void unlockById(Integer id, String username);
+
 }

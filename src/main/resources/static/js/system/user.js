@@ -14,6 +14,8 @@ var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
 var BTN_BACK_ID = "#button_back"; // 返回按钮ID
 var PARAM_ID = "#id"; // ID属性名
 // 自定义常量
+var URI_LOCK = "/system/user/lock"; // 锁定用户
+var URI_UNLOCK = "/system/user/unlock"; // 解除锁定用户
 var URI_AJAX_ROLE_LIST = "/ajax/system/role/list";
 var URI_AJAX_ROLE_SAVE = "/ajax/system/role/save";
 var URI_AJAX_USER_PASSWORD = "/ajax/system/user/password"
@@ -27,8 +29,15 @@ function initListPageExt(error, message) {
 // 操作按钮扩展
 function operateBtnHtmlExt(value, row, index) {
 	var html = operateBtnHtml(value, row, index);
-	var label_auth = $.i18n .prop("operate.authorize");
+	var label_auth = $.i18n.prop("operate.authorize");
+	var label_lock = $.i18n.prop("operate.lock");
+	var label_unlock = $.i18n.prop("operate.unlock");
 	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openUserRoleAuth('" + row.id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_auth + "</span></a>";
+	if (row.status == 1) {
+		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"unlockUser('" + row.id + "')\"><span class=\"label label-success\">" + label_unlock + "</span></a>";
+	} else {
+		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"lockUser('" + row.id + "')\"><span class=\"label label-default\">" + label_lock + "</span></a>";
+	}
 	return html;
 }
 
@@ -90,6 +99,28 @@ function saveUserRoleAuth(userId, checkedRows) {
 		},
 		error : function() {
 			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
+		}
+	});
+}
+
+// 锁定用户
+function lockUser(userId) {
+	$.messager.confirm($.i18n.prop("tip.info"), $.i18n.prop("lock.prompt"), function(go){
+		if (go){
+			$(PARAM_ID).val(userId);
+			$(FORM_ID_LIST).attr("action", URI_LOCK);
+			$(FORM_ID_LIST).submit();
+		}
+	});
+}
+
+// 解除锁定用户
+function unlockUser(userId) {
+	$.messager.confirm($.i18n.prop("tip.info"), $.i18n.prop("unlock.prompt"), function(go){
+		if (go){
+			$(PARAM_ID).val(userId);
+			$(FORM_ID_LIST).attr("action", URI_UNLOCK);
+			$(FORM_ID_LIST).submit();
 		}
 	});
 }

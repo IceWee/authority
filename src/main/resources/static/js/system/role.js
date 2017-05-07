@@ -100,8 +100,8 @@ function openConfigUser(roleId, roleName) {
 				if (json.data) {
 					openLRListBoxDialog({
 						title: roleName,
-						leftTitle: $.i18n .prop("user.unselect"),
-						rightTitle: $.i18n .prop("user.selected"),
+						leftTitle: $.i18n.prop("user.unselect"),
+						rightTitle: $.i18n.prop("user.selected"),
 						valueField: "id",
 					    textField: "name",
 					    leftList: json.data.unselectUsers,

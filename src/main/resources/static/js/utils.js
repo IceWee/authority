@@ -244,7 +244,7 @@ function doSearch(url, tableId, formListId, tipsId) {
 		},
 		error : function() {
 			ajaxLoaded();
-			showErrorTips($.i18n .prop("http.request.failed"), tipsId);
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
 		}
 	});
 }

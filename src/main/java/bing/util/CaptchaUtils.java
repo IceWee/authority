@@ -2,7 +2,7 @@ package bing.util;
 
 public class CaptchaUtils {
 
-	private static final String WORD = "ACDEFGHJKLMNPQRTUVWXYZ234679";
+	private static final String WORD = "ACDEFGHJKLMNPQRTUVWXY234679";
 
 	private static final String NUMBER = "0123456789";
 
