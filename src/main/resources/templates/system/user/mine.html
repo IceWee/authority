@@ -12,20 +12,20 @@
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initPasswordPage(error, message);
+		initMinePage(error, message);
 	});
 /*]]>*/
 </script>
 </head>
 <body>
 <form id="form_default" method="post">
-<div class="container-fluid">
-<input type="hidden" th:value="${session.currentUser.id}" id="userId"></input>
+<div class="container-fluid" th:object="${bean}">
+<input type="hidden" name="id" th:value="*{id}" id="userId"></input>
 	<div class="row">
 		<div class="panel panel-default">
 	  		<div class="panel-heading padding-none" style="height:40px">
 				<ol class="breadcrumb">
-				  	<li><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{password.change}">修改密码</span></li>
+				  	<li><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{info.mine}">我的信息</span></li>
 				</ol>
 		  	</div>
 		  	<div class="panel-body panel-min-height-default">
@@ -36,32 +36,32 @@
 		    		<div style="margin-top: 50px"></div>
 		    		<div class="row">
 						<div class="col-md-4 text-right">
-							<label th:text="#{password.origion}">原始密码</label>
+							<label th:text="#{username}">账号</label>
 						</div>
 						<div class="col-md-8 text-left">
-							<input class="easyui-textbox input-large" type="password" name="oldPassword" value="" data-options="required:true"></input>
+			    			<input class="easyui-textbox input-large" th:value="*{username}" type="text" id="username" name="username" readonly="readonly"></input>
 						</div>
 					</div>
-					<div style="margin-top: 20px"></div>
+					<div style="margin-bottom: 20px"></div>
 					<div class="row">
 						<div class="col-md-4 text-right">
-							<label th:text="#{password.new}">新密码</label>
+							<label th:text="#{surname}">姓名</label>
 						</div>
 						<div class="col-md-8 text-left">
-							<input class="easyui-textbox input-large" type="password" id="password" name="newPassword" value="" data-options="required:true,validType:['minLength[6]','maxLength[32]']"></input>
+			    			<input class="easyui-textbox input-large" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
 						</div>
 					</div>
-					<div style="margin-top: 20px"></div>
+					<div style="margin-bottom: 20px"></div>
 					<div class="row">
 						<div class="col-md-4 text-right">
-							<label th:text="#{repassword}">确认密码</label>
+							<label th:text="#{mobile}">手机</label>
 						</div>
 						<div class="col-md-8 text-left">
-							<input class="easyui-textbox input-large" type="password" name="repassword" value="" data-options="required:true,validType:['equals[\'#password\']']"></input>
+			    			<input class="easyui-textbox input-large" th:value="*{mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
 						</div>
 					</div>
-		    		<div style="margin-top: 20px"></div>
-		    		<div style="text-align:center;padding:5px">
+					<div style="margin-bottom: 20px"></div>
+					<div style="text-align:center;padding:5px">
 				    	<button type="button" id="button_save" class="btn btn-primary">
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
 						</button>

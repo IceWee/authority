@@ -46,7 +46,7 @@ var mainPlatform = {
 
 		// 用户信息
 		$(document).on("click", "#user_info", function() {
-			$("#pf-page").find("iframe").eq(0).attr("src", "/system/user/info");
+			$("#pf-page").find("iframe").eq(0).attr("src", "/system/user/mine");
 		});
 	}
 

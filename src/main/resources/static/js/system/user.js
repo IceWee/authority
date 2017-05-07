@@ -17,6 +17,7 @@ var PARAM_ID = "#id"; // ID属性名
 var URI_AJAX_ROLE_LIST = "/ajax/system/role/list";
 var URI_AJAX_ROLE_SAVE = "/ajax/system/role/save";
 var URI_AJAX_USER_PASSWORD = "/ajax/system/user/password"
+var URI_AJAX_USER_UPDATE = "/ajax/system/user/update"
 
 // 列表页面初始化
 function initListPageExt(error, message) {
@@ -139,6 +140,40 @@ function initPasswordPage(error, message) {
 					ajaxLoaded();
 					if (json.code == CODE_OK) {
 						showSuccessTips($.i18n.prop("save.success"));
+					} else {
+						showErrorTips(json.message);
+					}
+				},
+				error : function() {
+					ajaxLoaded();
+					showErrorTips($.i18n.prop("http.request.failed"));
+				}
+			});
+		}
+	});
+}
+
+// 我的信息页面初始化
+function initMinePage(error, message) {
+	showErrorOrMessage(error, message);
+	
+	readonlyColor("username");
+	
+	// 保存
+	$(BTN_SAVE_ID).click(function() {
+		var userId = $("#userId").val();
+		if ($(FORM_ID_DETAIL).form("validate")) {
+			ajaxLoading($.i18n.prop("update.updating"));
+			var data = $(FORM_ID_DETAIL).serialize();
+			$.ajax({
+				type : "PUT",
+				url : URI_AJAX_USER_UPDATE + "/" + userId,
+				data : data,
+				dataType : "json",
+				success : function(json) {
+					ajaxLoaded();
+					if (json.code == CODE_OK) {
+						showSuccessTips($.i18n.prop("update.success"));
 					} else {
 						showErrorTips(json.message);
 					}

@@ -34,4 +34,11 @@ public interface SysUserService extends GenericService<SysUser, SysUserVO, SysUs
 	 */
 	void changePassword(Integer userId, String oldPassword, String newPassword);
 
+	/**
+	 * 更新用户信息及角色
+	 * 
+	 * @param entity
+	 */
+	void updateWithRole(SysUser entity);
+
 }

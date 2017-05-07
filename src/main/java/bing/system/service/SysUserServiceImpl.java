@@ -81,15 +81,6 @@ public class SysUserServiceImpl implements SysUserService {
 		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
 		sysUserDao.updateByPrimaryKeySelective(entity);
-		Integer userId = entity.getId();
-		String username = entity.getUpdateUser();
-		// 重新授权角色
-		sysUserRoleDao.deleteByUserId(userId);
-		Integer[] roleIds = entity.getRoleIds();
-		if (ArrayUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
-			sysUserRoleDao.insertBatch(entities);
-		}
 	}
 
 	@Override
@@ -141,6 +132,21 @@ public class SysUserServiceImpl implements SysUserService {
 		String encryptPasswd = PasswordUtils.encrypt(newPassword);
 		user.setPassword(encryptPasswd);
 		sysUserDao.updateByPrimaryKeySelective(user);
+	}
+
+	@Override
+	@Transactional
+	public void updateWithRole(SysUser entity) {
+		update(entity);
+		Integer userId = entity.getId();
+		String username = entity.getUpdateUser();
+		// 重新授权角色
+		sysUserRoleDao.deleteByUserId(userId);
+		Integer[] roleIds = entity.getRoleIds();
+		if (ArrayUtils.isNotEmpty(roleIds)) {
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+			sysUserRoleDao.insertBatch(entities);
+		}
 	}
 
 	private SysUserRole createUserRole(Integer userId, Integer roleId, String username) {

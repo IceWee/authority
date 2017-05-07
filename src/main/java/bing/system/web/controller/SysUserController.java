@@ -25,7 +25,9 @@ import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.CrudGroups;
 import bing.domain.GenericPage;
+import bing.exception.BusinessException;
 import bing.system.condition.SysUserCondition;
+import bing.system.exception.UserExceptionCodes;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
 import bing.system.service.SysRoleService;
@@ -47,6 +49,7 @@ public class SysUserController extends GenericController {
 	private static final String PREFIX = "system/user";
 	private static final String AJAX_USER_LIST = "ajax/system/user/list";
 	private static final String AJAX_USER_SAVE = "ajax/system/user/save";
+	private static final String AJAX_USER_UPDATE = "ajax/system/user/update";
 	private static final String AJAX_USER_PASSWORD = "ajax/system/user/password";
 
 	private static final String LIST = PREFIX + "/list";
@@ -159,7 +162,7 @@ public class SysUserController extends GenericController {
 			return EDIT;
 		}
 		try {
-			sysUserService.update(entity);
+			sysUserService.updateWithRole(entity);
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -205,6 +208,34 @@ public class SysUserController extends GenericController {
 	@RequestMapping(value = AJAX_USER_PASSWORD + "/{userId}", method = RequestMethod.PUT)
 	public RestResponse<Object> savePassword(@PathVariable Integer userId, String oldPassword, String newPassword) {
 		sysUserService.changePassword(userId, oldPassword, newPassword);
+		return new RestResponse<>();
+	}
+
+	/**
+	 * 我的信息
+	 * 
+	 * @return
+	 */
+	@RequestMapping(MINE)
+	public String mine(Model model) {
+		Optional<SysUser> optional = getCurrentUser();
+		SysUser entity = sysUserService.getById(optional.get().getId());
+		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		return MINE;
+	}
+
+	/**
+	 * 保存我的信息
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_USER_UPDATE + "/{userId}", method = RequestMethod.PUT)
+	public RestResponse<Object> updateMine(@PathVariable Integer userId, SysUser mine) {
+		if (StringUtils.isBlank(mine.getName())) {
+			throw new BusinessException(UserExceptionCodes.NAME_IS_NULL);
+		}
+		sysUserService.update(mine);
 		return new RestResponse<>();
 	}
 

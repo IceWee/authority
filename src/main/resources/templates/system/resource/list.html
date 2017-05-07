@@ -20,72 +20,72 @@
 </head>
 <body>
 <div class="container-fluid">
-<div class="row">
-	<div class="panel panel-default">
-  		<div class="panel-heading padding-none" style="height:40px">
-			<ol class="breadcrumb">
-			  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{resource.manage}">资源管理</span></li>
-			</ol>
-	  	</div>
-	  	<div class="panel-body">
-	    	<div class="container-fluid" style="width: 100%">
-	    		<div class="row">
-		    		<div id="tips" class="alert" style="display:none;margin-bottom:0"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-					<div class="col-md-2 padding-none">
-						<div style="min-height:400px;max-height:600px;overflow:auto">
-							<ul id="tree_category" class="easyui-tree"></ul>
-						</div>
-					</div>
-					<div class="col-md-10 padding-none">
-		    			<table id="datagrid" th:title="#{resource.list}" title="资源列表" style="width:100%;height:auto">
-							<thead>
-								<tr>
-									<th data-options="field:'_operate',width:15,align:'center',formatter:operateBtnHtml">操作</th>
-									<th th:text="#{name}" data-options="field:'name',width:25">名称</th>
-									<th th:text="#{url}" data-options="field:'url',width:30">地址</th>
-									<th th:text="#{type}" data-options="field:'typeText',align:'center',width:10">类型</th>
-									<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
-									<th th:text="#{create.date}" data-options="field:'createDate',align:'center',width:15">创建日期</th>
-									<th th:text="#{create.user}" data-options="field:'createUser',align:'center',width:10">创建人</th>
-									<th th:text="#{update.date}" data-options="field:'updateDate',align:'center',width:15">更新日期</th>
-									<th th:text="#{update.user}" data-options="field:'updateUser',align:'center',width:10">更新人</th>
-								</tr>
-							</thead>
-						</table>
-						<!-- 查询条件 -->
-						<div id="search_tools" style="padding:0 25px;">
-							<div class="conditions">
-								<form action="" method="post" id="form_list">
-									<input type="hidden" id="selectedCategoryId" name="categoryId" th:value="${categoryId}"></input>
-									<input type="hidden" id="id" name="id"></input>
-									<label th:text="#{name}">名称</label>
-									<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-									<label th:text="#{type}">类型</label>
-									<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
-										<option value="" selected>全部</option>
-										<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
-									</select>
-									<button type="button" id="button_search" class="btn btn-primary">
-										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<span th:text="#{search}">查询</span>
-									</button>
-									&nbsp;&nbsp;
-									<button type="button" id="button_reset" class="btn btn-default">
-										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;<span th:text="#{reset}">重置</span>
-									</button>
-								</form>
-							</div>
-							<div class="opt-buttons">
-								<button type="button" id="button_add" class="btn btn-primary btn-sm">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">新增</span>
-								</button>
+	<div class="row">
+		<div class="panel panel-default">
+	  		<div class="panel-heading padding-none" style="height:40px">
+				<ol class="breadcrumb">
+				  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{resource.manage}">资源管理</span></li>
+				</ol>
+		  	</div>
+		  	<div class="panel-body">
+		    	<div class="container-fluid" style="width: 100%">
+		    		<div class="row">
+			    		<div id="tips" class="alert" style="display:none;margin-bottom:0"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
+						<div class="col-md-2 padding-none">
+							<div style="min-height:400px;max-height:600px;overflow:auto">
+								<ul id="tree_category" class="easyui-tree"></ul>
 							</div>
 						</div>
+						<div class="col-md-10 padding-none">
+			    			<table id="datagrid" th:title="#{resource.list}" title="资源列表" style="width:100%;height:auto">
+								<thead>
+									<tr>
+										<th data-options="field:'_operate',width:15,align:'center',formatter:operateBtnHtml">操作</th>
+										<th th:text="#{name}" data-options="field:'name',width:25">名称</th>
+										<th th:text="#{url}" data-options="field:'url',width:30">地址</th>
+										<th th:text="#{type}" data-options="field:'typeText',align:'center',width:10">类型</th>
+										<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
+										<th th:text="#{create.date}" data-options="field:'createDate',align:'center',width:15">创建日期</th>
+										<th th:text="#{create.user}" data-options="field:'createUser',align:'center',width:10">创建人</th>
+										<th th:text="#{update.date}" data-options="field:'updateDate',align:'center',width:15">更新日期</th>
+										<th th:text="#{update.user}" data-options="field:'updateUser',align:'center',width:10">更新人</th>
+									</tr>
+								</thead>
+							</table>
+							<!-- 查询条件 -->
+							<div id="search_tools" style="padding:0 25px;">
+								<div class="conditions">
+									<form action="" method="post" id="form_list">
+										<input type="hidden" id="selectedCategoryId" name="categoryId" th:value="${categoryId}"></input>
+										<input type="hidden" id="id" name="id"></input>
+										<label th:text="#{name}">名称</label>
+										<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
+										<label th:text="#{type}">类型</label>
+										<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
+											<option value="" selected>全部</option>
+											<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
+										</select>
+										<button type="button" id="button_search" class="btn btn-primary">
+											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<span th:text="#{search}">查询</span>
+										</button>
+										&nbsp;&nbsp;
+										<button type="button" id="button_reset" class="btn btn-default">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;<span th:text="#{reset}">重置</span>
+										</button>
+									</form>
+								</div>
+								<div class="opt-buttons">
+									<button type="button" id="button_add" class="btn btn-primary btn-sm">
+										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">新增</span>
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-		    </div>
-    	</div>
-    </div>
-</div>
+			    </div>
+	    	</div>
+	    </div>
+	</div>
 </div>
 <!-- 资源分类树右键菜单 -->
 <div id="menu_category" class="easyui-menu">

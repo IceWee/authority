@@ -22,92 +22,92 @@
 <div class="container-fluid" th:object="${bean}">
 <input type="hidden" th:value="${session.currentUser.username}" name="createUser"></input>
 <input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
-<div class="row">
-	<div class="panel panel-default">
-  		<div class="panel-heading padding-none" style="height:40px">
-			<ol class="breadcrumb">
-			  	<li><a href="/system/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{user.manage}">用户管理</span></a></li>
-			  	<li class="active" th:text="#{user.add}">新增用户</li>
-			</ol>
-	  	</div>
-	  	<div class="panel-body panel-min-height-default">
-	    	<div class="container-fluid" style="width: 100%">
-	    		<div class="row">
-		    		<div id="tips" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-	    		</div>
-	    		<div style="margin-top: 20px"></div>
-		    	<div class="row">
-					<div class="col-md-2 text-right">
-						<label th:text="#{username}">账号</label>
+	<div class="row">
+		<div class="panel panel-default">
+	  		<div class="panel-heading padding-none" style="height:40px">
+				<ol class="breadcrumb">
+				  	<li><a href="/system/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{user.manage}">用户管理</span></a></li>
+				  	<li class="active" th:text="#{user.add}">新增用户</li>
+				</ol>
+		  	</div>
+		  	<div class="panel-body panel-min-height-default">
+		    	<div class="container-fluid" style="width: 100%">
+		    		<div class="row">
+			    		<div id="tips" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
+		    		</div>
+		    		<div style="margin-top: 20px"></div>
+			    	<div class="row">
+						<div class="col-md-2 text-right">
+							<label th:text="#{username}">账号</label>
+						</div>
+						<div class="col-md-4 text-left">
+			    			<input class="easyui-textbox input-default" th:value="*{username}" type="text" name="username" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
+						</div>
+						<div class="col-md-2 text-right">
+							<label th:text="#{surname}">姓名</label>
+						</div>
+						<div class="col-md-4 text-left">
+			    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
+						</div>
 					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="*{username}" type="text" name="username" data-options="required:true,validType:['username','minLength[6]','maxLength[32]']"></input>
+					<div style="margin-bottom: 20px"></div>
+					<div class="row">
+						<div class="col-md-2 text-right">
+							<label th:text="#{password}">密码</label>
+						</div>
+						<div class="col-md-4 text-left">
+			    			<input class="easyui-textbox input-default" type="password" id="password" name="password" data-options="required:true,validType:['minLength[6]','maxLength[32]']"></input>
+						</div>
+						<div class="col-md-2 text-right">
+							<label th:text="#{repassword}">确认密码</label>
+						</div>
+						<div class="col-md-4 text-left">
+			    			<input class="easyui-textbox input-default" type="password" name="rpassword" data-options="required:true,validType:['equals[\'#password\']']"></input>
+						</div>
 					</div>
-					<div class="col-md-2 text-right">
-						<label th:text="#{surname}">姓名</label>
+					<div style="margin-bottom: 20px"></div>
+					<div class="row">
+						<div class="col-md-2 text-right">
+							<label th:text="#{mobile}">手机</label>
+						</div>
+						<div class="col-md-4 text-left">
+			    			<input class="easyui-textbox input-default" th:value="*{mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
+						</div>
+						<div class="col-md-2 text-right">
+							<label th:text="#{status}">状态</label>
+						</div>
+						<div class="col-md-4 text-left">
+			    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
+								<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
+		    				</select>
+						</div>
 					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
+					<div style="margin-bottom: 20px"></div>
+					<div class="row">
+						<div class="col-md-2 text-right">
+							<label th:text="#{roles}">角色</label>
+						</div>
+						<div class="col-md-10 text-left">
+			    			<select name="roleIds" id="roleIds" multiple class="chosen-select" data-placeholder=" ">
+								<option th:each="role : ${roleList}" th:text="${role.name}" th:value="${role.id}"></option>
+		    				</select>
+						</div>
 					</div>
-				</div>
-				<div style="margin-bottom: 20px"></div>
-				<div class="row">
-					<div class="col-md-2 text-right">
-						<label th:text="#{password}">密码</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" type="password" id="password" name="password" data-options="required:true,validType:['minLength[6]','maxLength[32]']"></input>
-					</div>
-					<div class="col-md-2 text-right">
-						<label th:text="#{repassword}">确认密码</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" type="password" name="rpassword" data-options="required:true,validType:['equals[\'#password\']']"></input>
-					</div>
-				</div>
-				<div style="margin-bottom: 20px"></div>
-				<div class="row">
-					<div class="col-md-2 text-right">
-						<label th:text="#{mobile}">手机</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<input class="easyui-textbox input-default" th:value="*{mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
-					</div>
-					<div class="col-md-2 text-right">
-						<label th:text="#{status}">状态</label>
-					</div>
-					<div class="col-md-4 text-left">
-		    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
-							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
-	    				</select>
-					</div>
-				</div>
-				<div style="margin-bottom: 20px"></div>
-				<div class="row">
-					<div class="col-md-2 text-right">
-						<label th:text="#{roles}">角色</label>
-					</div>
-					<div class="col-md-10 text-left">
-		    			<select name="roleIds" id="roleIds" multiple class="chosen-select" data-placeholder=" ">
-							<option th:each="role : ${roleList}" th:text="${role.name}" th:value="${role.id}"></option>
-	    				</select>
-					</div>
-				</div>
-				<div style="margin-bottom: 20px"></div>
-				<div style="text-align:center;padding:5px">
-					<button type="button" id="button_back" class="btn btn-default">
-						<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
-					</button>
-					&nbsp;&nbsp;
-			    	<button type="button" id="button_save" class="btn btn-primary">
-						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
-					</button>
+					<div style="margin-bottom: 20px"></div>
+					<div style="text-align:center;padding:5px">
+						<button type="button" id="button_back" class="btn btn-default">
+							<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+						</button>
+						&nbsp;&nbsp;
+				    	<button type="button" id="button_save" class="btn btn-primary">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
+						</button>
+				    </div>
+				    <div style="margin-bottom: 20px"></div>
 			    </div>
-			    <div style="margin-bottom: 20px"></div>
-		    </div>
-    	</div>
-    </div>
-</div>
+	    	</div>
+	    </div>
+	</div>
 </div>
 </form>
 </body>

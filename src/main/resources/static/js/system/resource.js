@@ -70,7 +70,7 @@ function initListPageExt(error, message) {
 				dataType : "json",
 				success : function(json) {
 					ajaxLoaded();
-					if (json.code === "200") {
+					if (json.code == CODE_OK) {
 						$(DIALOG_ID_CATEGORY).modal("hide");
 						freshCategoryTree(node.id);
 						showSuccessTips($.i18n .prop("save.success"));
@@ -130,7 +130,7 @@ function deleteCategory() {
 				url : URI_AJAX_CATEGORY_DELETE + "/" + node.attributes.id,
 				dataType : "json",
 				success : function(json) {
-					if (json.code === "200") {
+					if (json.code == CODE_OK) {
 						if (parent) {
 							freshCategoryTree(parent.id);
 						}

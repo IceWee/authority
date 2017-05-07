@@ -24,6 +24,11 @@ public class UserExceptionCodes extends BusinessExceptionCodes {
 	 */
 	public static final String ORIGION_PASSWORD_WRONG = PREFIX + "003";
 
+	/**
+	 * 姓名不能为空
+	 */
+	public static final String NAME_IS_NULL = PREFIX + "004";
+
 	private UserExceptionCodes() {
 		super();
 	}
