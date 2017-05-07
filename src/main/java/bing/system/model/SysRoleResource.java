@@ -3,7 +3,13 @@ package bing.system.model;
 import java.io.Serializable;
 
 import bing.domain.GenericObject;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class SysRoleResource extends GenericObject implements Serializable {
 
 	private static final long serialVersionUID = -395684170681026152L;
@@ -14,37 +20,9 @@ public class SysRoleResource extends GenericObject implements Serializable {
 
 	private Integer resourceId;
 
-	public SysRoleResource() {
-		super();
-	}
-
 	public SysRoleResource(Integer roleId, Integer resourceId) {
 		super();
 		this.roleId = roleId;
-		this.resourceId = resourceId;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
-	}
-
-	public Integer getResourceId() {
-		return resourceId;
-	}
-
-	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
 	}
 

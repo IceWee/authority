@@ -36,4 +36,9 @@ public class MainController extends GenericController {
 		return "main";
 	}
 
+	@RequestMapping(value = "/accessDenied")
+	public String accessDenied() {
+		return "accessDenied";
+	}
+
 }

@@ -1,31 +1,16 @@
 package bing.system.condition;
 
 import bing.domain.GenericCondition;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class SysRoleResourceCondition extends GenericCondition {
 
 	private Integer roleId;
 
 	private Integer resourceId;
-
-	public SysRoleResourceCondition() {
-		super();
-	}
-
-	public Integer getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
-	}
-
-	public Integer getResourceId() {
-		return resourceId;
-	}
-
-	public void setResourceId(Integer resourceId) {
-		this.resourceId = resourceId;
-	}
-
 }

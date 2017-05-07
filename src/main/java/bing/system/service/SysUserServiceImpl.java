@@ -1,6 +1,5 @@
 package bing.system.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -9,9 +8,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,19 +35,6 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		SysUser userDetails = sysUserDao.getByUsername(username);
-		if (userDetails == null) {
-			throw new UsernameNotFoundException("User " + username + " has no GrantedAuthority");
-		}
-		// TODO 后续需要根据用户查询出全部权限
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("ADMIN"));
-		userDetails.setAuthorities(authorities);
-		return userDetails;
-	}
 
 	@Override
 	public GenericPage<SysUserVO> listByPage(SysUserCondition condition) {

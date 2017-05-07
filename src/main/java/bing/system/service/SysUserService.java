@@ -1,14 +1,12 @@
 package bing.system.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import bing.domain.GenericService;
 import bing.system.condition.SysUserCondition;
 import bing.system.model.SysUser;
 import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
 
-public interface SysUserService extends UserDetailsService, GenericService<SysUser, SysUserVO, SysUserCondition> {
+public interface SysUserService extends GenericService<SysUser, SysUserVO, SysUserCondition> {
 
 	/**
 	 * 获取角色用户对象

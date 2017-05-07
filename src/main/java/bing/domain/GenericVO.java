@@ -7,7 +7,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class GenericVO extends GenericObject {
 
 	protected static final long serialVersionUID = -6547881868397315449L;
@@ -29,10 +31,6 @@ public class GenericVO extends GenericObject {
 	protected Date updateDate;
 
 	protected String updateDateTime;
-
-	public GenericVO() {
-		super();
-	}
 
 	public Integer getId() {
 		return id;

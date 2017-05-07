@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
 
 	@Autowired
-	@Qualifier("sysUserService")
+	@Qualifier("authorizeService")
 	private UserDetailsService userDetailsService;
 
 	@Autowired
@@ -86,7 +86,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// 设置cookie有效期
 				.tokenValiditySeconds(GlobalConstants.COOKIE_EXPIRE_SECONDS)
 				// 设置cookie的私钥
-				.key(GlobalConstants.COOKIE_KEY);
+				.key(GlobalConstants.COOKIE_KEY)
+				// 设置拒绝访问页面
+				.and().exceptionHandling().accessDeniedPage("/accessDenied");
 
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 

@@ -48,6 +48,5 @@ pagehelper:
   
 # Logger config
 logging:
-  level:
-    org.springframework.transaction.interceptor: TRACE
+  config: classpath:log4j2-prod.yml
     

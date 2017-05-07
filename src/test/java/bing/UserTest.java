@@ -51,13 +51,4 @@ public class UserTest extends BaseTest {
 		LOGGER.info("encoded password: {}", encodedPass);
 	}
 
-	public static void main(String[] args) {
-		String rawPassword = "admin";
-		String encodedPass = PasswordUtils.encrypt(rawPassword);
-		String encodedPass2 = PasswordUtils.encrypt(rawPassword);
-		System.out.println(encodedPass);
-		System.out.println(PasswordUtils.match(rawPassword, encodedPass));
-		System.out.println(PasswordUtils.match(rawPassword, encodedPass2));
-	}
-
 }

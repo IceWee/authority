@@ -7,7 +7,13 @@ import javax.validation.constraints.Pattern;
 
 import bing.constant.HiddenEnum;
 import bing.domain.GenericObject;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class SysRole extends GenericObject implements Serializable {
 
 	private static final long serialVersionUID = 745422160006062721L;
@@ -24,46 +30,6 @@ public class SysRole extends GenericObject implements Serializable {
 	private String remark;
 
 	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark == null ? null : remark.trim();
-	}
-
-	public Integer getHidden() {
-		return hidden;
-	}
-
-	public void setHidden(Integer hidden) {
-		this.hidden = hidden;
-	}
 
 	@Override
 	public int hashCode() {

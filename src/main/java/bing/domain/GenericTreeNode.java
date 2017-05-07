@@ -8,12 +8,18 @@ import java.util.Objects;
 
 import bing.constant.GlobalConstants;
 import bing.constant.TreeNodeTypeEnum;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 通用树节点
  * 
  * @author IceWee
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class GenericTreeNode {
 
 	protected String id;
@@ -27,10 +33,6 @@ public class GenericTreeNode {
 	protected Map<String, Object> attributes = new HashMap<>();
 
 	protected List<GenericTreeNode> children = new ArrayList<>();
-
-	public GenericTreeNode() {
-		super();
-	}
 
 	public void addChild(GenericTreeNode child) {
 		this.children.add(child);
@@ -64,54 +66,6 @@ public class GenericTreeNode {
 
 	public void setAttribute(String name, Object value) {
 		attributes.put(name, value);
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public boolean isChecked() {
-		return checked;
-	}
-
-	public void setChecked(boolean checked) {
-		this.checked = checked;
-	}
-
-	public String getIconCls() {
-		return iconCls;
-	}
-
-	public void setIconCls(String iconCls) {
-		this.iconCls = iconCls;
-	}
-
-	public Map<String, Object> getAttributes() {
-		return attributes;
-	}
-
-	public void setAttributes(Map<String, Object> attributes) {
-		this.attributes = attributes;
-	}
-
-	public List<GenericTreeNode> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<GenericTreeNode> children) {
-		this.children = children;
 	}
 
 }

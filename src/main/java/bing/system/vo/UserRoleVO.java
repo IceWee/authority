@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bing.system.model.SysRole;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 用户角色值对象
  * 
  * @author IceWee
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserRoleVO {
 
 	private Integer userId;
@@ -17,33 +23,5 @@ public class UserRoleVO {
 	private List<SysRole> unselectRoles = new ArrayList<>();
 
 	private List<SysRole> selectedRoles = new ArrayList<>();
-
-	public UserRoleVO() {
-		super();
-	}
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public List<SysRole> getUnselectRoles() {
-		return unselectRoles;
-	}
-
-	public void setUnselectRoles(List<SysRole> unselectRoles) {
-		this.unselectRoles = unselectRoles;
-	}
-
-	public List<SysRole> getSelectedRoles() {
-		return selectedRoles;
-	}
-
-	public void setSelectedRoles(List<SysRole> selectedRoles) {
-		this.selectedRoles = selectedRoles;
-	}
 
 }

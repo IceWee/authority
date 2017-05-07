@@ -6,7 +6,13 @@ import javax.validation.constraints.Pattern;
 import bing.constant.HiddenEnum;
 import bing.constant.StatusEnum;
 import bing.security.CustomUserDetails;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class SysUser extends CustomUserDetails {
 
 	private static final long serialVersionUID = 5217735149888451989L;
@@ -23,52 +29,8 @@ public class SysUser extends CustomUserDetails {
 
 	private Integer[] roleIds;
 
-	public Integer[] getRoleIds() {
-		return roleIds;
-	}
-
-	public void setRoleIds(Integer[] roleIds) {
-		this.roleIds = roleIds;
-	}
-
-	public SysUser() {
-		super();
-	}
-
 	public SysUser(String username, String password) {
 		super(username, password);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public Integer getHidden() {
-		return hidden;
-	}
-
-	public void setHidden(Integer hidden) {
-		this.hidden = hidden;
 	}
 
 	@Override

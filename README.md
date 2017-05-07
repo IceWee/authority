@@ -9,3 +9,11 @@ Spring Boot/MyBatis/Spring Security/Redis/Bootstrap/Thymeleaf...eg.
 
 ### 数据库
 MySQL
+
+### eclipse配置lombok
+> 下载lombok.jar，放置到eclipse根目录，与eclipse.ini在同一目录即可，在eclipse.inif中加入如下配置重启eclipse即可生效
+
+```
+-Xbootclasspath/a:lombok.jar
+-javaagent:lombok.jar
+```

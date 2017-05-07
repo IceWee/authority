@@ -188,7 +188,6 @@
 		select r.id, r.code, r.name
 		from sys_role r, sys_user_role ur, sys_user u
 		where r.id = ur.role_id and ur.user_id = u.id
-		and r.hidden = 0 and r.status != 2
-		and ur.user_id = #{userId,jdbcType=INTEGER}
+		and r.status != 2 and ur.user_id = #{userId,jdbcType=INTEGER}
 	</select>
 </mapper>
