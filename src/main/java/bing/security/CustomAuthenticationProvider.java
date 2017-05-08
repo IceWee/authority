@@ -22,7 +22,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import bing.constant.RedisKeys;
-import bing.exception.CaptchaErrorException;
 import bing.util.PasswordUtils;
 
 /**
@@ -80,7 +79,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 		stringRedisTemplate.opsForValue().getOperations().delete(RedisKeys.PREFIX_CAPTCHA + currentSessionId);
 		if (!StringUtils.equalsIgnoreCase(rawCpatcha, captcha)) {
 			LOGGER.warn("验证码输入错误，需跳转到登录页面重新输入");
-			throw new CaptchaErrorException("Captcha not match");
+			throw new CaptchaException("验证码错误");
 		}
 		String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
 		UserDetails user = null;
