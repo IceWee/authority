@@ -44,11 +44,6 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 		if (userDetails == null) {
 			throw new UsernameNotFoundException("User " + username + " has no GrantedAuthority");
 		}
-		// 测试使用
-		// List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		// authorities.add(new SimpleGrantedAuthority("ADMIN"));
-		// userDetails.setAuthorities(authorities);
-
 		// 将当前登录用户具备的角色ID全部取出放在UserDetails中供后续访问资源时验证使用
 		List<SysRole> ownRoles = sysRoleDao.listByUserId(userDetails.getId());
 		List<Integer> ownRoleIds = ownRoles.stream().map(role -> role.getId()).collect(Collectors.toList());

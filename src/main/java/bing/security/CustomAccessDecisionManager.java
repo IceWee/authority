@@ -24,33 +24,6 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomAccessDecisionManager.class);
 
-	// @Override
-	// public void decide(Authentication authentication, Object object,
-	// Collection<ConfigAttribute> configAttributes) throws
-	// AccessDeniedException, InsufficientAuthenticationException {
-	// // 如果当前资源未配置权限则禁止访问，即黑名单，否则为白名单都可以访问，显然是不对的
-	// if (configAttributes.isEmpty()) {
-	// throw new AccessDeniedException("当前访问没有权限");
-	// }
-	// Iterator<ConfigAttribute> iterator = configAttributes.iterator(); //
-	// 访问当前URI需要具备的权限列表
-	// while (iterator.hasNext()) {
-	// if (authentication == null) {
-	// throw new AccessDeniedException("当前访问没有权限");
-	// }
-	// ConfigAttribute configAttribute = iterator.next();
-	// String needCode = configAttribute.getAttribute();
-	// Collection<? extends GrantedAuthority> authorities =
-	// authentication.getAuthorities(); // 当前用户具备的权限列表
-	// for (GrantedAuthority authority : authorities) {
-	// if (StringUtils.equals(authority.getAuthority(), needCode)) {
-	// return;
-	// }
-	// }
-	// }
-	// throw new AccessDeniedException("当前访问没有权限");
-	// }
-
 	@Override
 	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
 		String url = StringUtils.EMPTY;
@@ -74,7 +47,7 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 		boolean matched = false;
 		String needRoleId;
 		String ownRoleId;
-		loop : for (ConfigAttribute configAttribute : configAttributes) {
+		loop: for (ConfigAttribute configAttribute : configAttributes) {
 			needRoleId = configAttribute.getAttribute();
 			for (GrantedAuthority authority : authorities) {
 				ownRoleId = authority.getAuthority();

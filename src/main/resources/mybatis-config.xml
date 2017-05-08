@@ -23,8 +23,7 @@
 		<!--设置超时时间，它决定驱动等待一个数据库响应的时间。 系统默认值是null，设置只是为了展示出来 -->
 		<setting name="defaultStatementTimeout" value="25000" />
 		<!-- 在null时也调用 setter,适应于返回Map,3.2版本以上可用 -->  
-        <setting name="callSettersOnNulls" value="true"/>
+        <setting name="callSettersOnNulls" value="true" />
         <!-- 让mybatis使用log4j2记录日志 -->
-        <setting name="logImpl" value="LOG4J2"/>
 	</settings>
 </configuration>

@@ -38,29 +38,6 @@ public class CustomSecurityMetadataSource implements FilterInvocationSecurityMet
 		return null;
 	}
 
-	/**
-	 * 返回本次访问需要的权限, 测试时使用
-	 */
-	// @Override
-	// public Collection<ConfigAttribute> getAttributes(Object object) throws
-	// IllegalArgumentException {
-	// Collection<ConfigAttribute> configAttributes = new ArrayList<>();
-	// FilterInvocation fi = (FilterInvocation) object;
-	// // TODO 后续需要编写根据URI获取需要的全部权限的方法
-	// Map<String, Collection<ConfigAttribute>> metadataSource =
-	// CustomSecurityContext.getMetadataSource();
-	// // key - uri, value - 权限集合
-	// for (Map.Entry<String, Collection<ConfigAttribute>> entry :
-	// metadataSource.entrySet()) {
-	// String uri = entry.getKey();
-	// RequestMatcher requestMatcher = new AntPathRequestMatcher(uri);
-	// if (requestMatcher.matches(fi.getHttpRequest())) {
-	// configAttributes.addAll(entry.getValue());
-	// }
-	// }
-	// return configAttributes;
-	// }
-
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		Collection<ConfigAttribute> configAttributes = new ArrayList<>();

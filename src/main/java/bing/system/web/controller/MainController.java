@@ -22,7 +22,7 @@ public class MainController extends GenericController {
 	@Autowired
 	private SysMenuService sysMenuService;
 
-	@RequestMapping(value = {"/main", "/"})
+	@RequestMapping(value = { "/main", "/" })
 	public String main(HttpSession session, Model model) {
 		Optional<SysUser> optional = getCurrentUser();
 		if (optional.isPresent()) {
