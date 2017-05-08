@@ -38,6 +38,10 @@ public class GenericTreeNode {
 		this.children.add(child);
 	}
 
+	public void removeChild(GenericTreeNode child) {
+		this.children.remove(child);
+	}
+
 	/**
 	 * 递归构建资源分类树
 	 * 
@@ -66,6 +70,31 @@ public class GenericTreeNode {
 
 	public void setAttribute(String name, Object value) {
 		attributes.put(name, value);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GenericTreeNode other = (GenericTreeNode) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

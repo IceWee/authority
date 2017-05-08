@@ -141,6 +141,8 @@ INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `rem
 INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('删除用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/delete', '0', '', now(), 'admin', now(), 'admin');
 INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户列表数据', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '1', '/ajax/system/user/list', '0', '', now(), 'admin', now(), 'admin');
 INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存用户数据', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '1', '/ajax/system/user/save', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('锁定用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '1', '/ajax/system/user/lock', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('解锁用户', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '1', '/ajax/system/user/unlock', '0', '', now(), 'admin', now(), 'admin');
 INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('角色列表', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/list', '0', '', now(), 'admin', now(), 'admin');
 INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('新增角色', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/add', '0', '', now(), 'admin', now(), 'admin');
 INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('保存角色', (select t.id from (select id from sys_resource_category where name = '角色管理') t), '0', '/system/role/save', '0', '', now(), 'admin', now(), 'admin');
@@ -213,9 +215,7 @@ CREATE TABLE `sys_role_resource` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色资源关联';
 
 -- 角色资源关系数据初始化
-insert into `sys_role_resource` (`resource_id`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) 
-select `id`, '0', now(), 'admin', now(), 'admin' from `sys_resource`;
+INSERT INTO `sys_role_resource` (`resource_id`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) 
+SELECT `id`, '0', now(), 'admin', now(), 'admin' FROM `sys_resource`;
 
-update `sys_role_resource` set `role_id` = (select id from sys_role where code = 'admin');
-
-
+UPDATE `sys_role_resource` SET `role_id` = (SELECT id FROM sys_role WHERE code = 'admin');

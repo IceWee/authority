@@ -211,7 +211,10 @@ function initDialogTree(options) {
 	if (showImmediately) {
 		hideTips(tipsId);
 		$(DIALOG_TITLE_ID).text(title);
-		$(DIALOG_ID).modal({keyboard:false});
+		$(DIALOG_ID).modal({
+			backdrop: false, // 点击空白区域不关闭弹出框
+			keyboard: false	 // 按ESC键不关闭弹出框
+		});
 		_initializeEasyUITree(options);
 		_initializeButtonEvents(options);
 	}
@@ -254,23 +257,19 @@ function _initializeButtonEvents(options) {
 		$(BUTTON_CONFIRM).on("click", function() {
 			if (!checkbox) { // 单选
 				var node = getSelectedTreeNode(RAW_TREE_ID);
-				if (node) {
-					if ($.isFunction(confirmCallback)) {
-						confirmCallback(node);
-					}
-					if (autoClose) {
-						$(DIALOG_ID).modal("hide");
-					}
+				if ($.isFunction(confirmCallback)) {
+					confirmCallback(node);
+				}
+				if (autoClose) {
+					$(DIALOG_ID).modal("hide");
 				}
 			} else { // 复选
 				var nodes = getCheckedTreeNodes(RAW_TREE_ID);
-				if (nodes.length > 0) {
-					if ($.isFunction(confirmCallback)) {
-						confirmCallback(nodes);
-					}
-					if (autoClose) {
-						$(DIALOG_ID).modal("hide");
-					}
+				if ($.isFunction(confirmCallback)) {
+					confirmCallback(nodes);
+				}
+				if (autoClose) {
+					$(DIALOG_ID).modal("hide");
 				}
 			}
 			

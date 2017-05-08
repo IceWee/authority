@@ -202,9 +202,11 @@ function initEditPageExt(error, message) {
 
 // 选择树节点事件
 function confirmCallbackForDetail(node) {
-	$(FORM_ID_DETAIL).form("load", {
-		categoryId: node.attributes.id,
-		categoryName: node.text
-	});
+	if (node) {
+		$(FORM_ID_DETAIL).form("load", {
+			categoryId: node.attributes.id,
+			categoryName: node.text
+		});
+	}
 }
 /************************************** add/edit end ********************************************/

@@ -114,18 +114,20 @@ function initEditPageExt(error, message) {
 function confirmCallbackForResource(node) {
 	var tipsId = "_tips_dialog_tree";
 	hideTips(tipsId);
-	var type = node.attributes.type;
-	if (type == 0) { // 资源分类节点
-		showTips($.i18n.prop("menu.bind.category.invalid"), "warning", 3);
-		$(FORM_ID_DETAIL).form("load", {
-			resourceId: null,
-			resourceName: node.text
-		});
-	} else {
-		$(FORM_ID_DETAIL).form("load", {
-			resourceId: node.attributes.id,
-			resourceName: node.text
-		});
+	if (node) {
+		var type = node.attributes.type;
+		if (type == 0) { // 资源分类节点
+			showTips($.i18n.prop("menu.bind.category.invalid"), "warning", 3);
+			$(FORM_ID_DETAIL).form("load", {
+				resourceId: null,
+				resourceName: node.text
+			});
+		} else {
+			$(FORM_ID_DETAIL).form("load", {
+				resourceId: node.attributes.id,
+				resourceName: node.text
+			});
+		}
 	}
 }
 
@@ -133,9 +135,11 @@ function confirmCallbackForResource(node) {
 function confirmCallbackForMenu(node) {
 	var tipsId = "_tips_dialog_tree";
 	hideTips(tipsId);
-	$(FORM_ID_DETAIL).form("load", {
-		parentId: node.attributes.id,
-		parentMenuName: node.text
-	});
+	if (node) {
+		$(FORM_ID_DETAIL).form("load", {
+			parentId: node.attributes.id,
+			parentMenuName: node.text
+		});
+	}
 }
 /************************************** add/edit end ********************************************/

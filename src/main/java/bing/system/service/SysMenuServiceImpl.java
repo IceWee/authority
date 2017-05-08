@@ -2,6 +2,7 @@ package bing.system.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -83,7 +84,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
+	@Cacheable(cacheNames = { EhCacheNames.MENU_TREE_CACHE })
 	public List<GenericTreeNode> getMenuTree() {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
@@ -112,6 +113,21 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<SysMenuVO> ownMenus = menus.stream().filter(menu -> (menu.getResourceId() == null) || (ownResourceIds.contains(menu.getResourceId()))).collect(Collectors.toList());
 		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
 		GenericTreeNode.buildGenericTree(treeNodes, convertMenu(ownMenus));
+		// 移除顶级空菜单，即没子菜单的菜单
+		GenericTreeNode topNode;
+		GenericTreeNode lv2Node;
+		Iterator<GenericTreeNode> topIt = treeNodes.iterator();
+		Iterator<GenericTreeNode> lv2It;
+		while (topIt.hasNext()) {
+			topNode = topIt.next();
+			lv2It = topNode.getChildren().iterator();
+			while (lv2It.hasNext()) {
+				lv2Node = lv2It.next();
+				if (lv2Node.getChildren().isEmpty()) {
+					lv2It.remove();
+				}
+			}
+		}
 		return treeNodes;
 	}
 
