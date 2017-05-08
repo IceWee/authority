@@ -1,7 +1,6 @@
 package bing.system.web.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import bing.constant.GlobalConstants;
+import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericTreeNode;
 import bing.system.model.SysUser;
 import bing.system.service.SysMenuService;
@@ -23,15 +23,13 @@ public class MainController extends GenericController {
 	private SysMenuService sysMenuService;
 
 	@RequestMapping(value = { "/main", "/" })
-	public String main(HttpSession session, Model model) {
-		Optional<SysUser> optional = getCurrentUser();
-		if (optional.isPresent()) {
-			session.setAttribute(GlobalConstants.SESSION_ATTRIBUTE_CURRENT_USER, optional.get());
+	public String main(HttpSession session, Model model, @CurrentLoggedUser SysUser currentUser) {
+		if (currentUser != null) {
+			session.setAttribute(GlobalConstants.SESSION_ATTRIBUTE_CURRENT_USER, currentUser);
 		} else {
 			return "redirect:/login";
 		}
-		SysUser sysUser = optional.get();
-		List<GenericTreeNode> menus = sysMenuService.listMenuByUserId(sysUser.getId());
+		List<GenericTreeNode> menus = sysMenuService.listMenuByUserId(currentUser.getId());
 		model.addAttribute("menus", menus);
 		return "main";
 	}

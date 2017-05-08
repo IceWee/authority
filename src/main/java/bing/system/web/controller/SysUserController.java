@@ -1,7 +1,6 @@
 package bing.system.web.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +23,7 @@ import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.CrudGroups;
+import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericPage;
 import bing.exception.BusinessException;
 import bing.system.condition.SysUserCondition;
@@ -106,13 +106,9 @@ public class SysUserController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_USER_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> saveRoleUsers(Integer roleId, Integer[] userIds) {
+	public RestResponse<Object> saveRoleUsers(Integer roleId, Integer[] userIds, @CurrentLoggedUser SysUser currentUser) {
 		RestResponse<Object> response = new RestResponse<>();
-		Optional<SysUser> optional = getCurrentUser();
-		String username = StringUtils.EMPTY;
-		if (optional.isPresent()) {
-			username = optional.get().getUsername();
-		}
+		String username = currentUser.getUsername();
 		sysUserService.saveRoleUsers(roleId, userIds, username);
 		return response;
 	}
@@ -175,13 +171,9 @@ public class SysUserController extends GenericController {
 	}
 
 	@RequestMapping(DELETE)
-	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
 		try {
-			Optional<SysUser> optional = getCurrentUser();
-			String username = StringUtils.EMPTY;
-			if (optional.isPresent()) {
-				username = optional.get().getUsername();
-			}
+			String username = currentUser.getUsername();
 			sysUserService.deleteById(id, username);
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -219,9 +211,8 @@ public class SysUserController extends GenericController {
 	 * @return
 	 */
 	@RequestMapping(MINE)
-	public String mine(Model model) {
-		Optional<SysUser> optional = getCurrentUser();
-		SysUser entity = sysUserService.getById(optional.get().getId());
+	public String mine(Model model, @CurrentLoggedUser SysUser currentUser) {
+		SysUser entity = sysUserService.getById(currentUser.getId());
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		return MINE;
 	}
@@ -249,13 +240,9 @@ public class SysUserController extends GenericController {
 	 * @return
 	 */
 	@RequestMapping(LOCK)
-	public String lock(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String lock(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
 		try {
-			Optional<SysUser> optional = getCurrentUser();
-			String username = StringUtils.EMPTY;
-			if (optional.isPresent()) {
-				username = optional.get().getUsername();
-			}
+			String username = currentUser.getUsername();
 			sysUserService.lockById(id, username);
 		} catch (Exception e) {
 			LOGGER.error("{}锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -273,13 +260,9 @@ public class SysUserController extends GenericController {
 	 * @return
 	 */
 	@RequestMapping(UNLOCK)
-	public String unlock(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String unlock(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
 		try {
-			Optional<SysUser> optional = getCurrentUser();
-			String username = StringUtils.EMPTY;
-			if (optional.isPresent()) {
-				username = optional.get().getUsername();
-			}
+			String username = currentUser.getUsername();
 			sysUserService.unlockById(id, username);
 		} catch (Exception e) {
 			LOGGER.error("{}解除锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));

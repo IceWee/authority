@@ -1,8 +1,5 @@
 package bing.system.web.controller;
 
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
+import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericPage;
 import bing.system.condition.SysRoleCondition;
 import bing.system.model.SysRole;
@@ -91,12 +89,8 @@ public class SysRoleController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_ROLE_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<RoleUserVO> saveUserRoles(Integer userId, Integer[] roleIds) {
-		Optional<SysUser> optional = getCurrentUser();
-		String username = StringUtils.EMPTY;
-		if (optional.isPresent()) {
-			username = optional.get().getUsername();
-		}
+	public RestResponse<RoleUserVO> saveUserRoles(Integer userId, Integer[] roleIds, @CurrentLoggedUser SysUser currentUser) {
+		String username = currentUser.getUsername();
 		sysRoleService.saveUserRoles(userId, roleIds, username);
 		return new RestResponse<>();
 	}
@@ -153,13 +147,9 @@ public class SysRoleController extends GenericController {
 	}
 
 	@RequestMapping(DELETE)
-	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
 		try {
-			Optional<SysUser> optional = getCurrentUser();
-			String username = StringUtils.EMPTY;
-			if (optional.isPresent()) {
-				username = optional.get().getUsername();
-			}
+			String username = currentUser.getUsername();
 			sysRoleService.deleteById(id, username);
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
