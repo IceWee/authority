@@ -9,10 +9,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class RestResponse<T> {
 
-	private String code = RestResponseCodes.OK;
-	private String message = StringUtils.EMPTY;
-	private T data;
-	private long timestamp;
+	protected String code = RestResponseCodes.OK;
+	protected String message = StringUtils.EMPTY;
+	protected T data;
+	protected long timestamp;
 
 	public RestResponse() {
 		super();
@@ -43,6 +43,9 @@ public class RestResponse<T> {
 	}
 
 	public long getTimestamp() {
+		if (timestamp == 0) {
+			timestamp = System.currentTimeMillis();
+		}
 		return timestamp;
 	}
 

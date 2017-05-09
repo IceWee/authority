@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import bing.constant.ApiConstants;
 import bing.constant.Charsets;
 import bing.constant.GlobalConstants;
 import bing.exception.BusinessException;
@@ -41,8 +42,8 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	public String handler(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
 		response.setCharacterEncoding(Charsets.CHARSET_UTF_8);
 		LOGGER.error(ExceptionUtils.parseStackTrace(e));
-		if (isAjax(request)) {
-			ajax(response, e);
+		if (apiRequest(request) || ajaxRequest(request)) {
+			ajaxResponse(response, e);
 			return null;
 		} else {
 			return error(request, e);
@@ -75,7 +76,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	 * @param response
 	 * @param cause
 	 */
-	private void ajax(HttpServletResponse response, Exception cause) {
+	private void ajaxResponse(HttpServletResponse response, Exception cause) {
 		try {
 			String code = BusinessExceptionCodes.SERVER_ERROR;
 			if (cause instanceof BusinessException) {
@@ -94,12 +95,22 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	}
 
 	/**
+	 * 匹配请求URL判断是否是API请求
+	 * 
+	 * @param request
+	 * @return
+	 */
+	private boolean apiRequest(HttpServletRequest request) {
+		return StringUtils.startsWith(request.getServletPath(), ApiConstants.API_URL_PREFIX);
+	}
+
+	/**
 	 * 解析HTTP头判断该请求是否是ajax
 	 * 
 	 * @param request
 	 * @return
 	 */
-	private boolean isAjax(HttpServletRequest request) {
+	private boolean ajaxRequest(HttpServletRequest request) {
 		String accept = request.getHeader("accept");
 		if (StringUtils.contains(accept, MediaType.APPLICATION_JSON_VALUE)) {
 			return true;

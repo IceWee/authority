@@ -8,11 +8,6 @@ public class GlobalConstants {
 	public static final String PARAM_CAPTCHA = "captcha";
 
 	/**
-	 * Request parameter name - remember-me
-	 */
-	public static final String PARAM_REMEMBER_ME = "rememberme";
-
-	/**
 	 * Session timeout seconds
 	 */
 	public static final int SESSION_TIMEOUT_SECONDS = 10 * 60; // 10 mins
@@ -56,21 +51,6 @@ public class GlobalConstants {
 	 * bean attribute in request scope
 	 */
 	public static final String REQUEST_ATTRIBUTE_BEAN = "bean";
-
-	/**
-	 * Cookie key prefix
-	 */
-	public static final String COOKIE_KEY = "authority_";
-
-	/**
-	 * Cookie expire seconds
-	 */
-	public static final int COOKIE_EXPIRE_SECONDS = 60 * 60 * 24 * 7;
-
-	/**
-	 * Public resource paths
-	 */
-	public static final String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
 
 	/**
 	 * 根节点父ID值-0，无ID为0的节点，即为顶级节点

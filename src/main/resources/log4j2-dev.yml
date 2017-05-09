@@ -69,7 +69,7 @@ Configuration:
       - ref: ERROR_FILE
     - name: org.springframework # spring
       additivity: false
-      level: warn
+      level: trace
       AppenderRef:
       - ref: CONSOLE
       - ref: INFO_FILE

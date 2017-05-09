@@ -1,5 +1,5 @@
 // 绑定登陆页面事件
-function initPage() {
+function initLoginPage() {
 	$("#username").focus();
 	
 	$("#button_login").click(function() {
@@ -24,5 +24,24 @@ function initPage() {
 			return;
 		}
 		$("#button_submit").click();
+		
+//		ajaxLogin();
+	});
+}
+
+function ajaxLogin() {
+	var data = $("#form_login").serializeJson();
+	$.ajax({
+		type : "GET",
+		contentType: "application/json",
+		url : "/login",
+		data : data,
+		success : function(json) {
+			document.write(json);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("status: " + textStatus);
+			alert(errorThrown);
+		}
 	});
 }

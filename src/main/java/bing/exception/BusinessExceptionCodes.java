@@ -20,12 +20,12 @@ public abstract class BusinessExceptionCodes {
 	/**
 	 * 系统管理员admin账号丢失
 	 */
-	public static final String USER_ADMIN_MISSING = PREFIX + "SYS_003";
+	public static final String USER_ADMIN_MISSING = PREFIX + "003";
 
 	/**
 	 * 系统管理员角色admin丢失
 	 */
-	public static final String ROLE_ADMIN_MISSING = PREFIX + "SYS_004";
+	public static final String ROLE_ADMIN_MISSING = PREFIX + "004";
 
 	protected BusinessExceptionCodes() {
 		super();

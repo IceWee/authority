@@ -1,6 +1,8 @@
 package bing.system.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import bing.constant.GlobalConstants;
 import bing.domain.CurrentLoggedUser;
@@ -37,6 +40,14 @@ public class MainController extends GenericController {
 	@RequestMapping(value = "/accessDenied")
 	public String accessDenied() {
 		return "accessDenied";
+	}
+
+	@ResponseBody
+	@RequestMapping("/api/hello")
+	public Map<String, String> hello() {
+		Map<String, String> map = new HashMap<>();
+		map.put("hello", "world");
+		return map;
 	}
 
 }
