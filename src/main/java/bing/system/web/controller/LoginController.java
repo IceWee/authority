@@ -54,7 +54,7 @@ public class LoginController extends GenericController {
 		}
 		// 设置验证码
 		String captcha = CaptchaUtils.captcha(4);
-		LOGGER.info("生成登录验证码并缓存：{}", captcha);
+		LOGGER.debug("生成登录验证码并缓存：{}", captcha);
 		session.setAttribute(GlobalConstants.PARAM_CAPTCHA, captcha);
 		String currentSessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
 		stringRedisTemplate.opsForValue().set(RedisKeys.PREFIX_CAPTCHA + currentSessionId, captcha);
