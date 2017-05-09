@@ -4,6 +4,7 @@ import java.util.List;
 
 import bing.system.condition.SysRoleResourceCondition;
 import bing.system.model.SysRoleResource;
+import bing.system.vo.URIRole;
 
 public interface SysRoleResourceDao {
 
@@ -24,5 +25,14 @@ public interface SysRoleResourceDao {
 	void deleteByRoleId(Integer roleId);
 
 	int insertBatch(List<SysRoleResource> entities);
+
+	int countByResourceId(Integer resourceId);
+
+	/**
+	 * 获取系统中全部的URL和角色ID关系
+	 * 
+	 * @return
+	 */
+	List<URIRole> listAllURIRoleCode();
 
 }

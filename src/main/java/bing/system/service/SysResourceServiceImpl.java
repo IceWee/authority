@@ -24,6 +24,7 @@ import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
 import bing.system.constant.TreeNodeIdPrefixes;
+import bing.system.dao.SysMenuDao;
 import bing.system.dao.SysResourceCategoryDao;
 import bing.system.dao.SysResourceDao;
 import bing.system.dao.SysRoleDao;
@@ -39,10 +40,13 @@ import bing.system.vo.SysResourceVO;
 public class SysResourceServiceImpl implements SysResourceService {
 
 	@Autowired
+	private SysResourceDao sysResourceDao;
+
+	@Autowired
 	private SysRoleDao sysRoleDao;
 
 	@Autowired
-	private SysResourceDao sysResourceDao;
+	private SysMenuDao sysMenuDao;
 
 	@Autowired
 	private SysRoleResourceDao sysRoleResourceDao;
@@ -110,6 +114,14 @@ public class SysResourceServiceImpl implements SysResourceService {
 
 	@Override
 	public void deleteById(Integer id, String username) {
+		int menuCount = sysMenuDao.countByResourceId(id);
+		if (menuCount > 0) {
+			throw new BusinessException(ResourceExceptionCodes.USED_BY_MENU);
+		}
+		int roleCount = sysRoleResourceDao.countByResourceId(id);
+		if (roleCount > 0) {
+			throw new BusinessException(ResourceExceptionCodes.AUTHORIZED_TO_ROLE);
+		}
 		SysResource entity = new SysResource();
 		entity.setId(id);
 		entity.setStatus(StatusEnum.DELETED.ordinal());

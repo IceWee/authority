@@ -7,12 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class URIRoleId {
+public class URIRole {
 
 	private Integer id;
 
 	private String uri;
 
-	private Integer roleId;
+	/**
+	 * 角色编码
+	 */
+	private String roleCode;
 
 }

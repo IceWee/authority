@@ -83,6 +83,7 @@ public abstract class GenericController {
 		List<ObjectError> errors = bindingResult.getAllErrors();
 		if (hasErrors(bindingResult)) {
 			error = errors.get(0).getDefaultMessage();
+			LOGGER.error(error);
 		}
 		return error;
 	}
@@ -101,6 +102,7 @@ public abstract class GenericController {
 			code = be.getCode();
 		}
 		error = getMessage(code, BusinessExceptionCodes.UNKNOW_ERROR);
+		LOGGER.error(error);
 		return error;
 	}
 

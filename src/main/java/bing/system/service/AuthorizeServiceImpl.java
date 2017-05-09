@@ -2,7 +2,6 @@ package bing.system.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,12 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import bing.security.URISecurityConfigs;
-import bing.system.dao.SysResourceDao;
 import bing.system.dao.SysRoleDao;
+import bing.system.dao.SysRoleResourceDao;
 import bing.system.dao.SysUserDao;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
-import bing.system.vo.URIRoleId;
+import bing.system.vo.URIRole;
 
 /**
  * 权限服务
@@ -35,7 +34,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 	private SysRoleDao sysRoleDao;
 
 	@Autowired
-	private SysResourceDao sysResourceDao;
+	private SysRoleResourceDao sysRoleResourceDao;
 
 	@Override
 	// @Cacheable(cacheNames = {EhCacheNames.USER_CACHE})
@@ -44,12 +43,12 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 		if (userDetails == null) {
 			throw new UsernameNotFoundException("User " + username + " has no GrantedAuthority");
 		}
-		// 将当前登录用户具备的角色ID全部取出放在UserDetails中供后续访问资源时验证使用
+		// 将当前登录用户具备的角色编码全部取出放在UserDetails中供后续访问资源时验证使用
 		List<SysRole> ownRoles = sysRoleDao.listByUserId(userDetails.getId());
-		List<Integer> ownRoleIds = ownRoles.stream().map(role -> role.getId()).collect(Collectors.toList());
+		List<String> ownRoleCodes = ownRoles.stream().map(role -> role.getCode()).collect(Collectors.toList());
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		ownRoleIds.forEach(roleId -> {
-			authorities.add(new SimpleGrantedAuthority(Objects.toString(roleId)));
+		ownRoleCodes.forEach(role -> {
+			authorities.add(new SimpleGrantedAuthority(role));
 		});
 		userDetails.setAuthorities(authorities);
 		return userDetails;
@@ -58,19 +57,19 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 	@Override
 	public List<URISecurityConfigs> listURISecurityConfigs() {
 		List<URISecurityConfigs> uriSecurityConfigs = new ArrayList<>();
-		// uri - roleId 列表，多对多
-		List<URIRoleId> uriRoleIds = sysResourceDao.listAllURIRoleId();
+		// uri - 角色code 列表，多对多
+		List<URIRole> uriRoles = sysRoleResourceDao.listAllURIRoleCode();
 		// distinct uri， 产生不重复的URI
-		List<String> uris = uriRoleIds.stream().map(bean -> bean.getUri()).distinct().collect(Collectors.toList());
+		List<String> uris = uriRoles.stream().map(bean -> bean.getUri()).distinct().collect(Collectors.toList());
 		// 遍历URI构造返回类型并添加到返回集合中
 		uris.forEach(uri -> {
 			uriSecurityConfigs.add(new URISecurityConfigs(uri));
 		});
 		// 遍历返回集合，将URI匹配的角色ID添加进来
 		uriSecurityConfigs.forEach(uriConfigs -> {
-			uriRoleIds.forEach(uriRoleId -> {
-				if (StringUtils.equals(uriConfigs.getUri(), uriRoleId.getUri())) {
-					uriConfigs.addConfig(uriRoleId.getRoleId());
+			uriRoles.forEach(uriRole -> {
+				if (StringUtils.equals(uriConfigs.getUri(), uriRole.getUri())) {
+					uriConfigs.addConfig(uriRole.getRoleCode());
 				}
 			});
 		});

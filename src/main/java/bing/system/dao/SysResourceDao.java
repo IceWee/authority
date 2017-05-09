@@ -5,7 +5,6 @@ import java.util.List;
 import bing.system.condition.SysResourceCondition;
 import bing.system.model.SysResource;
 import bing.system.vo.SysResourceVO;
-import bing.system.vo.URIRoleId;
 
 public interface SysResourceDao {
 
@@ -38,12 +37,5 @@ public interface SysResourceDao {
 	 * @return
 	 */
 	List<Integer> listResourceIdByUserId(Integer userId);
-
-	/**
-	 * 获取系统中全部的URL和角色ID关系
-	 * 
-	 * @return
-	 */
-	List<URIRoleId> listAllURIRoleId();
 
 }

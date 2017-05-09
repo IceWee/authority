@@ -202,4 +202,7 @@
 	<select id="countByParentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		select count(1) from sys_menu where status != 2 and parent_id = #{parentId,jdbcType=INTEGER}
 	</select>
+	<select id="countByResourceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1) from sys_menu where status != 2 and resource_id = #{resourceId,jdbcType=INTEGER}
+	</select>
 </mapper>

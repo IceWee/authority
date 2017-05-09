@@ -29,6 +29,16 @@ public class ResourceExceptionCodes extends BusinessExceptionCodes {
 	 */
 	public static final String CATEGORY_CONTAINS_SUBCATEGORY = PREFIX + "004";
 
+	/**
+	 * 已被菜单使用
+	 */
+	public static final String USED_BY_MENU = PREFIX + "005";
+
+	/**
+	 * 已授权给角色
+	 */
+	public static final String AUTHORIZED_TO_ROLE = PREFIX + "006";
+
 	private ResourceExceptionCodes() {
 		super();
 	}

@@ -28,4 +28,6 @@ public interface SysMenuDao {
 
 	int countByParentId(Integer parentId);
 
+	int countByResourceId(Integer resourceId);
+
 }

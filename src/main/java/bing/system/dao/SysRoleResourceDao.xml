@@ -11,6 +11,11 @@
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
+	<resultMap id="URIRoleResultMap" type="bing.system.vo.URIRole">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="url" jdbcType="VARCHAR" property="uri" />
+		<result column="code" jdbcType="INTEGER" property="roleCode" />
+	</resultMap>
 	<sql id="Base_Column_List">
 		id, role_id, resource_id, status, create_date, create_user, update_date, update_user
 	</sql>
@@ -154,4 +159,15 @@
 	    	#{entity.updateDate,jdbcType=TIMESTAMP}, #{entity.updateUser,jdbcType=VARCHAR}) 
 	    </foreach>
 	</insert>
+	<select id="listAllURIRoleCode" resultMap="URIRoleResultMap">
+		select rr.id, rs.url, ro.code from sys_resource rs, sys_role_resource rr, sys_role ro
+		where rs.id = rr.resource_id and rr.role_id = ro.id
+		and ro.status != 2 and rs.status != 2
+		order by rs.url
+	</select>
+	<select id="countByResourceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1) from sys_role_resource rr, sys_role ro, sys_resource rs
+		where rr.role_id = ro.id and rr.resource_id = rs.id
+		and ro.status != 2 and rs.status != 2 and resource_id = #{resourceId,jdbcType=INTEGER}
+	</select>
 </mapper>

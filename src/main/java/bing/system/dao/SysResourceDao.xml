@@ -27,11 +27,6 @@
 		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
-	<resultMap id="URIRoleIdResultMap" type="bing.system.vo.URIRoleId">
-		<id column="id" jdbcType="INTEGER" property="id" />
-		<result column="url" jdbcType="VARCHAR" property="uri" />
-		<result column="role_id" jdbcType="INTEGER" property="roleId" />
-	</resultMap>
 	<sql id="Base_Column_List">
 		id, name, category_id, type, url, status, remark, create_date, create_user, update_date, update_user
 	</sql>
@@ -217,10 +212,5 @@
 		select resource_id from sys_resource r, sys_role_resource rr, sys_user_role ur
 		where r.id = rr.resource_id and rr.role_id = ur.role_id
 		and ur.user_id = #{userId,jdbcType=INTEGER}
-	</select>
-	<select id="listAllURIRoleId" resultMap="URIRoleIdResultMap">
-		select rr.id, r.url, rr.role_id from sys_resource r, sys_role_resource rr
-		where r.id = rr.resource_id
-		order by r.url
 	</select>
 </mapper>
