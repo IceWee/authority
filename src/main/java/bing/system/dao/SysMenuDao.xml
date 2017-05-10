@@ -64,7 +64,7 @@
 			<if test="parentId != null">
 				parent_id,
 			</if>
-			<if test="url != null">
+			<if test="resourceId != null">
 				resource_id,
 			</if>
 			<if test="sort != null">

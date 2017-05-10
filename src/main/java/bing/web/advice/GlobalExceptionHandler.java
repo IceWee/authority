@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
-import bing.constant.ApiConstants;
 import bing.constant.Charsets;
 import bing.constant.GlobalConstants;
 import bing.exception.BusinessException;
@@ -42,7 +41,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	public String handler(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
 		response.setCharacterEncoding(Charsets.CHARSET_UTF_8);
 		LOGGER.error(ExceptionUtils.parseStackTrace(e));
-		if (apiRequest(request) || ajaxRequest(request)) {
+		if (ajaxRequest(request)) {
 			ajaxResponse(response, e);
 			return null;
 		} else {
@@ -92,16 +91,6 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 		} catch (IOException e) {
 			LOGGER.error(ExceptionUtils.parseStackTrace(e));
 		}
-	}
-
-	/**
-	 * 匹配请求URL判断是否是API请求
-	 * 
-	 * @param request
-	 * @return
-	 */
-	private boolean apiRequest(HttpServletRequest request) {
-		return StringUtils.startsWith(request.getServletPath(), ApiConstants.API_URL_PREFIX);
 	}
 
 	/**
