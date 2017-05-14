@@ -40,11 +40,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	public GenericPage<SysMenuVO> listByPage(SysMenuCondition condition) {
-		Long pageNo = condition.getPageNo();
-		PageHelper.startPage(pageNo.intValue(), condition.getPageSize().intValue());
+		Long pageNumber = condition.getPageNumber();
+		PageHelper.startPage(pageNumber.intValue(), condition.getPageSize().intValue());
 		List<SysMenuVO> list = sysMenuDao.listByCondition(condition);
 		PageInfo<SysMenuVO> pageInfo = new PageInfo<>(list);
-		return new GenericPage<>(pageNo, pageInfo.getTotal(), list);
+		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = { EhCacheNames.MENU_TREE_CACHE })
+	@Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
 	public List<GenericTreeNode> getMenuTree() {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();

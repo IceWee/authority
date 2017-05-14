@@ -27,11 +27,11 @@ public class SysRoleResourceServiceImpl implements SysRoleResourceService {
 
 	@Override
 	public GenericPage<SysRoleResource> listByPage(SysRoleResourceCondition condition) {
-		Long pageNo = condition.getPageNo();
-		PageHelper.startPage(pageNo.intValue(), condition.getPageSize().intValue());
+		Long pageNumber = condition.getPageNumber();
+		PageHelper.startPage(pageNumber.intValue(), condition.getPageSize().intValue());
 		List<SysRoleResource> list = sysRoleResourceDao.listByCondition(condition);
 		PageInfo<SysRoleResource> pageInfo = new PageInfo<>(list);
-		return new GenericPage<>(pageNo, pageInfo.getTotal(), list);
+		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
 	}
 
 	@Override

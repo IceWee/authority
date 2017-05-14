@@ -16,7 +16,7 @@ public class SecurityConstants {
 
 	public static final String URI_LOGIN = "/login";
 
-	public static final String URI_LOGIN_SUCCESS = "/main";
+	public static final String URI_LOGIN_SUCCESS = "/index";
 
 	public static final String URI_LOGIN_FAILURE = "/login?error";
 
@@ -36,7 +36,7 @@ public class SecurityConstants {
 	/**
 	 * Public resource paths
 	 */
-	public static final String[] PUBLIC_RESOURCE_PATHS = { "/js/**", "/css/**", "/images/**", "/i18n/**" };
+	public static final String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
 
 	private SecurityConstants() {
 		super();

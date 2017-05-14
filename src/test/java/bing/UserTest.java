@@ -41,7 +41,7 @@ public class UserTest extends BaseTest {
 		sysUserCondition.setUsername("a");
 		GenericPage<SysUserVO> page = sysUserService.listByPage(sysUserCondition);
 		LOGGER.info("Pages: {}", page.getTotalPages());
-		LOGGER.info("Rows: {}", page.getTotalRows());
+		LOGGER.info("Rows: {}", page.getTotal());
 	}
 
 	@Test

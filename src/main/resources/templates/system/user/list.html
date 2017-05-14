@@ -1,88 +1,150 @@
 <!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="/common/header :: header(~{::title},~{::link})" />
-<title th:text="#{system.name}">认证与授权管理系统</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
-<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
-<script type="text/javascript" th:src="@{/js/crud.js}"></script>
-<script type="text/javascript" th:src="@{/js/lrListBox.js}"></script>
+<head th:replace="/common/base :: list_header(#{system.name},~{})" />
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
-		var error = /*[[${error}]]*/ null;
-		var message = /*[[${message}]]*/ null;
-		initListPageExt(error, message);
+		var tableId = "#table_list";
+		var searchFormId = "#form_search";
+		var searchBtnId = "#btn_search";
+		var resetBtnId = "#btn_reset";
+		var url = "/ajax/system/user/list";
+		$(tableId).bootstrapTable({
+			url: url, //这个接口需要处理bootstrap table传递的固定参数
+			dataType: "json",
+			responseHandler: function(res) {
+				if (res.code == "200") {
+					return res.data;
+				} else {
+					alert("数据加载失败");
+				}
+			},
+			striped: true,      //是否显示行间隔色
+			cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+			pagination: true,     //是否显示分页（*）
+			sortable: false,      //是否启用排序
+			sortOrder: "asc",     //排序方式
+			pageNumber: 1,      //初始化加载第一页，默认第一页
+			pageSize: 10,      //每页的记录行数（*）
+			pageList: [10, 20, 50, 100],  //可供选择的每页的行数（*）
+			// 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+			queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+			//前端调用服务时，会默认传递上边提到的参数，如果需要添加自定义参数，可以自定义一个函数返回请求参数
+			queryParams: function(params) {
+    	  		params.username = $("#username").val(),
+    	  		params.name = $("#name").val(),
+    	  		params.mobile = $("#mobile").val()
+    	  		return params;
+      		},
+			sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
+			search: false,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+			strictSearch: true, //设置为 true启用 全匹配搜索，否则为模糊搜索
+			showColumns: true,     //是否显示所有的列
+			showRefresh: true,     //是否显示刷新按钮
+			minimumCountColumns: 2,    //最少允许的列数
+			clickToSelect: true,    //是否启用点击选中行
+			searchOnEnterKey: true,
+			showToggle: true,
+			toolbar: "#toolbar",
+			iconSize: "outline",
+			icons: {
+				refresh: "glyphicon-repeat",
+				toggle: 'glyphicon-list-alt',
+		        columns: "glyphicon-list"
+			}
+		});
+		
+		// 查询
+		$(searchBtnId).click(function() {
+	        var params = $(tableId).bootstrapTable("getOptions"); 
+	        $(tableId).bootstrapTable("refresh", params)  
+	    }); 
+		
+		// 重置
+		$(resetBtnId).click(function() {
+			$(searchFormId)[0].reset();
+	        var params = $(tableId).bootstrapTable("getOptions"); 
+	        $(tableId).bootstrapTable("refresh", params)  
+	    });
 	});
-/*]]>*/
+		
+	// 操作按钮
+	function operationFormatter(value, row, index) {
+		var id = row.id;
+		var html = "";
+		var label_edit = $.i18n.prop("operate.edit");
+		var label_delete = $.i18n.prop("operate.delete");
+		var label_auth = $.i18n.prop("operate.authorize");
+		var label_lock = $.i18n.prop("operate.lock");
+		var label_unlock = $.i18n.prop("operate.unlock");
+		if (id) {
+			html += "<a href=\"#\" onclick=\"_edit('" + id + "')\"><span class=\"label label-primary\">" + label_edit + "</span></a>";  
+			html += "&nbsp;&nbsp;";
+			html += "<a href=\"#\" onclick=\"_delete('" + id + "')\"><span class=\"label label-danger\">" + label_delete + "</span></a>";  
+			html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openUserRoleAuth('" + row.id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_auth + "</span></a>";
+			if (row.status == 1) {
+				html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"unlockUser('" + row.id + "')\"><span class=\"label label-success\">" + label_unlock + "</span></a>";
+			} else {
+				html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"lockUser('" + row.id + "')\"><span class=\"label label-default\">" + label_lock + "</span></a>";
+			}
+		}
+		return html;
+	}
+	/*]]>*/
 </script>
 </head>
-<body>
-<div class="container-fluid">
-	<div class="row">
-		<div class="panel panel-default">
-			<!-- 导航 -->
-	  		<div class="panel-heading border-none padding-none" style="height:40px">
-				<ol class="breadcrumb">
-				  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{user.manage}">用户管理</span></li>
-				</ol>
-		  	</div>
-		  	<div class="panel-body border-none">
-		    	<div class="container-fluid">
-		    	<div class="row">
-			    	<div id="tips" class="alert" style="display:none;margin-bottom:0;border-bottom:0"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-					<table id="datagrid" style="width:100%;height:auto">
-						<thead>
-							<tr>
-								<th data-options="field:'_operate',width:20,align:'center',formatter:operateBtnHtmlExt">操作</th>
-								<th th:text="#{username}" data-options="field:'username',width:20">账号</th>
-								<th th:text="#{surname}" data-options="field:'name',width:10">姓名</th>
-								<th th:text="#{mobile}" data-options="field:'mobile',width:20">手机</th>
-								<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
-								<th th:text="#{create.date}" data-options="field:'createDate',width:20">创建日期</th>
-								<th th:text="#{create.user}" data-options="field:'createUser',width:20">创建人</th>
-								<th th:text="#{update.date}" data-options="field:'updateDate',width:20">更新日期</th>
-								<th th:text="#{update.user}" data-options="field:'updateUser',width:20">更新人</th>
-							</tr>
-						</thead>
-					</table>
-					<!-- 查询条件 -->
-					<div id="search_tools" style="padding:0 25px;">
-						<div class="conditions">
-							<form action="" method="post" id="form_list">
-								<input type="hidden" id="id" name="id" />
-								<label th:text="#{username}">账号</label>
-								<input name="username" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-								<label th:text="#{surname}">姓名</label>
-								<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-								<label th:text="#{mobile}">手机号</label>
-								<input name="mobile" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-								<label th:text="#{status}">状态</label>
-								<select class="easyui-combobox" data-options="editable:false" name="status" style="height:25px;width:200px">
-									<option value="" selected>全部</option>
-									<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
-								</select>
-								<button type="button" id="button_search" class="btn btn-primary">
-									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<span th:text="#{search}">查询</span>
-								</button>
-								&nbsp;&nbsp;
-								<button type="button" id="button_reset" class="btn btn-default">
-									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;<span th:text="#{reset}">重置</span>
-								</button>
-							</form>
-						</div>
-						<div class="opt-buttons">
-							<button type="button" id="button_add" class="btn btn-primary btn-sm">
-								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">新增</span>
-							</button>
-						</div>
-					</div>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+            <h5>用户列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+            	<div>
+            		<form id="form_search" role="form" class="form-inline">
+            			<div class="col-xs-10">
+	                		<div class="input-group">
+								<input type="text" th:placeholder="#{placeholder.username}" id="username" class="form-control">
+	                		</div>
+	                    	<div class="input-group">
+		                        <input type="text" th:placeholder="#{placeholder.surname}" id="name" class="form-control">
+	                		</div>
+	                    	<div class="input-group">
+		                        <input type="text" th:placeholder="#{placeholder.mobile}" id="mobile" class="form-control">
+	                		</div>
+            			</div>
+            			<div class="col-xs-2 text-right">
+		                    <button type="button" id="btn_search" class="btn btn-outline btn-primary">查询</button>
+		                    <button type="button" id="btn_reset" class="btn btn-outline btn-default">重置</button>
+            			</div>
+					</form>
+            	</div>
+				<div id="toolbar" class="btn-group hidden-xs" role="group">
+					<button id="btn_add" type="button" class="btn btn-outline btn-primary">
+				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span>新增</span>
+				 	</button>
 				</div>
-		    	</div>
-		    </div>
-		</div>
+                <table id="table_list" data-height="450" data-mobile-responsive="true">
+                    <thead>
+                        <tr>
+                        	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatter">操作</th>
+                            <th th:text="#{username}" data-field="username" data-align="center">账号</th>
+							<th th:text="#{surname}" data-field="name" data-align="center">姓名</th>
+							<th th:text="#{mobile}" data-field="mobile" data-align="center">手机</th>
+							<th th:text="#{status}" data-field="statusText" data-align="center">状态</th>
+							<th th:text="#{create.date}" data-field="createDate" data-align="center">创建日期</th>
+							<th th:text="#{create.user}" data-field="createUser" data-align="center">创建人</th>
+							<th th:text="#{update.date}" data-field="updateDate" data-align="center">更新日期</th>
+							<th th:text="#{update.user}" data-field="updateUser" data-align="center">更新人</th>
+                        </tr>
+                    </thead>
+				</table>
+            </div>
+        </div>
 	</div>
 </div>
-<!-- 用户角色授权弹出框框 -->
-<div th:replace="/common/lrListBox :: dialog_lr_list_box"></div>
 </body> 
 </html>

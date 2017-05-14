@@ -10,59 +10,59 @@ public class GenericPage<T> {
 
 	public final static long DEFAULT_PAGE_SIZE = 10;
 
-	protected long pageNo = 1;
+	protected long pageNumber = 1;
 	protected long pageSize = DEFAULT_PAGE_SIZE;
-	protected long totalRows = 0;
-	protected List<T> data = new ArrayList<>();
+	protected long total = 0;
+	protected List<T> rows = new ArrayList<>();
 
 	public GenericPage() {
 		super();
 	}
 
-	public GenericPage(long totalRows, List<T> data) {
+	public GenericPage(long total, List<T> rows) {
 		this();
-		this.totalRows = totalRows;
-		this.data = data;
+		this.total = total;
+		this.rows = rows;
 	}
 
-	public GenericPage(long pageSize, long totalRows, List<T> data) {
-		this(totalRows, data);
+	public GenericPage(long pageSize, long total, List<T> rows) {
+		this(total, rows);
 		this.pageSize = pageSize;
 	}
 
 	public long getTotalPages() {
-		long totalPages = totalRows / pageSize;
-		if (totalRows % pageSize > 0) {
+		long totalPages = total / pageSize;
+		if (total % pageSize > 0) {
 			totalPages++;
 		}
 		return totalPages;
 	}
 
-	public long getPageNo() {
-		return pageNo;
+	public long getPageNumber() {
+		return pageNumber;
 	}
 
-	public void setPageNo(long pageNo) {
-		this.pageNo = pageNo;
-		if (pageNo < 1) {
-			this.pageNo = 1;
+	public void setPageNumber(long pageNumber) {
+		this.pageNumber = pageNumber;
+		if (pageNumber < 1) {
+			this.pageNumber = 1;
 		}
 	}
 
-	public long getTotalRows() {
-		return totalRows;
+	public long getTotal() {
+		return total;
 	}
 
-	public void setTotalRows(long totalRows) {
-		this.totalRows = totalRows;
+	public void setTotal(long total) {
+		this.total = total;
 	}
 
-	public List<T> getData() {
-		return data;
+	public List<T> getRows() {
+		return rows;
 	}
 
-	public void setData(List<T> data) {
-		this.data = data;
+	public void setRows(List<T> rows) {
+		this.rows = rows;
 	}
 
 	public long getPageSize() {
@@ -73,28 +73,28 @@ public class GenericPage<T> {
 		this.pageSize = pageSize;
 	}
 
-	public long getPreviousPageNo() {
+	public long getPreviousPageNumber() {
 		if (hasPreviousPage()) {
-			return pageNo - 1;
+			return pageNumber - 1;
 		} else {
-			return pageNo;
+			return pageNumber;
 		}
 	}
 
-	public long getNextPageNo() {
+	public long getNextPageNumber() {
 		if (hasNextPage()) {
-			return pageNo + 1;
+			return pageNumber + 1;
 		} else {
-			return pageNo;
+			return pageNumber;
 		}
 	}
 
 	public boolean hasPreviousPage() {
-		return (pageNo - 1 >= 1);
+		return (pageNumber - 1 >= 1);
 	}
 
 	public boolean hasNextPage() {
-		return (pageNo + 1 <= getTotalPages());
+		return (pageNumber + 1 <= getTotalPages());
 	}
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import bing.constant.GlobalConstants;
 import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericTreeNode;
+import bing.security.SecurityConstants;
 import bing.system.model.SysUser;
 import bing.system.service.SysMenuService;
 import bing.web.controller.GenericController;
@@ -25,7 +26,7 @@ public class MainController extends GenericController {
 	@Autowired
 	private SysMenuService sysMenuService;
 
-	@RequestMapping(value = { "/main", "/" })
+	@RequestMapping(value = {"/index", "/"})
 	public String main(HttpSession session, Model model, @CurrentLoggedUser SysUser currentUser) {
 		if (currentUser != null) {
 			session.setAttribute(GlobalConstants.SESSION_ATTRIBUTE_CURRENT_USER, currentUser);
@@ -34,10 +35,10 @@ public class MainController extends GenericController {
 		}
 		List<GenericTreeNode> menus = sysMenuService.listMenuByUserId(currentUser.getId());
 		model.addAttribute("menus", menus);
-		return "main";
+		return "index";
 	}
 
-	@RequestMapping(value = "/accessDenied")
+	@RequestMapping(value = SecurityConstants.URI_ACCESS_DENIED)
 	public String accessDenied() {
 		return "accessDenied";
 	}
