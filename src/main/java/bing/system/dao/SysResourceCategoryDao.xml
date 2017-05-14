@@ -25,10 +25,7 @@
 		delete from sys_resource_category
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="bing.system.model.SysResourceCategory">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
+	<insert id="insert" parameterType="bing.system.model.SysResourceCategory" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_resource_category (name, parent_id, status,
 		remark, create_date, create_user,
 		update_date, update_user)
@@ -37,10 +34,7 @@
 		#{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
 		#{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
 	</insert>
-	<insert id="insertSelective" parameterType="bing.system.model.SysResourceCategory">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
+	<insert id="insertSelective" parameterType="bing.system.model.SysResourceCategory" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_resource_category
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="name != null">
