@@ -11,26 +11,6 @@ body {
 	padding: 0px;
 }
 
-.input-default {
-	width: 200px;
-}
-
-.input-large {
-	width: 400px;
-}
-
-.select-default {
-	width: 200px;
-}
-
 a:link, a:hover, a:active, a:visited {
 	text-decoration: none;
-}
-
-.panel-min-height-default {
-	min-height: 400px;
-}
-
-.tree-panel-max-height-default {
-	max-height: 100px
 }
