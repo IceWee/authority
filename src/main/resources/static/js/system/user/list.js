@@ -1,7 +1,7 @@
 
 // 初始化列表页面
 function initListPage() {
-	$("#table_list").btable({url: "/ajax/system/user/list"});
+	$("#container_users").btable({url: "/ajax/system/user/list"});
 }
 
 // 操作按钮

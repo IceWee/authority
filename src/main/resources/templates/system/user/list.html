@@ -3,11 +3,12 @@
 <head th:replace="/common/base :: list_header(#{system.name},~{})" />
 <!-- 自定义js -->
 <script th:src="@{/js/content.js?v=1.0.0}"></script>
-<script th:src="@{/js/jquery.extend.js}"></script>
 <script th:src="@{/js/system/user/list.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
+		var error = /*[[${error}]]*/ null;
+		var message = /*[[${message}]]*/ null;
 		initListPage();
 	});
 	/*]]>*/
@@ -20,7 +21,7 @@
             <h5>用户列表</h5>
         </div>
         <div class="ibox-content">
-            <div class="row">
+            <div id="container_users" class="row">
            		<form id="form_search" role="form" class="form-inline">
            			<div class="col-xs-10 padding-none">
                 		<div class="input-group">
@@ -48,9 +49,8 @@
 					<button id="btn_add" type="button" class="btn btn-outline btn-primary">
 				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span>新增</span>
 				 	</button>
-            </select>
 				</div>
-                <table id="table_list" data-height="400" data-show-export="true">
+                <table id="table_list" data-height="410" data-show-export="true">
                     <thead>
                         <tr>
                         	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatter">操作</th>
