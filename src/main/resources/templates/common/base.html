@@ -1,3 +1,4 @@
+<!-- 通用header模板 -->
 <head th:fragment="header(title, links)">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +9,16 @@
 <link type="text/css" rel="stylesheet" th:href="@{/css/font-awesome.min.css?v=4.4.0}" />
 <link type="text/css" rel="stylesheet" th:href="@{/css/animate.css}" />
 <link type="text/css" rel="stylesheet" th:href="@{/css/style.css?v=4.1.0}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/plugins/toastr/toastr.min.css?v=2.1.1}" />
 <link type="text/css" rel="stylesheet" th:href="@{/css/default.css}" />
 <!-- 全局js -->
 <script type="text/javascript" th:src="@{/js/jquery.min.js?v=2.2.4}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.i18n.properties.min.js?v=1.0.9}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/toastr/toastr.min.js?v=2.1.1}"></script>
 <script type="text/javascript" th:src="@{/js/json2.js}"></script>
 <script type="text/javascript" th:src="@{/js/i18n.js}"></script>
-<script th:src="@{/js/jquery.extend.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.extend.js}"></script>
 <!--/* Per-page placeholder for additional links */-->
 <th:block th:replace="${links}" />
 </head>
@@ -32,19 +35,50 @@
 <link type="text/css" rel="stylesheet" th:href="@{/css/animate.css}" />
 <link type="text/css" rel="stylesheet" th:href="@{/css/style.css?v=4.1.0}" />
 <link type="text/css" rel="stylesheet" th:href="@{/css/plugins/bootstrap-table/bootstrap-table.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/plugins/toastr/toastr.min.css?v=2.1.1}" />
 <link type="text/css" rel="stylesheet" th:href="@{/css/default.css}" />
 <!-- 全局js -->
 <script type="text/javascript" th:src="@{/js/jquery.min.js?v=2.2.4}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.i18n.properties.min.js?v=1.0.9}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/toastr/toastr.min.js?v=2.1.1}"></script>
 <script type="text/javascript" th:src="@{/js/json2.js}"></script>
 <script type="text/javascript" th:src="@{/js/i18n.js}"></script>
 <!-- Bootstrap table -->
-<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
-<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
-<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
-<script th:src="@{/js/jquery.extend.js}"></script>
-<script th:src="@{/js/jquery.bootstrap.table.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.extend.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.bootstrap.table.js}"></script>
+<!--/* Per-page placeholder for additional links */-->
+<th:block th:replace="${links}" />
+</head>
+
+<!-- 表单页header模板 -->
+<head th:fragment="detail_header(title, links)">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<title th:text="${title}">标题</title>
+<!-- 全局css -->
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css?v=3.3.7}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/font-awesome.min.css?v=4.4.0}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/animate.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/style.css?v=4.1.0}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/plugins/toastr/toastr.min.css?v=2.1.1}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/default.css}" />
+<!-- 全局js -->
+<script type="text/javascript" th:src="@{/js/jquery.min.js?v=2.2.4}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.i18n.properties.min.js?v=1.0.9}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/toastr/toastr.min.js?v=2.1.1}"></script>
+<script type="text/javascript" th:src="@{/js/json2.js}"></script>
+<script type="text/javascript" th:src="@{/js/i18n.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.extend.js}"></script>
+<!-- jQuery Validation plugin javascript-->
+<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/validate/locale/messages_zh.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validator.extend.js}"></script>
 <!--/* Per-page placeholder for additional links */-->
 <th:block th:replace="${links}" />
 </head>

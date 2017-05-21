@@ -2,14 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="/common/base :: list_header(#{system.name},~{})" />
 <!-- 自定义js -->
-<script th:src="@{/js/content.js?v=1.0.0}"></script>
-<script th:src="@{/js/system/user/list.js}"></script>
+<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
+<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
+<script type="text/javascript" th:src="@{/js/curd.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initListPage();
+		initListPage(error, message);
 	});
 	/*]]>*/
 </script>
@@ -18,10 +19,10 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
-            <h5>用户列表</h5>
+            <h5 th:text="#{user.list}">用户列表</h5>
         </div>
         <div class="ibox-content">
-            <div id="container_users" class="row">
+            <div id="container" class="row">
            		<form id="form_search" role="form" class="form-inline">
            			<div class="col-xs-10 padding-none">
                 		<div class="input-group">
@@ -41,19 +42,19 @@
                 		</div>
            			</div>
            			<div class="col-xs-2 text-right padding-none">
-	                    <button type="button" id="btn_search" class="btn btn-outline btn-primary">查询</button>
-	                    <button type="button" id="btn_reset" class="btn btn-outline btn-default">重置</button>
+	                    <button type="button" id="btn_search" class="btn btn-outline btn-primary" th:text="#{search}">查询</button>
+	                    <button type="button" id="btn_reset" class="btn btn-outline btn-default" th:text="#{reset}">重置</button>
            			</div>
 				</form>
 				<div id="toolbar" class="btn-group hidden-xs" role="group">
-					<button id="btn_add" type="button" class="btn btn-outline btn-primary">
-				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span>新增</span>
+					<button id="button_add" type="button" class="btn btn-outline btn-primary">
+				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">添加</span>
 				 	</button>
 				</div>
                 <table id="table_list" data-height="410" data-show-export="true">
                     <thead>
                         <tr>
-                        	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatter">操作</th>
+                        	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatterExt">操作</th>
                             <th th:text="#{username}" data-field="username" data-align="center">账号</th>
 							<th th:text="#{surname}" data-field="name" data-align="center">姓名</th>
 							<th th:text="#{mobile}" data-field="mobile" data-align="center">手机</th>
