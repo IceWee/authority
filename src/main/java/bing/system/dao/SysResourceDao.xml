@@ -180,7 +180,7 @@
 			and category_id = #{categoryId,jdbcType=INTEGER}
 		</if>
 		<if test="name != null and name != ''">
-			and name like concat(#{name,jdbcType=VARCHAR}, '%')
+			and name like #{name,jdbcType=VARCHAR}"%"
 		</if>
 		<if test="type != null">
 			and type = #{type,jdbcType=INTEGER}

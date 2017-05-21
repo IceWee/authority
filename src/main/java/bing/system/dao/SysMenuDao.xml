@@ -175,7 +175,7 @@
 			and m.parent_id = #{parentId,jdbcType=INTEGER}
 		</if>
 		<if test="name != null and name != ''">
-			and m.name like concat(#{name,jdbcType=VARCHAR}, '%')
+			and m.name like #{name,jdbcType=VARCHAR}"%"
 		</if>
 		<if test="status != null">
 			and m.status = #{status,jdbcType=INTEGER} order by sort

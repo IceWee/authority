@@ -71,7 +71,7 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		LOGGER.info("********************* FormLoginWebSecurityConfigurerAdapter *************************");
+		LOGGER.info("********************* HttpSecurityConfig *************************");
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
 		http.authorizeRequests().antMatchers(SecurityConstants.URI_LOGIN).permitAll()
