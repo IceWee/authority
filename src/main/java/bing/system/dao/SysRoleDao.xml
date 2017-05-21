@@ -164,10 +164,10 @@
 		from sys_role
 		where hidden = 0 and status != 2
 		<if test="code != null and code != ''">
-			and code like concat(#{code,jdbcType=VARCHAR}, '%')
+			and code like #{code,jdbcType=VARCHAR}"%"
 		</if>
 		<if test="name != null and name != ''">
-			and name like concat(#{name,jdbcType=VARCHAR}, '%')
+			and name like #{name,jdbcType=VARCHAR}"%"
 		</if>
 		<if test="status != null">
 			and status = #{status,jdbcType=INTEGER}
