@@ -32,12 +32,9 @@
                     	<div class="input-group">
 	                        <input type="text" th:placeholder="#{placeholder.mobile}" name="mobile" class="form-control">
                 		</div>
-                		<div class="form-group">
-                			<span th:text="#{status}" style="padding:10px;">状态</span>
-                		</div>
                 		<div  class="input-group">
 							<select class="form-control m-b" name="status">
-                				<option value="" selected>全部</option>
+                				<option value="" selected th:text="#{status.all}">全部状态</option>
 								<option th:each="status : ${statusList}" th:text="${status.label}" th:value="${status.value}"></option>
 							</select>
                 		</div>
@@ -51,8 +48,9 @@
 					<button id="btn_add" type="button" class="btn btn-outline btn-primary">
 				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span>新增</span>
 				 	</button>
+            </select>
 				</div>
-                <table id="table_list" data-height="400">
+                <table id="table_list" data-height="400" data-show-export="true">
                     <thead>
                         <tr>
                         	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatter">操作</th>

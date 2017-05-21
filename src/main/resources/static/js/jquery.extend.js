@@ -49,6 +49,7 @@ $.extend({
 		}
 		
 		init(opts);
+		initExport(opts);
 		
 		var enterSearch = opts.enterSearch == undefined ? true : opts.enterSearch;
 		// 绑定文本框回车触发查询事件
@@ -71,7 +72,14 @@ $.extend({
 		});
 	};
 	
-	
+	function initExport(opts) {
+		var $table = $("#" + opts.tableId);
+		$(opts.toolbar).find("select").change(function () {
+            $table.bootstrapTable("destroy").bootstrapTable({
+                exportDataType: $(this).val()
+            });
+        });
+	}
 	
 	// 表格初始化
 	function init(opts) {
