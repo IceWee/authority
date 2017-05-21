@@ -1,8 +1,8 @@
 // bootstrap table 封装
+var OK = "200";
 (function($) {
 	$.fn.btable = function(options) {
 		var self = this;
-		var OK = "200";
 		var containerId = this.selector;
 		
 		this._settings = {
@@ -46,7 +46,7 @@
 					if (json.code == OK) {
 						return json.data;
 					} else {
-						alert("数据加载失败");
+						$.errorTips(json.message);
 					}
 				},
 				striped: true,      //是否显示行间隔色
@@ -85,7 +85,7 @@
 			
 			// 窗口大小变化自动该调整表头
 			 $(window).resize(function () {
-//				 $("#" + opts.tableId).bootstrapTable('resetView');
+				 $(options.tableId).bootstrapTable("resetView");
 			 });
 		};
 		
@@ -116,7 +116,7 @@
 			var options = this._settings;
 			var params = $(options.tableId).bootstrapTable("getOptions"); 
 	        $(options.tableId).bootstrapTable("refresh", params);
-		}
+		};
 		
 		// 重置表单
 		this._resetForm = function() {
@@ -125,7 +125,7 @@
 			if (options.resetDosearch) {
 				self._search();
 			}
-		}
+		};
 		
 		this._init();
 		return this;

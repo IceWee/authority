@@ -3,8 +3,9 @@
 <head th:replace="/common/base :: list_header(#{system.name},~{})" />
 <!-- 自定义js -->
 <script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
-<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.select.box.js}"></script>
 <script type="text/javascript" th:src="@{/js/curd.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
@@ -16,7 +17,7 @@
 </script>
 </head>
 <body class="gray-bg">
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInLeft">
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
             <h5 th:text="#{user.list}">用户列表</h5>
@@ -24,6 +25,7 @@
         <div class="ibox-content">
             <div id="container" class="row">
            		<form id="form_search" role="form" class="form-inline">
+           		<input type="hidden" id="id" name="id" />
            			<div class="col-xs-10 padding-none">
                 		<div class="input-group">
 							<input type="text" th:placeholder="#{placeholder.username}" name="username" class="form-control">
@@ -51,7 +53,7 @@
 				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">添加</span>
 				 	</button>
 				</div>
-                <table id="table_list" data-height="410" data-show-export="true">
+                <table id="table_list" data-height="410" data-row-style="rowStyle">
                     <thead>
                         <tr>
                         	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatterExt">操作</th>
@@ -70,5 +72,7 @@
         </div>
 	</div>
 </div>
+<!-- 角色授权弹出框 -->
+<div th:replace="/common/selectBox :: select_box"></div>
 </body> 
 </html>

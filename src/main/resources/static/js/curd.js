@@ -12,6 +12,14 @@ function showErrorOrMessage(error, message) {
 	}
 }
 
+// 默认行样式处理
+function rowStyle(row, index) {
+	if (row.status && row.status == 1) { // 锁定
+		return {classes: "info"};
+	}
+	return {};
+}
+
 /*************************** list begin *****************************/
 // 初始化列表页面
 function initListPage(error, message) {
@@ -52,10 +60,20 @@ function _edit(id) {
 
 // 删除
 function _delete(id) {
-	// TODO 删除确认提示框
-	$("#" + HIDDEN_ID).val(id);
-	$("#" + FORM_ID_LIST).attr("action", URI_DELETE);
-	$("#" + FORM_ID_LIST).submit();
+	parent.layer.confirm($.i18n.prop("delete.prompt"), {
+		title: $.i18n.prop("tip.info"),
+		closeBtn: 0, // 不显示关闭按钮
+		shadeClose: true, // 开启遮罩关闭
+		skin: "layui-layer-molv", // 样式类名
+	    btn: ["确定", "取消"] //按钮
+	}, function(){
+		parent.layer.closeAll();
+		$("#" + HIDDEN_ID).val(id);
+		$("#" + FORM_ID_LIST).attr("action", URI_DELETE);
+		$("#" + FORM_ID_LIST).submit();
+	}, function(){
+		parent.layer.closeAll();
+	});
 }
 /*************************** list end *****************************/
 

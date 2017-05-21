@@ -14,6 +14,11 @@ var BTN_SAVE_ID = "button_save"; // 保存按钮ID
 var BTN_BACK_ID = "button_back"; // 返回按钮ID
 var HIDDEN_ID = "id"; // 隐藏域主键ID属性
 /*************************固定常量 end*************************/
+//自定义常量
+var URI_LOCK = "/system/user/lock"; // 锁定用户
+var URI_UNLOCK = "/system/user/unlock"; // 解除锁定用户
+var URI_AJAX_ROLE_LIST = "/ajax/system/role/list"; // 获取用户已选/未选角色列表
+var URI_AJAX_ROLE_SAVE = "/ajax/system/role/save"; // 保存用户角色授权
 
 // 扩展操作按钮
 function operationFormatterExt(value, row, index) {
@@ -33,14 +38,121 @@ function operationFormatterExt(value, row, index) {
 	return html;
 }
 
-// 新增页面初始化
+// 添加页面初始化
 function initAddPageExt(error, message) {
 	initAddPage(error, message);
-	
+	// 角色多选
 	$("#roleIds").chosen({
 		width: "100%",
 		disable_search_threshold: true, 
 		allow_single_deselect: true, 
 		no_results_text: $.i18n.prop("result.nomatch")
+	});
+}
+
+// 编辑页面初始化
+function initEditPageExt(error, message) {
+	initEditPage(error, message);
+	// 角色多选
+	$("#roleIds").chosen({
+		width: "100%",
+		disable_search_threshold: true, 
+		allow_single_deselect: true, 
+		no_results_text: $.i18n.prop("result.nomatch")
+	});
+}
+
+// 锁定用户
+function lockUser(userId) {
+	parent.layer.confirm($.i18n.prop("lock.prompt"), {
+		title: $.i18n.prop("tip.info"),
+		closeBtn: 0, // 不显示关闭按钮
+		shadeClose: true, // 开启遮罩关闭
+		skin: "layui-layer-molv", // 样式类名
+	    btn: ["确定", "取消"] //按钮
+	}, function(){
+		parent.layer.closeAll();
+		$("#" + HIDDEN_ID).val(userId);
+		$("#" + FORM_ID_LIST).attr("action", URI_LOCK);
+		$("#" + FORM_ID_LIST).submit();
+	}, function(){
+		parent.layer.closeAll();
+	});
+}
+
+// 解除锁定用户
+function unlockUser(userId) {
+	parent.layer.confirm($.i18n.prop("unlock.prompt"), {
+		title: $.i18n.prop("tip.info"),
+		closeBtn: 0, // 不显示关闭按钮
+		shadeClose: true, // 开启遮罩关闭
+		skin: "layui-layer-molv", // 样式类名
+	    btn: ["确定", "取消"] //按钮
+	}, function(){
+		parent.layer.closeAll();
+		$("#" + HIDDEN_ID).val(userId);
+		$("#" + FORM_ID_LIST).attr("action", URI_UNLOCK);
+		$("#" + FORM_ID_LIST).submit();
+	}, function(){
+		parent.layer.closeAll();
+	});
+}
+
+//用户角色授权
+function openUserRoleAuth(userId, name) {
+	$.ajax({
+		type : "GET",
+		url : URI_AJAX_ROLE_LIST + "/" + userId,
+		dataType : "json",
+		success : function(json) {
+			if (json.code == OK) {
+				$("#dialog_select_box").selectBox({
+					title: name,
+					leftTitle: $.i18n.prop("role.unselect"),
+					rightTitle: $.i18n.prop("role.selected"),
+					valueField: "id",
+				    textField: "name",
+				    leftList: json.data.unselectRoles,
+				    rightList: json.data.selectedRoles,
+				    saveCallback: function(checkedRows) {
+				    	saveUserRoleAuth(userId, checkedRows);
+				    }
+				});
+			} else {
+				$.errorTips(json.message);
+			}
+		},
+		error : function() {
+			$.errorTips($.i18n.prop("http.request.failed"), tipsId);
+		}
+	});
+}
+
+// 保存用户角色授权
+function saveUserRoleAuth(userId, checkedRows) {
+	var roleIdArray = [];
+	for (var i = 0; i < checkedRows.length; i++) {
+		roleIdArray.push(checkedRows[i].id);
+	}
+	var data = {userId: userId, roleIds: roleIdArray};
+	var tipsId = "_tips_lr_list_box";
+	$.ajax({
+		type : "POST",
+		url : URI_AJAX_ROLE_SAVE,
+		dataType : "json",
+		data : data,
+		traditional: true,
+		success : function(json) {
+			var code = json.code;
+			if (code == CODE_OK) {
+				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
+			} else {
+				var msg = json.message;
+				showErrorTips(msg, tipsId);
+			}
+		},
+		error : function() {
+			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
+		}
 	});
 }

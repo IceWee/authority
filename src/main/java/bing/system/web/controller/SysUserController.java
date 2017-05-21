@@ -1,5 +1,6 @@
 package bing.system.web.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,12 +121,17 @@ public class SysUserController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model) {
+	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
 		}
 		try {
+			Date now = new Date();
+			entity.setCreateUser(currentUser.getName());
+			entity.setCreateDate(now);
+			entity.setUpdateUser(currentUser.getName());
+			entity.setUpdateDate(now);
 			sysUserService.save(entity);
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -154,12 +160,14 @@ public class SysUserController extends GenericController {
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String update(@Validated SysUser entity, BindingResult bindingResult, Model model) {
+	public String update(@Validated SysUser entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return EDIT;
 		}
 		try {
+			entity.setUpdateUser(currentUser.getName());
+			entity.setUpdateDate(new Date());
 			sysUserService.updateWithRole(entity);
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -173,7 +181,7 @@ public class SysUserController extends GenericController {
 	@RequestMapping(DELETE)
 	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
 		try {
-			String username = currentUser.getUsername();
+			String username = currentUser.getName();
 			sysUserService.deleteById(id, username);
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -242,7 +250,7 @@ public class SysUserController extends GenericController {
 	@RequestMapping(LOCK)
 	public String lock(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
 		try {
-			String username = currentUser.getUsername();
+			String username = currentUser.getName();
 			sysUserService.lockById(id, username);
 		} catch (Exception e) {
 			LOGGER.error("{}锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -262,7 +270,7 @@ public class SysUserController extends GenericController {
 	@RequestMapping(UNLOCK)
 	public String unlock(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
 		try {
-			String username = currentUser.getUsername();
+			String username = currentUser.getName();
 			sysUserService.unlockById(id, username);
 		} catch (Exception e) {
 			LOGGER.error("{}解除锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title th:text="#{system.name}">认证与授权管理系统</title>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="/common/header :: header(~{::title},~{::link})" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
+<head th:replace="/common/base :: detail_header(#{system.name},~{::link})" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/plugins/chosen/css/chosen.min.css}" />
+<!-- 自定义js -->
+<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/chosen/chosen.jquery.min.js?v=1.7.0}"></script>
+<script type="text/javascript" th:src="@{/js/curd.js}"></script>
 <script type="text/javascript" th:src="@{/js/system/user.js}"></script>
-<script type="text/javascript" th:src="@{/js/crud.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
@@ -14,101 +14,62 @@
 		var message = /*[[${message}]]*/ null;
 		initEditPageExt(error, message);
 	});
-/*]]>*/
+	/*]]>*/
 </script>
 </head>
-<body>
-<form id="form_default" method="post">
-<div class="container-fluid" th:object="${bean}">
-<input type="hidden" th:value="*{id}" name="id"></input>
-<input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
-	<div class="row">
-		<div class="panel panel-default">
-	  		<div class="panel-heading padding-none" style="height:40px">
-				<ol class="breadcrumb">
-				  	<li><a href="/system/user/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{user.manage}">用户管理</span></a></li>
-				  	<li class="active" th:text="#{user.edit}">编辑用户</li>
-				</ol>
-		  	</div>
-		  	<div class="panel-body panel-min-height-default">
-		    	<div class="container-fluid" style="width: 100%">
-		    		<div class="row">
-			    		<div id="tips" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-		    		</div>
-		    		<div style="margin-top: 20px"></div>
-			    	<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{username}">账号</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{username}" type="text" id="username" name="username" readonly="readonly"></input>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{surname}">姓名</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{mobile}">手机</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{mobile}" type="text" name="mobile" data-options="required:false,validType:['mobile']"></input>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{status}">状态</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
-		    					<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
-		    				</select>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{create.user}">创建人</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{updateUser}" type="text" id="createUser" name="createUser" readonly="readonly"></input>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{create.date}">创建日期</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="${#dates.format(#object.createDate,'yyyy-MM-dd')}" type="text" id="createDate" name="createDate" readonly="readonly"></input>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{roles}">角色</label>
-						</div>
-						<div class="col-md-10 text-left">
-			    			<select name="roleIds" id="roleIds" multiple class="chosen-select" data-placeholder=" ">
-								<option th:each="role : ${roleList}" th:selected="${#lists.contains(#object.roleIds,role.id)}" th:text="${role.name}" th:value="${role.id}"></option>
-		    				</select>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div style="text-align:center;padding:5px">
-						<button type="button" id="button_back" class="btn btn-default">
-							<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
-						</button>
-						&nbsp;&nbsp;
-				    	<button type="button" id="button_update" class="btn btn-primary">
-							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
-						</button>
-				    </div>
-				    <div style="margin-bottom: 20px"></div>
+<body class="gray-bg" th:object="${bean}">
+<div class="wrapper wrapper-content animated fadeInLeft">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+            <h5 th:text="#{user.edit}">用户编辑</h5>
+        </div>
+        <div class="ibox-content">
+            <div id="container" class="row">
+            <form id="form_detail" class="form-horizontal m-t" method="post">
+			<input type="hidden" th:value="*{id}" name="id"></input>
+            	<div class="form-group">
+					<label class="col-xs-2 control-label" th:text="#{username}">账号</label>
+   					<div class="col-xs-3">
+       					<input type="username" id="username" name="username" class="form-control" th:value="*{username}" required />
+   					</div>
+   					<label class="col-xs-2 control-label" th:text="#{surname}">姓名</label>
+   					<div class="col-xs-3">
+       					<input type="surname" id="surname" name="name" class="form-control" th:value="*{name}" required />
+   					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-2 control-label" th:text="#{mobile}">手机</label>
+   					<div class="col-xs-3">
+       					<input type="mobile" id="mobile" name="mobile" class="form-control" th:value="*{mobile}" required />
+   					</div>
+   					<label class="col-xs-2 control-label" th:text="#{status}">状态</label>
+   					<div class="col-xs-3">
+       					<select class="form-control m-b" id="status" name="status">
+							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
+	    				</select>
+   					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-2 control-label" th:text="#{roles}">角色</label>
+   					<div class="col-xs-3">
+       					<select id="roleIds" name="roleIds" multiple class="chosen-select" data-placeholder=" ">
+							<option th:each="role : ${roleList}" th:selected="${#lists.contains(#object.roleIds,role.id)}" th:text="${role.name}" th:value="${role.id}"></option>
+	    				</select>
+   					</div>
+				</div>
+				<div class="form-group text-center">
+					<button type="button" id="button_back" class="btn btn-default">
+						<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+					</button>
+					&nbsp;&nbsp;
+			    	<button type="button" id="button_save" class="btn btn-primary">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
+					</button>
 			    </div>
-	    	</div>
-	    </div>
-	</div>
+			</form>
+            </div>
+        </div>
+    </div>
 </div>
-</form>
 </body>
 </html>

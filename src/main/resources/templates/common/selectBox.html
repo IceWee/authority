@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 左右多选框弹出框 -->
+<div th:fragment="select_box" id="dialog_select_box" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+        		<h4 class="modal-title" id="title_select_box">标题</h4>
+      		</div>
+      		<div class="modal-body">
+		    	<div class="container-fluid" style="width: 100%">
+			   		<div class="row">
+						<div class="col-md-5">
+			  				<h4 id="title_left_select_box" th:title="#{unselect}">未选</h4>
+			  				<table id="left_select_box" data-show-columns="true" data-height="400"></table>
+						</div>
+						<div class="col-md-2" style="height:250px;padding-top:100px;padding-left:35px">
+			    			<button id="button_left_select_box" class="btn btn-primary">
+			                    <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span th:text="#{add}">添加</span>
+			                </button>
+			                <br/><br/>
+			                <button id="button_right_select_box" class="btn btn-primary">
+			                    <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span th:text="#{remove}">移除</span>
+			                </button>
+						</div>
+						<div class="col-md-5">
+							<h4 id="title_right_select_box" th:title="#{selected}">已选</h4>
+			  				<table id="right_select_box" data-show-columns="true" data-height="400"></table>
+						</div>
+				    </div>
+				</div>
+	    	</div>
+	    	<div class="modal-footer">
+	    		<button id="button_cancel_select_box" class="btn btn-default">
+                    <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+                </button>
+                <button id="button_save_select_box" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-ok"></span>&nbsp;<span th:text="#{save}">保存</span>
+                </button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+</html>
