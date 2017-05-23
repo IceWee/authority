@@ -19,7 +19,8 @@ var OK = "200";
 			showColumns: false,
 			showRefresh: true,
 			clickToSelect: true,
-			resetDosearch: true
+			resetDosearch: true,
+			striped: true
 		};
 		
 		// 初始化

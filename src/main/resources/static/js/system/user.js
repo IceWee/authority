@@ -110,8 +110,9 @@ function openUserRoleAuth(userId, name) {
 					title: name,
 					leftTitle: $.i18n.prop("role.unselect"),
 					rightTitle: $.i18n.prop("role.selected"),
-					valueField: "id",
+					idField: "id",
 				    textField: "name",
+				    showText: "名称",
 				    leftList: json.data.unselectRoles,
 				    rightList: json.data.selectedRoles,
 				    saveCallback: function(checkedRows) {
@@ -135,7 +136,6 @@ function saveUserRoleAuth(userId, checkedRows) {
 		roleIdArray.push(checkedRows[i].id);
 	}
 	var data = {userId: userId, roleIds: roleIdArray};
-	var tipsId = "_tips_lr_list_box";
 	$.ajax({
 		type : "POST",
 		url : URI_AJAX_ROLE_SAVE,
@@ -144,15 +144,15 @@ function saveUserRoleAuth(userId, checkedRows) {
 		traditional: true,
 		success : function(json) {
 			var code = json.code;
-			if (code == CODE_OK) {
-				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
+			if (code == OK) {
+				$.successTips($.i18n.prop("save.success"));
 			} else {
 				var msg = json.message;
-				showErrorTips(msg, tipsId);
+				$.errorTips(msg);
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
+			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 }
