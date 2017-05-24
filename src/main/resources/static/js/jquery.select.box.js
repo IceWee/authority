@@ -5,7 +5,6 @@
 (function($) {
 	$.fn.selectBox = function(options) {
 		var self = this;
-		var OK = "200";
 		var containerId = this.selector;
 		
 		this._settings = {
