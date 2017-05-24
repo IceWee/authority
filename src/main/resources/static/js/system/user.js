@@ -28,11 +28,11 @@ function operationFormatterExt(value, row, index) {
 	var label_lock = $.i18n.prop("operate.lock");
 	var label_unlock = $.i18n.prop("operate.unlock");
 	if (id) {
-		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openUserRoleAuth('" + row.id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_auth + "</span></a>";
+		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openUserRoleAuth('" + id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_auth + "</span></a>";
 		if (row.status == 1) {
-			html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"unlockUser('" + row.id + "')\"><span class=\"label label-success\">" + label_unlock + "</span></a>";
+			html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"unlockUser('" + id + "')\"><span class=\"label label-success\">" + label_unlock + "</span></a>";
 		} else {
-			html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"lockUser('" + row.id + "')\"><span class=\"label label-default\">" + label_lock + "</span></a>";
+			html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"lockUser('" + id + "')\"><span class=\"label label-default\">" + label_lock + "</span></a>";
 		}
 	}
 	return html;

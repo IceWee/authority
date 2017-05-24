@@ -1,36 +1,35 @@
-// 固定常量，必须这样命名，否则crud.js无法正常运行
-var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
-var FORM_ID_LIST = "#form_list"; // 列表页表单ID
-var URI_AJAX_LIST = "/ajax/system/role/list"; // 列表页获取列表数据异步URI
+/*************************固定常量 begin***********************/
+//固定常量，必须这样命名，否则curd.js无法正常运行
+var URI_AJAX_LIST = "/ajax/system/role/list";
 var URI_LIST = "/system/role/list"; // 列表页面URI
 var URI_ADD = "/system/role/add"; // 新增页面URI
 var URI_SAVE = "/system/role/save"; // 保存URI
 var URI_EDIT = "/system/role/edit"; // 编辑页面URI
 var URI_UPDATE = "/system/role/update"; // 更新URI
 var URI_DELETE = "/system/role/delete"; // 删除URI
-var BTN_ADD_ID = "#button_add"; // 增加按钮ID
-var BTN_SAVE_ID = "#button_save"; // 保存按钮ID
-var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
-var BTN_BACK_ID = "#button_back"; // 返回按钮ID
-var PARAM_ID = "#id"; // ID属性名
+var FORM_ID_DETAIL = "form_detail"; // 详情页（新增或编辑）表单ID
+var FORM_ID_LIST = "form_search"; // 列表页表单ID
+var BTN_ADD_ID = "button_add"; // 增加按钮ID
+var BTN_SAVE_ID = "button_save"; // 保存按钮ID
+var BTN_BACK_ID = "button_back"; // 返回按钮ID
+var HIDDEN_ID = "id"; // 隐藏域主键ID属性
+/*************************固定常量 end*************************/
 //自定义常量
 var URI_AJAX_USER_LIST = "/ajax/system/user/list"; // 获取用户列表
 var URI_AJAX_USER_SAVE = "/ajax/system/user/save"; // 保存角色用户关系
 var URI_AJAX_RESOURCE_TREE = "/ajax/system/resource/tree"; // 资源树
 var URI_AJAX_RESOURCE_SAVE = "/ajax/system/resource/save"; // 保存角色资源关系
 
-//列表页面初始化
-function initListPageExt(error, message) {
-	initListPage(error, message);
-}
-
 //操作按钮扩展
-function operateBtnHtmlExt(value, row, index) {
-	var html = operateBtnHtml(value, row, index);
+function operationFormatterExt(value, row, index) {
+	var html = operationFormatter(value, row, index);
+	var id = row.id;
 	var label_user = $.i18n.prop("operate.authorize.user");
 	var label_res = $.i18n.prop("operate.authorize.resource");
-	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openConfigUser('" + row.id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_user + "</span></a>";
-	html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openConfigRes('" + row.id + "', '" + row.name + "')\"><span class=\"label label-success\">" + label_res + "</span></a>";
+	if (id) {
+		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openConfigUser('" + id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_user + "</span></a>";
+		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openConfigRes('" + id + "', '" + row.name + "')\"><span class=\"label label-success\">" + label_res + "</span></a>";
+	}
 	return html;
 }
 
