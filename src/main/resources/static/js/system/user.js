@@ -112,7 +112,7 @@ function openUserRoleAuth(userId, name) {
 					rightTitle: $.i18n.prop("role.selected"),
 					idField: "id",
 				    textField: "name",
-				    showText: "名称",
+				    showText: $.i18n.prop("role.name"),
 				    leftList: json.data.unselectRoles,
 				    rightList: json.data.selectedRoles,
 				    saveCallback: function(checkedRows) {
@@ -124,7 +124,7 @@ function openUserRoleAuth(userId, name) {
 			}
 		},
 		error : function() {
-			$.errorTips($.i18n.prop("http.request.failed"), tipsId);
+			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 }
@@ -143,8 +143,7 @@ function saveUserRoleAuth(userId, checkedRows) {
 		data : data,
 		traditional: true,
 		success : function(json) {
-			var code = json.code;
-			if (code == OK) {
+			if (json.code == OK) {
 				$.successTips($.i18n.prop("save.success"));
 			} else {
 				var msg = json.message;

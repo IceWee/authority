@@ -1,88 +1,65 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title th:text="#{system.name}">认证与授权管理系统</title>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="/common/header :: header(~{::title},~{::link})" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
+<head th:replace="/common/base :: detail_header(#{system.name},~{})" />
+<!-- 自定义js -->
+<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
+<script type="text/javascript" th:src="@{/js/curd.js}"></script>
 <script type="text/javascript" th:src="@{/js/system/role.js}"></script>
-<script type="text/javascript" th:src="@{/js/crud.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initEditPageExt(error, message);
+		initEditPage(error, message);
 	});
-/*]]>*/
+	/*]]>*/
 </script>
 </head>
-<body>
-<form id="form_default" method="post">
-<div class="container-fluid" th:object="${bean}">
-<input type="hidden" th:value="*{id}" name="id"></input>
-<input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
-	<div class="row">
-		<div class="panel panel-default">
-	  		<div class="panel-heading padding-none" style="height:40px">
-				<ol class="breadcrumb">
-				  	<li><a href="/system/role/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{role.manage}">角色管理</span></a></li>
-				  	<li class="active" th:text="#{role.add}">编辑角色</li>
-				</ol>
-		  	</div>
-		  	<div class="panel-body panel-min-height-default">
-		    	<div class="container-fluid" style="width: 100%">
-		    		<div class="row">
-			    		<div id="tips" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-		    		</div>
-		    		<div style="margin-top: 20px"></div>
-			    	<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{code}">编码</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{code}" type="text" id="code" name="code" readonly="readonly"></input>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{name}">名称</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{status}">状态</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
-								<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
-		    				</select>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{remark}">备注</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{remark}" type="text" name="remark" data-options="multiline:true"></input>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div style="text-align:center;padding:5px">
-						<button type="button" id="button_back" class="btn btn-default">
-							<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
-						</button>
-						&nbsp;&nbsp;
-				    	<button type="button" id="button_update" class="btn btn-primary">
-							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
-						</button>
-				    </div>
-				    <div style="margin-bottom: 20px"></div>
+<body class="gray-bg" th:object="${bean}">
+<div class="wrapper wrapper-content animated fadeInLeft">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+            <h5 th:text="#{role.edit}">角色编辑</h5>
+        </div>
+        <div class="ibox-content">
+            <div id="container" class="row">
+            <form id="form_detail" class="form-horizontal m-t" method="post">
+            <input type="hidden" th:value="*{id}" name="id" />
+            	<div class="form-group">
+					<label class="col-xs-2 control-label" th:text="#{code}">编码</label>
+   					<div class="col-xs-3">
+   						<input type="code" id="code" name="code" class="form-control" th:value="*{code}" readonly="readonly" />
+   					</div>
+   					<label class="col-xs-2 control-label" th:text="#{name}">名称</label>
+   					<div class="col-xs-3">
+       					<input type="name" id="name" name="name" class="form-control" th:value="*{name}" maxlength="32" required />
+   					</div>
+				</div>
+				<div class="form-group">
+   					<label class="col-xs-2 control-label" th:text="#{status}">状态</label>
+   					<div class="col-xs-3">
+       					<select class="form-control m-b" id="status" name="status">
+							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
+	    				</select>
+   					</div>
+   					<label class="col-xs-2 control-label" th:text="#{remark}">备注</label>
+   					<div class="col-xs-3">
+       					<textarea id="remark" name="remark" th:text="*{remark}" class="form-control" rows="3"></textarea>
+   					</div>
+				</div>
+				<div class="form-group text-center">
+					<button type="button" id="button_back" class="btn btn-default">
+						<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+					</button>
+					&nbsp;&nbsp;
+			    	<button type="button" id="button_save" class="btn btn-primary">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
+					</button>
 			    </div>
-	    	</div>
-	    </div>
-	</div>
+			</form>
+            </div>
+        </div>
+    </div>
 </div>
-</form>
 </body>
 </html>

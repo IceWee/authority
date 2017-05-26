@@ -35,3 +35,11 @@ $.validator.methods.surname = function(value, element) {
 $.validator.methods.mobile = function(value, element) {
 	return this.optional(element) || /^(13|14|15|17|18)\d{9}$/i.test(value);
 };
+// 编码
+$.validator.methods.code = function(value, element) {
+	return this.optional(element) || /^[a-zA-Z0-9]+$/i.test(value);
+};
+// 名称
+$.validator.methods.name = function(value, element) {
+	return this.optional(element) || /^[a-zA-Z0-9\u4E00-\u9FA5]+$/i.test(value);
+};

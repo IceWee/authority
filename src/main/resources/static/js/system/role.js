@@ -88,34 +88,31 @@ function saveRoleResources(roleId, checkedNodes) {
 
 // 配置用户
 function openConfigUser(roleId, roleName) {
-	$("#roleId").val(roleId);
-	var tipsId = "_tips_lr_list_box";
 	$.ajax({
 		type : "GET",
 		url : URI_AJAX_USER_LIST + "/" + roleId,
 		dataType : "json",
 		success : function(json) {
-			if (json.code == CODE_OK) {
-				if (json.data) {
-					openLRListBoxDialog({
-						title: roleName,
-						leftTitle: $.i18n.prop("user.unselect"),
-						rightTitle: $.i18n.prop("user.selected"),
-						valueField: "id",
-					    textField: "name",
-					    leftList: json.data.unselectUsers,
-					    rightList: json.data.selectedUsers,
-					    saveCallback: function(checkedRows) {
-					    	saveRoleUsers(roleId, checkedRows);
-					    }
-					});
-				}
+			if (json.code == OK) {
+				$("#dialog_select_box").selectBox({
+					title: roleName,
+					leftTitle: $.i18n.prop("user.unselect"),
+					rightTitle: $.i18n.prop("user.selected"),
+					idField: "id",
+				    textField: "name",
+				    showText: $.i18n.prop("user.name"),
+				    leftList: json.data.unselectUsers,
+				    rightList: json.data.selectedUsers,
+				    saveCallback: function(checkedRows) {
+				    	saveRoleUsers(roleId, checkedRows);
+				    }
+				});
 			} else {
-				showErrorTips(json.message, tipsId);
+				$.errorTips(json.message);
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
+			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 }
@@ -127,7 +124,6 @@ function saveRoleUsers(roleId, checkedRows) {
 		userIdArray.push(checkedRows[i].id);
 	}
 	var data = {roleId: roleId, userIds: userIdArray};
-	var tipsId = "_tips_lr_list_box";
 	$.ajax({
 		type : "POST",
 		url : URI_AJAX_USER_SAVE,
@@ -135,22 +131,14 @@ function saveRoleUsers(roleId, checkedRows) {
 		data : data,
 		traditional: true,
 		success : function(json) {
-			var code = json.code;
-			if (code == CODE_OK) {
-				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
+			if (json.code == OK) {
+				$.successTips($.i18n.prop("save.success"));
 			} else {
-				var msg = json.message;
-				showErrorTips(msg, tipsId);
+				$.errorTips(json.message);
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
+			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});
-}
-
-//编辑页面初始化扩展
-function initEditPageExt(error, message) {
-	initEditPage(error, message)
-	readonlyColor("code");
 }
