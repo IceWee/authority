@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="common/base :: header(~{::title},~{::link})" />
-<title th:text="#{system.name}">认证与授权管理系统</title>
+<head th:include="common/base :: header(#{system.name},~{::link})" />
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/base.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/js/uimaker/css/login/login.css}" />
 <script type="text/javascript" th:src="@{/js/system/login.js}"></script>

@@ -58,7 +58,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 	public List<URISecurityConfigs> listURISecurityConfigs() {
 		List<URISecurityConfigs> uriSecurityConfigs = new ArrayList<>();
 		// uri - 角色code 列表，多对多
-		List<URIRole> uriRoles = sysRoleResourceDao.listAllURIRoleCode();
+		List<URIRole> uriRoles = sysRoleResourceDao.listAllURIRole();
 		// distinct uri， 产生不重复的URI
 		List<String> uris = uriRoles.stream().map(bean -> bean.getUri()).distinct().collect(Collectors.toList());
 		// 遍历URI构造返回类型并添加到返回集合中

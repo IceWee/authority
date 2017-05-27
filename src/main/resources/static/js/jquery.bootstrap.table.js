@@ -1,5 +1,4 @@
 // bootstrap table 封装
-var OK = "200";
 (function($) {
 	$.fn.btable = function(options) {
 		var self = this;
@@ -21,6 +20,11 @@ var OK = "200";
 			clickToSelect: true,
 			resetDosearch: true,
 			striped: true
+		};
+		
+		// 刷新列表
+		this.refresh = function() {
+			this._search();
 		};
 		
 		// 初始化

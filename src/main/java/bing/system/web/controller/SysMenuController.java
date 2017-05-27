@@ -21,7 +21,7 @@ import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericPage;
-import bing.domain.GenericTreeNode;
+import bing.domain.MenuTreeNode;
 import bing.system.condition.SysMenuCondition;
 import bing.system.constant.SystemMessageKeys;
 import bing.system.model.SysMenu;
@@ -78,9 +78,9 @@ public class SysMenuController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_MENU_TREE, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<List<GenericTreeNode>> menuTree() {
-		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
-		List<GenericTreeNode> menus = sysMenuService.getMenuTree();
+	public RestResponse<List<MenuTreeNode>> menuTree() {
+		RestResponse<List<MenuTreeNode>> response = new RestResponse<>();
+		List<MenuTreeNode> menus = sysMenuService.getMenuTree();
 		response.setData(menus);
 		return response;
 	}
@@ -92,9 +92,9 @@ public class SysMenuController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_MENU_TREE + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<List<GenericTreeNode>> menuTreeExclude(@PathVariable(required = true) Integer id) {
-		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
-		List<GenericTreeNode> menus = sysMenuService.getMenuTree(id);
+	public RestResponse<List<MenuTreeNode>> menuTreeExclude(@PathVariable(required = true) Integer id) {
+		RestResponse<List<MenuTreeNode>> response = new RestResponse<>();
+		List<MenuTreeNode> menus = sysMenuService.getMenuTree(id);
 		response.setData(menus);
 		return response;
 	}

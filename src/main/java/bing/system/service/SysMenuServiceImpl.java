@@ -17,12 +17,10 @@ import com.github.pagehelper.PageInfo;
 import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
-import bing.constant.TreeNodeTypeEnum;
 import bing.domain.GenericPage;
-import bing.domain.GenericTreeNode;
+import bing.domain.MenuTreeNode;
 import bing.exception.BusinessException;
 import bing.system.condition.SysMenuCondition;
-import bing.system.constant.TreeNodeIdPrefixes;
 import bing.system.dao.SysMenuDao;
 import bing.system.dao.SysResourceDao;
 import bing.system.exception.MenuExceptionCodes;
@@ -85,39 +83,39 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	@Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
-	public List<GenericTreeNode> getMenuTree() {
+	public List<MenuTreeNode> getMenuTree() {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
-		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
-		GenericTreeNode.buildGenericTree(treeNodes, convertMenu(menus));
+		List<MenuTreeNode> treeNodes = convertMenu(topMenus);
+		MenuTreeNode.buildMenuTree(treeNodes, convertMenu(menus));
 		return treeNodes;
 	}
 
 	@Override
-	public List<GenericTreeNode> getMenuTree(Integer id) {
+	public List<MenuTreeNode> getMenuTree(Integer id) {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
-		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
-		List<GenericTreeNode> allTreeNodes = convertMenu(menus);
-		List<GenericTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !Objects.equals(treeNode.getAttribute(GlobalConstants.ATTRIBUT_ID), id)).collect(Collectors.toList());
-		GenericTreeNode.buildGenericTree(treeNodes, treeNodesExclude);
+		List<MenuTreeNode> treeNodes = convertMenu(topMenus);
+		List<MenuTreeNode> allTreeNodes = convertMenu(menus);
+		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !Objects.equals(treeNode.getId(), id)).collect(Collectors.toList());
+		MenuTreeNode.buildMenuTree(treeNodes, treeNodesExclude);
 		return treeNodes;
 	}
 
 	@Override
-	public List<GenericTreeNode> listMenuByUserId(Integer userId) {
+	public List<MenuTreeNode> listMenuByUserId(Integer userId) {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
 		List<Integer> ownResourceIds = sysResourceDao.listResourceIdByUserId(userId);
 		// 迭代全部菜单，未绑定资源的忽略，绑定资源的需要与用户具备的资源比较，不包含则删除菜单
 		List<SysMenuVO> ownMenus = menus.stream().filter(menu -> (menu.getResourceId() == null) || (ownResourceIds.contains(menu.getResourceId()))).collect(Collectors.toList());
-		List<GenericTreeNode> treeNodes = convertMenu(topMenus);
-		GenericTreeNode.buildGenericTree(treeNodes, convertMenu(ownMenus));
+		List<MenuTreeNode> treeNodes = convertMenuWithUrl(topMenus);
+		MenuTreeNode.buildMenuTree(treeNodes, convertMenuWithUrl(ownMenus));
 		// 移除顶级空菜单，即没子菜单的菜单
-		GenericTreeNode topNode;
-		GenericTreeNode lv2Node;
-		Iterator<GenericTreeNode> topIt = treeNodes.iterator();
-		Iterator<GenericTreeNode> lv2It;
+		MenuTreeNode topNode;
+		MenuTreeNode lv2Node;
+		Iterator<MenuTreeNode> topIt = treeNodes.iterator();
+		Iterator<MenuTreeNode> lv2It;
 		while (topIt.hasNext()) {
 			topNode = topIt.next();
 			lv2It = topNode.getChildren().iterator();
@@ -132,25 +130,43 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	/**
-	 * 将资源分类列表转换为节点列表
+	 * 生成菜单树节点
 	 * 
-	 * @param sysResourceCategories
+	 * @param sysMenus
 	 * @return
 	 */
-	private List<GenericTreeNode> convertMenu(List<SysMenuVO> sysMenus) {
-		List<GenericTreeNode> treeNodes = new ArrayList<>();
-		GenericTreeNode treeNode;
+	private List<MenuTreeNode> convertMenu(List<SysMenuVO> sysMenus) {
+		List<MenuTreeNode> treeNodes = new ArrayList<>();
+		MenuTreeNode treeNode;
 		Integer id;
 		for (SysMenuVO sysMenu : sysMenus) {
 			id = sysMenu.getId();
-			treeNode = new GenericTreeNode();
-			treeNode.setId(TreeNodeIdPrefixes.MENU + id);
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, id);
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysMenu.getParentId());
-			// 一定要设置type为branch否则禁止添加leaf
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, TreeNodeTypeEnum.BRANCH.ordinal());
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_URL, sysMenu.getUrl());
-			treeNode.setText(sysMenu.getName());
+			treeNode = new MenuTreeNode();
+			treeNode.setId(Objects.toString(id));
+			treeNode.setName(sysMenu.getName());
+			treeNode.setParentId(Objects.toString(sysMenu.getParentId()));
+			treeNodes.add(treeNode);
+		}
+		return treeNodes;
+	}
+
+	/**
+	 * 生成菜单树节点
+	 * 
+	 * @param sysMenus
+	 * @return
+	 */
+	private List<MenuTreeNode> convertMenuWithUrl(List<SysMenuVO> sysMenus) {
+		List<MenuTreeNode> treeNodes = new ArrayList<>();
+		MenuTreeNode treeNode;
+		Integer id;
+		for (SysMenuVO sysMenu : sysMenus) {
+			id = sysMenu.getId();
+			treeNode = new MenuTreeNode();
+			treeNode.setId(Objects.toString(id));
+			treeNode.setName(sysMenu.getName());
+			treeNode.setParentId(Objects.toString(sysMenu.getParentId()));
+			treeNode.setUrl(sysMenu.getUrl());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;

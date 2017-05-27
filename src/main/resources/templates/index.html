@@ -38,12 +38,12 @@
                 <li th:each="menu1 : ${menu.children}">
                     <a href="javascript:void(0)">
                         <i class="fa fa-desktop"></i>
-                        <span class="nav-label" th:text="${menu1.text}">一级菜单名称</span>
+                        <span class="nav-label" th:text="${menu1.name}">一级菜单名称</span>
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level" >
                         <li th:each="menu2 : ${menu1.children}">
-                            <a class="J_menuItem" th:href="${menu2.attributes.url}" data-index="0" th:text="${menu2.text}">二级菜单名称</a>
+                            <a class="J_menuItem" th:href="${menu2.url}" data-index="0" th:text="${menu2.name}">二级菜单名称</a>
                         </li>
                     </ul>
                 </li>

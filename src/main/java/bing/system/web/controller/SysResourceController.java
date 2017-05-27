@@ -24,8 +24,8 @@ import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericPage;
-import bing.domain.GenericTreeNode;
 import bing.domain.LabelValueBean;
+import bing.domain.ResourceTreeNode;
 import bing.system.condition.SysResourceCondition;
 import bing.system.constant.ResourceTypeEnum;
 import bing.system.constant.SystemMessageKeys;
@@ -114,9 +114,9 @@ public class SysResourceController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_CATEGORY_TREE, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<List<GenericTreeNode>> categoryTree() {
-		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
-		List<GenericTreeNode> categories = sysResourceService.getCategoryTree();
+	public RestResponse<List<ResourceTreeNode>> categoryTree() {
+		RestResponse<List<ResourceTreeNode>> response = new RestResponse<>();
+		List<ResourceTreeNode> categories = sysResourceService.getCategoryTree();
 		response.setData(categories);
 		return response;
 	}
@@ -163,18 +163,18 @@ public class SysResourceController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_RESOURCE_TREE + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<List<GenericTreeNode>> resourceTreeByRole(@PathVariable Integer roleId) {
-		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
-		List<GenericTreeNode> resources = sysResourceService.getResourceTree(roleId);
+	public RestResponse<List<ResourceTreeNode>> resourceTreeByRole(@PathVariable Integer roleId) {
+		RestResponse<List<ResourceTreeNode>> response = new RestResponse<>();
+		List<ResourceTreeNode> resources = sysResourceService.getResourceTree(roleId);
 		response.setData(resources);
 		return response;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_RESOURCE_TREE, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<List<GenericTreeNode>> resourceTree() {
-		RestResponse<List<GenericTreeNode>> response = new RestResponse<>();
-		List<GenericTreeNode> resources = sysResourceService.getResourceTree();
+	public RestResponse<List<ResourceTreeNode>> resourceTree() {
+		RestResponse<List<ResourceTreeNode>> response = new RestResponse<>();
+		List<ResourceTreeNode> resources = sysResourceService.getResourceTree();
 		response.setData(resources);
 		return response;
 	}

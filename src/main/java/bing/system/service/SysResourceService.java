@@ -3,7 +3,7 @@ package bing.system.service;
 import java.util.List;
 
 import bing.domain.GenericService;
-import bing.domain.GenericTreeNode;
+import bing.domain.ResourceTreeNode;
 import bing.system.condition.SysResourceCondition;
 import bing.system.model.SysResource;
 import bing.system.model.SysResourceCategory;
@@ -11,7 +11,7 @@ import bing.system.vo.SysResourceVO;
 
 public interface SysResourceService extends GenericService<SysResource, SysResourceVO, SysResourceCondition> {
 
-	List<GenericTreeNode> getCategoryTree();
+	List<ResourceTreeNode> getCategoryTree();
 
 	SysResourceCategory getCategoryById(Integer categoryId);
 
@@ -27,8 +27,8 @@ public interface SysResourceService extends GenericService<SysResource, SysResou
 	 * @param roleId
 	 * @return
 	 */
-	List<GenericTreeNode> getResourceTree(Integer roleId);
+	List<ResourceTreeNode> getResourceTree(Integer roleId);
 
-	List<GenericTreeNode> getResourceTree();
+	List<ResourceTreeNode> getResourceTree();
 
 }

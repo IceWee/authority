@@ -150,7 +150,7 @@
 	    	#{entity.updateDate,jdbcType=TIMESTAMP}, #{entity.updateUser,jdbcType=VARCHAR}) 
 	    </foreach>
 	</insert>
-	<select id="listAllURIRoleCode" resultMap="URIRoleResultMap">
+	<select id="listAllURIRole" resultMap="URIRoleResultMap">
 		select rr.id, rs.url, ro.code from sys_resource rs, sys_role_resource rr, sys_role ro
 		where rs.id = rr.resource_id and rr.role_id = ro.id
 		and ro.status != 2 and rs.status != 2

@@ -1,31 +1,23 @@
-// Bootstrap Modal+zTree
+// JQuery ztree
 (function($) {
-	$.fn.dialogzTree = function(options) {
+	$.fn.easyzTree = function(options) {
 		var self = this;
-		var containerId = this.selector;
+		var treeId = this.selector;
 		this._zTree = {}; // ztree对象引用
 		this._settings = {
 			url : "",
 			async : false, // 异步加载
 			asyncUrl : "",
-			chkEnable : true,
+			chkEnable : false,
 			chkStyle : "checkbox",
 			chkboxType : { "Y": "ps", "N": "ps" },
-			showAtonce : false, // 是否立即显示弹出框
-			inputId : null, // 触发显示弹出框的输入框ID
-			showFooter : true, // 是否显示确认取消按钮
-			closeAfterConfirm : false, // 单选选中后自动共关闭弹出框
 			checkedIds : [], // 用于回显，已选节点ID数组
 			autoParam : ["id"]
 		};
 		this._init = function() {
 			this._settings = $.extend(self._settings, options);
-			this._settings.treeId = containerId + " #_ztree";
-			this._settings.toolbar = containerId + " #_toolbar_ztree";
-			this._settings.btnConfirmId = containerId + " #_button_confirm_ztree";
-			this._settings.btnCancelId = containerId + " #_button_cancel_ztree";
 			var zTreeSettings = {
-				treeId : self._settings.treeId,
+				treeId : treeId,
 				check : {
 					enable: self._settings.chkEnable,
 					chkStyle: self._settings.chkStyle,
@@ -42,7 +34,7 @@
 					// check事件
 					onCheck : function(event, treeId, treeNode) {
 						if (treeNode.checked && $.isFunction(self._settings.checkCallback)) {
-							self._settings.checkCallback(event, treeId, treeNode);
+							self._settings.checkCallback(treeNode, self);
 						}
 					},
 					// 点击节点事件
@@ -50,7 +42,7 @@
 						var zTree = self._zTree;
 						var node = zTree.getNodeByTId(treeNode.tId);
 						if (node.isParent) {
-							if (node.children.length == 0) {
+							if (self._settings.async && node.children.length == 0) {
 								$.ajax({  
 					                type: "GET",  
 					                async : false,  
@@ -71,17 +63,14 @@
 							} else {
 								zTree.expandNode(node, true, false, true);
 							}
-				        }  
+				        }
+						if ($.isFunction(self._settings.selectCallback)) {
+							self._settings.selectCallback(treeNode, self);
+						}
 					}
 				}
 			}
-			this._initDialog();
 			this._initzTree(zTreeSettings);
-			this._bindButtonEvents();
-		};
-		// 关闭
-		this.closeTree = function() {
-			this._hideDialog();
 		};
 		// 获取全部选中节点
 		this.getCheckedNodes = function() {
@@ -91,70 +80,52 @@
 		this.getSelectedNodes = function() {
 			return this._zTree.getSelectedNodes();
 		};
-		// 初始化弹出框
-		this._initDialog = function() {
-			if (this._settings.showAtonce) {
-				this._showDialog();
-			}
+		// 展开节点
+		this.expandNode = function(node) {
+			this._zTree.expandNode(node, true, false, true);
+			return this;
 		};
-		// 显示弹出框
-		this._showDialog = function() {
-			$(this._settings.dialogId).modal({
-				backdrop: false, // 点击空白区域不关闭弹出框
-				keyboard: false	 // 按ESC键不关闭弹出框
-			});
+		// 选中节点
+		this.selectNode = function(node) {
+			this._zTree.selectNode(node);
+			return this;
 		};
-		// 隐藏弹出框
-		this._hideDialog = function() {
-			$(this._settings.dialogId).modal("hide");
-			$.clearTips();
+		// 获取根节点
+		this.getRootNode = function() {
+			return this._zTree.getNodesByFilter(function(node) {
+				return node.level = 1;
+			}, true);
 		};
+		// 根据ID获取节点
+		this.getNodeById = function(id) {
+			return this._zTree.getNodesByFilter(function(node) {
+				return node.id = id;
+			}, true);
+		}
 		// 初始化zTree
 		this._initzTree = function(settings) {
+			var options = self._settings;
 			$.ajax({
 				type : "GET",
 				url : self._settings.url,
 				data : {checkedCodes : self._settings.checkedIds},
 				dataType : "json",
-				success : function(nodes) {
-					self._zTree = $.fn.zTree.init($(self._settings.treeId), settings, nodes);
+				success : function(json) {
+					if (json.code == OK) {
+						self._zTree = $.fn.zTree.init($(treeId), settings, json.data);
+						if ($.isFunction(options.completeCallback)) {
+							options.completeCallback(self);
+						}
+					} else {
+						$.errorTips(json.message);
+					}
 				},
 				error : function() {
 					$.errorTips($.i18n.prop("load.failed"));
 				}
 			});
 		};
-		// 事件按钮绑定
-		this._bindButtonEvents = function() {
-			var options = this._settings;
-			// 触发inputId
-			if ($(options.inputId)) {
-				$("#" + options.inputId).bind("click", function() {
-					self._showDialog();
-				});
-			}
-			// 显示确认、取消按钮
-			if (options.showFooter) {
-				// 取消
-				$(options.btnCancelId).click(function() {
-					self._hideDialog();
-				});
-				
-				// 确认
-				$(options.btnConfirmId).on("click", function() {
-					var nodes = self.getCheckedNodes();
-					if ($.isFunction(options.confirmCallback)) {
-						options.confirmCallback(nodes);
-					}
-					if (options.closeAfterConfirm) {
-						self._hideDialog();
-					}
-				});
-			} else {
-				$(options.footerId).hide();
-			}
-		};
 		self._init();
 		return this;
-	}
+	};
 })(jQuery);

@@ -17,9 +17,8 @@ import com.github.pagehelper.PageInfo;
 import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
-import bing.constant.TreeNodeTypeEnum;
 import bing.domain.GenericPage;
-import bing.domain.GenericTreeNode;
+import bing.domain.ResourceTreeNode;
 import bing.exception.BusinessException;
 import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
@@ -132,11 +131,11 @@ public class SysResourceServiceImpl implements SysResourceService {
 
 	@Override
 	@Cacheable(cacheNames = {EhCacheNames.CATEGORY_TREE_CACHE})
-	public List<GenericTreeNode> getCategoryTree() {
+	public List<ResourceTreeNode> getCategoryTree() {
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
-		List<GenericTreeNode> treeNodes = convertResourceCategory(topCategories);
-		GenericTreeNode.buildGenericTree(treeNodes, convertResourceCategory(categories));
+		List<ResourceTreeNode> treeNodes = convertResourceCategory(topCategories);
+		ResourceTreeNode.buildResourceTree(treeNodes, convertResourceCategory(categories));
 		return treeNodes;
 	}
 
@@ -177,15 +176,15 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
-	public List<GenericTreeNode> getResourceTree(Integer roleId) {
+	public List<ResourceTreeNode> getResourceTree(Integer roleId) {
 		List<SysResource> resources = sysResourceDao.listAll();
-		List<GenericTreeNode> resourceTreeNodes = convertResource(resources);
+		List<ResourceTreeNode> resourceTreeNodes = convertResource(resources);
 		List<SysResource> ownSysResources = sysResourceDao.listByRoleId(roleId);
-		List<GenericTreeNode> checkedResourceNodes = convertResource(ownSysResources);
+		List<ResourceTreeNode> checkedResourceNodes = convertResource(ownSysResources);
 		// 迭代全部资源并自动勾选已授权的节点
 		resourceTreeNodes.forEach(treeNode -> {
 			checkedResourceNodes.forEach(checkedNode -> {
-				if (Objects.equals(treeNode.getAttribute(GlobalConstants.ATTRIBUT_ID), checkedNode.getAttribute(GlobalConstants.ATTRIBUT_ID))) {
+				if (Objects.equals(treeNode.getRid(), checkedNode.getRid())) {
 					treeNode.setChecked(true);
 				}
 			});
@@ -193,37 +192,37 @@ public class SysResourceServiceImpl implements SysResourceService {
 		});
 		// 遍历资源分类挂接资源
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
-		List<GenericTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
+		List<ResourceTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
-		List<GenericTreeNode> categoryTreeNodes = convertResourceCategory(categories);
-		categoryTreeNodes.forEach(branch -> branch.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
+		List<ResourceTreeNode> categoryTreeNodes = convertResourceCategory(categories);
+		categoryTreeNodes.forEach(category -> category.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
 		// 将资源分类节点与资源节点合并递归构造树形结构
 		categoryTreeNodes.addAll(resourceTreeNodes);
-		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);
+		ResourceTreeNode.buildResourceTree(topCategoryTreeNodes, categoryTreeNodes);
 		return topCategoryTreeNodes;
 	}
 
 	@Override
 	@Cacheable(cacheNames = {EhCacheNames.RESOURCE_TREE_CACHE})
-	public List<GenericTreeNode> getResourceTree() {
+	public List<ResourceTreeNode> getResourceTree() {
 		List<SysResource> resources = sysResourceDao.listAll();
-		List<GenericTreeNode> resourceTreeNodes = convertResource(resources);
+		List<ResourceTreeNode> resourceTreeNodes = convertResource(resources);
 		resourceTreeNodes.forEach(leaf -> leaf.setIconCls(GlobalConstants.EASYUI_ICON_CLS_LEAF));
 		// 遍历资源分类挂接资源
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
-		List<GenericTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
+		List<ResourceTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
-		List<GenericTreeNode> categoryTreeNodes = convertResourceCategory(categories);
+		List<ResourceTreeNode> categoryTreeNodes = convertResourceCategory(categories);
 		categoryTreeNodes.forEach(branch -> branch.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
 		// 挂接资源
-		categoryTreeNodes.forEach(branch -> {
-			resourceTreeNodes.forEach(leaf -> {
-				if (Objects.equals(branch.getAttribute(GlobalConstants.ATTRIBUT_ID), leaf.getAttribute(GlobalConstants.ATTRIBUT_PARENT_ID))) {
-					branch.addChild(leaf);
+		categoryTreeNodes.forEach(category -> {
+			resourceTreeNodes.forEach(resource -> {
+				if (Objects.equals(category.getRid(), resource.getParentId())) {
+					category.addChild(resource);
 				}
 			});
 		});
-		GenericTreeNode.buildGenericTree(topCategoryTreeNodes, categoryTreeNodes);
+		ResourceTreeNode.buildResourceTree(topCategoryTreeNodes, categoryTreeNodes);
 		return topCategoryTreeNodes;
 	}
 
@@ -233,18 +232,18 @@ public class SysResourceServiceImpl implements SysResourceService {
 	 * @param sysResourceCategories
 	 * @return
 	 */
-	private List<GenericTreeNode> convertResourceCategory(List<SysResourceCategory> sysResourceCategories) {
-		List<GenericTreeNode> treeNodes = new ArrayList<>();
-		GenericTreeNode treeNode;
+	private List<ResourceTreeNode> convertResourceCategory(List<SysResourceCategory> sysResourceCategories) {
+		List<ResourceTreeNode> treeNodes = new ArrayList<>();
+		ResourceTreeNode treeNode;
 		Integer id;
 		for (SysResourceCategory sysResourceCategory : sysResourceCategories) {
 			id = sysResourceCategory.getId();
-			treeNode = new GenericTreeNode();
+			treeNode = new ResourceTreeNode();
 			treeNode.setId(TreeNodeIdPrefixes.RESOURCE_CATEGORY + id);
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, sysResourceCategory.getId());
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysResourceCategory.getParentId());
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, TreeNodeTypeEnum.BRANCH.ordinal());
-			treeNode.setText(sysResourceCategory.getName());
+			treeNode.setRid(Objects.toString(id));
+			treeNode.setParentId(Objects.toString(sysResourceCategory.getParentId()));
+			treeNode.setNodeType(ResourceTreeNode.CATEGORY);
+			treeNode.setName(sysResourceCategory.getName());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;
@@ -256,18 +255,18 @@ public class SysResourceServiceImpl implements SysResourceService {
 	 * @param sysResources
 	 * @return
 	 */
-	private List<GenericTreeNode> convertResource(List<SysResource> sysResources) {
-		List<GenericTreeNode> treeNodes = new ArrayList<>();
-		GenericTreeNode treeNode;
+	private List<ResourceTreeNode> convertResource(List<SysResource> sysResources) {
+		List<ResourceTreeNode> treeNodes = new ArrayList<>();
+		ResourceTreeNode treeNode;
 		Integer id;
 		for (SysResource sysResource : sysResources) {
 			id = sysResource.getId();
-			treeNode = new GenericTreeNode();
+			treeNode = new ResourceTreeNode();
 			treeNode.setId(TreeNodeIdPrefixes.RESOURCE + id);
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_ID, id);
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_PARENT_ID, sysResource.getCategoryId());
-			treeNode.setAttribute(GlobalConstants.ATTRIBUT_TYPE, TreeNodeTypeEnum.LEAF.ordinal());
-			treeNode.setText(sysResource.getName());
+			treeNode.setRid(Objects.toString(id));
+			treeNode.setParentId(Objects.toString(sysResource.getCategoryId()));
+			treeNode.setNodeType(ResourceTreeNode.RESOURCE);
+			treeNode.setName(sysResource.getName());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;

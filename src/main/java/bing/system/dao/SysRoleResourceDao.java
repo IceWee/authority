@@ -33,6 +33,6 @@ public interface SysRoleResourceDao {
 	 * 
 	 * @return
 	 */
-	List<URIRole> listAllURIRoleCode();
+	List<URIRole> listAllURIRole();
 
 }

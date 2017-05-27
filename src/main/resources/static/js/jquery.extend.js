@@ -1,3 +1,5 @@
+var OK = "200";
+
 // 将表单序列化成JSON对象
 // 依赖JQuery的serializeArray方法
 (function($) {
@@ -43,25 +45,29 @@ $.extend({
 	// 成功提示
 	successTips: function(msg, options) {
 		toastr.options = $.extend(toastrOptions, options);
-		toastr.success("", msg);
+		toastr.success(msg);
 	},
 	// 一般提示
 	infoTips: function(msg, options) {
 		toastr.options = $.extend(toastrOptions, options);
-		toastr.info("", msg);
+		toastr.info(msg);
 	},
 	// 警告提示，不自动消失，包含关闭按钮
 	warnTips: function(msg, options) {
 		toastr.options = $.extend(toastrOptions, options);
 		toastr.options.timeOut = 0;
 		toastr.options.closeButton = true;
-		toastr.warning("", msg);
+		toastr.warning(msg);
 	},
 	// 错误提示，不自动消失，包含关闭按钮
 	errorTips: function(msg, options) {
 		toastr.options = $.extend(toastrOptions, options);
 		toastr.options.timeOut = 0;
 		toastr.options.closeButton = true;
-		toastr.error("", msg);
+		toastr.error(msg);
+	},
+	// 清空提示
+	clearTips: function() {
+		toastr.clear();
 	}
 });
