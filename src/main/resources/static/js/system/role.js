@@ -35,36 +35,31 @@ function operationFormatterExt(value, row, index) {
 
 // 配置资源
 function openConfigRes(roleId, roleName) {
-	initDialogTree({
-		url: URI_AJAX_RESOURCE_TREE + "/" + roleId,
+	// 资源树
+	$("#_dialog_ztree").dialogzTree({
 		title: roleName,
-		checkbox: true,
-		showFooter: true,
-		autoClose: false,
-		showImmediately: true,
-		confirmCallback: function(checkedRows) {
-			saveRoleResources(roleId, checkedRows);
-	    }
+		showAtonce: true,
+		url: URI_AJAX_RESOURCE_TREE + "/" + roleId,
+		confirmCallback: function(checkedNodes) {
+			saveRoleResources(roleId, checkedNodes);
+		}
 	});
 }
 
 // 保存角色资源授权
 // 注意：所选节点中需要区分资源分类和资源
 function saveRoleResources(roleId, checkedNodes) {
-	var node, type;
-	var resourceIdArray = [];
 	var RESOURCE_TYPE = 1;
-	var resourceId;
-	for (var i = 0; i < checkedNodes.length; i++) {
-		node = checkedNodes[i];
-		type = node.attributes.type;
-		resourceId = node.attributes.id;
-		if (type === RESOURCE_TYPE) {
+	var resourceIdArray = [];
+	var resourceId, type;
+	$.each(checkedNodes, function(i, node){
+		type = node.nodeType;
+		resourceId = node.rid;
+		if (RESOURCE_TYPE == type) {
 			resourceIdArray.push(resourceId);
 		}
-	}
+	});
 	var data = {roleId: roleId, resourceIds: resourceIdArray};
-	var tipsId = "_tips_dialog_tree";
 	$.ajax({
 		type : "POST",
 		url : URI_AJAX_RESOURCE_SAVE,
@@ -73,15 +68,14 @@ function saveRoleResources(roleId, checkedNodes) {
 		traditional: true,
 		success : function(json) {
 			var code = json.code;
-			if (code == CODE_OK) {
-				showSuccessTips($.i18n.prop("save.success"), 3, tipsId);
+			if (code == OK) {
+				$.successTips($.i18n.prop("save.success"));
 			} else {
-				var msg = json.message;
-				showErrorTips(msg, tipsId);
+				$.erorTips(json.message);
 			}
 		},
 		error : function() {
-			showErrorTips($.i18n.prop("http.request.failed"), tipsId);
+			$.erorTips($.i18n.prop("http.request.failed"));
 		}
 	});
 }

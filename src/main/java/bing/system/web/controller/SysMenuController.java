@@ -1,5 +1,6 @@
 package bing.system.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -118,7 +119,7 @@ public class SysMenuController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated SysMenu entity, BindingResult bindingResult, Model model) {
+	public String save(@Validated SysMenu entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		model.addAttribute(REQUEST_ATTRIBUTE_PARENT_MENU_ID, entity.getParentId());
 		if (hasErrors(bindingResult, model)) {
@@ -126,6 +127,11 @@ public class SysMenuController extends GenericController {
 			return ADD;
 		}
 		try {
+			Date now = new Date();
+			entity.setCreateUser(currentUser.getName());
+			entity.setCreateDate(now);
+			entity.setUpdateUser(currentUser.getName());
+			entity.setUpdateDate(now);
 			sysMenuService.save(entity);
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -151,7 +157,7 @@ public class SysMenuController extends GenericController {
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String update(@Validated SysMenu entity, BindingResult bindingResult, Model model) {
+	public String update(@Validated SysMenu entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			prepareParentMenu(entity.getParentId(), model);
@@ -159,6 +165,8 @@ public class SysMenuController extends GenericController {
 			return EDIT;
 		}
 		try {
+			entity.setUpdateUser(currentUser.getName());
+			entity.setUpdateDate(new Date());
 			sysMenuService.update(entity);
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));

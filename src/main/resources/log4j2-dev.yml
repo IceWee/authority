@@ -4,7 +4,7 @@ Configuration:
     # 根据应用名称生成日志文件名示例：java -jar -Dapp.name=app1 xxx.jar 
     Property: # 缺省配置（用于开发环境）。其他环境需要在VM参数中指定，如下：
     - name: log.level.console
-      value: info
+      value: debug
     - name: log.level.default
       value: info
     - name: log.path
@@ -74,4 +74,10 @@ Configuration:
       - ref: CONSOLE
       - ref: INFO_FILE
       - ref: ERROR_FILE
-    
+    - name: org.apache.ibatis.logging.jdbc # mybatis
+      additivity: false
+      level: debug
+      AppenderRef:
+      - ref: CONSOLE
+      - ref: INFO_FILE
+      - ref: ERROR_FILE

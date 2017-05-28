@@ -208,6 +208,9 @@
 		// 事件按钮绑定
 		this._bindButtonEvents = function() {
 			var options = this._settings;
+			$(options.btnCancelId).off();
+			$(options.btnConfirmId).off();
+			
 			// 触发inputId
 			if ($(options.inputId)) {
 				$("#" + options.inputId).click(function() {
@@ -217,7 +220,7 @@
 			// 显示确认、取消按钮
 			if (options.showFooter) {
 				// 取消
-				$(options.btnCancelId).click(function() {
+				$(options.btnCancelId).on("click", function() {
 					self._hideDialog();
 				});
 				
