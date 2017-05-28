@@ -17,7 +17,7 @@ public class MenuTreeNode extends GenericTreeNode {
 
 	private boolean isParent = true;
 
-	private String iconCls;
+	private String iconSkin;
 
 	private Integer nodeType;
 

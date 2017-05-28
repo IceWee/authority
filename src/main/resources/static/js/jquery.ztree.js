@@ -82,26 +82,43 @@
 		};
 		// 展开节点
 		this.expandNode = function(node) {
-			this._zTree.expandNode(node, true, false, true);
+			if (node) {
+				this._zTree.expandNode(node, true, false, true);
+			}
 			return this;
+		};
+		// 展开节点ById
+		this.expandNodeById = function(id) {
+			var node = this.getNodeById(id);
+			return this.expandNode(node);
 		};
 		// 选中节点
 		this.selectNode = function(node) {
-			this._zTree.selectNode(node);
+			if (node) {
+				this._zTree.selectNode(node);
+			}
+			return this;
+		};
+		// 根据ID选中节点
+		this.selectNodeById = function(id) {
+			var node = this.getNodeById(id);
+			if (node) {
+				this.selectNode(node);
+			}
 			return this;
 		};
 		// 获取根节点
 		this.getRootNode = function() {
 			return this._zTree.getNodesByFilter(function(node) {
-				return node.level = 1;
+				return node.level == 1;
 			}, true);
 		};
 		// 根据ID获取节点
 		this.getNodeById = function(id) {
 			return this._zTree.getNodesByFilter(function(node) {
-				return node.id = id;
+				return node.id == id;
 			}, true);
-		}
+		};
 		// 初始化zTree
 		this._initzTree = function(settings) {
 			var options = self._settings;

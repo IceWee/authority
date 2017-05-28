@@ -188,14 +188,15 @@ public class SysResourceServiceImpl implements SysResourceService {
 					treeNode.setChecked(true);
 				}
 			});
-			treeNode.setIconCls(GlobalConstants.EASYUI_ICON_CLS_LEAF);
+			treeNode.setIconSkin(GlobalConstants.ICON_CLS_RESOURCE);
 		});
 		// 遍历资源分类挂接资源
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<ResourceTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
+		topCategoryTreeNodes.forEach(category -> category.setIconSkin(GlobalConstants.ICON_CLS_ROOT));
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
 		List<ResourceTreeNode> categoryTreeNodes = convertResourceCategory(categories);
-		categoryTreeNodes.forEach(category -> category.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
+		categoryTreeNodes.forEach(category -> category.setIconSkin(GlobalConstants.ICON_CLS_CATEGORY));
 		// 将资源分类节点与资源节点合并递归构造树形结构
 		categoryTreeNodes.addAll(resourceTreeNodes);
 		ResourceTreeNode.buildResourceTree(topCategoryTreeNodes, categoryTreeNodes);
@@ -207,13 +208,14 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public List<ResourceTreeNode> getResourceTree() {
 		List<SysResource> resources = sysResourceDao.listAll();
 		List<ResourceTreeNode> resourceTreeNodes = convertResource(resources);
-		resourceTreeNodes.forEach(leaf -> leaf.setIconCls(GlobalConstants.EASYUI_ICON_CLS_LEAF));
+		resourceTreeNodes.forEach(leaf -> leaf.setIconSkin(GlobalConstants.ICON_CLS_RESOURCE));
 		// 遍历资源分类挂接资源
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<ResourceTreeNode> topCategoryTreeNodes = convertResourceCategory(topCategories);
+		topCategoryTreeNodes.forEach(category -> category.setIconSkin(GlobalConstants.ICON_CLS_ROOT));
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
 		List<ResourceTreeNode> categoryTreeNodes = convertResourceCategory(categories);
-		categoryTreeNodes.forEach(branch -> branch.setIconCls(GlobalConstants.EASYUI_ICON_CLS_BRANCH));
+		categoryTreeNodes.forEach(branch -> branch.setIconSkin(GlobalConstants.ICON_CLS_CATEGORY));
 		// 挂接资源
 		categoryTreeNodes.forEach(category -> {
 			resourceTreeNodes.forEach(resource -> {
@@ -267,6 +269,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 			treeNode.setParentId(Objects.toString(sysResource.getCategoryId()));
 			treeNode.setNodeType(ResourceTreeNode.RESOURCE);
 			treeNode.setName(sysResource.getName());
+			treeNode.setParent(false); // 资源全是叶子节点
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;

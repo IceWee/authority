@@ -72,8 +72,9 @@ public class GlobalConstants {
 	public static final String ATTRIBUT_TYPE = "type";
 	public static final String ATTRIBUT_URL = "url";
 
-	public static final String EASYUI_ICON_CLS_BRANCH = "icon-branch";
-	public static final String EASYUI_ICON_CLS_LEAF = "icon-leaf";
+	public static final String ICON_CLS_ROOT = "icon-root";
+	public static final String ICON_CLS_CATEGORY = "icon-category";
+	public static final String ICON_CLS_RESOURCE = "icon-resource";
 
 	private GlobalConstants() {
 		super();

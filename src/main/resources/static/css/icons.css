@@ -1,0 +1,39 @@
+.icon-list {
+	background: url("/images/list.png") no-repeat right center;
+}
+
+.icon-tree {
+	background: url("/images/tree.png") no-repeat right center;
+}
+
+.icon-branch {
+	background: url("/images/branch.png") no-repeat right center;
+}
+
+.icon-leaf {
+	background: url("/images/leaf.png") no-repeat right center;
+}
+
+/* ztree */
+.ztree li span.button.icon-root_ico_open {
+	background: url("/images/root_open.png") no-repeat center center;
+}
+
+.ztree li span.button.icon-root_ico_close {
+	margin-right: 2px;
+	vertical-align: top;
+	*vertical-align: middle;
+	background: url("/images/root_close.png") no-repeat center center;
+}
+
+.ztree li span.button.icon-category_ico_open {
+	background: url("/images/category_open.png") no-repeat center center;
+}
+
+.ztree li span.button.icon-category_ico_close {
+	background: url("/images/category_close.png") no-repeat center center;
+}
+
+.ztree li span.button.icon-resource_ico_docu {
+	background: url("/images/resource.png") no-repeat center center;
+}

@@ -87,6 +87,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
 		List<MenuTreeNode> treeNodes = convertMenu(topMenus);
+		treeNodes.forEach(menu -> menu.setIconSkin(GlobalConstants.ICON_CLS_ROOT));
 		MenuTreeNode.buildMenuTree(treeNodes, convertMenu(menus));
 		return treeNodes;
 	}
@@ -96,6 +97,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
 		List<MenuTreeNode> treeNodes = convertMenu(topMenus);
+		treeNodes.forEach(menu -> menu.setIconSkin(GlobalConstants.ICON_CLS_ROOT));
 		List<MenuTreeNode> allTreeNodes = convertMenu(menus);
 		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !Objects.equals(treeNode.getId(), id)).collect(Collectors.toList());
 		MenuTreeNode.buildMenuTree(treeNodes, treeNodesExclude);

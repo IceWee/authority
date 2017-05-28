@@ -23,7 +23,7 @@ public class ResourceTreeNode extends GenericTreeNode {
 
 	private boolean isParent = true;
 
-	private String iconCls;
+	private String iconSkin;
 
 	private Integer nodeType;
 
@@ -45,7 +45,7 @@ public class ResourceTreeNode extends GenericTreeNode {
 	 */
 	public static void buildResourceTree(List<ResourceTreeNode> parentTreeNodes, List<ResourceTreeNode> treeNodes) {
 		parentTreeNodes.forEach(parentNode -> {
-			String parentId = parentNode.getId();
+			String parentId = parentNode.getRid();
 			treeNodes.forEach(node -> {
 				if (parentNode.isParent && Objects.equals(parentId, node.getParentId())) {
 					parentNode.addChild(node);
