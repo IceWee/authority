@@ -1,18 +1,19 @@
-// 固定常量，必须这样命名，否则crud.js无法正常运行
-var FORM_ID_DETAIL = "#form_default"; // 详情页（新增或编辑）表单ID
-var FORM_ID_LIST = "#form_list"; // 列表页表单ID
-var URI_AJAX_LIST = "/ajax/system/resource/list"; // 列表页获取列表数据异步URI
+/*************************固定常量 begin***********************/
+// 固定常量，必须这样命名，否则curd.js无法正常运行
+var URI_AJAX_LIST = "/ajax/system/resource/list";
 var URI_LIST = "/system/resource/list"; // 列表页面URI
 var URI_ADD = "/system/resource/add"; // 新增页面URI
 var URI_SAVE = "/system/resource/save"; // 保存URI
 var URI_EDIT = "/system/resource/edit"; // 编辑页面URI
 var URI_UPDATE = "/system/resource/update"; // 更新URI
 var URI_DELETE = "/system/resource/delete"; // 删除URI
-var BTN_ADD_ID = "#button_add"; // 增加按钮ID
-var BTN_SAVE_ID = "#button_save"; // 保存按钮ID
-var BTN_UPDATE_ID = "#button_update"; // 保存按钮ID
-var BTN_BACK_ID = "#button_back"; // 返回按钮ID
-var PARAM_ID = "#id"; // ID属性名
+var FORM_ID_DETAIL = "form_detail"; // 详情页（新增或编辑）表单ID
+var FORM_ID_LIST = "form_search"; // 列表页表单ID
+var BTN_ADD_ID = "button_add"; // 增加按钮ID
+var BTN_SAVE_ID = "button_save"; // 保存按钮ID
+var BTN_BACK_ID = "button_back"; // 返回按钮ID
+var HIDDEN_ID = "id"; // 隐藏域主键ID属性
+/*************************固定常量 end*************************/
 //自定义常量
 var URI_AJAX_CATEGORY_TREE = "/ajax/system/category/tree"; // 资源分类树
 var URI_AJAX_CATEGORY_SAVE = "/ajax/system/category/save"; // 保存资源分类
@@ -23,28 +24,42 @@ var DIALOG_ID_CATEGORY = "#dialog_category";
 var FORM_ID_CATEGORY = "#form_category"; // 资源分类表单ID
 var MENU_ID_CATEGORY = "#menu_category"; // 隐藏表单ID
 var CATEGORY_NODE_ID_PREFIX = "rc_"; // 资源分类节点ID前缀
-var HIDDEN_CATEGORY_ID = "#selectedCategoryId";
+var HIDDEN_CATEGORY_ID = "selectedCategoryId";
 
 // 初始化资源分类树
 function initListPageExt(error, message) {
-	initTree({
+	showErrorOrMessage(error, message);
+	
+	// 跳转到新增页面
+	$("#" + BTN_ADD_ID).click(function() {
+		_add();
+	});
+	
+	var table;
+	$("#ztree_category").easyzTree({
 		url: URI_AJAX_CATEGORY_TREE,
-		treeId: TREE_ID_RESOURCE_CATEGORY,
-		selectCallback: selectCategory,
-		contextMenuCallback: function(e, node) {
-			selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
-			$(MENU_ID_CATEGORY).menu("show", {left: e.pageX, top: e.pageY});
-		},
-		completeCallback: function() {
-			var selectedCategoryId = $(HIDDEN_CATEGORY_ID).val();
-			if (!selectedCategoryId) {
-				var firstNode = selectFirstTreeNode(TREE_ID_RESOURCE_CATEGORY);
-				$(HIDDEN_CATEGORY_ID).val(firstNode.attributes.id);
-			} else {
-				var node = getTreeNode(TREE_ID_RESOURCE_CATEGORY, CATEGORY_NODE_ID_PREFIX + selectedCategoryId);
-				selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
+		selectCallback: function(node, tree) {
+			if (node) {
+				$("#" + HIDDEN_CATEGORY_ID).val(node.rid);
 			}
-			initListPage(error, message);
+			if (table) {
+				table.refresh();
+			}
+		},
+		completeCallback: function(tree) {
+			var selectedCategoryId = $("#" + HIDDEN_CATEGORY_ID).val();
+			if (!selectedCategoryId) {
+				// 选中第一个节点
+				var topNode = tree.getRootNode();
+				if (topNode) {
+					$("#" + HIDDEN_CATEGORY_ID).val(topNode.rid);
+					tree.selectNode(topNode).expandNode(topNode);
+				}
+			} else {
+				// 选中节点
+				tree.selectNodeById(selectedCategoryId).expandNodeById(selectedCategoryId);;
+			}
+			table = $("#container").btable({url: URI_AJAX_LIST});
 		}
 	});
 	
@@ -52,8 +67,6 @@ function initListPageExt(error, message) {
 	$("#button_dialog_category_cancel").click(function() {
 		$(DIALOG_ID_CATEGORY).modal("hide");
 	});
-	
-	readonlyColor("parentCategoryName");
 	
 	// 保存分类
 	$("#button_dialog_category_save").click(function(){
@@ -160,16 +173,6 @@ function freshCategoryTree(nodeId) {
 		}
 	});
 }
-
-// 选中资源分类
-function selectCategory(node) {
-	if (node) {
-		selectTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
-		$(HIDDEN_CATEGORY_ID).val(node.attributes.id);
-		doSearch(URI_AJAX_LIST);
-	}
-}
-
 /************************************** add/edit begin ********************************************/
 // 初始化新增页面扩展
 function initAddPageExt(error, message) {

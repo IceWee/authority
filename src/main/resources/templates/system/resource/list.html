@@ -1,155 +1,89 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title th:text="#{system.name}">认证与授权管理系统</title>
+<!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="/common/header :: header(~{::title},~{::link})" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
+<head th:replace="/common/base :: list_header(#{system.name},~{::link})" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/plugins/ztree/metroStyle/metroStyle.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
+<!-- 自定义js -->
+<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
+<script type="text/javascript" th:src="@{/js/curd.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/ztree/jquery.ztree.all.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ztree.js}"></script>
 <script type="text/javascript" th:src="@{/js/system/resource.js}"></script>
-<script type="text/javascript" th:src="@{/js/tree.js}"></script>
-<script type="text/javascript" th:src="@{/js/crud.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
-	var error = /*[[${error}]]*/ null;
-	var message = /*[[${message}]]*/ null;
 	$(function() {
+		var error = /*[[${error}]]*/ null;
+		var message = /*[[${message}]]*/ null;
 		initListPageExt(error, message);
 	});
-/*]]>*/
+	/*]]>*/
 </script>
 </head>
-<body>
-<div class="container-fluid">
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInLeft">
 	<div class="row">
-		<div class="panel panel-default">
-	  		<div class="panel-heading padding-none" style="height:40px">
-				<ol class="breadcrumb">
-				  	<li class="active"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{resource.manage}">资源管理</span></li>
-				</ol>
-		  	</div>
-		  	<div class="panel-body">
-		    	<div class="container-fluid" style="width: 100%">
-		    		<div class="row">
-			    		<div id="tips" class="alert" style="display:none;margin-bottom:0"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-						<div class="col-md-2 padding-none">
-							<div style="min-height:400px;max-height:600px;overflow:auto">
-								<ul id="tree_category" class="easyui-tree"></ul>
-							</div>
+		<div class="col-xs-2">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+		            <h5 th:text="#{resource.category.tree}">资源分类树</h5>
+		        </div>
+		        <div class="ibox-content">
+					<div id="ztree_category" class="ztree"></div>
+		        </div>
+			</div>
+		</div>
+		<div class="col-xs-10">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+		            <h5 th:text="#{resource.list}">资源列表</h5>
+		        </div>
+		        <div class="ibox-content">
+		            <div id="container" class="row">
+		           		<form id="form_search" role="form" class="form-inline">
+		           		<input type="hidden" id="selectedCategoryId" name="categoryId" th:value="${categoryId}" />
+		           		<input type="hidden" id="id" name="id" />
+		           		<input type="text" style="display:none" /><!-- 解决只有一个文本框回车自动提交问题 -->
+		           			<div class="col-xs-10 padding-none">
+		                    	<div class="input-group">
+			                        <input type="text" th:placeholder="#{placeholder.name}" name="name" class="form-control">
+		                		</div>
+		                		<div class="input-group">
+									<select class="form-control m-b" name="status">
+		                				<option value="" selected th:text="#{type.all}">全部类型</option>
+										<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
+									</select>
+		                		</div>
+		           			</div>
+		           			<div class="col-xs-2 text-right padding-none">
+			                    <button type="button" id="btn_search" class="btn btn-outline btn-primary" th:text="#{search}">查询</button>
+			                    <button type="button" id="btn_reset" class="btn btn-outline btn-default" th:text="#{reset}">重置</button>
+		           			</div>
+						</form>
+						<div id="toolbar" class="btn-group hidden-xs" role="group">
+							<button id="button_add" type="button" class="btn btn-outline btn-primary">
+						 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">添加</span>
+						 	</button>
 						</div>
-						<div class="col-md-10 padding-none">
-			    			<table id="datagrid" th:title="#{resource.list}" title="资源列表" style="width:100%;height:auto">
-								<thead>
-									<tr>
-										<th data-options="field:'_operate',width:15,align:'center',formatter:operateBtnHtml">操作</th>
-										<th th:text="#{name}" data-options="field:'name',width:25">名称</th>
-										<th th:text="#{url}" data-options="field:'url',width:30">地址</th>
-										<th th:text="#{type}" data-options="field:'typeText',align:'center',width:10">类型</th>
-										<th th:text="#{status}" data-options="field:'statusText',align:'center',width:10">状态</th>
-										<th th:text="#{create.date}" data-options="field:'createDate',align:'center',width:15">创建日期</th>
-										<th th:text="#{create.user}" data-options="field:'createUser',align:'center',width:10">创建人</th>
-										<th th:text="#{update.date}" data-options="field:'updateDate',align:'center',width:15">更新日期</th>
-										<th th:text="#{update.user}" data-options="field:'updateUser',align:'center',width:10">更新人</th>
-									</tr>
-								</thead>
-							</table>
-							<!-- 查询条件 -->
-							<div id="search_tools" style="padding:0 25px;">
-								<div class="conditions">
-									<form action="" method="post" id="form_list">
-										<input type="hidden" id="selectedCategoryId" name="categoryId" th:value="${categoryId}"></input>
-										<input type="hidden" id="id" name="id"></input>
-										<label th:text="#{name}">名称</label>
-										<input name="name" class="easyui-textbox" style="width:150px;height:25px;line-height:25px">
-										<label th:text="#{type}">类型</label>
-										<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
-											<option value="" selected>全部</option>
-											<option th:each="type : ${typeList}" th:text="${type.label}" th:value="${type.value}"></option>
-										</select>
-										<button type="button" id="button_search" class="btn btn-primary">
-											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<span th:text="#{search}">查询</span>
-										</button>
-										&nbsp;&nbsp;
-										<button type="button" id="button_reset" class="btn btn-default">
-											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;<span th:text="#{reset}">重置</span>
-										</button>
-									</form>
-								</div>
-								<div class="opt-buttons">
-									<button type="button" id="button_add" class="btn btn-primary btn-sm">
-										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">新增</span>
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-			    </div>
-	    	</div>
-	    </div>
+		                <table id="table_list" data-height="410" data-row-style="rowStyle">
+		                    <thead>
+		                        <tr>
+		                        	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatter">操作</th>
+									<th th:text="#{name}" data-field="name" data-align="center">名称</th>
+									<th th:text="#{url}" data-field="url" data-align="left">地址</th>
+									<th th:text="#{type}" data-field="typeText" data-align="center">类型</th>
+									<th th:text="#{status}" data-field="statusText" data-align="center">状态</th>
+									<th th:text="#{create.date}" data-field="createDate" data-align="center">创建日期</th>
+									<th th:text="#{create.user}" data-field="createUser" data-align="center">创建人</th>
+									<th th:text="#{update.date}" data-field="updateDate" data-align="center">更新日期</th>
+									<th th:text="#{update.user}" data-field="updateUser" data-align="center">更新人</th>
+		                        </tr>
+		                    </thead>
+						</table>
+		            </div>
+		        </div>
+			</div>
+		</div>
 	</div>
 </div>
-<!-- 资源分类树右键菜单 -->
-<div id="menu_category" class="easyui-menu">
-	<div th:text="#{category.add}" onclick="addCategory()" data-options="iconCls:'icon-add'">新增分类</div>
-	<div th:text="#{category.edit}" onclick="editCategory()" data-options="iconCls:'icon-edit'">编辑分类</div>
-	<div th:text="#{category.delete}" onclick="deleteCategory()" data-options="iconCls:'icon-remove'">删除分类</div>
-</div>
-<!-- 资源分类表单 -->
-<div id="dialog_category" class="modal fade" tabindex="-1" role="dialog">
-<form action="" id="form_category">
-<input type="hidden" th:value="${session.currentUser.username}" name="createUser" id="categoryCreateUser"></input>
-<input type="hidden" th:value="${session.currentUser.username}" name="updateUser" id="categoryUpdateUser"></input>
-<input type="hidden" name="parentId" id="parentId"></input>
-<input type="hidden" name="id"></input>
-	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-      		<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        		<h4 class="modal-title" th:text="#{resource.category}">资源分类</h4>
-      		</div>
-      		<div class="modal-body">
-        		<div class="container-fluid" style="width: 100%">
-		    		<div class="row">
-			    		<div id="tips_category" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-		    		</div>
-					<div class="row">
-						<div class="col-md-4 text-right">
-							<label th:text="#{resource.category.parent}">上级分类</label>
-						</div>
-						<div class="col-md-8 text-left">
-							<input class="easyui-textbox input-default" type="text" id="parentCategoryName" name="parentCategoryName" readonly="readonly"></input>
-						</div>
-					</div>
-					<div style="margin-top: 20px"></div>
-					<div class="row">
-						<div class="col-md-4 text-right">
-							<label th:text="#{name}">名称</label>
-						</div>
-						<div class="col-md-8 text-left">
-			    			<input class="easyui-textbox input-default" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
-						</div>
-					</div>
-		    		<div style="margin-top: 20px"></div>
-		    		<div>
-		    			<div class="col-md-4 text-right">
-							<label th:text="#{remark}">备注</label>
-						</div>
-						<div class="col-md-8 text-left">
-			    			<input class="easyui-textbox input-default" type="text" name="remark" data-options="multiline:true"></input>
-						</div>
-		    		</div>
-			    </div>
-      		</div>
-      		<div class="modal-footer">
-        		<button type="button" id="button_dialog_category_cancel" class="btn btn-default">
-					<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
-				</button>
-        		<button type="button" id="button_dialog_category_save" class="btn btn-primary">
-					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
-				</button>
-      		</div>
-    	</div>
-  	</div>
-</form>
-</div>
-</body>
+</body> 
 </html>
