@@ -42,6 +42,7 @@
 		           		<form id="form_search" role="form" class="form-inline">
 		           		<input type="hidden" id="selectedParentMenuId" name="parentId" th:value="${parentId}" />
 		           		<input type="hidden" id="id" name="id" />
+		           		<input type="text" style="display:node" /><!-- 解决只有一个文本框回车自动提交问题 -->
 		           			<div class="col-xs-10 padding-none">
 		                    	<div class="input-group">
 			                        <input type="text" th:placeholder="#{placeholder.name}" name="name" class="form-control">
