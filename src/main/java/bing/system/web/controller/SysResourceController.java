@@ -1,6 +1,7 @@
 package bing.system.web.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -198,7 +199,7 @@ public class SysResourceController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated SysResource entity, BindingResult bindingResult, Model model) {
+	public String save(@Validated SysResource entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
@@ -206,6 +207,11 @@ public class SysResourceController extends GenericController {
 			return ADD;
 		}
 		try {
+			Date now = new Date();
+			entity.setCreateUser(currentUser.getName());
+			entity.setCreateDate(now);
+			entity.setUpdateUser(currentUser.getName());
+			entity.setUpdateDate(now);
 			sysResourceService.save(entity);
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
@@ -232,7 +238,7 @@ public class SysResourceController extends GenericController {
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String update(@Validated SysResource entity, BindingResult bindingResult, Model model) {
+	public String update(@Validated SysResource entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
@@ -240,6 +246,8 @@ public class SysResourceController extends GenericController {
 			return EDIT;
 		}
 		try {
+			entity.setUpdateUser(currentUser.getName());
+			entity.setUpdateDate(new Date());
 			sysResourceService.update(entity);
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));

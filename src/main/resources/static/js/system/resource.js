@@ -177,30 +177,44 @@ function freshCategoryTree(nodeId) {
 // 初始化新增页面扩展
 function initAddPageExt(error, message) {
 	initAddPage(error, message);
-	
-	initDialogTree({
-		url: URI_AJAX_CATEGORY_TREE,
+	// 资源分类树
+	$("#_dialog_ztree").dialogzTree({
 		title: $.i18n.prop("resource.category.tree"),
-		showFooter: true,
-		triggerInputId: "categoryName",
-		confirmCallback: confirmCallbackForDetail
+		url: URI_AJAX_CATEGORY_TREE,
+		inputId: "categoryName",
+		showFooter: false,
+		closeAfterSelect: true,
+		chkEnable: false,
+		selectCallback: function(node, tree) {
+			if (node) {
+				$("#categoryId").val(node.id);
+				$("#categoryName").val(node.name);
+			}
+		}
 	});
 }
 
 // 初始化编辑页面扩展
 function initEditPageExt(error, message) {
 	initEditPage(error, message);
-	
-	var currCategoryId = $("#categoryId").val();
-	
-	initDialogTree({
-		url: URI_AJAX_CATEGORY_TREE,
+	var categoryId = $("#categoryId").val();
+	// 资源分类树
+	$("#_dialog_ztree").dialogzTree({
 		title: $.i18n.prop("resource.category.tree"),
-		showFooter: true,
-		triggerInputId: "categoryName",
-		confirmCallback: confirmCallbackForDetail,
-		selectedId: CATEGORY_NODE_ID_PREFIX + currCategoryId // 选中
+		url: URI_AJAX_CATEGORY_TREE,
+		inputId: "categoryName",
+		selectedId: CATEGORY_NODE_ID_PREFIX + categoryId,
+		showFooter: false,
+		closeAfterSelect: true,
+		chkEnable: false,
+		selectCallback: function(node, tree) {
+			if (node) {
+				$("#categoryId").val(node.id);
+				$("#categoryName").val(node.name);
+			}
+		}
 	});
+	
 }
 
 // 选择树节点事件

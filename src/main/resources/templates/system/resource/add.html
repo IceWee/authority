@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title th:text="#{system.name}">认证与授权管理系统</title>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="/common/header :: header(~{::title},~{::link})" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/system/default.css}" />
+<head th:replace="/common/base :: detail_header(#{system.name},~{::link})" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/plugins/ztree/metroStyle/metroStyle.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
+<!-- 自定义js -->
+<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/ztree/jquery.ztree.all.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ztree.dialog.js}"></script>
+<script type="text/javascript" th:src="@{/js/curd.js}"></script>
 <script type="text/javascript" th:src="@{/js/system/resource.js}"></script>
-<script type="text/javascript" th:src="@{/js/crud.js}"></script>
-<script type="text/javascript" th:src="@{/js/tree.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 	$(function() {
@@ -15,95 +16,68 @@
 		var message = /*[[${message}]]*/ null;
 		initAddPageExt(error, message);
 	});
-/*]]>*/
+	/*]]>*/
 </script>
 </head>
-<body>
-<form id="form_default" method="post">
-<div class="container-fluid" th:object="${bean}">
-<input type="hidden" th:value="${category.id}" name="categoryId"></input>
-<input type="hidden" th:value="${session.currentUser.username}" name="createUser"></input>
-<input type="hidden" th:value="${session.currentUser.username}" name="updateUser"></input>
-	<div class="row">
-		<div class="panel panel-default">
-	  		<div class="panel-heading padding-none" style="height:40px">
-				<ol class="breadcrumb">
-				  	<li><a href="/system/resource/list"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<span th:text="#{resource.manage}">资源管理</span></a></li>
-				  	<li class="active" th:text="#{resource.add}">新增资源</li>
-				</ol>
-		  	</div>
-		  	<div class="panel-body panel-min-height-default">
-		    	<div class="container-fluid" style="width: 100%">
-		    		<div class="row">
-			    		<div id="tips" class="alert" style="display:none"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;<span></span></div>
-		    		</div>
-		    		<div style="margin-top: 20px"></div>
-			    	<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{name}">名称</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{name}" type="text" name="name" data-options="required:true,validType:['name','maxLength[32]']"></input>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{type}">类型</label>
-						</div>
-						<div class="col-md-4 text-left">
-							<select class="easyui-combobox" data-options="editable:false" name="type" style="height:25px;width:200px">
-								<option th:each="type : ${typeList}" th:selected="${type.value eq #object.type + ''}" th:text="${type.label}" th:value="${type.value}"></option>
-							</select>
-						</div>
-					</div>
-					<div style="margin-top: 20px"></div>
-			    	<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{url}">URL</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{url}" type="text" name="url" data-options="required:true,validType:['maxLength[500]']"></input>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{resource.category}">资源分类</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="${category.name}" type="text" data-options="required:true,iconCls:'icon-tree'" id="categoryName" name="categoryName" readonly="readonly"></input>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div class="row">
-						<div class="col-md-2 text-right">
-							<label th:text="#{status}">状态</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<select class="easyui-combobox select-default" data-options="editable:false" name="status">
-								<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
-		    				</select>
-						</div>
-						<div class="col-md-2 text-right">
-							<label th:text="#{remark}">备注</label>
-						</div>
-						<div class="col-md-4 text-left">
-			    			<input class="easyui-textbox input-default" th:value="*{remark}" type="text" name="remark" data-options="multiline:true"></input>
-						</div>
-					</div>
-					<div style="margin-bottom: 20px"></div>
-					<div style="text-align:center;padding:5px">
-						<button type="button" id="button_back" class="btn btn-default">
-							<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
-						</button>
-						&nbsp;&nbsp;
-				    	<button type="button" id="button_save" class="btn btn-primary">
-							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
-						</button>
-				    </div>
-				    <div style="margin-bottom: 20px"></div>
+<body class="gray-bg" th:object="${bean}">
+<div class="wrapper wrapper-content animated fadeInLeft">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+            <h5 th:text="#{resource.add}">资源添加</h5>
+        </div>
+        <div class="ibox-content">
+            <div id="container" class="row">
+            <form id="form_detail" class="form-horizontal m-t" method="post">
+            <input type="hidden" id="categoryId" name="categoryId" th:value="${category.id}" />
+            	<div class="form-group">
+					<label class="col-xs-2 control-label" th:text="#{name}">名称</label>
+   					<div class="col-xs-3">
+       					<input type="name" id="name" name="name" class="form-control" th:value="*{name}" maxLength="32" required />
+   					</div>
+   					<label class="col-xs-2 control-label" th:text="#{url}">URL</label>
+   					<div class="col-xs-3">
+       					<input type="text" id="url" name="url" class="form-control" th:value="*{url}" />
+   					</div>
+				</div>
+				<div class="form-group">
+   					<label class="col-xs-2 control-label" th:text="#{type}">类型</label>
+   					<div class="col-xs-3">
+	   					<select class="form-control m-b" id="type" name="type">
+   							<option th:each="type : ${typeList}" th:selected="${type.value eq #object.type + ''}" th:text="${type.label}" th:value="${type.value}"></option>
+   						</select>
+   					</div>
+   					<label class="col-xs-2 control-label" th:text="#{status}">状态</label>
+   					<div class="col-xs-3">
+       					<select class="form-control m-b" id="status" name="status">
+							<option th:each="status : ${statusList}" th:selected="${status.value eq #object.status + ''}" th:text="${status.label}" th:value="${status.value}"></option>
+	    				</select>
+   					</div>
+				</div>
+				<div class="form-group">
+   					<label class="col-xs-2 control-label" th:text="#{resource.category}">资源分类</label>
+   					<div class="col-xs-3">
+       					<input type="text" id="categoryName" name="categoryName" class="form-control icon-tree" th:value="${category.name}" required />
+   					</div>
+   					<label class="col-xs-2 control-label" th:text="#{remark}">备注</label>
+   					<div class="col-xs-3">
+       					<textarea id="remark" name="remark" th:value="*{remark}" class="form-control" rows="3"></textarea>
+   					</div>
+				</div>
+				<div class="form-group text-center">
+					<button type="button" id="button_back" class="btn btn-default">
+						<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+					</button>
+					&nbsp;&nbsp;
+			    	<button type="button" id="button_save" class="btn btn-primary">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>
+					</button>
 			    </div>
-	    	</div>
-	    </div>
-	</div>
+			</form>
+            </div>
+        </div>
+    </div>
 </div>
-</form>
-<!-- 资源分类树 -->
+<!-- 资源分类树弹出框 -->
 <div th:replace="/common/tree :: dialog_tree"></div>
 </body>
 </html>

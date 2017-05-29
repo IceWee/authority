@@ -55,9 +55,10 @@
 					// 点击节点事件
 					onClick : function(event, treeId, treeNode) {
 						var zTree = self._zTree;
+						var options = self._settings;
 						var node = zTree.getNodeByTId(treeNode.tId);
 						if (node.isParent) {
-							if (node.children.length == 0) {
+							if (options.async && node.children.length == 0) {
 								$.ajax({  
 					                type: "GET",  
 					                async : false,  
@@ -178,6 +179,7 @@
 		};
 		// 初始化zTree
 		this._initzTree = function(settings) {
+			var options = self._settings;
 			$.ajax({
 				type : "GET",
 				url : self._settings.url,
