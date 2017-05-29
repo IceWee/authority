@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 			throw new BusinessException(MenuExceptionCodes.CONTAINS_SUBMENUS);
 		}
 		SysMenu entity = sysMenuDao.selectByPrimaryKey(id);
-		if (Objects.equals(entity.getParentId(), GlobalConstants.TOP_PARENT_ID)) {
+		if (StringUtils.equals(Objects.toString(entity.getParentId()), Objects.toString(GlobalConstants.TOP_PARENT_ID))) {
 			throw new BusinessException(MenuExceptionCodes.TOP_MENU_FORBIDDEN_DELETE);
 		}
 		entity.setStatus(StatusEnum.DELETED.ordinal());
@@ -97,10 +98,14 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
 		List<MenuTreeNode> treeNodes = convertMenu(topMenus);
-		treeNodes.forEach(menu -> menu.setIconSkin(GlobalConstants.ICON_CLS_ROOT));
 		List<MenuTreeNode> allTreeNodes = convertMenu(menus);
-		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !Objects.equals(treeNode.getId(), id)).collect(Collectors.toList());
+		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !StringUtils.equals(treeNode.getId(), Objects.toString(id))).collect(Collectors.toList());
 		MenuTreeNode.buildMenuTree(treeNodes, treeNodesExclude);
+		treeNodes.forEach(menu -> {
+			if (!menu.getChildren().isEmpty()) {
+				menu.setIconSkin(GlobalConstants.ICON_CLS_ROOT);
+			}
+		});
 		return treeNodes;
 	}
 

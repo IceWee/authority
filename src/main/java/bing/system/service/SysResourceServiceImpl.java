@@ -184,7 +184,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		// 迭代全部资源并自动勾选已授权的节点
 		resourceTreeNodes.forEach(treeNode -> {
 			checkedResourceNodes.forEach(checkedNode -> {
-				if (Objects.equals(treeNode.getRid(), checkedNode.getRid())) {
+				if (StringUtils.equals(treeNode.getRid(), checkedNode.getRid())) {
 					treeNode.setChecked(true);
 				}
 			});
@@ -219,7 +219,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		// 挂接资源
 		categoryTreeNodes.forEach(category -> {
 			resourceTreeNodes.forEach(resource -> {
-				if (Objects.equals(category.getRid(), resource.getParentId())) {
+				if (StringUtils.equals(category.getRid(), resource.getParentId())) {
 					category.addChild(resource);
 				}
 			});

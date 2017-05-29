@@ -20,9 +20,6 @@
 }
 
 .ztree li span.button.icon-root_ico_close {
-	margin-right: 2px;
-	vertical-align: top;
-	*vertical-align: middle;
 	background: url("/images/root_close.png") no-repeat center center;
 }
 

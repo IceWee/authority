@@ -153,7 +153,8 @@
 			var node = this.getNodeById(id);
 			if (node) {
 				this.selectNode(node);
-			}
+			};
+			return this;
 		};
 		// 初始化弹出框
 		this._initDialog = function() {
