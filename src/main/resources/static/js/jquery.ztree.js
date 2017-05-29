@@ -110,7 +110,7 @@
 		// 获取根节点
 		this.getRootNode = function() {
 			return this._zTree.getNodesByFilter(function(node) {
-				return node.level == 1;
+				return node.level == 0;
 			}, true);
 		};
 		// 根据ID获取节点
