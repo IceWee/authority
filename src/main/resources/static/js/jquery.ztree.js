@@ -14,6 +14,7 @@
 			checkedIds : [], // 用于回显，已选节点ID数组
 			autoParam : ["id"]
 		};
+		this._ztreeSettings = {};
 		this._init = function() {
 			this._settings = $.extend(self._settings, options);
 			var zTreeSettings = {
@@ -35,6 +36,12 @@
 					onCheck : function(event, treeId, treeNode) {
 						if (treeNode.checked && $.isFunction(self._settings.checkCallback)) {
 							self._settings.checkCallback(treeNode, self);
+						}
+					},
+					// 右键事件
+					onRightClick : function(event, treeId, treeNode) {
+						if ($.isFunction(self._settings.contextCallback)) {
+							self._settings.contextCallback(event, treeNode, self);
 						}
 					},
 					// 点击节点事件
@@ -71,6 +78,7 @@
 				}
 			}
 			this._initzTree(zTreeSettings);
+			this._ztreeSettings = zTreeSettings;
 		};
 		// 获取全部选中节点
 		this.getCheckedNodes = function() {
@@ -126,6 +134,30 @@
 				type : "GET",
 				url : self._settings.url,
 				data : {checkedCodes : self._settings.checkedIds},
+				dataType : "json",
+				success : function(json) {
+					if (json.code == OK) {
+						self._zTree = $.fn.zTree.init($(treeId), settings, json.data);
+						if ($.isFunction(options.completeCallback)) {
+							options.completeCallback(self);
+						}
+					} else {
+						$.errorTips(json.message);
+					}
+				},
+				error : function() {
+					$.errorTips($.i18n.prop("load.failed"));
+				}
+			});
+		};
+		// 刷新树
+		this.refresh = function() {
+			var options = self._settings;
+			var settings = self._ztreeSettings;
+			$.ajax({
+				type : "GET",
+				url : options.url,
+				data : {checkedCodes : options.checkedIds},
 				dataType : "json",
 				success : function(json) {
 					if (json.code == OK) {

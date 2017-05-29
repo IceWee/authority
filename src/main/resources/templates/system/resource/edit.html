@@ -23,7 +23,10 @@
 <div class="wrapper wrapper-content animated fadeInLeft">
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
-            <h5 th:text="#{resource.edit}">资源编辑</h5>
+			<ol class="breadcrumb navigation">
+	            <li><a href="/system/resource/list" th:text="#{resource.list}">资源列表</a></li>
+				<li class="active" th:text="#{resource.edit}">资源编辑</li>
+			</ol>
         </div>
         <div class="ibox-content">
             <div id="container" class="row">

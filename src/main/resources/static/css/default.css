@@ -11,6 +11,22 @@ body {
 	padding: 0px;
 }
 
-a:link, a:hover, a:active, a:visited {
+.navigation {
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+.ibox-title a {
+	color: #1AB394!important;
 	text-decoration: none;
+}
+
+.ibox-title a:hover {
+	color: #686B6D!important;
+	text-decoration: none;
+}
+
+.page-height-default {
+	max-height: 450px;
+	overflow: auto;
 }

@@ -20,9 +20,8 @@ var URI_AJAX_CATEGORY_SAVE = "/ajax/system/category/save"; // 保存资源分类
 var URI_AJAX_CATEGORY_UPDATE = "/ajax/system/category/update"; // 更新资源分类
 var URI_AJAX_CATEGORY_DELETE = "/ajax/system/category/delete"; // 删除资源分类
 var TREE_ID_RESOURCE_CATEGORY = "tree_category";
-var DIALOG_ID_CATEGORY = "#dialog_category";
-var FORM_ID_CATEGORY = "#form_category"; // 资源分类表单ID
-var MENU_ID_CATEGORY = "#menu_category"; // 隐藏表单ID
+var DIALOG_ID_CATEGORY = "dialog_category";
+var FORM_ID_CATEGORY = "form_category"; // 资源分类表单ID
 var CATEGORY_NODE_ID_PREFIX = "rc_"; // 资源分类节点ID前缀
 var HIDDEN_CATEGORY_ID = "selectedCategoryId";
 
@@ -34,6 +33,8 @@ function initListPageExt(error, message) {
 	$("#" + BTN_ADD_ID).click(function() {
 		_add();
 	});
+	
+	var contextMenu = $("#contextMenu").ztreeContextMenu();
 	
 	var table;
 	$("#ztree_category").easyzTree({
@@ -57,24 +58,50 @@ function initListPageExt(error, message) {
 				}
 			} else {
 				// 选中节点
-				tree.selectNodeById(selectedCategoryId).expandNodeById(selectedCategoryId);;
+				tree.selectNodeById(CATEGORY_NODE_ID_PREFIX + selectedCategoryId).expandNodeById(CATEGORY_NODE_ID_PREFIX + selectedCategoryId);;
 			}
 			table = $("#container").btable({url: URI_AJAX_LIST});
+			bindContextMenuEvents(tree);
+		},
+		contextCallback: function(event, node, tree) {
+			tree.selectNode(node);
+			$("#" + HIDDEN_CATEGORY_ID).val(node.rid);
+			table.refresh();
+			contextMenu.show(event);
 		}
 	});
+}
+
+// 绑定资源分类右键菜单事件
+function bindContextMenuEvents(tree) {
+	$("#category_add").off();
+	$("#category_edit").off();
+	$("#category_delete").off();
+	$("#button_dialog_category_cancel").off();
+	$("#button_dialog_category_save").off();
 	
-	// 关闭分类弹出框
-	$("#button_dialog_category_cancel").click(function() {
-		$(DIALOG_ID_CATEGORY).modal("hide");
+	// 添加资源分类
+	$("#category_add").on("click", function() {
+		addCategory(tree);
 	});
-	
+	// 编辑资源分类
+	$("#category_edit").on("click", function() {
+		editCategory(tree);
+	});
+	// 删除资源分类
+	$("#category_delete").on("click", function() {
+		deleteCategory(tree);
+	});
+	// 关闭分类弹出框
+	$("#button_dialog_category_cancel").on("click", function() {
+		$("#" + DIALOG_ID_CATEGORY).modal("hide");
+	});
 	// 保存分类
-	$("#button_dialog_category_save").click(function(){
-		var url = $(FORM_ID_CATEGORY).attr("action");
-		var data = JSON.stringify($(FORM_ID_CATEGORY).serializeJson());
-		var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
-		if ($(FORM_ID_CATEGORY).form("validate")) {
-			ajaxLoading($.i18n.prop("save.saving"));
+	$("#button_dialog_category_save").on("click", function() {
+		if ($("#" + FORM_ID_CATEGORY).valid()) {
+			var url = $("#" + FORM_ID_CATEGORY).attr("action");
+			var data = JSON.stringify($("#" +FORM_ID_CATEGORY).serializeJson());
+			var node = tree.getSelectedNodes()[0];
 			$.ajax({
 				type : "POST",
 				contentType: "application/json",
@@ -82,18 +109,16 @@ function initListPageExt(error, message) {
 				data : data,
 				dataType : "json",
 				success : function(json) {
-					ajaxLoaded();
-					if (json.code == CODE_OK) {
-						$(DIALOG_ID_CATEGORY).modal("hide");
-						freshCategoryTree(node.id);
-						showSuccessTips($.i18n.prop("save.success"));
+					if (json.code == OK) {
+						$("#" + DIALOG_ID_CATEGORY).modal("hide");
+						$.successTips($.i18n.prop("save.success"));
+						tree.refresh();
 					} else {
-						showErrorTips(json.message, "tips_category");
+						$.errorTips(json.message);
 					}
 				},
 				error : function() {
-					ajaxLoaded();
-					showErrorTips($.i18n.prop("http.request.failed"), "tips_category");
+					$.errorTips($.i18n.prop("http.request.failed"));
 				}
 			});
 		}
@@ -101,76 +126,67 @@ function initListPageExt(error, message) {
 }
 
 // 新增资源分类
-function addCategory() {
-	$(FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_SAVE);
-	$(DIALOG_ID_CATEGORY).modal({keyboard:false});
-	var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
-	$(FORM_ID_CATEGORY).form("load", {
-		parentId: node.attributes.id,
-		parentCategoryName: node.text,
-		name: null,
-		categoryId: null
-	});
+function addCategory(tree) {
+	$("#" + FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_SAVE);
+	$("#" + DIALOG_ID_CATEGORY).modal({keyboard:false});
+	var node = tree.getSelectedNodes()[0];
+	$("#" + HIDDEN_CATEGORY_ID).val(node.rid);
+	$("#" + FORM_ID_CATEGORY + " #parentId").val(node.rid);
+	$("#" + FORM_ID_CATEGORY + " #parentCategoryName").val(node.name);
+	$("#" + FORM_ID_CATEGORY + " #name").val(null);
+	$("#" + FORM_ID_CATEGORY + " #categoryId").val(null);
+	$("#" + FORM_ID_CATEGORY).validate();
 }
 
 // 编辑资源分类
-function editCategory() {
-	$(FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_UPDATE);
-	$(DIALOG_ID_CATEGORY).modal({keyboard:false});
-	var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
-	var parent = getParentTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
-	var parentCategoryName = null
-	if (parent) {
-		parentCategoryName = parent.text;
+function editCategory(tree) {
+	$("#" +FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_UPDATE);
+	$("#" +DIALOG_ID_CATEGORY).modal({keyboard:false});
+	var node = tree.getSelectedNodes()[0];
+	$("#" + HIDDEN_CATEGORY_ID).val(node.rid);
+	var parentNode = tree.getNodeById(CATEGORY_NODE_ID_PREFIX + node.parentId);
+	var parentCategoryName = null;
+	if (parentNode) {
+		parentCategoryName = parentNode.name;
 	}
-	$(FORM_ID_CATEGORY).form("load", {
-		parentId: node.attributes.parentId,
-		parentCategoryName: parentCategoryName,
-		name: node.text,
-		createUser: null,
-		id: node.attributes.id
-	});
+	$("#" + FORM_ID_CATEGORY + " #parentId").val(node.parentId);
+	$("#" + FORM_ID_CATEGORY + " #parentCategoryName").val(parentCategoryName);
+	$("#" + FORM_ID_CATEGORY + " #name").val(node.name);
+	$("#" + FORM_ID_CATEGORY + " #categoryId").val(node.rid);
+	$("#" + FORM_ID_CATEGORY).validate();
 }
 
 // 删除资源分类
-function deleteCategory() {
-	var node = getSelectedTreeNode(TREE_ID_RESOURCE_CATEGORY);
-	var parent = getParentTreeNode(TREE_ID_RESOURCE_CATEGORY, node);
-	$.messager.confirm($.i18n.prop("tip.info"), $.i18n.prop("delete.prompt"), function(go){
-		if (go){
-			$.ajax({
-				type : "DELETE",
-				url : URI_AJAX_CATEGORY_DELETE + "/" + node.attributes.id,
-				dataType : "json",
-				success : function(json) {
-					if (json.code == CODE_OK) {
-						if (parent) {
-							freshCategoryTree(parent.id);
-						}
-						showSuccessTips($.i18n.prop("delete.success"));
-					} else {
-						showErrorTips(json.message);
-					}
-				},
-				error : function() {
-					showErrorTips($.i18n.prop("http.request.failed"));
+function deleteCategory(tree) {
+	var node = tree.getSelectedNodes()[0];
+	var parentNode = tree.getNodeById(CATEGORY_NODE_ID_PREFIX + node.parentId);
+	$("#" + HIDDEN_CATEGORY_ID).val(parentNode.rid);
+	parent.layer.confirm($.i18n.prop("delete.prompt"), {
+		title: $.i18n.prop("tip.info"),
+		closeBtn: 0, // 不显示关闭按钮
+		shadeClose: true, // 开启遮罩关闭
+		skin: "layui-layer-molv", // 样式类名
+	    btn: ["确定", "取消"] //按钮
+	}, function(){
+		parent.layer.closeAll();
+		$.ajax({
+			type : "DELETE",
+			url : URI_AJAX_CATEGORY_DELETE + "/" + node.rid,
+			dataType : "json",
+			success : function(json) {
+				if (json.code == OK) {
+					tree.refresh();
+					$.successTips($.i18n.prop("delete.success"));
+				} else {
+					$.errorTips(json.message);
 				}
-			});
-		}
-	});
-}
-
-// 刷新分类树
-function freshCategoryTree(nodeId) {
-	refreshTree({
-		url: URI_AJAX_CATEGORY_TREE,
-		treeId: TREE_ID_RESOURCE_CATEGORY,
-		completeCallback: function() {
-			if (nodeId) {
-				var node = getTreeNode(TREE_ID_RESOURCE_CATEGORY, nodeId);
-				selectCategory(node);
+			},
+			error : function() {
+				$.errorTips($.i18n.prop("http.request.failed"));
 			}
-		}
+		});
+	}, function(){
+		parent.layer.closeAll();
 	});
 }
 /************************************** add/edit begin ********************************************/
@@ -215,15 +231,5 @@ function initEditPageExt(error, message) {
 		}
 	});
 	
-}
-
-// 选择树节点事件
-function confirmCallbackForDetail(node) {
-	if (node) {
-		$(FORM_ID_DETAIL).form("load", {
-			categoryId: node.attributes.id,
-			categoryName: node.text
-		});
-	}
 }
 /************************************** add/edit end ********************************************/
