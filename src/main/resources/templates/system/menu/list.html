@@ -21,24 +21,19 @@
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInLeft">
-	<div class="row">
-		<div class="col-xs-2">
-			<div class="ibox float-e-margins">
-				<div class="ibox-title">
-		            <h5 th:text="#{menu.tree}">菜单树</h5>
-		        </div>
-		        <div class="ibox-content">
-					<div id="ztree_menu" class="ztree"></div>
-		        </div>
-			</div>
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<ol class="breadcrumb navigation">
+  				<li class="active" th:text="#{menu.list}">菜单列表</li>
+			</ol>
 		</div>
-		<div class="col-xs-10">
-			<div class="ibox float-e-margins">
-				<div class="ibox-title">
-		            <h5 th:text="#{menu.list}">菜单列表</h5>
-		        </div>
-		        <div class="ibox-content">
-		            <div id="container" class="row">
+		<div class="ibox-content">
+			<div class="row">
+				<div class="col-xs-2 page-height-default">
+        			<div id="ztree_menu" class="ztree"></div>
+        		</div>
+        		<div class="col-xs-10">
+        			<div id="container" class="row">
 		           		<form id="form_search" role="form" class="form-inline">
 		           		<input type="hidden" id="selectedParentMenuId" name="parentId" th:value="${parentId}" />
 		           		<input type="hidden" id="id" name="id" />
@@ -78,7 +73,7 @@
 		                    </thead>
 						</table>
 		            </div>
-		        </div>
+        		</div>
 			</div>
 		</div>
 	</div>
