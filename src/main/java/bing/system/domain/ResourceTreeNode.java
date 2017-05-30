@@ -1,9 +1,10 @@
-package bing.domain;
+package bing.system.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import bing.domain.GenericTreeNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MenuTreeNode extends GenericTreeNode {
+public class ResourceTreeNode extends GenericTreeNode {
+
+	public static final Integer CATEGORY = 0;
+
+	public static final Integer RESOURCE = 1;
+
+	private String rid;
 
 	private boolean checked = false;
 
@@ -21,15 +28,13 @@ public class MenuTreeNode extends GenericTreeNode {
 
 	private Integer nodeType;
 
-	private String url;
+	private List<ResourceTreeNode> children = new ArrayList<>();
 
-	private List<MenuTreeNode> children = new ArrayList<>();
-
-	public void addChild(MenuTreeNode node) {
+	public void addChild(ResourceTreeNode node) {
 		this.children.add(node);
 	}
 
-	public void removeChild(MenuTreeNode node) {
+	public void removeChild(ResourceTreeNode node) {
 		this.children.remove(node);
 	}
 
@@ -39,18 +44,25 @@ public class MenuTreeNode extends GenericTreeNode {
 	 * @param parentTreeNodes 上级节点
 	 * @param treeNodes 全部节点
 	 */
-	public static void buildMenuTree(List<MenuTreeNode> parentTreeNodes, List<MenuTreeNode> treeNodes) {
+	public static void buildResourceTree(List<ResourceTreeNode> parentTreeNodes, List<ResourceTreeNode> treeNodes) {
 		parentTreeNodes.forEach(parentNode -> {
-			String parentId = parentNode.getId();
+			String parentId = parentNode.getRid();
 			treeNodes.forEach(node -> {
 				if (parentNode.isParent && Objects.equals(parentId, node.getParentId())) {
 					parentNode.addChild(node);
 				}
 			});
 			if (!parentNode.getChildren().isEmpty()) {
-				buildMenuTree(parentNode.getChildren(), treeNodes);
+				buildResourceTree(parentNode.getChildren(), treeNodes);
 			}
 		});
+	}
+
+	public String getIconSkin() {
+		if (this.getChildren().isEmpty()) {
+			iconSkin = "";
+		}
+		return iconSkin;
 	}
 
 }

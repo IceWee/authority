@@ -3,8 +3,8 @@ package bing.system.service;
 import java.util.List;
 
 import bing.domain.GenericService;
-import bing.domain.MenuTreeNode;
 import bing.system.condition.SysMenuCondition;
+import bing.system.domain.MenuTreeNode;
 import bing.system.model.SysMenu;
 import bing.system.vo.SysMenuVO;
 

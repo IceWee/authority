@@ -19,11 +19,11 @@ import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
-import bing.domain.MenuTreeNode;
 import bing.exception.BusinessException;
 import bing.system.condition.SysMenuCondition;
 import bing.system.dao.SysMenuDao;
 import bing.system.dao.SysResourceDao;
+import bing.system.domain.MenuTreeNode;
 import bing.system.exception.MenuExceptionCodes;
 import bing.system.model.SysMenu;
 import bing.system.vo.SysMenuVO;
@@ -98,14 +98,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
 		List<MenuTreeNode> treeNodes = convertMenu(topMenus);
+		treeNodes.forEach(menu -> menu.setIconSkin(GlobalConstants.ICON_CLS_ROOT));
 		List<MenuTreeNode> allTreeNodes = convertMenu(menus);
 		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !StringUtils.equals(treeNode.getId(), Objects.toString(id))).collect(Collectors.toList());
 		MenuTreeNode.buildMenuTree(treeNodes, treeNodesExclude);
-		treeNodes.forEach(menu -> {
-			if (!menu.getChildren().isEmpty()) {
-				menu.setIconSkin(GlobalConstants.ICON_CLS_ROOT);
-			}
-		});
+
 		return treeNodes;
 	}
 

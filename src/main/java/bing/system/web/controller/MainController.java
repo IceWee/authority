@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import bing.constant.GlobalConstants;
 import bing.domain.CurrentLoggedUser;
-import bing.domain.MenuTreeNode;
 import bing.security.SecurityConstants;
+import bing.system.domain.MenuTreeNode;
 import bing.system.model.SysUser;
 import bing.system.service.SysMenuService;
 import bing.web.controller.GenericController;

@@ -3,8 +3,8 @@ package bing.system.service;
 import java.util.List;
 
 import bing.domain.GenericService;
-import bing.domain.ResourceTreeNode;
 import bing.system.condition.SysResourceCondition;
+import bing.system.domain.ResourceTreeNode;
 import bing.system.model.SysResource;
 import bing.system.model.SysResourceCategory;
 import bing.system.vo.SysResourceVO;

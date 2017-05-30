@@ -1,38 +1,36 @@
-package bing.domain;
+package bing.system.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import bing.domain.GenericTreeNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * zTree树节点
- * 
- * @author IceWee
- */
 @Getter
 @Setter
 @NoArgsConstructor
-public class ZtreeTreeNode extends GenericTreeNode {
+public class MenuTreeNode extends GenericTreeNode {
 
-	protected boolean checked = false;
+	private boolean checked = false;
 
-	protected boolean isParent = true;
+	private boolean isParent = true;
 
-	protected String iconCls;
+	private String iconSkin;
 
-	protected Integer nodeType;
+	private Integer nodeType;
 
-	private List<ZtreeTreeNode> children = new ArrayList<>();
+	private String url;
 
-	public void addChild(ZtreeTreeNode node) {
+	private List<MenuTreeNode> children = new ArrayList<>();
+
+	public void addChild(MenuTreeNode node) {
 		this.children.add(node);
 	}
 
-	public void removeChild(ZtreeTreeNode node) {
+	public void removeChild(MenuTreeNode node) {
 		this.children.remove(node);
 	}
 
@@ -42,7 +40,7 @@ public class ZtreeTreeNode extends GenericTreeNode {
 	 * @param parentTreeNodes 上级节点
 	 * @param treeNodes 全部节点
 	 */
-	public static void buildTree(List<ZtreeTreeNode> parentTreeNodes, List<ZtreeTreeNode> treeNodes) {
+	public static void buildMenuTree(List<MenuTreeNode> parentTreeNodes, List<MenuTreeNode> treeNodes) {
 		parentTreeNodes.forEach(parentNode -> {
 			String parentId = parentNode.getId();
 			treeNodes.forEach(node -> {
@@ -51,13 +49,16 @@ public class ZtreeTreeNode extends GenericTreeNode {
 				}
 			});
 			if (!parentNode.getChildren().isEmpty()) {
-				buildTree(parentNode.getChildren(), treeNodes);
+				buildMenuTree(parentNode.getChildren(), treeNodes);
 			}
 		});
 	}
 
-	public boolean isIsParent() {
-		return this.isParent;
+	public String getIconSkin() {
+		if (this.getChildren().isEmpty()) {
+			iconSkin = "";
+		}
+		return iconSkin;
 	}
 
 }

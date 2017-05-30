@@ -203,7 +203,7 @@ function initAddPageExt(error, message) {
 		chkEnable: false,
 		selectCallback: function(node, tree) {
 			if (node) {
-				$("#categoryId").val(node.id);
+				$("#categoryId").val(node.rid);
 				$("#categoryName").val(node.name);
 			}
 		}
@@ -225,7 +225,7 @@ function initEditPageExt(error, message) {
 		chkEnable: false,
 		selectCallback: function(node, tree) {
 			if (node) {
-				$("#categoryId").val(node.id);
+				$("#categoryId").val(node.rid);
 				$("#categoryName").val(node.name);
 			}
 		}
