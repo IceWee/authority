@@ -57,5 +57,5 @@ function shake() {
     // 设置超时清除动画，否则无法进行下一次动画显示
     setTimeout(function() {
 	    $("#container_login").removeClass("shake");
-    }, 5000);
+    }, 3000);
 }
