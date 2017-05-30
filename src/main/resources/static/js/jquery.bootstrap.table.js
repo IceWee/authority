@@ -103,7 +103,7 @@
 					if (event.keyCode == 13) {
 						self._search();
 					}
-				}); 
+				});
 			}
 			// 查询
 			$(options.searchBtnId).click(function() {
