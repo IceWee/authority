@@ -1,14 +1,20 @@
 package bing.system.web.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +42,7 @@ import bing.system.service.SysUserService;
 import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysUserVO;
 import bing.system.vo.UserRoleVO;
+import bing.util.EasyPOIUtils;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
@@ -63,6 +70,7 @@ public class SysUserController extends GenericController {
 	private static final String MINE = PREFIX + "/mine"; // 我的信息
 	private static final String LOCK = PREFIX + "/lock"; // 锁定用户
 	private static final String UNLOCK = PREFIX + "/unlock"; // 解除锁定用户
+	private static final String EXPORT = PREFIX + "/export"; // 导出
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -121,7 +129,8 @@ public class SysUserController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model,
+			@CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
@@ -278,6 +287,34 @@ public class SysUserController extends GenericController {
 		}
 		setMessage(MessageKeys.UNLOCK_SUCCESS, model);
 		return LIST;
+	}
+
+	/**
+	 * 数据导出
+	 * 
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value = EXPORT)
+	public ResponseEntity<byte[]> export(SysUserCondition condition) {
+		try {
+			condition.setPageNumber(1L);
+			condition.setPageSize(Long.MAX_VALUE);
+			GenericPage<SysUserVO> page = sysUserService.listByPage(condition);
+			HttpHeaders headers = new HttpHeaders();
+			Workbook workbook = EasyPOIUtils.exportExcel(SysUserVO.class, page.getRows());
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			workbook.write(baos);
+			byte[] bytes = baos.toByteArray();
+			final String filename = "users" + System.currentTimeMillis() + ".xls";
+			headers.setContentDispositionFormData("attachment", filename);
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
+		} catch (IOException e) {
+			LOGGER.error("{}导出Excel异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
+			throw new RuntimeException(e);
+		}
+
 	}
 
 }

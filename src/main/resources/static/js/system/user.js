@@ -19,6 +19,17 @@ var URI_LOCK = "/system/user/lock"; // 锁定用户
 var URI_UNLOCK = "/system/user/unlock"; // 解除锁定用户
 var URI_AJAX_ROLE_LIST = "/ajax/system/role/list"; // 获取用户已选/未选角色列表
 var URI_AJAX_ROLE_SAVE = "/ajax/system/role/save"; // 保存用户角色授权
+var URI_EXPORT = "/system/user/export"; // 导出URI
+
+// 初始化列表页面
+function initListPageExt(error, message) {
+	initListPage(error, message);
+	// 导出
+	$("#button_export").click(function() {
+		$("#" + FORM_ID_LIST).attr("action", URI_EXPORT);
+		$("#" + FORM_ID_LIST).submit();
+	});
+}
 
 // 扩展操作按钮
 function operationFormatterExt(value, row, index) {

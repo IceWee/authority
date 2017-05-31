@@ -11,7 +11,7 @@
 	$(function() {
 		var error = /*[[${error}]]*/ null;
 		var message = /*[[${message}]]*/ null;
-		initListPage(error, message);
+		initListPageExt(error, message);
 	});
 	/*]]>*/
 </script>
@@ -53,6 +53,9 @@
 				<div id="toolbar" class="btn-group hidden-xs" role="group">
 					<button id="button_add" type="button" class="btn btn-outline btn-primary">
 				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">添加</span>
+				 	</button>
+				 	<button id="button_export" type="button" class="btn btn-outline btn-primary">
+				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{export}">导出</span>
 				 	</button>
 				</div>
                 <table id="table_list" data-height="410" data-row-style="rowStyle">

@@ -149,6 +149,22 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- excel/word导出 -->
+		<dependency>
+			<groupId>org.jeecg</groupId>
+			<artifactId>easypoi-base</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jeecg</groupId>
+			<artifactId>easypoi-web</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jeecg</groupId>
+			<artifactId>easypoi-annotation</artifactId>
+			<version>2.4.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
