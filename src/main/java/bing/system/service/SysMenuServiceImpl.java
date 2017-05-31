@@ -23,13 +23,18 @@ import bing.exception.BusinessException;
 import bing.system.condition.SysMenuCondition;
 import bing.system.dao.SysMenuDao;
 import bing.system.dao.SysResourceDao;
+import bing.system.dao.SysUserDao;
 import bing.system.domain.MenuTreeNode;
 import bing.system.exception.MenuExceptionCodes;
 import bing.system.model.SysMenu;
+import bing.system.model.SysUser;
 import bing.system.vo.SysMenuVO;
 
 @Service("sysMenuService")
 public class SysMenuServiceImpl implements SysMenuService {
+
+	@Autowired
+	private SysUserDao sysUserDao;
 
 	@Autowired
 	private SysMenuDao sysMenuDao;
@@ -103,7 +108,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !StringUtils.equals(treeNode.getId(), Objects.toString(id)))
 				.collect(Collectors.toList());
 		MenuTreeNode.buildMenuTree(treeNodes, treeNodesExclude);
-
 		return treeNodes;
 	}
 
@@ -111,11 +115,15 @@ public class SysMenuServiceImpl implements SysMenuService {
 	public List<MenuTreeNode> listMenuByUserId(Integer userId) {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
-		List<Integer> ownResourceIds = sysResourceDao.listResourceIdByUserId(userId);
-		// 迭代全部菜单，未绑定资源的忽略，绑定资源的需要与用户具备的资源比较，不包含则删除菜单
-		List<SysMenuVO> ownMenus = menus.stream().filter(menu -> (menu.getResourceId() == null) || (ownResourceIds.contains(menu.getResourceId())))
-				.collect(Collectors.toList());
 		List<MenuTreeNode> treeNodes = convertMenuWithUrl(topMenus);
+		SysUser user = sysUserDao.selectByPrimaryKey(userId);
+		List<SysMenuVO> ownMenus = menus;
+		if (!GlobalConstants.ADMIN.equals(user.getUsername())) { // 非超级管理员，需要根据用户具备角色过滤菜单
+			List<Integer> ownResourceIds = sysResourceDao.listResourceIdByUserId(userId);
+			// 迭代全部菜单，未绑定资源的忽略，绑定资源的需要与用户具备的资源比较，不包含则删除菜单
+			ownMenus = menus.stream().filter(menu -> (menu.getResourceId() == null) || (ownResourceIds.contains(menu.getResourceId())))
+					.collect(Collectors.toList());
+		}
 		MenuTreeNode.buildMenuTree(treeNodes, convertMenuWithUrl(ownMenus));
 		// 移除顶级空菜单，即没子菜单的菜单
 		MenuTreeNode topNode;

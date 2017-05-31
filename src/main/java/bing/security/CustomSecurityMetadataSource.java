@@ -43,6 +43,7 @@ public class CustomSecurityMetadataSource implements FilterInvocationSecurityMet
 		Collection<ConfigAttribute> configAttributes = new ArrayList<>();
 		FilterInvocation fi = (FilterInvocation) object;
 		List<URISecurityConfigs> uriSecurityConfigs = authorizeService.listURISecurityConfigs();
+		System.out.println(JsonUtils.toString(uriSecurityConfigs));
 		uriSecurityConfigs.forEach(uriConfigs -> {
 			String uri = uriConfigs.getUri();
 			RequestMatcher requestMatcher = new AntPathRequestMatcher(uri);

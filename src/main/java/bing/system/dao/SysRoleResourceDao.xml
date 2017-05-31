@@ -152,9 +152,9 @@
 	</insert>
 	<select id="listAllURIRole" resultMap="URIRoleResultMap">
 		select rr.id, rs.url, ro.code 
-		from sys_resource rs left join sys_role_resource rr on rs.id = rr.resource_id
-		inner join sys_role ro on rr.role_id = ro.id
-		where ro.status != 1 and ro.status != 2 and rs.status != 2
+		from sys_resource rs, sys_role_resource rr, sys_role ro
+		where rs.id = rr.resource_id and rr.role_id = ro.id
+		and ro.status != 1 and ro.status != 2 and rs.status != 2
 		order by rs.url
 	</select>
 	<select id="countByResourceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">

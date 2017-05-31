@@ -2,6 +2,7 @@ package bing.system.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import bing.constant.GlobalConstants;
 import bing.security.URISecurityConfigs;
+import bing.system.dao.SysResourceDao;
 import bing.system.dao.SysRoleDao;
 import bing.system.dao.SysRoleResourceDao;
 import bing.system.dao.SysUserDao;
+import bing.system.model.SysResource;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
 import bing.system.vo.URIRole;
@@ -33,6 +36,9 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
 	@Autowired
 	private SysRoleDao sysRoleDao;
+
+	@Autowired
+	private SysResourceDao sysResourceDao;
 
 	@Autowired
 	private SysRoleResourceDao sysRoleResourceDao;
@@ -58,10 +64,13 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 	@Override
 	public List<URISecurityConfigs> listURISecurityConfigs() {
 		List<URISecurityConfigs> uriSecurityConfigs = new ArrayList<>();
+		List<SysResource> allResources = sysResourceDao.listAll(); // 获取系统全部资源
 		// uri - 角色code 列表，多对多
 		List<URIRole> uriRoles = sysRoleResourceDao.listAllURIRole();
+		Set<String> allUris = allResources.stream().map(res -> res.getUrl()).collect(Collectors.toSet());
 		// distinct uri， 产生不重复的URI
-		List<String> uris = uriRoles.stream().map(bean -> bean.getUri()).distinct().collect(Collectors.toList());
+		Set<String> uris = uriRoles.stream().map(bean -> bean.getUri()).distinct().collect(Collectors.toSet());
+		uris.addAll(allUris);
 		// 遍历URI构造返回类型并添加到返回集合中
 		uris.forEach(uri -> {
 			uriSecurityConfigs.add(new URISecurityConfigs(uri));
@@ -70,13 +79,13 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 		uriSecurityConfigs.forEach(uriConfigs -> {
 			uriRoles.forEach(uriRole -> {
 				if (StringUtils.equals(uriConfigs.getUri(), uriRole.getUri())) {
-					if (StringUtils.isBlank(uriRole.getRoleCode())) { // 如果当前资源未配置可访问角色默认为admin
-						uriConfigs.addConfig(GlobalConstants.ADMIN);
-					} else {
-						uriConfigs.addConfig(uriRole.getRoleCode());
-					}
+					uriConfigs.addConfig(uriRole.getRoleCode());
 				}
 			});
+			// 如果资源未配置角色则限定该资源需具备管理员权限
+			if (uriConfigs.getConfigAttributes().isEmpty()) {
+				uriConfigs.addConfig(GlobalConstants.ADMIN);
+			}
 		});
 		return uriSecurityConfigs;
 	}
