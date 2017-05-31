@@ -298,11 +298,12 @@ public class SysUserController extends GenericController {
 	@RequestMapping(value = EXPORT)
 	public ResponseEntity<byte[]> export(SysUserCondition condition) {
 		try {
-			condition.setPageNumber(1L);
-			condition.setPageSize(Long.MAX_VALUE);
+			condition.setPageNumber(1);
+			condition.setPageSize(Integer.MAX_VALUE);
 			GenericPage<SysUserVO> page = sysUserService.listByPage(condition);
 			HttpHeaders headers = new HttpHeaders();
-			Workbook workbook = EasyPOIUtils.exportExcel(SysUserVO.class, page.getRows());
+			List<SysUserVO> rows = page.getRows();
+			Workbook workbook = EasyPOIUtils.exportExcel(SysUserVO.class, rows);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			workbook.write(baos);
 			byte[] bytes = baos.toByteArray();

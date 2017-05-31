@@ -55,8 +55,8 @@ public class SysResourceServiceImpl implements SysResourceService {
 
 	@Override
 	public GenericPage<SysResourceVO> listByPage(SysResourceCondition condition) {
-		Long pageNumber = condition.getPageNumber();
-		PageHelper.startPage(pageNumber.intValue(), condition.getPageSize().intValue());
+		int pageNumber = condition.getPageNumber();
+		PageHelper.startPage(pageNumber, condition.getPageSize());
 		List<SysResourceVO> list = sysResourceDao.listByCondition(condition);
 		PageInfo<SysResourceVO> pageInfo = new PageInfo<>(list);
 		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
@@ -130,7 +130,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = {EhCacheNames.CATEGORY_TREE_CACHE})
+	@Cacheable(cacheNames = { EhCacheNames.CATEGORY_TREE_CACHE })
 	public List<ResourceTreeNode> getCategoryTree() {
 		List<SysResourceCategory> topCategories = sysResourceCategoryDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysResourceCategory> categories = sysResourceCategoryDao.listAll();
@@ -204,7 +204,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = {EhCacheNames.RESOURCE_TREE_CACHE})
+	@Cacheable(cacheNames = { EhCacheNames.RESOURCE_TREE_CACHE })
 	public List<ResourceTreeNode> getResourceTree() {
 		List<SysResource> resources = sysResourceDao.listAll();
 		List<ResourceTreeNode> resourceTreeNodes = convertResource(resources);

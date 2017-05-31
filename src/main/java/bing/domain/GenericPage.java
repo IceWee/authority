@@ -8,10 +8,10 @@ import java.util.List;
  */
 public class GenericPage<T> {
 
-	public final static long DEFAULT_PAGE_SIZE = 10;
+	public final static int DEFAULT_PAGE_SIZE = 10;
 
-	protected long pageNumber = 1;
-	protected long pageSize = DEFAULT_PAGE_SIZE;
+	protected int pageNumber = 1;
+	protected int pageSize = DEFAULT_PAGE_SIZE;
 	protected long total = 0;
 	protected List<T> rows = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class GenericPage<T> {
 		this.rows = rows;
 	}
 
-	public GenericPage(long pageSize, long total, List<T> rows) {
+	public GenericPage(int pageSize, long total, List<T> rows) {
 		this(total, rows);
 		this.pageSize = pageSize;
 	}
@@ -42,7 +42,7 @@ public class GenericPage<T> {
 		return pageNumber;
 	}
 
-	public void setPageNumber(long pageNumber) {
+	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 		if (pageNumber < 1) {
 			this.pageNumber = 1;
@@ -69,7 +69,7 @@ public class GenericPage<T> {
 		return pageSize;
 	}
 
-	public void setPageSize(long pageSize) {
+	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
 

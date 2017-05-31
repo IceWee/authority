@@ -38,8 +38,8 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public GenericPage<SysUserVO> listByPage(SysUserCondition condition) {
-		Long pageNumber = condition.getPageNumber();
-		PageHelper.startPage(pageNumber.intValue(), condition.getPageSize().intValue());
+		int pageNumber = condition.getPageNumber();
+		PageHelper.startPage(pageNumber, condition.getPageSize());
 		List<SysUserVO> list = sysUserDao.listByCondition(condition);
 		PageInfo<SysUserVO> pageInfo = new PageInfo<>(list);
 		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
@@ -65,7 +65,8 @@ public class SysUserServiceImpl implements SysUserService {
 		// 前端选择了角色
 		Integer[] roleIds = entity.getRoleIds();
 		if (ArrayUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username))
+					.collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}
@@ -118,7 +119,8 @@ public class SysUserServiceImpl implements SysUserService {
 	public void saveRoleUsers(Integer roleId, Integer[] userIds, String username) {
 		sysUserRoleDao.deleteByRoleId(roleId);
 		if (ArrayUtils.isNotEmpty(userIds)) {
-			List<SysUserRole> entities = Arrays.asList(userIds).stream().map(userId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+			List<SysUserRole> entities = Arrays.asList(userIds).stream().map(userId -> createUserRole(userId, roleId, username))
+					.collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}
@@ -144,7 +146,8 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserRoleDao.deleteByUserId(userId);
 		Integer[] roleIds = entity.getRoleIds();
 		if (ArrayUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username))
+					.collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}

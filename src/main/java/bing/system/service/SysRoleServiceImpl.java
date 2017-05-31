@@ -37,8 +37,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 	@Override
 	public GenericPage<SysRoleVO> listByPage(SysRoleCondition condition) {
-		Long pageNumber = condition.getPageNumber();
-		PageHelper.startPage(pageNumber.intValue(), condition.getPageSize().intValue());
+		int pageNumber = condition.getPageNumber();
+		PageHelper.startPage(pageNumber, condition.getPageSize());
 		List<SysRoleVO> list = sysRoleDao.listByCondition(condition);
 		PageInfo<SysRoleVO> pageInfo = new PageInfo<>(list);
 		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
@@ -106,7 +106,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	public void saveUserRoles(Integer userId, Integer[] roleIds, String username) {
 		sysUserRoleDao.deleteByUserId(userId);
 		if (ArrayUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username))
+					.collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}

@@ -16,9 +16,9 @@ public abstract class GenericCondition {
 
 	protected Integer id;
 
-	protected Long pageNumber = 1L;
+	protected int pageNumber = 1;
 
-	protected Long pageSize = 10L;
+	protected int pageSize = 10;
 
 	protected Integer status;
 
