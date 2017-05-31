@@ -19,7 +19,6 @@ import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
 import bing.domain.GenericPage;
 import bing.exception.BusinessException;
-import bing.exception.BusinessExceptionCodes;
 import bing.system.condition.SysResourceCondition;
 import bing.system.constant.TreeNodeIdPrefixes;
 import bing.system.dao.SysMenuDao;
@@ -31,8 +30,6 @@ import bing.system.domain.ResourceTreeNode;
 import bing.system.exception.ResourceExceptionCodes;
 import bing.system.model.SysResource;
 import bing.system.model.SysResourceCategory;
-import bing.system.model.SysRole;
-import bing.system.model.SysRoleResource;
 import bing.system.vo.SysResourceVO;
 
 @Service("sysResourceService")
@@ -76,22 +73,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		Date now = new Date();
 		entity.setCreateDate(now);
 		entity.setUpdateDate(now);
-		// 自动为admin授权
 		sysResourceDao.insert(entity);
-		Integer resourceId = entity.getId();
-		SysRole admin = sysRoleDao.getByCode(GlobalConstants.ADMIN);
-		if (admin == null) {
-			throw new BusinessException(BusinessExceptionCodes.ROLE_ADMIN_MISSING);
-		}
-		Integer roleId = admin.getId();
-		SysRoleResource sysRoleResource = new SysRoleResource();
-		sysRoleResource.setResourceId(resourceId);
-		sysRoleResource.setRoleId(roleId);
-		sysRoleResource.setCreateDate(now);
-		sysRoleResource.setUpdateDate(now);
-		sysRoleResource.setCreateUser(GlobalConstants.ADMIN);
-		sysRoleResource.setUpdateUser(GlobalConstants.ADMIN);
-		sysRoleResourceDao.insert(sysRoleResource);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import bing.constant.GlobalConstants;
 import bing.security.URISecurityConfigs;
 import bing.system.dao.SysRoleDao;
 import bing.system.dao.SysRoleResourceDao;
@@ -69,7 +70,11 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 		uriSecurityConfigs.forEach(uriConfigs -> {
 			uriRoles.forEach(uriRole -> {
 				if (StringUtils.equals(uriConfigs.getUri(), uriRole.getUri())) {
-					uriConfigs.addConfig(uriRole.getRoleCode());
+					if (StringUtils.isBlank(uriRole.getRoleCode())) { // 如果当前资源未配置可访问角色默认为admin
+						uriConfigs.addConfig(GlobalConstants.ADMIN);
+					} else {
+						uriConfigs.addConfig(uriRole.getRoleCode());
+					}
 				}
 			});
 		});
