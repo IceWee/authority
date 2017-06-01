@@ -109,7 +109,7 @@ function initEditPage(error, message) {
 	
 	// 保存
 	$("#" + BTN_SAVE_ID).click(function() {
-		if ($("#" + FORM_ID_DETAIL).validate()) {
+		if ($("#" + FORM_ID_DETAIL).valid()) {
 			$("#" + FORM_ID_DETAIL).attr("action", URI_UPDATE);
 			$("#" + FORM_ID_DETAIL).submit();
 		}

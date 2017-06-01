@@ -58,7 +58,7 @@ public class SysUserController extends GenericController {
 	private static final String PREFIX = "system/user";
 	private static final String AJAX_USER_LIST = "ajax/system/user/list";
 	private static final String AJAX_USER_SAVE = "ajax/system/user/save";
-	private static final String AJAX_USER_UPDATE = "ajax/system/user/update";
+	private static final String AJAX_USER_MINE_UPDATE = "ajax/system/user/mine/update";
 	private static final String AJAX_USER_PASSWORD = "ajax/system/user/password";
 
 	private static final String LIST = PREFIX + "/list";
@@ -67,7 +67,6 @@ public class SysUserController extends GenericController {
 	private static final String EDIT = PREFIX + "/edit";
 	private static final String UPDATE = PREFIX + "/update";
 	private static final String DELETE = PREFIX + "/delete";
-	private static final String PASSWORD = PREFIX + "/password"; // 修改密码
 	private static final String MINE = PREFIX + "/mine"; // 我的信息
 	private static final String LOCK = PREFIX + "/lock"; // 锁定用户
 	private static final String UNLOCK = PREFIX + "/unlock"; // 解除锁定用户
@@ -202,24 +201,15 @@ public class SysUserController extends GenericController {
 	}
 
 	/**
-	 * 当前登录用户修改密码
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = PASSWORD, method = RequestMethod.GET)
-	public String changePassword() {
-		return PASSWORD;
-	}
-
-	/**
 	 * 保存修改密码
 	 * 
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = AJAX_USER_PASSWORD + "/{userId}", method = RequestMethod.PUT)
-	public RestResponse<Object> savePassword(@PathVariable Integer userId, String oldPassword, String newPassword) {
-		sysUserService.changePassword(userId, oldPassword, newPassword);
+	@RequestMapping(value = AJAX_USER_PASSWORD, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public RestResponse<Object> savePassword(@RequestParam(name = "oldPassword") String oldPassword,
+			@RequestParam(name = "newPassword") String newPassword, @CurrentLoggedUser SysUser currentUser) {
+		sysUserService.changePassword(currentUser.getId(), oldPassword, newPassword);
 		return new RestResponse<>();
 	}
 
@@ -241,11 +231,12 @@ public class SysUserController extends GenericController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = AJAX_USER_UPDATE + "/{userId}", method = RequestMethod.PUT)
-	public RestResponse<Object> updateMine(@PathVariable Integer userId, SysUser mine) {
+	@RequestMapping(value = AJAX_USER_MINE_UPDATE, method = RequestMethod.PUT)
+	public RestResponse<Object> updateMine(SysUser mine, @CurrentLoggedUser SysUser currentUser) {
 		if (StringUtils.isBlank(mine.getName())) {
 			throw new BusinessException(UserExceptionCodes.NAME_IS_NULL);
 		}
+		mine.setId(currentUser.getId());
 		sysUserService.update(mine);
 		return new RestResponse<>();
 	}

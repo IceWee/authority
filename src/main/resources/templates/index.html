@@ -9,6 +9,11 @@
 <script type="text/javascript" th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/plugins/layer/layer.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/plugins/pace/pace.min.js}"></script>
+<!-- jQuery Validation plugin javascript-->
+<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/validate/locale/messages_zh.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validator.extend.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/index.js}"></script>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
 <div id="wrapper">
@@ -30,7 +35,7 @@
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a class="J_menuItem" th:href="@{/system/user/mine}" th:text="#{info.mine}">我的信息</a></li>
-                            <li><a class="J_menuItem" th:href="@{/system/user/password}" th:text="#{password.change}">修改密码</a></li>
+                            <li><a id="link_changePassword" href="javascript:void(0)" th:text="#{password.change}">修改密码</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">A+</div>
@@ -172,5 +177,7 @@
     </div>
     <!--右侧边栏结束-->
 </div>
+<!-- 菜单树弹出框 -->
+<div th:replace="/password :: dialog_password"></div>
 </body>
 </html>
