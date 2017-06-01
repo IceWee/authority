@@ -128,6 +128,8 @@ function bindContextMenuEvents(tree) {
 // 新增资源分类
 function addCategory(tree) {
 	$("#" + FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_SAVE);
+	$("#" + FORM_ID_CATEGORY).validate().resetForm();
+	$("div").removeClass("has-error");
 	$("#" + DIALOG_ID_CATEGORY).modal({keyboard:false});
 	var node = tree.getSelectedNodes()[0];
 	$("#" + HIDDEN_CATEGORY_ID).val(node.rid);
@@ -135,12 +137,13 @@ function addCategory(tree) {
 	$("#" + FORM_ID_CATEGORY + " #parentCategoryName").val(node.name);
 	$("#" + FORM_ID_CATEGORY + " #name").val(null);
 	$("#" + FORM_ID_CATEGORY + " #categoryId").val(null);
-	$("#" + FORM_ID_CATEGORY).validate();
 }
 
 // 编辑资源分类
 function editCategory(tree) {
 	$("#" +FORM_ID_CATEGORY).attr("action", URI_AJAX_CATEGORY_UPDATE);
+	$("#" + FORM_ID_CATEGORY).validate().resetForm();
+	$("div").removeClass("has-error");
 	$("#" +DIALOG_ID_CATEGORY).modal({keyboard:false});
 	var node = tree.getSelectedNodes()[0];
 	$("#" + HIDDEN_CATEGORY_ID).val(node.rid);
@@ -153,7 +156,6 @@ function editCategory(tree) {
 	$("#" + FORM_ID_CATEGORY + " #parentCategoryName").val(parentCategoryName);
 	$("#" + FORM_ID_CATEGORY + " #name").val(node.name);
 	$("#" + FORM_ID_CATEGORY + " #categoryId").val(node.rid);
-	$("#" + FORM_ID_CATEGORY).validate();
 }
 
 // 删除资源分类

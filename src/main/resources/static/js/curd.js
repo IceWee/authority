@@ -82,8 +82,6 @@ function _delete(id) {
 function initAddPage(error, message) {
 	showErrorOrMessage(error, message);
 	
-	$("#" + FORM_ID_DETAIL).validate();
-	
 	// 保存
 	$("#" + BTN_SAVE_ID).click(function() {
 		if ($("#" + FORM_ID_DETAIL).valid()) {

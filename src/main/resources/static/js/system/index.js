@@ -5,8 +5,8 @@ $(function() {
 	
 	// 修改密码
 	$("#link_changePassword").on("click", function() {
-		$("#" + FORM_ID)[0].reset();
-		$("#" + FORM_ID).validate();
+		$("#" + FORM_ID).validate().resetForm();
+		$("div").removeClass("has-error");
 		$("#" + DIALOG_ID).modal({keyboard:false});
 	});
 	// 取消
