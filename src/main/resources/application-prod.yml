@@ -37,10 +37,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd
 
-# MyBatis cofig
-mybatis: 
-  config-location: classpath:mybatis-config.xml
-
 # Auto pager plugin
 pagehelper:
     helperDialect: mysql

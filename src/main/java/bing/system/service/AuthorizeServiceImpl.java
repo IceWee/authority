@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import bing.constant.EhCacheNames;
 import bing.constant.GlobalConstants;
 import bing.security.URISecurityConfigs;
 import bing.system.dao.SysResourceDao;
@@ -44,7 +46,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 	private SysRoleResourceDao sysRoleResourceDao;
 
 	@Override
-	// @Cacheable(cacheNames = {EhCacheNames.USER_CACHE})
+	@Cacheable(cacheNames = { EhCacheNames.USER_CACHE })
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		SysUser userDetails = sysUserDao.getByUsername(username);
 		if (userDetails == null) {
