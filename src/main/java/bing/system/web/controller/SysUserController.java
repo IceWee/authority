@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import bing.constant.Charsets;
 import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
@@ -307,7 +308,8 @@ public class SysUserController extends GenericController {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			workbook.write(baos);
 			byte[] bytes = baos.toByteArray();
-			final String filename = "users" + System.currentTimeMillis() + ".xls";
+			String filename = "用户列表." + System.currentTimeMillis() + ".xls";
+			filename = new String(filename.getBytes(Charsets.CHARSET_UTF_8), Charsets.CHARSET_ISO_8859_1);
 			headers.setContentDispositionFormData("attachment", filename);
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
