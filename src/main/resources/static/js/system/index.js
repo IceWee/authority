@@ -3,6 +3,8 @@ $(function() {
 	var FORM_ID = "form_password";
 	var url = "/ajax/system/user/password";
 	
+	// 姓名后追加下拉按钮符号
+	$("#surname").html($("#surname").text() + '<b class="caret"></b>');
 	// 修改密码
 	$("#link_changePassword").on("click", function() {
 		$("#" + FORM_ID).validate().resetForm();
