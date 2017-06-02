@@ -1,5 +1,28 @@
 var OK = "200";
 
+$(document).ajaxStart(function() {
+	var message = "<div class='sk-spinner sk-spinner-fading-circle' style='float:left;display:inline;margin:20px'>";
+	message += "<div class='sk-circle1 sk-circle'></div>";
+	message += "<div class='sk-circle2 sk-circle'></div>";
+	message += "<div class='sk-circle3 sk-circle'></div>";
+	message += "<div class='sk-circle4 sk-circle'></div>";
+	message += "<div class='sk-circle5 sk-circle'></div>";
+	message += "<div class='sk-circle6 sk-circle'></div>";
+	message += "<div class='sk-circle7 sk-circle'></div>";
+	message += "<div class='sk-circle8 sk-circle'></div>";
+	message += "<div class='sk-circle9 sk-circle'></div>";
+	message += "<div class='sk-circle10 sk-circle'></div>";
+	message += "<div class='sk-circle11 sk-circle'></div>";
+	message += "<div class='sk-circle12 sk-circle'></div>";
+	message += "</div>";
+	message += "<div style='float:left;display:inline'><span style='line-height:60px'>" + $.i18n.prop("wait.waitting") + "</span></div>";
+	$.blockUI({
+		message: message
+	});
+}).ajaxStop(function() {
+	$.unblockUI();
+});
+
 // 将表单序列化成JSON对象
 // 依赖JQuery的serializeArray方法
 (function($) {

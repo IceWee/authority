@@ -125,12 +125,12 @@
 			css: {
 				padding:	0,
 				margin:		0,
-				width:		'30%',
+				width:		'250px',
 				top:		'40%',
 				left:		'35%',
 				textAlign:	'center',
 				color:		'#000',
-				border:		'3px solid #aaa',
+				border:		'1px solid #aaa',
 				backgroundColor:'#fff',
 				cursor:		'wait'
 			},
