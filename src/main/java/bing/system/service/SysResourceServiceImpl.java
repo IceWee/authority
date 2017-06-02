@@ -24,7 +24,6 @@ import bing.system.constant.TreeNodeIdPrefixes;
 import bing.system.dao.SysMenuDao;
 import bing.system.dao.SysResourceCategoryDao;
 import bing.system.dao.SysResourceDao;
-import bing.system.dao.SysRoleDao;
 import bing.system.dao.SysRoleResourceDao;
 import bing.system.domain.ResourceTreeNode;
 import bing.system.exception.ResourceExceptionCodes;
@@ -37,9 +36,6 @@ public class SysResourceServiceImpl implements SysResourceService {
 
 	@Autowired
 	private SysResourceDao sysResourceDao;
-
-	@Autowired
-	private SysRoleDao sysRoleDao;
 
 	@Autowired
 	private SysMenuDao sysMenuDao;
