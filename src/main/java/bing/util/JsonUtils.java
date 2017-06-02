@@ -2,9 +2,12 @@ package bing.util;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * JSON工具类，底层使用Jackson
@@ -14,6 +17,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonUtils {
 
 	private static ObjectMapper mapper = new ObjectMapper();
+
+	static {
+		mapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+			// null - ""
+			@Override
+			public void serialize(Object obj, JsonGenerator generator, SerializerProvider provider) throws IOException, JsonProcessingException {
+				generator.writeString("");
+			}
+
+		});
+	}
 
 	private JsonUtils() {
 		super();
