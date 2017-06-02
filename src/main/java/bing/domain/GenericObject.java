@@ -14,7 +14,7 @@ public abstract class GenericObject implements Serializable {
 
 	private static final long serialVersionUID = -3001222131707495746L;
 
-	protected Integer status = StatusEnum.NORMAL.ordinal();
+	protected Integer status;
 
 	protected String createUser;
 
@@ -26,22 +26,10 @@ public abstract class GenericObject implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	protected Date updateDate;
 
-	@Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
-	}
-
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(this, obj);
-	}
-
 	public Integer getStatus() {
+		if (status == null) {
+			status = StatusEnum.NORMAL.ordinal();
+		}
 		return status;
 	}
 
@@ -79,6 +67,21 @@ public abstract class GenericObject implements Serializable {
 
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this);
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
 	}
 
 }

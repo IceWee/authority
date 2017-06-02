@@ -25,7 +25,7 @@ public class SysUser extends CustomUserDetails {
 	@Pattern(regexp = "^$|^(13|14|15|17|18)[0-9]{9}$", message = "{mobile.illegal}")
 	private String mobile;
 
-	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
+	private Integer hidden;
 
 	private Integer[] roleIds;
 
@@ -51,6 +51,13 @@ public class SysUser extends CustomUserDetails {
 	@Override
 	public boolean isEnabled() {
 		return StatusEnum.NORMAL.ordinal() == status;
+	}
+
+	public Integer getHidden() {
+		if (hidden == null) {
+			hidden = HiddenEnum.HIDDEN.ordinal();
+		}
+		return hidden;
 	}
 
 }

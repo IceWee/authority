@@ -29,7 +29,14 @@ public class SysRole extends GenericObject implements Serializable {
 
 	private String remark;
 
-	private Integer hidden = HiddenEnum.HIDDEN.ordinal();
+	private Integer hidden;
+
+	public Integer getHidden() {
+		if (hidden == null) {
+			hidden = HiddenEnum.HIDDEN.ordinal();
+		}
+		return hidden;
+	}
 
 	@Override
 	public int hashCode() {
