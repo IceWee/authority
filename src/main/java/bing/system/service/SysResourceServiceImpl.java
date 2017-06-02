@@ -49,10 +49,11 @@ public class SysResourceServiceImpl implements SysResourceService {
 	@Override
 	public GenericPage<SysResourceVO> listByPage(SysResourceCondition condition) {
 		int pageNumber = condition.getPageNumber();
+		int pageSize = condition.getPageSize();
 		PageHelper.startPage(pageNumber, condition.getPageSize());
 		List<SysResourceVO> list = sysResourceDao.listByCondition(condition);
 		PageInfo<SysResourceVO> pageInfo = new PageInfo<>(list);
-		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
+		return new GenericPage<>(pageNumber, pageSize, pageInfo.getTotal(), list);
 	}
 
 	/**

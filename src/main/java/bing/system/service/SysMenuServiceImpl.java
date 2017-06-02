@@ -45,10 +45,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Override
 	public GenericPage<SysMenuVO> listByPage(SysMenuCondition condition) {
 		int pageNumber = condition.getPageNumber();
+		int pageSize = condition.getPageSize();
 		PageHelper.startPage(pageNumber, condition.getPageSize());
 		List<SysMenuVO> list = sysMenuDao.listByCondition(condition);
 		PageInfo<SysMenuVO> pageInfo = new PageInfo<>(list);
-		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
+		return new GenericPage<>(pageNumber, pageSize, pageInfo.getTotal(), list);
 	}
 
 	@Override

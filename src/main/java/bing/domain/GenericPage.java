@@ -25,8 +25,9 @@ public class GenericPage<T> {
 		this.rows = rows;
 	}
 
-	public GenericPage(int pageSize, long total, List<T> rows) {
+	public GenericPage(int pageNumber, int pageSize, long total, List<T> rows) {
 		this(total, rows);
+		this.pageNumber = pageNumber;
 		this.pageSize = pageSize;
 	}
 

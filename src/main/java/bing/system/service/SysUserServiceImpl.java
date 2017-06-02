@@ -39,10 +39,11 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public GenericPage<SysUserVO> listByPage(SysUserCondition condition) {
 		int pageNumber = condition.getPageNumber();
+		int pageSize = condition.getPageSize();
 		PageHelper.startPage(pageNumber, condition.getPageSize());
 		List<SysUserVO> list = sysUserDao.listByCondition(condition);
 		PageInfo<SysUserVO> pageInfo = new PageInfo<>(list);
-		return new GenericPage<>(pageNumber, pageInfo.getTotal(), list);
+		return new GenericPage<>(pageNumber, pageSize, pageInfo.getTotal(), list);
 	}
 
 	@Override
