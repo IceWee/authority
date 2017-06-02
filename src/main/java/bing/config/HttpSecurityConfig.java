@@ -23,6 +23,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -57,6 +58,10 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 	private StringRedisTemplate stringRedisTemplate;
 
 	@Autowired
+	@Qualifier("customAccessDeniedHandler")
+	private AccessDeniedHandler accessDeniedHandler;
+
+	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
@@ -78,7 +83,8 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 				// 任何其他的请求都需要授权
 				.anyRequest().authenticated()
 				// 配置登录地址，默认也是/login，登录失败地址、登录成功后跳转到的地址，这几个地址都无需授权即可访问
-				.and().formLogin().loginPage(SecurityConstants.URI_LOGIN).failureUrl(SecurityConstants.URI_LOGIN_FAILURE).defaultSuccessUrl(SecurityConstants.URI_LOGIN_SUCCESS).permitAll()
+				.and().formLogin().loginPage(SecurityConstants.URI_LOGIN).failureUrl(SecurityConstants.URI_LOGIN_FAILURE)
+				.defaultSuccessUrl(SecurityConstants.URI_LOGIN_SUCCESS).permitAll()
 				// 自定义权限源，实现验证码
 				.authenticationDetailsSource(authenticationDetailsSource).and().logout().permitAll()
 				// 开启cookie保存用户数据
@@ -90,7 +96,8 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 				// 设置cookie的私钥
 				.key(SecurityConstants.COOKIE_KEY)
 				// 设置拒绝访问页面
-				.and().exceptionHandling().accessDeniedPage(SecurityConstants.URI_ACCESS_DENIED);
+				.and().exceptionHandling().accessDeniedPage(SecurityConstants.URI_ACCESS_DENIED).and().exceptionHandling()
+				.accessDeniedHandler(accessDeniedHandler);
 
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 
@@ -110,8 +117,8 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.logout().logoutSuccessUrl(SecurityConstants.URI_LOGOUT_SUCCESS);
 
 		// session配置
-		http.sessionManagement().maximumSessions(SecurityConstants.MAXIMUM_SESSIONS).expiredUrl(SecurityConstants.URI_SESSION_EXPIRED).and().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-				.invalidSessionUrl(SecurityConstants.URI_SESSION_EXPIRED);
+		http.sessionManagement().maximumSessions(SecurityConstants.MAXIMUM_SESSIONS).expiredUrl(SecurityConstants.URI_SESSION_EXPIRED).and()
+				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl(SecurityConstants.URI_SESSION_EXPIRED);
 	}
 
 	@Override

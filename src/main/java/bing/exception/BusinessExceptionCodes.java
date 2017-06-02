@@ -27,6 +27,11 @@ public abstract class BusinessExceptionCodes {
 	 */
 	public static final String ROLE_ADMIN_MISSING = PREFIX + "004";
 
+	/**
+	 * 无访问权限
+	 */
+	public static final String ACCESS_DENIED = PREFIX + "403";
+
 	protected BusinessExceptionCodes() {
 		super();
 	}
