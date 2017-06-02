@@ -68,8 +68,4 @@ public class JsonUtils {
 		return mapper.getTypeFactory().constructParametricType(colectionClass, elementClasses);
 	}
 
-	public static void main(String[] args) {
-		System.out.println(new Object().getClass());
-	}
-
 }
