@@ -102,6 +102,7 @@ function bindContextMenuEvents(tree) {
 			var url = $("#" + FORM_ID_CATEGORY).attr("action");
 			var data = JSON.stringify($("#" +FORM_ID_CATEGORY).serializeJson());
 			var node = tree.getSelectedNodes()[0];
+			$.loading();
 			$.ajax({
 				type : "POST",
 				contentType: "application/json",
@@ -109,6 +110,7 @@ function bindContextMenuEvents(tree) {
 				data : data,
 				dataType : "json",
 				success : function(json) {
+					$.loaded();
 					if (json.code == OK) {
 						$("#" + DIALOG_ID_CATEGORY).modal("hide");
 						$.successTips($.i18n.prop("save.success"));
@@ -118,6 +120,7 @@ function bindContextMenuEvents(tree) {
 					}
 				},
 				error : function() {
+					$.loaded();
 					$.errorTips($.i18n.prop("http.request.failed"));
 				}
 			});

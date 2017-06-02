@@ -83,6 +83,7 @@ function lockUser(userId) {
 	    btn: ["确定", "取消"] //按钮
 	}, function(){
 		parent.layer.closeAll();
+		$.loading();
 		$("#" + HIDDEN_ID).val(userId);
 		$("#" + FORM_ID_LIST).attr("action", URI_LOCK);
 		$("#" + FORM_ID_LIST).submit();
@@ -101,6 +102,7 @@ function unlockUser(userId) {
 	    btn: ["确定", "取消"] //按钮
 	}, function(){
 		parent.layer.closeAll();
+		$.loading();
 		$("#" + HIDDEN_ID).val(userId);
 		$("#" + FORM_ID_LIST).attr("action", URI_UNLOCK);
 		$("#" + FORM_ID_LIST).submit();
@@ -111,11 +113,13 @@ function unlockUser(userId) {
 
 //用户角色授权
 function openUserRoleAuth(userId, name) {
+	$.loading();
 	$.ajax({
 		type : "GET",
 		url : URI_AJAX_ROLE_LIST + "/" + userId,
 		dataType : "json",
 		success : function(json) {
+			$.loaded();
 			if (json.code == OK) {
 				$("#dialog_select_box").selectBox({
 					title: name,
@@ -135,6 +139,7 @@ function openUserRoleAuth(userId, name) {
 			}
 		},
 		error : function() {
+			$.loaded();
 			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});
@@ -147,6 +152,7 @@ function saveUserRoleAuth(userId, checkedRows) {
 		roleIdArray.push(checkedRows[i].id);
 	}
 	var data = {userId: userId, roleIds: roleIdArray};
+	$.loading();
 	$.ajax({
 		type : "POST",
 		url : URI_AJAX_ROLE_SAVE,
@@ -154,6 +160,7 @@ function saveUserRoleAuth(userId, checkedRows) {
 		data : data,
 		traditional: true,
 		success : function(json) {
+			$.loaded();
 			if (json.code == OK) {
 				$.successTips($.i18n.prop("save.success"));
 			} else {
@@ -162,6 +169,7 @@ function saveUserRoleAuth(userId, checkedRows) {
 			}
 		},
 		error : function() {
+			$.loaded();
 			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});

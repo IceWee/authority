@@ -7,6 +7,7 @@ function initMinePage(error, message) {
 	// 保存
 	$("#button_save").click(function() {
 		if ($("#" + FORM_ID).valid()) {
+			$.loading();
 			var data = $("#" + FORM_ID).serialize();
 			$.ajax({
 				type : "PUT",
@@ -14,6 +15,7 @@ function initMinePage(error, message) {
 				data : data,
 				dataType : "json",
 				success : function(json) {
+					$.loaded();
 					if (json.code == OK) {
 						$.successTips($.i18n.prop("update.success"));
 					} else {
@@ -21,6 +23,7 @@ function initMinePage(error, message) {
 					}
 				},
 				error : function() {
+					$.loaded();
 					$.errorTips($.i18n.prop("http.request.failed"));
 				}
 			});

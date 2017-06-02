@@ -68,6 +68,7 @@ function _delete(id) {
 	    btn: ["确定", "取消"] //按钮
 	}, function(){
 		parent.layer.closeAll();
+		$.loading();
 		$("#" + HIDDEN_ID).val(id);
 		$("#" + FORM_ID_LIST).attr("action", URI_DELETE);
 		$("#" + FORM_ID_LIST).submit();
@@ -85,6 +86,7 @@ function initAddPage(error, message) {
 	// 保存
 	$("#" + BTN_SAVE_ID).click(function() {
 		if ($("#" + FORM_ID_DETAIL).valid()) {
+			$.loading();
 			$("#" + FORM_ID_DETAIL).attr("action", URI_SAVE);
 			$("#" + FORM_ID_DETAIL).submit();
 		}
@@ -108,6 +110,7 @@ function initEditPage(error, message) {
 	// 保存
 	$("#" + BTN_SAVE_ID).click(function() {
 		if ($("#" + FORM_ID_DETAIL).valid()) {
+			$.loading();
 			$("#" + FORM_ID_DETAIL).attr("action", URI_UPDATE);
 			$("#" + FORM_ID_DETAIL).submit();
 		}

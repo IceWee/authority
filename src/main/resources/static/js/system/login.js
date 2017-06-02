@@ -15,20 +15,20 @@ function initLoginPage() {
 	$("#button_login").click(function() {
 		if ($.trim($("#username").val()) == "") {
 			$("#tips_login").text($.i18n.prop("login.required.username"));
-			shake();
+			$.shake("#container_login");
 			$("#username").focus();
 			return;
 		}
 		if ($.trim($("#password").val()) == "") {
 			$("#tips_login").text($.i18n.prop("login.required.password"));
-			shake();
+			$.shake("#container_login");
 			$("#password").focus();
 			return;
 		}
 		var captcha = $.trim($("#captcha").val());
 		if (captcha == "") {
 			$("#tips_login").text($.i18n.prop("login.required.captcha"));
-			shake();
+			$.shake("#container_login");
 			$("#captcha").focus();
 			return;
 		}
@@ -38,24 +38,15 @@ function initLoginPage() {
 			dataType : "text",
 			success : function(code) {
 				if (captcha.toLowerCase() == code.toLowerCase()) {
+					$.loading();
 					$("#form_login").submit();
 				} else {
 					$("#tips_login").text($.i18n.prop("login.error.captcha"));
-					shake();
+					$.shake("#container_login");
 					$("#captcha").select();
 					return;
 				}
 			}
 		});
 	});
-}
-
-// 校验失败窗口抖动
-function shake() {
-    $("#container_login").addClass("animated");
-    $("#container_login").addClass("shake");
-    // 设置超时清除动画，否则无法进行下一次动画显示
-    setTimeout(function() {
-	    $("#container_login").removeClass("shake");
-    }, 3000);
 }
