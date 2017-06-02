@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 
+import bing.constant.GlobalConstants;
 import bing.util.JsonUtils;
 
 /**
@@ -25,19 +26,24 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomAccessDecisionManager.class);
 
 	@Override
-	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes)
+			throws AccessDeniedException, InsufficientAuthenticationException {
 		String url = StringUtils.EMPTY;
 		if (object instanceof FilterInvocation) {
 			FilterInvocation invocation = (FilterInvocation) object;
 			url = invocation.getRequestUrl();
 		}
+		if (authentication == null) {
+			LOGGER.warn("未认证的资源[{}]访问，禁止访问...", url);
+			throw new AccessDeniedException("(403) Access denied.");
+		}
+		// 超级管理员：放行
+		if (GlobalConstants.ADMIN.equals(authentication.getName())) {
+			return;
+		}
 		// 如果当前资源未配置权限则禁止访问，即黑名单，否则为白名单都可以访问，显然是不对的
 		if (configAttributes.isEmpty()) {
 			LOGGER.warn("当前访问的资源[{}]未配置访问权限，默认禁止访问...", url);
-			throw new AccessDeniedException("(403) Access denied.");
-		}
-		if (authentication == null) {
-			LOGGER.warn("未认证的资源[{}]访问，禁止访问...", url);
 			throw new AccessDeniedException("(403) Access denied.");
 		}
 		LOGGER.debug("访问当前资源[{}]应该具备的角色集合：[{}]", url, JsonUtils.toString(configAttributes));
