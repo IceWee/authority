@@ -28,6 +28,11 @@ public abstract class BusinessExceptionCodes {
 	public static final String ROLE_ADMIN_MISSING = PREFIX + "004";
 
 	/**
+	 * 文件上传失败
+	 */
+	public static final String UPLOAD_FAILED = PREFIX + "005";
+
+	/**
 	 * 无访问权限
 	 */
 	public static final String ACCESS_DENIED = PREFIX + "403";

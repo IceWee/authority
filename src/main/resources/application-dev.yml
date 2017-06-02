@@ -36,6 +36,11 @@ spring:
 # Jackson config
   jackson:
     date-format: yyyy-MM-dd
+# 上传文件大小限制
+  http:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
 
 # Auto pager plugin
 pagehelper:
@@ -46,3 +51,7 @@ pagehelper:
 logging:
   config: classpath:log4j2-dev.yml
     
+#########################################################################
+# 文件存储根目录
+file:
+  root: /files
