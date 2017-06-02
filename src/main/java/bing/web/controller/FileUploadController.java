@@ -90,7 +90,7 @@ public class FileUploadController {
 	 */
 	private String genSaveFilename(MultipartFile multipartFile) {
 		String uuid = UUIDUtils.uuid();
-		return uuid + "-" + multipartFile.getOriginalFilename();
+		return uuid + "." + StringUtils.substringAfterLast(multipartFile.getOriginalFilename(), ".");
 	}
 
 }
