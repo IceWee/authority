@@ -6,7 +6,9 @@
 	<groupId>bing</groupId>
 	<artifactId>authority</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<!-- <packaging>jar</packaging> -->
+	<!-- 打成war包 -->
+	<packaging>war</packaging>
 
 	<name>authority</name>
 	<description>A &amp; A for Spring Boot</description>
@@ -30,6 +32,20 @@
 
 	<dependencies>
 		<!-- spring boot dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
 		<!-- ORM框架 -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
@@ -96,21 +112,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- other third-part dependencies -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
-		</dependency>
 		<!-- 加上这个才能辨认到log4j2.yml文件 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -120,7 +121,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.40</version><!--$NO-MVN-MAN-VER$-->
+			<version>5.1.40</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
