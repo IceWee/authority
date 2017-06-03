@@ -175,13 +175,16 @@
 		from sys_user
 		where hidden = 0 and status != 2
 		<if test="username != null and username != ''">
-			and username like #{username,jdbcType=VARCHAR}"%"
+			<bind name="pattern_username" value="_parameter.username + '%'" />
+			and username like #{pattern_username}
 		</if>
 		<if test="name != null and name != ''">
-			and name like #{name,jdbcType=VARCHAR}"%"
+			<bind name="pattern_name" value="_parameter.name + '%'" />
+			and name like #{pattern_name}
 		</if>
 		<if test="mobile != null and mobile != ''">
-			and mobile like #{mobile,jdbcType=VARCHAR}"%"
+			<bind name="pattern_mobile" value="_parameter.mobile + '%'" />
+			and mobile like #{pattern_mobile}
 		</if>
 		<if test="status != null">
 			and status = #{status,jdbcType=INTEGER}

@@ -180,7 +180,8 @@
 			and category_id = #{categoryId,jdbcType=INTEGER}
 		</if>
 		<if test="name != null and name != ''">
-			and name like #{name,jdbcType=VARCHAR}"%"
+			<bind name="pattern_name" value="_parameter.name + '%'" />
+			and name like #{pattern_name}
 		</if>
 		<if test="type != null">
 			and type = #{type,jdbcType=INTEGER}

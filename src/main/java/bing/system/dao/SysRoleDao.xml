@@ -164,10 +164,12 @@
 		from sys_role
 		where hidden = 0 and status != 2
 		<if test="code != null and code != ''">
-			and code like #{code,jdbcType=VARCHAR}"%"
+			<bind name="pattern_code" value="_parameter.code + '%'" />
+			and code like #{pattern_code}
 		</if>
 		<if test="name != null and name != ''">
-			and name like #{name,jdbcType=VARCHAR}"%"
+			<bind name="pattern_name" value="_parameter.name + '%'" />
+			and name like #{pattern_name}
 		</if>
 		<if test="status != null">
 			and status = #{status,jdbcType=INTEGER}

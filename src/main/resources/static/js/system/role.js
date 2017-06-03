@@ -60,7 +60,6 @@ function saveRoleResources(roleId, checkedNodes) {
 		}
 	});
 	var data = {roleId: roleId, resourceIds: resourceIdArray};
-	$.loading();
 	$.ajax({
 		type : "POST",
 		url : URI_AJAX_RESOURCE_SAVE,
@@ -68,7 +67,6 @@ function saveRoleResources(roleId, checkedNodes) {
 		data : data,
 		traditional: true,
 		success : function(json) {
-			$.loaded();
 			var code = json.code;
 			if (code == OK) {
 				$.successTips($.i18n.prop("save.success"));
@@ -77,7 +75,6 @@ function saveRoleResources(roleId, checkedNodes) {
 			}
 		},
 		error : function() {
-			$.loaded();
 			$.erorTips($.i18n.prop("http.request.failed"));
 		}
 	});
@@ -85,13 +82,11 @@ function saveRoleResources(roleId, checkedNodes) {
 
 // 配置用户
 function openConfigUser(roleId, roleName) {
-	$.loading();
 	$.ajax({
 		type : "GET",
 		url : URI_AJAX_USER_LIST + "/" + roleId,
 		dataType : "json",
 		success : function(json) {
-			$.loaded();
 			if (json.code == OK) {
 				$("#dialog_select_box").selectBox({
 					title: roleName,
@@ -111,7 +106,6 @@ function openConfigUser(roleId, roleName) {
 			}
 		},
 		error : function() {
-			$.loaded();
 			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});
@@ -124,7 +118,6 @@ function saveRoleUsers(roleId, checkedRows) {
 		userIdArray.push(checkedRows[i].id);
 	}
 	var data = {roleId: roleId, userIds: userIdArray};
-	$.loading();
 	$.ajax({
 		type : "POST",
 		url : URI_AJAX_USER_SAVE,
@@ -132,7 +125,6 @@ function saveRoleUsers(roleId, checkedRows) {
 		data : data,
 		traditional: true,
 		success : function(json) {
-			$.loaded();
 			if (json.code == OK) {
 				$.successTips($.i18n.prop("save.success"));
 			} else {
@@ -140,7 +132,6 @@ function saveRoleUsers(roleId, checkedRows) {
 			}
 		},
 		error : function() {
-			$.loaded();
 			$.errorTips($.i18n.prop("http.request.failed"));
 		}
 	});
