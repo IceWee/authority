@@ -42,7 +42,7 @@ CREATE TABLE `sys_user` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- 系统管理员用户
 INSERT INTO `sys_user` (`username`, `name`, `password`, `mobile`, `status`, `hidden`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '超级管理员', '2630d0280856135d2c7a19aee22ce42b37a060a99f512801ddb5ff522b33efcb34a3be20435ace78', '13800013800', 0, 1, now(), 'admin', now(), 'admin');
@@ -62,7 +62,7 @@ CREATE TABLE `sys_role` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- 系统管理员角色
 INSERT INTO `sys_role` (`code`, `name`, `remark`, `status`, `hidden`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '系统管理员', '系统管理员', 0, 1, now(), 'admin', now(), 'admin');
@@ -80,7 +80,7 @@ CREATE TABLE `sys_user_role` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户角色关联';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户角色关联';
 
 -- 系统管理员角色授权
 INSERT INTO `sys_user_role` (`user_id`, `role_id`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) 
@@ -103,7 +103,7 @@ CREATE TABLE `sys_resource_category` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源分类';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='资源分类';
 
 -- 资源分类初始化数据
 INSERT INTO `sys_resource_category` (`name`, `parent_id`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源分类', '0', '0', '资源分类', now(), 'admin', now(), 'admin');
@@ -130,7 +130,7 @@ CREATE TABLE `sys_resource` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资源';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='资源';
 
 -- 资源数据初始化
 INSERT INTO `sys_resource` (`name`, `category_id`, `type`, `url`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户列表', (select t.id from (select id from sys_resource_category where name = '用户管理') t), '0', '/system/user/list', '0', '', now(), 'admin', now(), 'admin');
@@ -189,7 +189,7 @@ CREATE TABLE `sys_menu` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='菜单';
 
 -- 菜单初始化数据
 INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统菜单', '0', NULL, '0', '0', '系统菜单', now(), 'admin', now(), 'admin');
@@ -212,10 +212,23 @@ CREATE TABLE `sys_role_resource` (
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改日期',
   `update_user` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色资源关联';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='角色资源关联';
 
 -- 角色资源关系数据初始化
 INSERT INTO `sys_role_resource` (`resource_id`, `status`, `create_date`, `create_user`, `update_date`, `update_user`) 
 SELECT `id`, '0', now(), 'admin', now(), 'admin' FROM `sys_resource`;
 
 UPDATE `sys_role_resource` SET `role_id` = (SELECT id FROM sys_role WHERE code = 'admin');
+
+-- 系统操作日志表
+DROP TABLE IF EXISTS `sys_operate_log`;
+CREATE TABLE `sys_operate_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `module_name` varchar(50) DEFAULT NULL COMMENT '模块名称',
+  `operate_type` int(11) DEFAULT NULL COMMENT '操作类型，增加1、修改2、删除3、其他4',
+  `operate_user_id` int(11) DEFAULT NULL COMMENT '操作人账号',
+  `operate_user_name` varchar(50) DEFAULT NULL COMMENT '操作人姓名',
+  `operate_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `operate_content` varchar(1000) DEFAULT NULL COMMENT '操作内容',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';

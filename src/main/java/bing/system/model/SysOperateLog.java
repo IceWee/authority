@@ -51,7 +51,7 @@ public class SysOperateLog extends GenericObject implements Serializable {
 	/**
 	 * 操作人登录账号
 	 */
-	private Long operateUserId;
+	private Integer operateUserId;
 
 	/**
 	 * 操作人用户名
@@ -72,7 +72,7 @@ public class SysOperateLog extends GenericObject implements Serializable {
 		super();
 	}
 
-	public SysOperateLog(String moduleName, Integer operateType, Long operateUserId, String operateUserName, String operateContent) {
+	public SysOperateLog(String moduleName, Integer operateType, Integer operateUserId, String operateUserName, String operateContent) {
 		this();
 		this.moduleName = moduleName;
 		this.operateType = operateType;

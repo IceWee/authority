@@ -7,7 +7,7 @@
 		operate_content)
 		values (#{moduleName,jdbcType=VARCHAR},
 		#{operateType,jdbcType=INTEGER},
-		#{operateUserId,jdbcType=BIGINT}, #{operateUserName,jdbcType=VARCHAR},
+		#{operateUserId,jdbcType=INTEGER}, #{operateUserName,jdbcType=VARCHAR},
 		#{operateTime,jdbcType=TIMESTAMP},
 		#{operateContent,jdbcType=VARCHAR})
 	</insert>
