@@ -14,6 +14,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -21,8 +23,10 @@ import bing.constant.GlobalConstants;
 
 @SpringBootApplication
 // @EnableCaching
+@EnableAsync // 开启异步调用
+@EnableScheduling // 允许定时任务
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = GlobalConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
-@ComponentScan(basePackages = {GlobalConstants.COMPONENT_SCAN_PACKAGES})
+@ComponentScan(basePackages = { GlobalConstants.COMPONENT_SCAN_PACKAGES })
 @MapperScan(GlobalConstants.MAPPER_SCAN_PACKAGES)
 public class AuthorityApplication {
 
@@ -34,8 +38,7 @@ public class AuthorityApplication {
 	}
 
 	/**
-	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件，
-	 * 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
+	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件， 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
 	 * 
 	 * @return
 	 */

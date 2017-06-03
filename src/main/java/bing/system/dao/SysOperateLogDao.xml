@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bing.system.dao.SysOperateLogDao">
+	<insert id="insert" parameterType="bing.system.model.SysOperateLog">
+		insert into sys_operate_log (module_name, operate_type,
+		operate_user_id, operate_user_name, operate_time,
+		operate_content)
+		values (#{moduleName,jdbcType=VARCHAR},
+		#{operateType,jdbcType=INTEGER},
+		#{operateUserId,jdbcType=BIGINT}, #{operateUserName,jdbcType=VARCHAR},
+		#{operateTime,jdbcType=TIMESTAMP},
+		#{operateContent,jdbcType=VARCHAR})
+	</insert>
+</mapper>

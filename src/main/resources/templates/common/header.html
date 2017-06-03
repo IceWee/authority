@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <!-- 通用header模板 -->
 <head th:fragment="header(title, links)">
 <meta charset="utf-8">
@@ -34,3 +37,5 @@
 <!--/* Per-page placeholder for additional links */-->
 <th:block th:replace="${links}" />
 </head>
+
+</html>
