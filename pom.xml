@@ -6,9 +6,10 @@
 	<groupId>bing</groupId>
 	<artifactId>authority</artifactId>
 	<version>1.0</version>
-	<!-- <packaging>jar</packaging> -->
-	<!-- 打成war包 -->
-	<packaging>war</packaging>
+	<!-- dev-开发时打开  -->
+	<packaging>jar</packaging>
+	<!-- dep-部署时打开
+	<packaging>war</packaging> -->
 
 	<name>authority</name>
 	<description>A &amp; A for Spring Boot</description>
@@ -32,6 +33,12 @@
 
 	<dependencies>
 		<!-- spring boot dependencies -->
+		<!-- dep-部署时打开
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -40,6 +47,11 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
+				<!-- dep-部署时打开
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion> -->
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -168,6 +180,8 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<finalName>authority</finalName>
+
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
@@ -183,6 +197,7 @@
 			</resource>
 		</resources>
 		<plugins>
+			<!-- dev-开发时打开 -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -198,6 +213,11 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- dep-部署时打开
+			<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-war-plugin</artifactId>
+			</plugin> -->
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-maven-plugin</artifactId>
