@@ -1,5 +1,6 @@
 package bing.system.web.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -22,8 +23,10 @@ import bing.constant.MessageKeys;
 import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericPage;
 import bing.system.condition.SysRoleCondition;
+import bing.system.model.SysOperateLog;
 import bing.system.model.SysRole;
 import bing.system.model.SysUser;
+import bing.system.service.SysOperateLogService;
 import bing.system.service.SysRoleService;
 import bing.system.vo.RoleUserVO;
 import bing.system.vo.SysRoleVO;
@@ -37,6 +40,8 @@ import bing.web.controller.GenericController;
 public class SysRoleController extends GenericController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SysRoleController.class);
+
+	private static final String MODULE_NAME = "角色管理";
 
 	private static final String LOG_PREFIX = LogPrefixes.ROLE;
 	private static final String PREFIX = "system/role";
@@ -52,6 +57,9 @@ public class SysRoleController extends GenericController {
 
 	@Autowired
 	private SysRoleService sysRoleService;
+
+	@Autowired
+	private SysOperateLogService sysOperateLogService;
 
 	@RequestMapping(LIST)
 	public String list() {
@@ -94,6 +102,8 @@ public class SysRoleController extends GenericController {
 	public RestResponse<RoleUserVO> saveUserRoles(Integer userId, Integer[] roleIds, @CurrentLoggedUser SysUser currentUser) {
 		String username = currentUser.getUsername();
 		sysRoleService.saveUserRoles(userId, roleIds, username);
+		String operateContent = "配置了用户与角色关系，用户ID[" + userId + "]，角色ID列表[" + Arrays.toString(roleIds) + "]";
+		sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		return new RestResponse<>();
 	}
 
@@ -116,6 +126,8 @@ public class SysRoleController extends GenericController {
 			entity.setUpdateUser(currentUser.getName());
 			entity.setUpdateDate(now);
 			sysRoleService.save(entity);
+			String operateContent = "添加了角色[" + entity + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -146,6 +158,8 @@ public class SysRoleController extends GenericController {
 			entity.setUpdateUser(currentUser.getName());
 			entity.setUpdateDate(new Date());
 			sysRoleService.update(entity);
+			String operateContent = "修改了角色信息[" + entity + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -160,6 +174,8 @@ public class SysRoleController extends GenericController {
 		try {
 			String username = currentUser.getUsername();
 			sysRoleService.deleteById(id, username);
+			String operateContent = "删除了角色[" + id + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);

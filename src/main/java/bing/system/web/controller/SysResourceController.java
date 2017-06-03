@@ -1,6 +1,7 @@
 package bing.system.web.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -30,9 +31,11 @@ import bing.system.condition.SysResourceCondition;
 import bing.system.constant.ResourceTypeEnum;
 import bing.system.constant.SystemMessageKeys;
 import bing.system.domain.ResourceTreeNode;
+import bing.system.model.SysOperateLog;
 import bing.system.model.SysResource;
 import bing.system.model.SysResourceCategory;
 import bing.system.model.SysUser;
+import bing.system.service.SysOperateLogService;
 import bing.system.service.SysResourceService;
 import bing.system.service.SysRoleResourceService;
 import bing.system.vo.SysResourceVO;
@@ -46,6 +49,8 @@ import bing.web.controller.GenericController;
 public class SysResourceController extends GenericController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SysResourceController.class);
+
+	private static final String MODULE_NAME = "资源管理";
 
 	private static final String LOG_PREFIX = LogPrefixes.RESOURCE;
 	private static final String PREFIX = "system/resource";
@@ -73,6 +78,9 @@ public class SysResourceController extends GenericController {
 
 	@Autowired
 	private SysRoleResourceService sysRoleResourceService;
+
+	@Autowired
+	private SysOperateLogService sysOperateLogService;
 
 	@ModelAttribute("typeList")
 	protected List<LabelValueBean> typeList() {
@@ -105,6 +113,8 @@ public class SysResourceController extends GenericController {
 		RestResponse<Object> response = new RestResponse<>();
 		String username = currentUser.getUsername();
 		sysRoleResourceService.saveRoleResources(roleId, resourceIds, username);
+		String operateContent = "配置了角色与资源关系，角色ID[" + roleId + "]，资源ID列表[" + Arrays.toString(resourceIds) + "]";
+		sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		return response;
 	}
 
@@ -124,7 +134,7 @@ public class SysResourceController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_CATEGORY_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> categorySave(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult) {
+	public RestResponse<Object> categorySave(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult, @CurrentLoggedUser SysUser currentUser) {
 		RestResponse<Object> response = new RestResponse<>();
 		if (hasErrors(bindingResult)) {
 			response.setCode(RestResponseCodes.VALIDATE_FAILED);
@@ -132,12 +142,14 @@ public class SysResourceController extends GenericController {
 			return response;
 		}
 		sysResourceService.saveCategory(entity);
+		String operateContent = "添加了资源分类[" + entity + "]";
+		sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		return response;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_CATEGORY_UPDATE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> categoryUpdate(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult) {
+	public RestResponse<Object> categoryUpdate(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult, @CurrentLoggedUser SysUser currentUser) {
 		RestResponse<Object> response = new RestResponse<>();
 		if (hasErrors(bindingResult)) {
 			response.setCode(RestResponseCodes.VALIDATE_FAILED);
@@ -145,6 +157,8 @@ public class SysResourceController extends GenericController {
 			return response;
 		}
 		sysResourceService.updateCategory(entity);
+		String operateContent = "修改了资源分类信息[" + entity + "]";
+		sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		return response;
 	}
 
@@ -154,6 +168,8 @@ public class SysResourceController extends GenericController {
 		RestResponse<Object> response = new RestResponse<>();
 		String username = currentUser.getUsername();
 		sysResourceService.deleteCategoryById(categoryId, username);
+		String operateContent = "删除了资源分类[" + categoryId + "]";
+		sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
 		return response;
 	}
 
@@ -213,6 +229,8 @@ public class SysResourceController extends GenericController {
 			entity.setUpdateUser(currentUser.getName());
 			entity.setUpdateDate(now);
 			sysResourceService.save(entity);
+			String operateContent = "添加了资源[" + entity + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -249,6 +267,8 @@ public class SysResourceController extends GenericController {
 			entity.setUpdateUser(currentUser.getName());
 			entity.setUpdateDate(new Date());
 			sysResourceService.update(entity);
+			String operateContent = "修改了资源信息[" + entity + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -267,6 +287,8 @@ public class SysResourceController extends GenericController {
 		try {
 			String username = currentUser.getUsername();
 			sysResourceService.deleteById(id, username);
+			String operateContent = "删除了资源[" + id + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);

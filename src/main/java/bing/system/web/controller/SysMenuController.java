@@ -26,9 +26,11 @@ import bing.system.condition.SysMenuCondition;
 import bing.system.constant.SystemMessageKeys;
 import bing.system.domain.MenuTreeNode;
 import bing.system.model.SysMenu;
+import bing.system.model.SysOperateLog;
 import bing.system.model.SysResource;
 import bing.system.model.SysUser;
 import bing.system.service.SysMenuService;
+import bing.system.service.SysOperateLogService;
 import bing.system.service.SysResourceService;
 import bing.system.vo.SysMenuVO;
 import bing.util.ExceptionUtils;
@@ -40,6 +42,8 @@ import bing.web.controller.GenericController;
 public class SysMenuController extends GenericController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SysMenuController.class);
+
+	private static final String MODULE_NAME = "菜单管理";
 
 	private static final String LOG_PREFIX = LogPrefixes.MENU;
 	private static final String PREFIX = "system/menu";
@@ -62,6 +66,9 @@ public class SysMenuController extends GenericController {
 
 	@Autowired
 	private SysResourceService sysResourceService;
+
+	@Autowired
+	private SysOperateLogService sysOperateLogService;
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_MENU_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -133,6 +140,8 @@ public class SysMenuController extends GenericController {
 			entity.setUpdateUser(currentUser.getName());
 			entity.setUpdateDate(now);
 			sysMenuService.save(entity);
+			String operateContent = "添加了菜单[" + entity + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -168,6 +177,8 @@ public class SysMenuController extends GenericController {
 			entity.setUpdateUser(currentUser.getName());
 			entity.setUpdateDate(new Date());
 			sysMenuService.update(entity);
+			String operateContent = "修改了菜单信息[" + entity + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -186,6 +197,8 @@ public class SysMenuController extends GenericController {
 		try {
 			String username = currentUser.getUsername();
 			sysMenuService.deleteById(id, username);
+			String operateContent = "删除了菜单[" + id + "]";
+			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
