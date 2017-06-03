@@ -1,6 +1,6 @@
 <!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="/common/header :: header(#{system.name},~{::link})" />
+<head th:replace="common/header :: header(#{system.name},~{::link})" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/plugins/ztree/metroStyle/metroStyle.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
 <!-- 自定义js -->
@@ -89,6 +89,6 @@
     <li><a id="category_delete" href="javascript:void(0)" th:text="#{category.delete}">删除分类</a></li>
 </ul>
 <!-- 资源分类表单弹出框 -->
-<div th:replace="/system/resource/category :: dialog_category"></div>
+<div th:replace="system/resource/category :: dialog_category"></div>
 </body> 
 </html>
