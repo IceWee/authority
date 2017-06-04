@@ -59,7 +59,6 @@
 		// 显示弹出框
 		this._showDialog = function() {
 			$(containerId).modal({
-				backdrop: false, // 点击空白区域不关闭弹出框
 				keyboard: false	 // 按ESC键不关闭弹出框
 			});
 		};

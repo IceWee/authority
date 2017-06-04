@@ -169,7 +169,6 @@
 		this._showDialog = function() {
 			$.clearTips();
 			$(containerId).modal({
-				backdrop: false, // 点击空白区域不关闭弹出框
 				keyboard: false	 // 按ESC键不关闭弹出框
 			});
 		};
