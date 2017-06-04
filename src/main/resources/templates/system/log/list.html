@@ -1,0 +1,65 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="common/header :: header(#{system.name},~{})" />
+<!-- 自定义js -->
+<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
+<script type="text/javascript" th:src="@{/js/system/log.js}"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$(function() {
+		initListPage();
+	});
+	/*]]>*/
+</script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInLeft">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<ol class="breadcrumb navigation">
+  				<li class="active" th:text="#{log.operate.list}">操作日志列表</li>
+			</ol>
+		</div>
+		<div class="ibox-content">
+			<div class="row">
+        		<div class="col-xs-12">
+        			<div id="container" class="row">
+		           		<form id="form_search" role="form" class="form-inline">
+		           			<div class="col-xs-10 padding-none">
+		                    	<div class="input-group">
+			                        <input type="text" th:placeholder="#{placeholder.name.module}" name="moduleName" class="form-control">
+		                		</div>
+		                		<div class="input-group">
+			                        <input type="text" th:placeholder="#{placeholder.operate.user}" name="operateUserName" class="form-control">
+		                		</div>
+		                		<div class="input-group">
+									<select class="form-control m-b" name="operateType">
+		                				<option value="" selected th:text="#{operate.type.all}">全部操作类型</option>
+										<option th:each="operateType : ${operateTypes}" th:text="${operateType.label}" th:value="${operateType.value}"></option>
+									</select>
+		                		</div>
+		           			</div>
+		           			<div class="col-xs-2 text-right padding-none">
+			                    <button type="button" id="btn_search" class="btn btn-outline btn-primary" th:text="#{search}">查询</button>
+			                    <button type="button" id="btn_reset" class="btn btn-outline btn-default" th:text="#{reset}">重置</button>
+		           			</div>
+						</form>
+		                <table id="table_list" data-height="410">
+		                    <thead>
+		                        <tr>
+									<th th:text="#{name.module}" data-field="moduleName" data-align="center">模块名称</th>
+									<th th:text="#{operate.type}" data-field="operateTypeText" data-align="center">操作类型</th>
+									<th th:text="#{operate.user}" data-field="operateUserName" data-align="center">操作人</th>
+									<th th:text="#{operate.time}" data-field="operateTime" data-align="center">操作时间</th>
+									<th th:text="#{operate.content}" data-field="operateContent" data-align="left">操作内容</th>
+		                        </tr>
+		                    </thead>
+						</table>
+		            </div>
+        		</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body> 
+</html>

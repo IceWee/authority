@@ -19,6 +19,10 @@ $.validator.setDefaults({
     validClass: "help-block m-b-none"
 });
 
+//资源地址
+$.validator.methods.uri = function(value, element) {
+	return this.optional(element) || /^[a-zA-Z0-9\/\?]+$/i.test(value);
+};
 // 账号
 $.validator.methods.username = function(value, element) {
 	return this.optional(element) || /^[a-zA-Z][a-zA-Z0-9]+$/i.test(value);
@@ -38,8 +42,4 @@ $.validator.methods.mobile = function(value, element) {
 // 编码
 $.validator.methods.code = function(value, element) {
 	return this.optional(element) || /^[a-zA-Z0-9]+$/i.test(value);
-};
-// 名称
-$.validator.methods.name = function(value, element) {
-	return this.optional(element) || /^[a-zA-Z0-9\u4E00-\u9FA5]+$/i.test(value);
 };

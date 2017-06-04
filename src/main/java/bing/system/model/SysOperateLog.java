@@ -36,7 +36,7 @@ public class SysOperateLog extends GenericObject implements Serializable {
 	/**
 	 * PK
 	 */
-	private Long id;
+	private Integer id;
 
 	/**
 	 * 模块名称
