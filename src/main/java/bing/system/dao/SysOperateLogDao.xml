@@ -41,12 +41,12 @@
 		</if>
 		<if test="operateTimeBegin != null and operateTimeBegin != ''">
 		<![CDATA[
-			and operateTime >= #{operateTimeBegin}
+			and operate_time >= #{operateTimeBegin}
 		]]>
 		</if>
 		<if test="operateTimeEnd != null and operateTimeEnd != ''">
 		<![CDATA[
-			and operateTime <= #{operateTimeEnd}
+			and operate_time <= #{operateTimeEnd}
 		]]>
 		</if>
 	</select>

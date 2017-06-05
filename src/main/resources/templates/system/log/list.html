@@ -38,6 +38,13 @@
 										<option th:each="operateType : ${operateTypes}" th:text="${operateType.label}" th:value="${operateType.value}"></option>
 									</select>
 		                		</div>
+		                		<div class="input-group">
+		                			<input type="text" th:placeholder="起始日期" id="operateTimeBegin" name="operateTimeBegin" onclick="laydate({format: 'YYYY-MM-DD'})" class="laydate-icon form-control layer-date">
+		                		</div>
+		                		---
+		                		<div class="input-group">	
+		                			<input type="text" th:placeholder="截止日期" id="operateTimeEnd" name="operateTimeEnd" onclick="laydate({format: 'YYYY-MM-DD'})" class="laydate-icon form-control layer-date">
+		                		</div>
 		           			</div>
 		           			<div class="col-xs-2 text-right padding-none">
 			                    <button type="button" id="btn_search" class="btn btn-outline btn-primary" th:text="#{search}">查询</button>
