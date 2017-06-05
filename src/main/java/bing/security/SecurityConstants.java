@@ -29,6 +29,11 @@ public class SecurityConstants {
 	public static final int MAXIMUM_SESSIONS = 1;
 
 	/**
+	 * Session timeout seconds
+	 */
+	public static final int SESSION_TIMEOUT_SECONDS = 1 * 60; // 10 mins
+
+	/**
 	 * Cookie expire seconds
 	 */
 	public static final int COOKIE_EXPIRE_SECONDS = 60 * 60 * 24 * 7;

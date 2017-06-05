@@ -8,11 +8,6 @@ public class GlobalConstants {
 	public static final String PARAM_CAPTCHA = "captcha";
 
 	/**
-	 * Session timeout seconds
-	 */
-	public static final int SESSION_TIMEOUT_SECONDS = 10 * 60; // 10 mins
-
-	/**
 	 * MyBatis mapper scan packages
 	 */
 	public static final String MAPPER_SCAN_PACKAGES = "bing.**.dao";

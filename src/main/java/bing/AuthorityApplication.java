@@ -14,15 +14,17 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import bing.constant.GlobalConstants;
+import bing.security.SecurityConstants;
 
 // @EnableCaching
 @SpringBootApplication
 @EnableAsync // 开启异步调用
 @EnableScheduling // 允许定时任务
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = GlobalConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
-@ComponentScan(basePackages = { GlobalConstants.COMPONENT_SCAN_PACKAGES })
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = SecurityConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
+@ComponentScan(basePackages = {GlobalConstants.COMPONENT_SCAN_PACKAGES})
 @MapperScan(GlobalConstants.MAPPER_SCAN_PACKAGES)
-// public class AuthorityApplication extends SpringBootServletInitializer { // 打war包时打开
+// public class AuthorityApplication extends SpringBootServletInitializer { //
+// 打war包时打开
 public class AuthorityApplication { // 开发时打开
 
 	@Autowired
@@ -41,7 +43,8 @@ public class AuthorityApplication { // 开发时打开
 	}
 
 	/**
-	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件， 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
+	 * 该Bean的用途：默认校验框架会在classpath下寻找名称前缀为ValidationMessages的资源文件，
+	 * 重新定义mvcValidator后可以修改默认资源文件名称及路径，使用Spring Boot的MessageSource搜索资源文件
 	 * 
 	 * @return
 	 */
@@ -57,9 +60,12 @@ public class AuthorityApplication { // 开发时打开
 	// return new EmbeddedServletContainerCustomizer() {
 	// @Override
 	// public void customize(ConfigurableEmbeddedServletContainer container) {
-	// ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/401.html");
-	// ErrorPage error403Page = new ErrorPage(HttpStatus.FORBIDDEN, "/403.html");
-	// ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html");
+	// ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED,
+	// "/401.html");
+	// ErrorPage error403Page = new ErrorPage(HttpStatus.FORBIDDEN,
+	// "/403.html");
+	// ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND,
+	// "/404.html");
 	// container.addErrorPages(error401Page, error403Page, error404Page);
 	// }
 	// };
@@ -69,7 +75,8 @@ public class AuthorityApplication { // 开发时打开
 
 	// @Bean
 	// public EmbeddedServletContainerFactory servletContainer() {
-	// TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+	// TomcatEmbeddedServletContainerFactory tomcat = new
+	// TomcatEmbeddedServletContainerFactory() {
 	//
 	// // 打开注释开启HTTPS，同时需要解开配置文件中ssl开头的配置，并将server端口改为8443
 	// @Override
@@ -92,7 +99,8 @@ public class AuthorityApplication { // 开发时打开
 
 	// @Bean
 	// public Connector httpConnector() {
-	// Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+	// Connector connector = new
+	// Connector("org.apache.coyote.http11.Http11NioProtocol");
 	// connector.setScheme("http");
 	// // Connector监听的http的端口号
 	// connector.setPort(8080);
