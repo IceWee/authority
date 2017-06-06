@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import bing.domain.CrudGroups;
 import bing.domain.GenericObject;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Spring Security用户
@@ -24,22 +25,32 @@ public class CustomUserDetails extends GenericObject implements UserDetails {
 
 	private static final long serialVersionUID = 5230111703513005505L;
 
+	@ApiModelProperty(value = "用户名", dataType = "String", example = "zhangsan")
 	@NotNull(message = "{username.required}")
 	@Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9]+$", message = "{username.illegal}")
 	@Size(min = 6, max = 32, message = "{username.valid.length}")
 	protected String username;
 
+	@ApiModelProperty(hidden = true)
 	@NotNull(groups = {CrudGroups.Create.class}, message = "{password.required}")
 	protected String password;
 
+	@ApiModelProperty(hidden = true)
 	protected boolean enabled = true;
+
+	@ApiModelProperty(hidden = true)
 	protected boolean accountNonExpired = true;
+
+	@ApiModelProperty(hidden = true)
 	protected boolean accountNonLocked = true;
+
+	@ApiModelProperty(hidden = true)
 	protected boolean credentialsNonExpired = true;
 
 	/**
 	 * 权限集合
 	 */
+	@ApiModelProperty(hidden = true)
 	@JsonIgnore
 	protected Collection<? extends GrantedAuthority> authorities = Collections.emptyList();
 

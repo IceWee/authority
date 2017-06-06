@@ -50,7 +50,11 @@ import bing.util.EasyPOIUtils;
 import bing.util.ExceptionUtils;
 import bing.web.api.RestResponse;
 import bing.web.controller.GenericController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 
+@Api(tags = "User", description = "用户接口")
 @Controller
 @RequestMapping("/")
 public class SysUserController extends GenericController {
@@ -98,6 +102,8 @@ public class SysUserController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_USER_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "用户数据查询", notes = "用户数据查询")
+	@ApiResponse(code = 200, response = RestResponse.class, message = "")
 	public RestResponse<GenericPage<SysUserVO>> users(SysUserCondition condition) {
 		RestResponse<GenericPage<SysUserVO>> response = new RestResponse<>();
 		GenericPage<SysUserVO> page = sysUserService.listByPage(condition);
@@ -107,6 +113,8 @@ public class SysUserController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_USER_LIST + "/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "根据角色获取用户列表", notes = "根据角色ID获取属于该角色的用户列表")
+	@ApiResponse(code = 200, response = RestResponse.class, message = "")
 	public RestResponse<RoleUserVO> getRoleUsers(@PathVariable Integer roleId) {
 		RestResponse<RoleUserVO> response = new RestResponse<>();
 		RoleUserVO data = sysUserService.getRoleUsers(roleId);
@@ -123,6 +131,8 @@ public class SysUserController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_USER_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "保存角色用户关联关系", notes = "保存角色用户关联关系")
+	@ApiResponse(code = 200, response = RestResponse.class, message = "")
 	public RestResponse<Object> saveRoleUsers(Integer roleId, Integer[] userIds, @CurrentLoggedUser SysUser currentUser) {
 		RestResponse<Object> response = new RestResponse<>();
 		String username = currentUser.getUsername();
@@ -222,6 +232,8 @@ public class SysUserController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_USER_PASSWORD, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "当前登录用户修改密码", notes = "当前登录用户修改密码")
+	@ApiResponse(code = 200, response = RestResponse.class, message = "")
 	public RestResponse<Object> savePassword(@RequestParam(name = "oldPassword") String oldPassword, @RequestParam(name = "newPassword") String newPassword, @CurrentLoggedUser SysUser currentUser) {
 		sysUserService.changePassword(currentUser.getId(), oldPassword, newPassword);
 		return new RestResponse<>();
@@ -246,6 +258,8 @@ public class SysUserController extends GenericController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = AJAX_USER_MINE_UPDATE, method = RequestMethod.PUT)
+	@ApiOperation(value = "当前登录用户修改个人信息", notes = "当前登录用户修改个人信息")
+	@ApiResponse(code = 200, response = RestResponse.class, message = "")
 	public RestResponse<Object> updateMine(SysUser mine, @CurrentLoggedUser SysUser currentUser) {
 		if (StringUtils.isBlank(mine.getName())) {
 			throw new BusinessException(UserExceptionCodes.NAME_IS_NULL);

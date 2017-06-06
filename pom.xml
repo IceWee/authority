@@ -6,10 +6,9 @@
 	<groupId>bing</groupId>
 	<artifactId>authority</artifactId>
 	<version>1.0</version>
-	<!-- dev-开发时打开  -->
+	<!-- dev-开发时打开 -->
 	<packaging>jar</packaging>
-	<!-- dep-部署时打开
-	<packaging>war</packaging> -->
+	<!-- dep-部署时打开 <packaging>war</packaging> -->
 
 	<name>authority</name>
 	<description>A &amp; A for Spring Boot</description>
@@ -33,12 +32,9 @@
 
 	<dependencies>
 		<!-- spring boot dependencies -->
-		<!-- dep-部署时打开
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency> -->
+		<!-- dep-部署时打开 <dependency> <groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-tomcat</artifactId> <scope>provided</scope> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -47,11 +43,8 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
-				<!-- dep-部署时打开
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion> -->
+				<!-- dep-部署时打开 <exclusion> <groupId>org.springframework.boot</groupId> 
+					<artifactId>spring-boot-starter-tomcat</artifactId> </exclusion> -->
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -93,7 +86,7 @@
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1</version>
 		</dependency>
 		<!-- 分布式/集群共享session支持 -->
 		<dependency>
@@ -178,6 +171,27 @@
 			<artifactId>easypoi-annotation</artifactId>
 			<version>2.4.0</version>
 		</dependency>
+		<!-- 在线Restful API -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.5.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>21.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>authority</finalName>
@@ -213,14 +227,9 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- dep-部署时打开
-			<plugin>
-    			<groupId>org.apache.maven.plugins</groupId>
-    			<artifactId>maven-war-plugin</artifactId>
-    			<configuration>
-        			<failOnMissingWebXml>false</failOnMissingWebXml>
-    			</configuration>
-			</plugin> -->
+			<!-- dep-部署时打开 <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
+				<configuration> <failOnMissingWebXml>false</failOnMissingWebXml> </configuration> 
+				</plugin> -->
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-maven-plugin</artifactId>

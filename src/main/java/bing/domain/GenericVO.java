@@ -7,6 +7,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import bing.constant.GlobalConstants;
 import bing.constant.StatusEnum;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -14,22 +15,31 @@ public class GenericVO extends GenericObject {
 
 	protected static final long serialVersionUID = -6547881868397315449L;
 
+	@ApiModelProperty(value = "主键", dataType = "Integer", example = "1")
 	protected Integer id;
 
+	@ApiModelProperty(value = "状态", dataType = "Integer", example = "0")
 	protected Integer status;
 
+	@ApiModelProperty(value = "状态文字", dataType = "String", example = "正常")
 	protected String statusText;
 
+	@ApiModelProperty(value = "创建人", dataType = "String", example = "超级管理员")
 	protected String createUser;
 
+	@ApiModelProperty(value = "创建日期", dataType = "String", example = "2017-07-07")
 	protected Date createDate;
 
+	@ApiModelProperty(value = "创建时间", dataType = "String", example = "2017-07-07 12:00:00")
 	protected String createDateTime;
 
+	@ApiModelProperty(value = "更新人", dataType = "String", example = "超级管理员")
 	protected String updateUser;
 
+	@ApiModelProperty(value = "更新日期", dataType = "String", example = "2017-07-07")
 	protected Date updateDate;
 
+	@ApiModelProperty(value = "更新时间", dataType = "String", example = "2017-07-07 12:00:00")
 	protected String updateDateTime;
 
 	public Integer getId() {

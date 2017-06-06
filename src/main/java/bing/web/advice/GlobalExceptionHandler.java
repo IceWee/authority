@@ -51,7 +51,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	 * @return
 	 */
 	private String error(HttpServletRequest request, Exception cause) {
-		String code = BusinessExceptionCodes.SERVER_ERROR;
+		String code = BusinessExceptionCodes.singleton().SERVER_ERROR;
 		if (cause instanceof BusinessException) {
 			BusinessException be = (BusinessException) cause;
 			code = be.getCode();
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	 * @param cause
 	 */
 	private void ajaxResponse(HttpServletResponse response, Exception cause) {
-		String code = BusinessExceptionCodes.SERVER_ERROR;
+		String code = BusinessExceptionCodes.singleton().SERVER_ERROR;
 		if (cause instanceof BusinessException) {
 			BusinessException be = (BusinessException) cause;
 			code = be.getCode();
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 			message = messageSourceService.getMessage(code);
 		} catch (Exception ex) {
 			LOGGER.warn("国际化文件中未配置错误编码：{}，返回未知错误提示", code);
-			message = messageSourceService.getMessage(BusinessExceptionCodes.UNKNOW_ERROR);
+			message = messageSourceService.getMessage(BusinessExceptionCodes.singleton().UNKNOW_ERROR);
 		}
 		return message;
 	}

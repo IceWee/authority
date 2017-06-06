@@ -96,12 +96,12 @@ public abstract class GenericController {
 	 */
 	protected String getError(Exception e) {
 		String error;
-		String code = BusinessExceptionCodes.SERVER_ERROR;
+		String code = BusinessExceptionCodes.singleton().SERVER_ERROR;
 		if (e instanceof BusinessException) {
 			BusinessException be = (BusinessException) e;
 			code = be.getCode();
 		}
-		error = getMessage(code, BusinessExceptionCodes.UNKNOW_ERROR);
+		error = getMessage(code, BusinessExceptionCodes.singleton().UNKNOW_ERROR);
 		LOGGER.error(error);
 		return error;
 	}
@@ -124,7 +124,7 @@ public abstract class GenericController {
 	 * @param model
 	 */
 	protected void setError(String key, Model model) {
-		String error = getMessage(key, BusinessExceptionCodes.UNKNOW_ERROR);
+		String error = getMessage(key, BusinessExceptionCodes.singleton().UNKNOW_ERROR);
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
 	}
 

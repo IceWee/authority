@@ -44,7 +44,7 @@ public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
 		}
 		if (AjaxUtils.ajaxRequest(request)) {
 			LOGGER.info("ajax请求session过期...");
-			AjaxUtils.ajaxResponse(response, BusinessExceptionCodes.SESSION_EXPIRED, retriveMessage(BusinessExceptionCodes.SESSION_EXPIRED));
+			AjaxUtils.ajaxResponse(response, BusinessExceptionCodes.singleton().SESSION_EXPIRED, retriveMessage(BusinessExceptionCodes.singleton().SESSION_EXPIRED));
 		} else {
 			LOGGER.info("普通请求session过期...");
 			redirectStrategy.sendRedirect(request, response, destinationUrl);
@@ -67,7 +67,7 @@ public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
 			message = messageSourceService.getMessage(code);
 		} catch (Exception ex) {
 			LOGGER.warn("国际化文件中未配置错误编码：{}，返回未知错误提示", code);
-			message = messageSourceService.getMessage(BusinessExceptionCodes.UNKNOW_ERROR);
+			message = messageSourceService.getMessage(BusinessExceptionCodes.singleton().UNKNOW_ERROR);
 		}
 		return message;
 	}

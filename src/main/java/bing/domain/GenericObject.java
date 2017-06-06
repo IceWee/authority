@@ -9,20 +9,26 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import bing.constant.StatusEnum;
+import io.swagger.annotations.ApiModelProperty;
 
 public abstract class GenericObject implements Serializable {
 
 	private static final long serialVersionUID = -3001222131707495746L;
 
+	@ApiModelProperty(value = "状态", dataType = "Integer", example = "0")
 	protected Integer status;
 
+	@ApiModelProperty(value = "创建人", dataType = "String", example = "超级管理员")
 	protected String createUser;
 
+	@ApiModelProperty(value = "创建日期", dataType = "String", example = "2017-07-07")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	protected Date createDate;
 
+	@ApiModelProperty(value = "更新人", dataType = "String", example = "超级管理员")
 	protected String updateUser;
 
+	@ApiModelProperty(value = "更新日期", dataType = "String", example = "2017-07-07")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	protected Date updateDate;
 

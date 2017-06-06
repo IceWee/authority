@@ -60,7 +60,7 @@ public class FileUploadController {
 				Files.write(path, multipartFile.getBytes());
 				response.setData(filepath);
 			} catch (IOException e) {
-				throw new BusinessException(BusinessExceptionCodes.UPLOAD_FAILED, e);
+				throw new BusinessException(BusinessExceptionCodes.singleton().UPLOAD_FAILED, e);
 			}
 		}
 		return response;

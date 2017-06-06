@@ -3,6 +3,8 @@ package bing.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author IceWee
  */
@@ -10,9 +12,16 @@ public class GenericPage<T> {
 
 	public final static int DEFAULT_PAGE_SIZE = 10;
 
+	@ApiModelProperty(value = "页号", required = true, dataType = "Integer", example = "1")
 	protected int pageNumber = 1;
+
+	@ApiModelProperty(value = "每页显示记录数", required = true, dataType = "Integer", example = "10")
 	protected int pageSize = DEFAULT_PAGE_SIZE;
+
+	@ApiModelProperty(value = "总记录数", required = true, dataType = "Integer", example = "100")
 	protected long total = 0;
+
+	@ApiModelProperty(value = "数据列表")
 	protected List<T> rows = new ArrayList<>();
 
 	public GenericPage() {
@@ -72,30 +81,6 @@ public class GenericPage<T> {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
-	}
-
-	public long getPreviousPageNumber() {
-		if (hasPreviousPage()) {
-			return pageNumber - 1;
-		} else {
-			return pageNumber;
-		}
-	}
-
-	public long getNextPageNumber() {
-		if (hasNextPage()) {
-			return pageNumber + 1;
-		} else {
-			return pageNumber;
-		}
-	}
-
-	public boolean hasPreviousPage() {
-		return (pageNumber - 1 >= 1);
-	}
-
-	public boolean hasNextPage() {
-		return (pageNumber + 1 <= getTotalPages());
 	}
 
 }
