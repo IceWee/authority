@@ -59,7 +59,7 @@ public class BusinessExceptionCodes {
 		super();
 	}
 
-	public static final BusinessExceptionCodes singleton() {
+	public static BusinessExceptionCodes singleton() {
 		return SingletonHolder.INSTANCE;
 	}
 

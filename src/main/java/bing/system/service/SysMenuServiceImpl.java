@@ -76,11 +76,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 	public void deleteById(Integer id, String username) {
 		Integer subMenuCount = sysMenuDao.countByParentId(id);
 		if (subMenuCount > 0) {
-			throw new BusinessException(MenuExceptionCodes.CONTAINS_SUBMENUS);
+			throw new BusinessException(MenuExceptionCodes.singleton().CONTAINS_SUBMENUS);
 		}
 		SysMenu entity = sysMenuDao.selectByPrimaryKey(id);
 		if (StringUtils.equals(Objects.toString(entity.getParentId()), Objects.toString(GlobalConstants.TOP_PARENT_ID))) {
-			throw new BusinessException(MenuExceptionCodes.TOP_MENU_FORBIDDEN_DELETE);
+			throw new BusinessException(MenuExceptionCodes.singleton().TOP_MENU_FORBIDDEN_DELETE);
 		}
 		entity.setStatus(StatusEnum.DELETED.ordinal());
 		entity.setUpdateUser(username);

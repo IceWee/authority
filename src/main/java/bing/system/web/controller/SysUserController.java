@@ -138,7 +138,8 @@ public class SysUserController extends GenericController {
 		String username = currentUser.getUsername();
 		sysUserService.saveRoleUsers(roleId, userIds, username);
 		String operateContent = "配置了角色与用户关系，角色ID[" + roleId + "]，用户ID列表[" + Arrays.toString(userIds) + "]";
-		sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
+		sysOperateLogService
+				.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		return response;
 	}
 
@@ -149,7 +150,8 @@ public class SysUserController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model,
+			@CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
@@ -162,7 +164,8 @@ public class SysUserController extends GenericController {
 			entity.setUpdateDate(now);
 			sysUserService.save(entity);
 			String operateContent = "添加了用户[" + entity + "]";
-			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
+			sysOperateLogService
+					.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -200,7 +203,8 @@ public class SysUserController extends GenericController {
 			entity.setUpdateDate(new Date());
 			sysUserService.updateWithRole(entity);
 			String operateContent = "修改了用户信息[" + entity + "]";
-			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
+			sysOperateLogService
+					.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -216,7 +220,8 @@ public class SysUserController extends GenericController {
 			String username = currentUser.getName();
 			sysUserService.deleteById(id, username);
 			String operateContent = "删除了用户[" + id + "]";
-			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
+			sysOperateLogService
+					.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -234,7 +239,8 @@ public class SysUserController extends GenericController {
 	@RequestMapping(value = AJAX_USER_PASSWORD, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiOperation(value = "当前登录用户修改密码", notes = "当前登录用户修改密码")
 	@ApiResponse(code = 200, response = RestResponse.class, message = "")
-	public RestResponse<Object> savePassword(@RequestParam(name = "oldPassword") String oldPassword, @RequestParam(name = "newPassword") String newPassword, @CurrentLoggedUser SysUser currentUser) {
+	public RestResponse<Object> savePassword(@RequestParam(name = "oldPassword") String oldPassword,
+			@RequestParam(name = "newPassword") String newPassword, @CurrentLoggedUser SysUser currentUser) {
 		sysUserService.changePassword(currentUser.getId(), oldPassword, newPassword);
 		return new RestResponse<>();
 	}
@@ -262,7 +268,7 @@ public class SysUserController extends GenericController {
 	@ApiResponse(code = 200, response = RestResponse.class, message = "")
 	public RestResponse<Object> updateMine(SysUser mine, @CurrentLoggedUser SysUser currentUser) {
 		if (StringUtils.isBlank(mine.getName())) {
-			throw new BusinessException(UserExceptionCodes.NAME_IS_NULL);
+			throw new BusinessException(UserExceptionCodes.singleton().NAME_IS_NULL);
 		}
 		mine.setId(currentUser.getId());
 		sysUserService.update(mine);
@@ -282,7 +288,8 @@ public class SysUserController extends GenericController {
 			String username = currentUser.getName();
 			sysUserService.lockById(id, username);
 			String operateContent = "锁定了用户[" + id + "]";
-			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
+			sysOperateLogService
+					.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -304,7 +311,8 @@ public class SysUserController extends GenericController {
 			String username = currentUser.getName();
 			sysUserService.unlockById(id, username);
 			String operateContent = "解除锁定了用户[" + id + "]";
-			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
+			sysOperateLogService
+					.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		} catch (Exception e) {
 			LOGGER.error("{}解除锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);

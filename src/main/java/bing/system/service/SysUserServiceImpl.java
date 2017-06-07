@@ -52,7 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
 		entity.setId(null);
 		SysUser persistUser = sysUserDao.getByUsername(entity.getUsername());
 		if (persistUser != null) {
-			throw new BusinessException(UserExceptionCodes.USERNAME_REGISTERED);
+			throw new BusinessException(UserExceptionCodes.singleton().USERNAME_REGISTERED);
 		}
 		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
@@ -78,7 +78,7 @@ public class SysUserServiceImpl implements SysUserService {
 		String origionUsername = persistUser.getUsername();
 		String newUsername = entity.getUsername();
 		if (!StringUtils.equals(origionUsername, newUsername)) {
-			throw new BusinessException(UserExceptionCodes.USERNAME_FORBIDDEN_MODIFY);
+			throw new BusinessException(UserExceptionCodes.singleton().USERNAME_FORBIDDEN_MODIFY);
 		}
 		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
@@ -130,7 +130,7 @@ public class SysUserServiceImpl implements SysUserService {
 	public void changePassword(Integer userId, String oldPassword, String newPassword) {
 		SysUser user = sysUserDao.selectByPrimaryKey(userId);
 		if (!PasswordUtils.match(oldPassword, user.getPassword())) {
-			throw new BusinessException(UserExceptionCodes.ORIGION_PASSWORD_WRONG);
+			throw new BusinessException(UserExceptionCodes.singleton().ORIGION_PASSWORD_WRONG);
 		}
 		String encryptPasswd = PasswordUtils.encrypt(newPassword);
 		user.setPassword(encryptPasswd);

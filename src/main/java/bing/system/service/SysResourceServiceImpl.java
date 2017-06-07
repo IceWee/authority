@@ -65,7 +65,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		entity.setId(null);
 		SysResource persistResource = sysResourceDao.getByURL(entity.getUrl());
 		if (persistResource != null) {
-			throw new BusinessException(ResourceExceptionCodes.URL_USED);
+			throw new BusinessException(ResourceExceptionCodes.singleton().URL_USED);
 		}
 		Date now = new Date();
 		entity.setCreateDate(now);
@@ -79,7 +79,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		String origionUrl = persistResource.getUrl();
 		String newUrl = entity.getUrl();
 		if (!StringUtils.equals(origionUrl, newUrl)) {
-			throw new BusinessException(ResourceExceptionCodes.URL_FORBIDDEN_MODIFY);
+			throw new BusinessException(ResourceExceptionCodes.singleton().URL_FORBIDDEN_MODIFY);
 		}
 		entity.setUpdateDate(new Date());
 		sysResourceDao.updateByPrimaryKeySelective(entity);
@@ -94,11 +94,11 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public void deleteById(Integer id, String username) {
 		int menuCount = sysMenuDao.countByResourceId(id);
 		if (menuCount > 0) {
-			throw new BusinessException(ResourceExceptionCodes.USED_BY_MENU);
+			throw new BusinessException(ResourceExceptionCodes.singleton().USED_BY_MENU);
 		}
 		int roleCount = sysRoleResourceDao.countByResourceId(id);
 		if (roleCount > 0) {
-			throw new BusinessException(ResourceExceptionCodes.AUTHORIZED_TO_ROLE);
+			throw new BusinessException(ResourceExceptionCodes.singleton().AUTHORIZED_TO_ROLE);
 		}
 		SysResource entity = new SysResource();
 		entity.setId(id);
@@ -140,11 +140,11 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public void deleteCategoryById(Integer categoryId, String username) {
 		Integer resourceCount = sysResourceDao.countByCategoryId(categoryId);
 		if (resourceCount > 0) {
-			throw new BusinessException(ResourceExceptionCodes.CATEGORY_CONTAINS_RESOURCE);
+			throw new BusinessException(ResourceExceptionCodes.singleton().CATEGORY_CONTAINS_RESOURCE);
 		}
 		Integer subCategoryCount = sysResourceCategoryDao.countByParentId(categoryId);
 		if (subCategoryCount > 0) {
-			throw new BusinessException(ResourceExceptionCodes.CATEGORY_CONTAINS_SUBCATEGORY);
+			throw new BusinessException(ResourceExceptionCodes.singleton().CATEGORY_CONTAINS_SUBCATEGORY);
 		}
 		SysResourceCategory entity = new SysResourceCategory();
 		entity.setId(categoryId);

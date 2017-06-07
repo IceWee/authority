@@ -50,7 +50,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		entity.setId(null);
 		SysRole persistRole = sysRoleDao.getByCode(entity.getCode());
 		if (persistRole != null) {
-			throw new BusinessException(RoleExceptionCodes.CODE_USED);
+			throw new BusinessException(RoleExceptionCodes.singleton().CODE_USED);
 		}
 		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
@@ -63,7 +63,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		String origionCode = persistRole.getCode();
 		String newCode = entity.getCode();
 		if (!StringUtils.equals(origionCode, newCode)) {
-			throw new BusinessException(RoleExceptionCodes.CODE_FORBIDDEN_MODIFY);
+			throw new BusinessException(RoleExceptionCodes.singleton().CODE_FORBIDDEN_MODIFY);
 		}
 		entity.setCreateDate(new Date());
 		entity.setUpdateDate(new Date());
@@ -79,7 +79,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	public void deleteById(Integer id, String username) {
 		int count = sysUserRoleDao.countByRoleId(id);
 		if (count > 0) {
-			throw new BusinessException(RoleExceptionCodes.AUTHORIZED_TO_USER);
+			throw new BusinessException(RoleExceptionCodes.singleton().AUTHORIZED_TO_USER);
 		}
 		SysRole entity = new SysRole();
 		entity.setId(id);

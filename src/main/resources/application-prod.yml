@@ -36,6 +36,8 @@ spring:
 # Jackson config
   jackson:
     date-format: yyyy-MM-dd
+    # 强制使用中国时区
+    time-zone: GMT+8
 # 上传文件大小限制
   http:
     multipart:
