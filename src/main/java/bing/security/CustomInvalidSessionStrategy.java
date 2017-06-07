@@ -44,7 +44,7 @@ public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
 		}
 		if (AjaxUtils.ajaxRequest(request)) {
 			LOGGER.info("ajax请求session过期...");
-			AjaxUtils.ajaxResponse(response, BusinessExceptionCodes.singleton().SESSION_EXPIRED, retriveMessage(BusinessExceptionCodes.singleton().SESSION_EXPIRED));
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		} else {
 			LOGGER.info("普通请求session过期...");
 			redirectStrategy.sendRedirect(request, response, destinationUrl);

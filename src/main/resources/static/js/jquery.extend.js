@@ -1,7 +1,23 @@
 var OK = "200";
 
 $(function() {
-	$(document).ajaxStart(function(){$.loading()}).ajaxStop(function(){$.loaded()});
+	$(document).ajaxStart(function() {
+		$.loading()
+	});
+	$(document).ajaxStop(function() {
+		$.loaded();
+	});
+	
+	// session超时统一处理
+	$(document).ajaxError(function(event, jqxhr, settings, exception) {
+		 if (jqxhr.status == 401) {
+			 if (window != top) {  
+				 top.location.href = "/login?expired";  
+			 } else {
+				 window.location.href = "/login?expired";
+			 }
+		 }
+	});
 });
 
 // 将表单序列化成JSON对象
