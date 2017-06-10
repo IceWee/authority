@@ -1,6 +1,7 @@
 package bing.util;
 
 import java.io.IOException;
+import java.util.TimeZone;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,14 +20,16 @@ public class JsonUtils {
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	static {
+		// null - ""
 		mapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
-			// null - ""
 			@Override
 			public void serialize(Object obj, JsonGenerator generator, SerializerProvider provider) throws IOException, JsonProcessingException {
 				generator.writeString("");
 			}
 
 		});
+		// timezone
+		mapper.setTimeZone(TimeZone.getDefault());
 	}
 
 	private JsonUtils() {
