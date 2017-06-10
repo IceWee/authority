@@ -20,7 +20,7 @@ spring:
     password: root
 # Thymeleaf config
   thymeleaf:
-    cache: true
+    cache: false
     enabled: true
     mode: HTML
 # EhCache config
