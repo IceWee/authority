@@ -31,7 +31,7 @@ public class SecurityConstants {
 	/**
 	 * Session timeout seconds
 	 */
-	public static final int SESSION_TIMEOUT_SECONDS = 1 * 60; // 10 mins
+	public static final int SESSION_TIMEOUT_SECONDS = 10 * 60; // 10 mins
 
 	/**
 	 * Cookie expire seconds
@@ -41,7 +41,7 @@ public class SecurityConstants {
 	/**
 	 * Public resource paths
 	 */
-	public static final String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
+	public static final String[] PUBLIC_RESOURCE_PATHS = { "/js/**", "/css/**", "/images/**", "/i18n/**" };
 
 	private SecurityConstants() {
 		super();
