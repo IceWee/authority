@@ -62,7 +62,7 @@ Configuration:
     Logger: 
     - name: bing # 为bing包配置特殊的Log级别，方便调试
       additivity: false
-      level: debug
+      level: info
       AppenderRef:
       - ref: CONSOLE
       - ref: INFO_FILE
@@ -74,4 +74,3 @@ Configuration:
       - ref: CONSOLE
       - ref: INFO_FILE
       - ref: ERROR_FILE
-    
