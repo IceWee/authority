@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import bing.constant.GlobalConstants;
 import bing.security.SecurityConstants;
@@ -48,12 +46,12 @@ public class AuthorityApplication { // 开发时打开
 	 * 
 	 * @return
 	 */
-	@Bean(name = "mvcValidator")
-	public LocalValidatorFactoryBean validator() {
-		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-		bean.setValidationMessageSource(messageSource);
-		return bean;
-	}
+	// @Bean(name = "mvcValidator")
+	// public Validator validator() {
+	// LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+	// bean.setValidationMessageSource(messageSource);
+	// return bean;
+	// }
 
 	// @Bean
 	// public EmbeddedServletContainerCustomizer containerCustomizer() {

@@ -3,10 +3,10 @@ package bing.security;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,13 +26,13 @@ public class CustomUserDetails extends GenericObject implements UserDetails {
 	private static final long serialVersionUID = 5230111703513005505L;
 
 	@ApiModelProperty(value = "用户名", dataType = "String", example = "zhangsan")
-	@NotNull(message = "{username.required}")
-	@Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9]+$", message = "{username.illegal}")
-	@Size(min = 6, max = 32, message = "{username.valid.length}")
+	@NotBlank(groups = {CrudGroups.Create.class}, message = "{username.required}")
+	@Pattern(groups = {CrudGroups.Create.class}, regexp = "^[a-zA-Z][a-zA-Z0-9]+$", message = "{username.illegal}")
+	@Size(groups = {CrudGroups.Create.class}, min = 6, max = 32, message = "{username.valid.length}")
 	protected String username;
 
 	@ApiModelProperty(hidden = true)
-	@NotNull(groups = {CrudGroups.Create.class}, message = "{password.required}")
+	@NotBlank(groups = {CrudGroups.Create.class}, message = "{password.required}")
 	protected String password;
 
 	@ApiModelProperty(hidden = true)

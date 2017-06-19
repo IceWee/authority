@@ -1,10 +1,12 @@
 package bing.system.model;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import bing.constant.HiddenEnum;
 import bing.constant.StatusEnum;
+import bing.domain.CrudGroups;
 import bing.security.CustomUserDetails;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,11 +24,11 @@ public class SysUser extends CustomUserDetails {
 	private Integer id;
 
 	@ApiModelProperty(value = "姓名", dataType = "String", required = true, example = "张三")
-	@NotNull(message = "{surname.required}")
+	@NotBlank(groups = {CrudGroups.Create.class, CrudGroups.Update.class}, message = "{surname.required}")
 	private String name;
 
 	@ApiModelProperty(value = "手机", dataType = "String", example = "13011112222")
-	@Pattern(regexp = "^$|^(13|14|15|17|18)[0-9]{9}$", message = "{mobile.illegal}")
+	@Pattern(groups = {CrudGroups.Create.class, CrudGroups.Update.class}, regexp = "^$|^(13|14|15|17|18)[0-9]{9}$", message = "{mobile.illegal}")
 	private String mobile;
 
 	@ApiModelProperty(hidden = true)

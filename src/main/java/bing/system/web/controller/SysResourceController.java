@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -134,7 +135,7 @@ public class SysResourceController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_CATEGORY_SAVE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> categorySave(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult, @CurrentLoggedUser SysUser currentUser) {
+	public RestResponse<Object> categorySave(@RequestBody @Valid SysResourceCategory entity, BindingResult bindingResult, @CurrentLoggedUser SysUser currentUser) {
 		RestResponse<Object> response = new RestResponse<>();
 		if (hasErrors(bindingResult)) {
 			response.setCode(RestResponseCodes.VALIDATE_FAILED);
@@ -149,7 +150,7 @@ public class SysResourceController extends GenericController {
 
 	@ResponseBody
 	@RequestMapping(value = AJAX_CATEGORY_UPDATE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public RestResponse<Object> categoryUpdate(@RequestBody @Validated SysResourceCategory entity, BindingResult bindingResult, @CurrentLoggedUser SysUser currentUser) {
+	public RestResponse<Object> categoryUpdate(@RequestBody @Valid SysResourceCategory entity, BindingResult bindingResult, @CurrentLoggedUser SysUser currentUser) {
 		RestResponse<Object> response = new RestResponse<>();
 		if (hasErrors(bindingResult)) {
 			response.setCode(RestResponseCodes.VALIDATE_FAILED);
@@ -215,7 +216,7 @@ public class SysResourceController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated SysResource entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String save(@Valid SysResource entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
@@ -256,7 +257,7 @@ public class SysResourceController extends GenericController {
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String update(@Validated SysResource entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String update(@Valid SysResource entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
