@@ -29,7 +29,7 @@ Configuration:
         onMismatch: DENY
       ignoreExceptions: false
       fileName: ${log.path}/${sys:app.name}-info.log
-      filePattern: ${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i-info.log.gz
+      filePattern: ${log.path}/${sys:app.name}-%d{yyyy-MM-dd}-%i-info.log.gz
       PatternLayout:
         pattern: '%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %C %t (%F:%L) - %m%n'
       Policies:
@@ -44,7 +44,7 @@ Configuration:
         onMismatch: DENY
       ignoreExceptions: false
       fileName: ${log.path}/${sys:app.name}-error.log
-      filePattern: ${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i-error.log.gz
+      filePattern: ${log.path}/${sys:app.name}-%d{yyyy-MM-dd}-%i-error.log.gz
       PatternLayout:
         pattern: '%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %C %t (%F:%L) - %m%n'
       Policies:
