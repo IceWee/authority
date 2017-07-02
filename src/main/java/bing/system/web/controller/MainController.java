@@ -6,7 +6,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import bing.constant.GlobalConstants;
@@ -24,14 +23,14 @@ public class MainController extends GenericController {
 	private SysMenuService sysMenuService;
 
 	@RequestMapping(value = {"/index", "/"})
-	public String main(HttpSession session, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String main(HttpSession session, @CurrentLoggedUser SysUser currentUser) {
 		if (currentUser != null) {
 			session.setAttribute(GlobalConstants.SESSION_ATTRIBUTE_CURRENT_USER, currentUser);
 		} else {
 			return "redirect:/login";
 		}
 		List<MenuTreeNode> menus = sysMenuService.listMenuByUserId(currentUser.getId());
-		model.addAttribute("menus", menus);
+		session.setAttribute("menus", menus);
 		return "index";
 	}
 

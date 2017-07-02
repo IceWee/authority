@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="common/header :: header(#{system.name},~{::link})" />
+<head th:include="fragments/head :: header" />
 <link type="text/css" rel="stylesheet" th:href="@{/css/login.css}" />
 <script type="text/javascript" th:src="@{/js/jquery.placeholder.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.waypoints.min.js}"></script>

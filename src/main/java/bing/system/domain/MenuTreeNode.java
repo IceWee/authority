@@ -14,6 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MenuTreeNode extends GenericTreeNode {
 
+	private static final long serialVersionUID = -7990370120900511376L;
+
 	private boolean checked = false;
 
 	private boolean isParent = true;

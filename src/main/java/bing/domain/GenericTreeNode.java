@@ -1,5 +1,7 @@
 package bing.domain;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +14,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GenericTreeNode {
+public class GenericTreeNode implements Serializable {
+
+	private static final long serialVersionUID = -3442065226952399098L;
 
 	protected String id;
 
