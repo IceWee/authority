@@ -22,6 +22,7 @@ public class MainController extends GenericController {
 	@Autowired
 	private SysMenuService sysMenuService;
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = {"/index", "/"})
 	public String main(HttpSession session, @CurrentLoggedUser SysUser currentUser) {
 		if (currentUser != null) {
@@ -29,8 +30,11 @@ public class MainController extends GenericController {
 		} else {
 			return "redirect:/login";
 		}
-		List<MenuTreeNode> menus = sysMenuService.listMenuByUserId(currentUser.getId());
-		session.setAttribute("menus", menus);
+		List<MenuTreeNode> menus = (List<MenuTreeNode>) session.getAttribute(GlobalConstants.SESSION_ATTRIBUTE_MENUS);
+		if (menus == null) {
+			menus = sysMenuService.listMenuByUserId(currentUser.getId());
+			session.setAttribute(GlobalConstants.SESSION_ATTRIBUTE_MENUS, menus);
+		}
 		return "index";
 	}
 

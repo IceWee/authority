@@ -38,3 +38,15 @@ $(function() {
 		}
 	});
 });
+
+// 点击菜单
+function _linkMenu(url, menuId) {
+	if (url) {
+		if (url.indexOf("?") != -1) {
+			url = url + "&requestMenuId=" + menuId;
+		} else {
+			url = url + "?requestMenuId=" + menuId;
+		}
+		window.location.href = url;
+	}
+}

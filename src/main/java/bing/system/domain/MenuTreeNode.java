@@ -20,6 +20,8 @@ public class MenuTreeNode extends GenericTreeNode {
 
 	private boolean isParent = true;
 
+	private boolean active = false;
+
 	private String iconSkin;
 
 	private Integer nodeType;
@@ -28,12 +30,18 @@ public class MenuTreeNode extends GenericTreeNode {
 
 	private List<MenuTreeNode> children = new ArrayList<>();
 
+	private MenuTreeNode parentMenu = null;
+
 	public void addChild(MenuTreeNode node) {
 		this.children.add(node);
 	}
 
 	public void removeChild(MenuTreeNode node) {
 		this.children.remove(node);
+	}
+
+	public boolean hasChild() {
+		return !getChildren().isEmpty();
 	}
 
 	/**
@@ -48,6 +56,7 @@ public class MenuTreeNode extends GenericTreeNode {
 			treeNodes.forEach(node -> {
 				if (parentNode.isParent && Objects.equals(parentId, node.getParentId())) {
 					parentNode.addChild(node);
+					node.setParentMenu(parentNode);
 				}
 			});
 			if (!parentNode.getChildren().isEmpty()) {
