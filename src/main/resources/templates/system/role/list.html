@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/plugins/ztree/metroStyle/metroStyle.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
 <!-- 自定义js -->
-<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.select.box.js}"></script>
 <script type="text/javascript" th:src="@{/js/plugins/ztree/jquery.ztree.all.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.ztree.dialog.js}"></script>
@@ -58,7 +57,7 @@
 				 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;<span th:text="#{add}">添加</span>
 				 	</button>
 				</div>
-                <table id="table_list" data-height="410" data-row-style="rowStyle">
+                <table id="table_list" data-row-style="rowStyle">
                     <thead>
                         <tr>
                         	<th th:text="#{operation}" data-field="operation" data-align="center" data-formatter="operationFormatterExt">操作</th>

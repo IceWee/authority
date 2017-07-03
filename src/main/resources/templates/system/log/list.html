@@ -3,7 +3,6 @@
 <head>
 <title th:text="#{system.name}">Authority</title>
 <!-- 自定义js -->
-<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
 <script type="text/javascript" th:src="@{/js/system/log.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
@@ -53,7 +52,7 @@
 			                    <button type="button" id="btn_reset" class="btn btn-outline btn-default" th:text="#{reset}">重置</button>
 		           			</div>
 						</form>
-		                <table id="table_list" data-height="410">
+		                <table id="table_list">
 		                    <thead>
 		                        <tr>
 									<th th:text="#{name.module}" data-field="moduleName" data-align="center">模块名称</th>

@@ -27,6 +27,13 @@ body {
 }
 
 .page-height-default {
-	max-height: 450px;
+	max-height: 600px;
 	overflow: auto;
+}
+
+/* 统一调整bootstrap table默认高度 */
+.fixed-table-body {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 500px!important;
 }
