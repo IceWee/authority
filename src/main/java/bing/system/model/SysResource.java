@@ -2,6 +2,8 @@ package bing.system.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import bing.domain.GenericObject;
@@ -21,7 +23,7 @@ public class SysResource extends GenericObject implements Serializable {
 	@NotBlank(message = "{name.required}")
 	private String name;
 
-	@NotBlank(message = "{category.required}")
+	@NotNull(message = "{category.required}")
 	private Integer categoryId;
 
 	private Integer type;
