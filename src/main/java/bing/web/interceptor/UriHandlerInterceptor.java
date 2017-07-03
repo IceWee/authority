@@ -32,9 +32,9 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String uri = request.getRequestURI();
-		String requestMenuId = request.getParameter("requestMenuId");
-		LOGGER.debug("当前请求的URI为：{}，请求菜单ID：{}", uri, requestMenuId);
-		activeRequestMenus(request, requestMenuId);
+		String menuId = request.getParameter(GlobalConstants.PARAM_MENU_ID);
+		LOGGER.debug("当前请求的URI为：{}，请求菜单ID：{}", uri, menuId);
+		activeRequestMenus(request, menuId);
 		return true;
 	}
 
@@ -59,7 +59,7 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
 	 * @param request
 	 * @param requestMenuId
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({ "unchecked" })
 	private void activeRequestMenus(HttpServletRequest request, String requestMenuId) {
 		HttpSession session = request.getSession(false);
 		if (session != null && StringUtils.isNotBlank(requestMenuId)) {

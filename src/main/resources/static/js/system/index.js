@@ -43,9 +43,9 @@ $(function() {
 function _linkMenu(url, menuId) {
 	if (url) {
 		if (url.indexOf("?") != -1) {
-			url = url + "&requestMenuId=" + menuId;
+			url = url + "&_mid=" + menuId;
 		} else {
-			url = url + "?requestMenuId=" + menuId;
+			url = url + "?_mid=" + menuId;
 		}
 		window.location.href = url;
 	}

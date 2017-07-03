@@ -1,30 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="fragments/head :: header" />
+<head th:replace="fragments/header :: header" />
 <body>
 <div id="wrapper">
 	<!-- 导航菜单开始 -->
-	<section th:replace="fragments/nav :: nav"></section>
+	<nav th:replace="fragments/nav :: nav" />
     <!-- 导航菜单结束 -->
 	<!-- 右侧内容区开始 -->
 	<div id="page-wrapper" class="gray-bg">
-		<div class="row border-bottom">
-        	<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-	        	<div class="navbar-header">
-	            	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary "href="javascript:void(0);"><i class="fa fa-bars"></i></a>
-	        	</div>
-	            <ul class="nav navbar-top-links navbar-right">
-	                <li>
-	                    <a th:href="@{/logout}"><i class="fa fa-sign-out"></i><span th:text="#{logout}">退出</span></a>
-	                </li>
-	            </ul>
-	        </nav>
-        </div>
+		<div th:replace="fragments/top :: top" />
         <!-- 内容区域开始 -->
         <section layout:fragment="content"></section>
 		<!-- 内容区域结束 -->
         <!-- 页脚开始 -->
-        <footer th:replace="fragments/footer :: footer"></footer>
+        <div th:replace="fragments/footer :: footer" />
         <!-- 页脚结束 -->
 	</div>
 	<!-- 右侧内容区结束 -->

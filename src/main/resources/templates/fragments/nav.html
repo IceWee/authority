@@ -1,5 +1,4 @@
-<section layout:fragment="nav">
-<nav class="navbar-default navbar-static-side" role="navigation" th:each="menu : ${session.menus}">
+<nav th:fragment="nav" class="navbar-default navbar-static-side" role="navigation" th:each="menu : ${session.menus}">
 	<div class="sidebar-collapse">
 		<ul class="nav metismenu" id="side-menu">
 			<!-- 当前用户信息开始 -->
@@ -45,4 +44,3 @@
 		</ul>
 	</div>
 </nav>
-</section>

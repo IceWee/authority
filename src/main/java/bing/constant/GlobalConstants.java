@@ -8,6 +8,11 @@ public class GlobalConstants {
 	public static final String PARAM_CAPTCHA = "captcha";
 
 	/**
+	 * Request parameter name - menuId
+	 */
+	public static final String PARAM_MENU_ID = "_mid";
+
+	/**
 	 * MyBatis mapper scan packages
 	 */
 	public static final String MAPPER_SCAN_PACKAGES = "bing.**.dao";
