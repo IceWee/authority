@@ -41,7 +41,7 @@ $(function() {
 
 // 点击菜单
 function _linkMenu(url, menuId) {
-	if (url) {
+	if (url && "null" != url) {
 		if (url.indexOf("?") != -1) {
 			url = url + "&_mid=" + menuId;
 		} else {

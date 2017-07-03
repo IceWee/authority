@@ -70,21 +70,23 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
 			List<MenuTreeNode> menus = (List<MenuTreeNode>) session.getAttribute(GlobalConstants.SESSION_ATTRIBUTE_MENUS);
 			if (menus != null) {
 				recurveClearMenuActive(menus);
-				activeMenu(recurveFindMenuById(menus, requestMenuId));
+				recurveActiveMenu(menus, requestMenuId);
 			}
 		}
 	}
 
 	/**
-	 * 选中菜单
+	 * 递归激活菜单选中状态
 	 * 
-	 * @param menu
+	 * @Description
+	 * @param menus
+	 * @param menuId
 	 */
-	private void activeMenu(MenuTreeNode menu) {
+	private void recurveActiveMenu(List<MenuTreeNode> menus, String menuId) {
+		MenuTreeNode menu = recurveFindMenuById(menus, menuId);
 		if (menu != null) {
 			menu.setActive(true);
-			MenuTreeNode parent = menu.getParentMenu();
-			activeMenu(parent);
+			recurveActiveMenu(menus, menu.getParentId());
 		}
 	}
 
@@ -97,6 +99,9 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
 	 */
 	private MenuTreeNode recurveFindMenuById(List<MenuTreeNode> menus, String menuId) {
 		MenuTreeNode findMenu = null;
+		if (StringUtils.isBlank(menuId)) {
+			return findMenu;
+		}
 		String currId;
 		for (MenuTreeNode menuTreeNode : menus) {
 			currId = menuTreeNode.getId();
@@ -105,7 +110,10 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
 				break;
 			}
 			if (menuTreeNode.hasChild()) {
-				return recurveFindMenuById(menuTreeNode.getChildren(), menuId);
+				findMenu = recurveFindMenuById(menuTreeNode.getChildren(), menuId);
+				if (findMenu != null) {
+					break;
+				}
 			}
 		}
 		return findMenu;

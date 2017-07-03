@@ -4,7 +4,7 @@ Configuration:
     # 根据应用名称生成日志文件名示例：java -jar -Dapp.name=app1 xxx.jar 
     Property: # 缺省配置（用于开发环境）。其他环境需要在VM参数中指定，如下：
     - name: log.level.console
-      value: debug
+      value: info
     - name: log.level.default
       value: info
     - name: log.path

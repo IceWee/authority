@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 弹出树 -->
+<div th:fragment="dialog_tree" id="_dialog_ztree" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+      			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        		<h4 class="modal-title" id="_title_ztree"></h4>
+      		</div>
+      		<div class="modal-body" style="min-height:300px;max-height:450px">
+        		<div class="container-fluid" style="width: 100%">
+			   		<div class="row" style="min-height:210px;max-height:360px;overflow:auto">
+			    		<div id="_ztree" class="ztree"></div>
+			   		</div>
+			    </div>
+      		</div>
+      		<div class="modal-footer" id="_footer_ztree">
+        		<button type="button" id="_button_cancel_ztree" class="btn btn-default">
+					<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+				</button>
+        		<button type="button" id="_button_confirm_ztree" class="btn btn-primary">
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{confirm}">确定</span>
+				</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+
+</html>

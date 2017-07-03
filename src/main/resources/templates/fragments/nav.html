@@ -33,8 +33,8 @@
 							<span th:if="${not #lists.isEmpty(menu2.children)}" class="fa arrow"></span>
 						</a>
 						<ul th:if="${not #lists.isEmpty(menu2.children)}" class="nav nav-third-level">
-							<li th:each="menu3 : ${menu2.children}">
-								<a th:href="javascript:void(0)" th:onclick="'_linkMenu(\'' + ${menu3.url} + '\',' + ${menu3.id} + ')'" th:text="${menu3.name}">三级菜单</a>
+							<li th:class="${menu3.active} ? 'active' : ''" th:each="menu3 : ${menu2.children}">
+								<a href="javascript:void(0)" th:onclick="'_linkMenu(\'' + ${menu3.url} + '\',' + ${menu3.id} + ')'" th:text="${menu3.name}">三级菜单</a>
 							</li>
 						</ul>
 					</li>

@@ -30,8 +30,6 @@ public class MenuTreeNode extends GenericTreeNode {
 
 	private List<MenuTreeNode> children = new ArrayList<>();
 
-	private MenuTreeNode parentMenu = null;
-
 	public void addChild(MenuTreeNode node) {
 		this.children.add(node);
 	}
@@ -56,7 +54,6 @@ public class MenuTreeNode extends GenericTreeNode {
 			treeNodes.forEach(node -> {
 				if (parentNode.isParent && Objects.equals(parentId, node.getParentId())) {
 					parentNode.addChild(node);
-					node.setParentMenu(parentNode);
 				}
 			});
 			if (!parentNode.getChildren().isEmpty()) {

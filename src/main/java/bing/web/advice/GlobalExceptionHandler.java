@@ -34,7 +34,6 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 	@ExceptionHandler(value = Throwable.class)
 	public String handler(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
 		response.setCharacterEncoding(Charsets.CHARSET_UTF_8);
-		LOGGER.error(ExceptionUtils.parseStackTrace(e));
 		if (AjaxUtils.ajaxRequest(request)) {
 			ajaxResponse(response, e);
 			return null;
@@ -60,6 +59,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 		String stack = ExceptionUtils.parseStackTrace(cause);
 		request.setAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
 		request.setAttribute(GlobalConstants.REQUEST_ATTRIBUTE_STACK, stack);
+		LOGGER.error("CODE:{}, ERROR:{}, STACK:\n{}", code, error, stack);
 		return "error";
 	}
 
@@ -75,7 +75,10 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
 			BusinessException be = (BusinessException) cause;
 			code = be.getCode();
 		}
-		AjaxUtils.ajaxResponse(response, code, retriveMessage(code));
+		String error = retriveMessage(code);
+		String stack = ExceptionUtils.parseStackTrace(cause);
+		LOGGER.error("CODE:{}, ERROR:{}, STACK:\n{}", code, error, stack);
+		AjaxUtils.ajaxResponse(response, code, error);
 	}
 
 	/**

@@ -1,10 +1,10 @@
-<!DOCTYPE html> 
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="common/header :: header(#{system.name},~{::link})" />
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/default">
+<head>
+<title th:text="#{system.name}">Authority</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/plugins/ztree/metroStyle/metroStyle.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
 <!-- 自定义js -->
-<script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
 <script type="text/javascript" th:src="@{/js/curd.js}"></script>
 <script type="text/javascript" th:src="@{/js/plugins/ztree/jquery.ztree.all.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.ztree.js}"></script>
@@ -20,7 +20,8 @@
 	/*]]>*/
 </script>
 </head>
-<body class="gray-bg">
+<body>
+<section layout:fragment="content">
 <div class="wrapper wrapper-content animated fadeInLeft">
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
@@ -90,5 +91,6 @@
 </ul>
 <!-- 资源分类表单弹出框 -->
 <div th:replace="system/resource/category :: dialog_category"></div>
+</section>
 </body> 
 </html>
