@@ -31,7 +31,6 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
-import bing.i18n.MessageSourceService;
 import bing.security.CustomAccessDecisionManager;
 import bing.security.CustomAuthenticationProvider;
 import bing.security.CustomInvalidSessionStrategy;
@@ -63,9 +62,6 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("customAccessDeniedHandler")
 	private AccessDeniedHandler accessDeniedHandler;
-
-	@Autowired
-	private MessageSourceService messageSourceService;
 
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -153,7 +149,7 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public InvalidSessionStrategy invalidSessionStrategy() {
-		return new CustomInvalidSessionStrategy(SecurityConstants.URI_SESSION_EXPIRED, messageSourceService);
+		return new CustomInvalidSessionStrategy(SecurityConstants.URI_SESSION_EXPIRED);
 	}
 
 }

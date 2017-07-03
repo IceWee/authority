@@ -12,8 +12,6 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
-import bing.exception.BusinessExceptionCodes;
-import bing.i18n.MessageSourceService;
 import bing.util.AjaxUtils;
 
 /**
@@ -29,12 +27,9 @@ public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
 	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private boolean createNewSession = true;
 
-	private MessageSourceService messageSourceService;
-
-	public CustomInvalidSessionStrategy(String destinationUrl, MessageSourceService messageSourceService) {
+	public CustomInvalidSessionStrategy(String destinationUrl) {
 		super();
 		this.destinationUrl = destinationUrl;
-		this.messageSourceService = messageSourceService;
 	}
 
 	@Override
@@ -53,23 +48,6 @@ public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
 
 	public void setCreateNewSession(boolean createNewSession) {
 		this.createNewSession = createNewSession;
-	}
-
-	/**
-	 * 根据编码进行国际化
-	 * 
-	 * @param code
-	 * @return
-	 */
-	private String retriveMessage(String code) {
-		String message;
-		try {
-			message = messageSourceService.getMessage(code);
-		} catch (Exception ex) {
-			LOGGER.warn("国际化文件中未配置错误编码：{}，返回未知错误提示", code);
-			message = messageSourceService.getMessage(BusinessExceptionCodes.singleton().UNKNOW_ERROR);
-		}
-		return message;
 	}
 
 }

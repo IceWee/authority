@@ -14,6 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResourceTreeNode extends GenericTreeNode {
 
+	private static final long serialVersionUID = 8082943594655032068L;
+
 	public static final Integer CATEGORY = 0;
 
 	public static final Integer RESOURCE = 1;
