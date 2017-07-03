@@ -101,7 +101,7 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 				// 设置cookie的私钥
 				.key(SecurityConstants.COOKIE_KEY)
 				// 设置拒绝访问页面
-				.and().exceptionHandling().accessDeniedPage(SecurityConstants.URI_ACCESS_DENIED).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+				.and().exceptionHandling().accessDeniedHandler(accessDeniedHandler).accessDeniedPage(SecurityConstants.URI_ACCESS_DENIED);
 
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 
