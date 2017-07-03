@@ -49,5 +49,6 @@
 			and operate_time <= #{operateTimeEnd}
 		]]>
 		</if>
+		order by id desc
 	</select>
 </mapper>
