@@ -34,6 +34,10 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
 		String uri = request.getRequestURI();
 		String menuId = request.getParameter(GlobalConstants.PARAM_MENU_ID);
 		LOGGER.debug("当前请求的URI为：{}，请求菜单ID：{}", uri, menuId);
+		if (StringUtils.isBlank(menuId)) {
+			menuId = (String) request.getSession().getAttribute(GlobalConstants.PARAM_MENU_ID);
+		}
+		request.getSession().setAttribute(GlobalConstants.PARAM_MENU_ID, menuId);
 		activeRequestMenus(request, menuId);
 		return true;
 	}

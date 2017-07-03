@@ -1,6 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="common/header :: header(#{system.name},~{::link})" />
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/default">
+<head>
+<title th:text="#{system.name}">Authority</title>
 <link type="text/css" rel="stylesheet" th:href="@{/css/plugins/chosen/css/chosen.min.css}" />
 <!-- 自定义js -->
 <script type="text/javascript" th:src="@{/js/content.js?v=1.0.0}"></script>
@@ -17,7 +18,8 @@
 	/*]]>*/
 </script>
 </head>
-<body class="gray-bg" th:object="${bean}">
+<body th:object="${bean}">
+<section layout:fragment="content">
 <div class="wrapper wrapper-content animated fadeInLeft">
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
@@ -74,5 +76,6 @@
         </div>
     </div>
 </div>
+</section>
 </body>
 </html>

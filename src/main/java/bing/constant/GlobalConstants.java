@@ -58,6 +58,11 @@ public class GlobalConstants {
 	public static final String SESSION_ATTRIBUTE_MENUS = "menus";
 
 	/**
+	 * menu id attribute in session scope
+	 */
+	public static final String SESSION_ATTRIBUTE_MENU_ID = "_mid";
+
+	/**
 	 * 根节点父ID值-0，无ID为0的节点，即为顶级节点
 	 */
 	public static final Integer TOP_PARENT_ID = 0;
