@@ -71,6 +71,7 @@ public class SysUserController extends GenericController {
 	private static final String AJAX_USER_SAVE = "ajax/system/user/save";
 	private static final String AJAX_USER_MINE_UPDATE = "ajax/system/user/mine/update";
 	private static final String AJAX_USER_PASSWORD = "ajax/system/user/password";
+	private static final String AJAX_USER_RESET_PASSWORD = "ajax/system/user/resetPassword";
 
 	private static final String LIST = PREFIX + "/list";
 	private static final String ADD = PREFIX + "/add";
@@ -230,6 +231,8 @@ public class SysUserController extends GenericController {
 	/**
 	 * 保存修改密码
 	 * 
+	 * @param oldPassword
+	 * @param newPassword
 	 * @return
 	 */
 	@ResponseBody
@@ -238,6 +241,24 @@ public class SysUserController extends GenericController {
 	@ApiResponse(code = 200, response = RestResponse.class, message = "")
 	public RestResponse<Object> savePassword(@RequestParam(name = "oldPassword") String oldPassword, @RequestParam(name = "newPassword") String newPassword, @CurrentLoggedUser SysUser currentUser) {
 		sysUserService.changePassword(currentUser.getId(), oldPassword, newPassword);
+		return new RestResponse<>();
+	}
+
+	/**
+	 * 重置密码
+	 * 
+	 * @param userId
+	 * @param newPassword
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = AJAX_USER_RESET_PASSWORD, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "重置用户密码", notes = "重置用户密码")
+	@ApiResponse(code = 200, response = RestResponse.class, message = "")
+	public RestResponse<Object> resetPassword(@RequestParam(name = "userId") Integer userId, @RequestParam(name = "newPassword") String newPassword, @CurrentLoggedUser SysUser currentUser) {
+		sysUserService.resetPassword(userId, newPassword, currentUser.getName());
+		String operateContent = "重置了用户[" + userId + "]密码";
+		sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 		return new RestResponse<>();
 	}
 

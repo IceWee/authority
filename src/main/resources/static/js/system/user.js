@@ -38,6 +38,7 @@ function operationFormatterExt(value, row, index) {
 	var label_auth = $.i18n.prop("operate.authorize");
 	var label_lock = $.i18n.prop("operate.lock");
 	var label_unlock = $.i18n.prop("operate.unlock");
+	var label_resetPasswd = $.i18n.prop("password.reset");
 	if (id) {
 		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"openUserRoleAuth('" + id + "', '" + row.name + "')\"><span class=\"label label-warning\">" + label_auth + "</span></a>";
 		if (row.status == 1) {
@@ -45,6 +46,7 @@ function operationFormatterExt(value, row, index) {
 		} else {
 			html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"lockUser('" + id + "')\"><span class=\"label label-default\">" + label_lock + "</span></a>";
 		}
+		html += "&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"resetPasswd('" + id + "')\"><span class=\"label label-info\">" + label_resetPasswd + "</span></a>";
 	}
 	return html;
 }
@@ -75,12 +77,14 @@ function initEditPageExt(error, message) {
 
 // 锁定用户
 function lockUser(userId) {
+	var label_confirm = $.i18n.prop("operate.confirm");
+	var label_cancel = $.i18n.prop("operate.cancel");
 	parent.layer.confirm($.i18n.prop("lock.prompt"), {
 		title: $.i18n.prop("tip.info"),
 		closeBtn: 0, // 不显示关闭按钮
 		shadeClose: true, // 开启遮罩关闭
 		skin: "layui-layer-molv", // 样式类名
-	    btn: ["确定", "取消"] //按钮
+	    btn: [label_confirm, label_cancel] //按钮
 	}, function(){
 		parent.layer.closeAll();
 		$.loading();
@@ -94,12 +98,14 @@ function lockUser(userId) {
 
 // 解除锁定用户
 function unlockUser(userId) {
+	var label_confirm = $.i18n.prop("operate.confirm");
+	var label_cancel = $.i18n.prop("operate.cancel");
 	parent.layer.confirm($.i18n.prop("unlock.prompt"), {
 		title: $.i18n.prop("tip.info"),
 		closeBtn: 0, // 不显示关闭按钮
 		shadeClose: true, // 开启遮罩关闭
 		skin: "layui-layer-molv", // 样式类名
-	    btn: ["确定", "取消"] //按钮
+	    btn: [label_confirm, label_cancel] //按钮
 	}, function(){
 		parent.layer.closeAll();
 		$.loading();
@@ -165,6 +171,56 @@ function saveUserRoleAuth(userId, checkedRows) {
 		},
 		error : function() {
 			$.errorTips($.i18n.prop("http.request.failed"));
+		}
+	});
+}
+
+// 重置密码
+function resetPasswd(userId) {
+	var url = "/ajax/system/user/resetPassword";
+	$("#form_resetPassword")[0].reset();
+	$("#dialog_resetPassword").modal({keyboard:false});
+	$("#button_rstpassword_cancel").off();
+	$("#button_rstpassword_confirm").off();
+	// 取消
+	$("#button_rstpassword_cancel").on("click", function() {
+		$("#dialog_resetPassword").modal("hide");
+	});
+	// 确定
+	var label_confirm = $.i18n.prop("operate.confirm");
+	var label_cancel = $.i18n.prop("operate.cancel");
+	$("#button_rstpassword_confirm").on("click", function() {
+		if ($("#form_resetPassword").valid()) {
+			parent.layer.confirm($.i18n.prop("password.reset.prompt"), {
+				title: $.i18n.prop("tip.info"),
+				closeBtn: 0, // 不显示关闭按钮
+				shadeClose: true, // 开启遮罩关闭
+				skin: "layui-layer-molv", // 样式类名
+			    btn: [label_confirm, label_cancel] //按钮
+			}, function() {
+				parent.layer.closeAll();
+				$.loading();
+				$("#form_resetPassword #userId").val(userId);
+				var data = $("#form_resetPassword").serialize();
+				$.ajax({
+					type : "PUT",
+					url : url,
+					data : data,
+					dataType : "json",
+					success : function(json) {
+						if (json.code == OK) {
+							$.successTips($.i18n.prop("save.success"));
+						} else {
+							$.errorTips(json.message);
+						}
+					},
+					error : function() {
+						$.errorTips($.i18n.prop("http.request.failed"));
+					}
+				});
+			}, function(){
+				parent.layer.closeAll();
+			});
 		}
 	});
 }

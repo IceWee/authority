@@ -66,8 +66,7 @@ public class SysUserServiceImpl implements SysUserService {
 		// 前端选择了角色
 		Integer[] roleIds = entity.getRoleIds();
 		if (ArrayUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username))
-					.collect(Collectors.toList());
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}
@@ -120,8 +119,7 @@ public class SysUserServiceImpl implements SysUserService {
 	public void saveRoleUsers(Integer roleId, Integer[] userIds, String username) {
 		sysUserRoleDao.deleteByRoleId(roleId);
 		if (ArrayUtils.isNotEmpty(userIds)) {
-			List<SysUserRole> entities = Arrays.asList(userIds).stream().map(userId -> createUserRole(userId, roleId, username))
-					.collect(Collectors.toList());
+			List<SysUserRole> entities = Arrays.asList(userIds).stream().map(userId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}
@@ -147,8 +145,7 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserRoleDao.deleteByUserId(userId);
 		Integer[] roleIds = entity.getRoleIds();
 		if (ArrayUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username))
-					.collect(Collectors.toList());
+			List<SysUserRole> entities = Arrays.asList(roleIds).stream().map(roleId -> createUserRole(userId, roleId, username)).collect(Collectors.toList());
 			sysUserRoleDao.insertBatch(entities);
 		}
 	}
@@ -171,6 +168,16 @@ public class SysUserServiceImpl implements SysUserService {
 		entity.setUpdateUser(username);
 		entity.setUpdateDate(new Date());
 		sysUserDao.updateByPrimaryKeySelective(entity);
+	}
+
+	@Override
+	public void resetPassword(Integer userId, String newPassword, String username) {
+		SysUser user = sysUserDao.selectByPrimaryKey(userId);
+		String encryptPasswd = PasswordUtils.encrypt(newPassword);
+		user.setPassword(encryptPasswd);
+		user.setUpdateUser(username);
+		user.setUpdateDate(new Date());
+		sysUserDao.updateByPrimaryKeySelective(user);
 	}
 
 	private SysUserRole createUserRole(Integer userId, Integer roleId, String username) {
