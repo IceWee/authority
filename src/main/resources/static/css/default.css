@@ -30,3 +30,10 @@ body {
 	max-height: 450px;
 	overflow: auto;
 }
+
+/* 统一调整bootstrap table默认高度 */
+.fixed-table-body {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 500px!important;
+}
