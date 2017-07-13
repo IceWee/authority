@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 图标选择弹出框 -->
+<div th:fragment="dialog_icon_box" id="_dialog_icon_box" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+        		<h4 class="modal-title">图标选择</h4>
+      		</div>
+      		<div class="modal-body">
+		    	
+	    	</div>
+	    	<div class="modal-footer" id="_footer_icon_box">
+	    		<button id="_button_cancel_icon_box" class="btn btn-default">
+                    <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span th:text="#{cancel}">取消</span>
+                </button>
+                <button id="_button_confirm_icon_box" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-ok"></span>&nbsp;<span th:text="#{confirm}">确定</span>
+                </button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+</html>

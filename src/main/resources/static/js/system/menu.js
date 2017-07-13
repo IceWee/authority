@@ -100,6 +100,10 @@ function initAddPageExt(error, message) {
 			}
 		}
 	});
+	// 图标选择框
+	$("#_dialog_icon_box").iconBox({
+		triggerId: "btn_icon"
+	});
 }
 
 // 初始化编辑页面扩展

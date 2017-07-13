@@ -214,7 +214,7 @@
 			$(options.btnConfirmId).off();
 			
 			// 触发inputId
-			if ($(options.inputId)) {
+			if (options.inputId) {
 				$("#" + options.inputId).click(function() {
 					self._showDialog();
 				});
