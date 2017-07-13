@@ -101,8 +101,15 @@ function initAddPageExt(error, message) {
 		}
 	});
 	// 图标选择框
-	$("#_dialog_icon_box").iconBox({
-		triggerId: "btn_icon"
+	var iconBox = $("#_dialog_icon_box").iconBox({
+		triggerId: "btn_icon",
+		showFooter: false,
+		selectCallback: function(iconClass) {
+			$("#iconClass").val(iconClass);
+			$("#icon").removeClass();
+			$("#icon").addClass("fa " + iconClass);
+			iconBox.closeBox();
+		}
 	});
 }
 
@@ -152,6 +159,18 @@ function initEditPageExt(error, message) {
 					$("#resourceName").val(node.name);
 				}
 			}
+		}
+	});
+	// 图标选择框
+	var iconBox = $("#_dialog_icon_box").iconBox({
+		triggerId: "btn_icon",
+		selectedIcon: "fa-anchor",
+		showFooter: false,
+		selectCallback: function(iconClass) {
+			$("#iconClass").val(iconClass);
+			$("#icon").removeClass();
+			$("#icon").addClass("fa " + iconClass);
+			iconBox.closeBox();
 		}
 	});
 }

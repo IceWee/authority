@@ -19,6 +19,7 @@
 			this._settings.btnCancelId = containerId + " #_button_cancel_icon_box";
 			this._settings.footerId = containerId + " #_footer_icon_box";
 			
+			this._selectIcon();
 			this._initDialog();
 			this._bindButtonEvents();
 		};
@@ -40,6 +41,18 @@
 		this._hideDialog = function() {
 			$(containerId).modal("hide");
 		};
+		// 选中图标
+		this._selectIcon = function() {
+			var options = this._settings;
+			var iconClass = options.selectedIcon;
+			if (iconClass && iconClass != "") {
+				$(".icon-box .icon-item").each(function(i) {
+					if ($(this).find("i").hasClass(iconClass)) {
+						$(this).addClass("icon-item-hover");
+					}
+				});
+			}
+		}
 		// 事件按钮绑定
 		this._bindButtonEvents = function() {
 			var options = this._settings;
@@ -52,6 +65,14 @@
 					self._showDialog();
 				});
 			}
+			// 图标点击事件
+			$(".icon-box .icon-item").click(function() {
+				$(".icon-item-hover").removeClass("icon-item-hover");
+				$(this).addClass("icon-item-hover");
+				if ($.isFunction(options.selectCallback)) {
+					options.selectCallback($(this).find("i").attr("class").replace("fa ", ""));
+				}
+			});
 			// 显示确认、取消按钮
 			if (options.showFooter) {
 				// 取消
@@ -70,6 +91,10 @@
 				$(options.footerId).hide();
 			}
 		};
+		
+		this.closeBox = function() {
+			self._hideDialog();
+		}
 		
 		this._init();
 		return this;

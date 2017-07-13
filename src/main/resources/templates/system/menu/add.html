@@ -35,6 +35,7 @@
             <div id="container" class="row">
             <form id="form_detail" class="form-horizontal m-t" method="post">
             <input type="hidden" id="parentMenuId" name="parentId" th:value="${parentMenu.id}" />
+            <input type="hidden" id="iconClass" name="iconClass" />
             	<div class="form-group">
 					<label class="col-xs-2 control-label" th:text="#{name}">名称</label>
    					<div class="col-xs-3">
@@ -63,8 +64,8 @@
 	    				</select>
    					</div>
    					<label class="col-xs-2 control-label">图标</label>
-   					<div class="col-xs-3 infont">
-       					<span style="vertical-align:middle;font-size:20pt"><i id="icon" class="fa fa-laptop"></i></span>
+   					<div class="col-xs-3">
+       					<span style="vertical-align:middle;font-size:18pt"><i id="icon" class="fa"></i></span>
        					&nbsp;&nbsp;<button id="btn_icon" type="button" class="btn btn-primary btn-xs">选择</button>
    					</div>
 				</div>
