@@ -1,0 +1,43 @@
+.icon-box {
+	max-height: 400px;
+	overflow: auto;
+}
+
+.icon-box .icon-item {
+	display: block;
+	line-height: 32px;
+	height: 32px;
+	padding-left: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.icon-box .icon-item .fa {
+	width: 32px;
+	font-size: 14px;
+	display: inline-block;
+	text-align: right;
+	margin-right: 10px;
+}
+
+.icon-box .icon-item:hover {
+	background-color: #1BB394;
+	color: #fff;
+	text-decoration: none;
+}
+
+.icon-box .icon-item-hover {
+	background-color: #1BB394;
+	color: #fff;
+	text-decoration: none;
+}
+
+.icon-box .icon-item:hover .fa {
+	font-size: 28px;
+	vertical-align: -6px;
+}
+
+.icon-box .icon-item-hover .fa {
+	font-size: 28px;
+	vertical-align: -6px;
+}
