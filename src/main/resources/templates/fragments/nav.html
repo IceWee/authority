@@ -22,7 +22,7 @@
 			<!-- 菜单导航开始 -->
 			<li th:class="${menu1.active} ? 'active' : ''" th:each="menu1 : ${menu.children}">
 				<a href="javascript:void(0);">
-					<i class="fa fa-desktop"></i>
+					<i th:class="${'fa ' + menu1.iconClass}"></i>
 					<span class="nav-label" th:text="${menu1.name}">一级菜单</span>
 					<span class="fa arrow"></span>
 				</a>

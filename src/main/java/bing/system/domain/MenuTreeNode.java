@@ -28,6 +28,8 @@ public class MenuTreeNode extends GenericTreeNode {
 
 	private String url;
 
+	private String iconClass;
+
 	private List<MenuTreeNode> children = new ArrayList<>();
 
 	public void addChild(MenuTreeNode node) {

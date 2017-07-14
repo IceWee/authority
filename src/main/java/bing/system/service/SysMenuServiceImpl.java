@@ -89,7 +89,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = { EhCacheNames.MENU_TREE_CACHE })
+	@Cacheable(cacheNames = {EhCacheNames.MENU_TREE_CACHE})
 	public List<MenuTreeNode> getMenuTree() {
 		List<SysMenuVO> topMenus = sysMenuDao.listByParentId(GlobalConstants.TOP_PARENT_ID);
 		List<SysMenuVO> menus = sysMenuDao.listAll();
@@ -106,8 +106,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<MenuTreeNode> treeNodes = convertMenu(topMenus);
 		treeNodes.forEach(menu -> menu.setIconSkin(GlobalConstants.ICON_CLS_ROOT));
 		List<MenuTreeNode> allTreeNodes = convertMenu(menus);
-		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !StringUtils.equals(treeNode.getId(), Objects.toString(id)))
-				.collect(Collectors.toList());
+		List<MenuTreeNode> treeNodesExclude = allTreeNodes.stream().filter(treeNode -> !StringUtils.equals(treeNode.getId(), Objects.toString(id))).collect(Collectors.toList());
 		MenuTreeNode.buildMenuTree(treeNodes, treeNodesExclude);
 		return treeNodes;
 	}
@@ -122,8 +121,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		if (!GlobalConstants.ADMIN.equals(user.getUsername())) { // 非超级管理员，需要根据用户具备角色过滤菜单
 			List<Integer> ownResourceIds = sysResourceDao.listResourceIdByUserId(userId);
 			// 迭代全部菜单，未绑定资源的忽略，绑定资源的需要与用户具备的资源比较，不包含则删除菜单
-			ownMenus = menus.stream().filter(menu -> (menu.getResourceId() == null) || (ownResourceIds.contains(menu.getResourceId())))
-					.collect(Collectors.toList());
+			ownMenus = menus.stream().filter(menu -> (menu.getResourceId() == null) || (ownResourceIds.contains(menu.getResourceId()))).collect(Collectors.toList());
 		}
 		MenuTreeNode.buildMenuTree(treeNodes, convertMenuWithUrl(ownMenus));
 		// 移除顶级空菜单，即没子菜单的菜单
@@ -160,6 +158,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 			treeNode.setId(Objects.toString(id));
 			treeNode.setName(sysMenu.getName());
 			treeNode.setParentId(Objects.toString(sysMenu.getParentId()));
+			treeNode.setIconClass(sysMenu.getIconClass());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;
@@ -182,6 +181,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 			treeNode.setName(sysMenu.getName());
 			treeNode.setParentId(Objects.toString(sysMenu.getParentId()));
 			treeNode.setUrl(sysMenu.getUrl());
+			treeNode.setIconClass(sysMenu.getIconClass());
 			treeNodes.add(treeNode);
 		}
 		return treeNodes;

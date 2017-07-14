@@ -162,9 +162,11 @@ function initEditPageExt(error, message) {
 		}
 	});
 	// 图标选择框
+	var iconClass = $("#iconClass").val();
+	$("#icon").addClass(iconClass);
 	var iconBox = $("#_dialog_icon_box").iconBox({
 		triggerId: "btn_icon",
-		selectedIcon: "fa-anchor",
+		selectedIcon: iconClass,
 		showFooter: false,
 		selectCallback: function(iconClass) {
 			$("#iconClass").val(iconClass);
