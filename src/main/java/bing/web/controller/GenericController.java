@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import bing.constant.GlobalConstants;
 import bing.constant.MessageKeys;
@@ -114,7 +115,7 @@ public abstract class GenericController {
 	 */
 	protected void setError(Exception e, Model model) {
 		String error = getError(e);
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
 	}
 
 	/**
@@ -125,7 +126,7 @@ public abstract class GenericController {
 	 */
 	protected void setError(String key, Model model) {
 		String error = getMessage(key, BusinessExceptionCodes.singleton().UNKNOW_ERROR);
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
 	}
 
 	/**
@@ -136,7 +137,7 @@ public abstract class GenericController {
 	 */
 	protected void setMessage(String key, Model model) {
 		String message = getMessage(key, MessageKeys.OPERATE_SUCCESS);
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_MESSAGE, message);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_MESSAGE, message);
 	}
 
 	/**
@@ -155,6 +156,21 @@ public abstract class GenericController {
 			message = messageSourceService.getMessage(defaultKey);
 		}
 		return message;
+	}
+
+	/**
+	 * 添加返回属性，判断了重定向请求
+	 * 
+	 * @param model
+	 * @param key
+	 * @param value
+	 */
+	protected void addAttribute(Model model, String key, Object value) {
+		if (model instanceof RedirectAttributesModelMap) {
+			((RedirectAttributesModelMap) model).addFlashAttribute(key, value);
+		} else {
+			model.addAttribute(key, value);
+		}
 	}
 
 }

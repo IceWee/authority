@@ -18,6 +18,8 @@ public class SysMenuVO extends GenericVO {
 
 	private Integer resourceId;
 
+	private String iconClass;
+
 	private Integer sort;
 
 	private String remark;

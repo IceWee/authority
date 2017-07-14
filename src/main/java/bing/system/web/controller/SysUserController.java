@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import bing.constant.Charsets;
 import bing.constant.GlobalConstants;
@@ -83,6 +84,7 @@ public class SysUserController extends GenericController {
 	private static final String LOCK = PREFIX + "/lock"; // 锁定用户
 	private static final String UNLOCK = PREFIX + "/unlock"; // 解除锁定用户
 	private static final String EXPORT = PREFIX + "/export"; // 导出
+	private static final String REDIRECT_LIST = "redirect:/" + LIST;
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -152,7 +154,7 @@ public class SysUserController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
@@ -166,21 +168,21 @@ public class SysUserController extends GenericController {
 			sysUserService.save(entity);
 			String operateContent = "添加了用户[" + entity + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.SAVE_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
 			return ADD;
 		}
-		setMessage(MessageKeys.SAVE_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 	@RequestMapping(EDIT)
-	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model, RedirectAttributesModelMap redirectModel) {
 		SysUser entity = sysUserService.getById(id);
 		if (entity == null) {
-			setError(MessageKeys.ENTITY_NOT_EXIST, model);
-			return LIST;
+			setError(MessageKeys.ENTITY_NOT_EXIST, redirectModel);
+			return REDIRECT_LIST;
 		}
 		UserRoleVO userRoleVO = sysRoleService.getUserRoles(id);
 		List<SysRole> roles = userRoleVO.getSelectedRoles();
@@ -193,7 +195,7 @@ public class SysUserController extends GenericController {
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String update(@Valid SysUser entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String update(@Valid SysUser entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return EDIT;
@@ -204,28 +206,28 @@ public class SysUserController extends GenericController {
 			sysUserService.updateWithRole(entity);
 			String operateContent = "修改了用户信息[" + entity + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.UPDATE_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
 			return EDIT;
 		}
-		setMessage(MessageKeys.UPDATE_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 	@RequestMapping(DELETE)
-	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String delete(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		try {
 			String username = currentUser.getName();
 			sysUserService.deleteById(id, username);
 			String operateContent = "删除了用户[" + id + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.DELETE_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
-			setError(e, model);
+			setError(e, redirectModel);
 		}
-		setMessage(MessageKeys.DELETE_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 	/**
@@ -300,18 +302,18 @@ public class SysUserController extends GenericController {
 	 * @return
 	 */
 	@RequestMapping(LOCK)
-	public String lock(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String lock(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		try {
 			String username = currentUser.getName();
 			sysUserService.lockById(id, username);
 			String operateContent = "锁定了用户[" + id + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.LOCK_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
-			setError(e, model);
+			setError(e, redirectModel);
 		}
-		setMessage(MessageKeys.LOCK_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 	/**
@@ -322,18 +324,18 @@ public class SysUserController extends GenericController {
 	 * @return
 	 */
 	@RequestMapping(UNLOCK)
-	public String unlock(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String unlock(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		try {
 			String username = currentUser.getName();
 			sysUserService.unlockById(id, username);
 			String operateContent = "解除锁定了用户[" + id + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.UNLOCK_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}解除锁定异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
-			setError(e, model);
+			setError(e, redirectModel);
 		}
-		setMessage(MessageKeys.UNLOCK_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 	/**

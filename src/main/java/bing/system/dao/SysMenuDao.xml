@@ -6,6 +6,7 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
 		<result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+		<result column="icon_class" jdbcType="VARCHAR" property="iconClass" />
 		<result column="sort" jdbcType="INTEGER" property="sort" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -19,6 +20,7 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
 		<result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+		<result column="icon_class" jdbcType="VARCHAR" property="iconClass" />
 		<result column="sort" jdbcType="INTEGER" property="sort" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -29,10 +31,10 @@
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, parent_id, resource_id, sort, status, remark, create_date, create_user, update_date, update_user
+		id, name, parent_id, resource_id, icon_class, sort, status, remark, create_date, create_user, update_date, update_user
 	</sql>
 	<sql id="VO_Column_List">
-		m.id, m.name, m.parent_id, m.resource_id, m.sort, m.status, m.remark, m.create_date, m.create_user, m.update_date, m.update_user, r.url
+		m.id, m.name, m.parent_id, m.resource_id, m.icon_class, m.sort, m.status, m.remark, m.create_date, m.create_user, m.update_date, m.update_user, r.url
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
@@ -44,9 +46,9 @@
 		delete from sys_menu where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="bing.system.model.SysMenu" useGeneratedKeys="true" keyProperty="id">
-		insert into sys_menu (name, parent_id, resource_id, sort, status, remark, create_date, create_user, update_date, update_user)
-		values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{resourceId,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
-		#{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+		insert into sys_menu (name, parent_id, resource_id, icon_class, sort, status, remark, create_date, create_user, update_date, update_user)
+		values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{resourceId,jdbcType=INTEGER}, #{iconClass,jdbcType=VARCHAR}, 
+		#{sort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
 		#{createUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="bing.system.model.SysMenu" useGeneratedKeys="true" keyProperty="id">
@@ -60,6 +62,9 @@
 			</if>
 			<if test="resourceId != null">
 				resource_id,
+			</if>
+			<if test="iconClass != null">
+				icon_class,
 			</if>
 			<if test="sort != null">
 				sort,
@@ -92,6 +97,9 @@
 			</if>
 			<if test="resourceId != null">
 				#{resourceId,jdbcType=INTEGER},
+			</if>
+			<if test="iconClass != null">
+				#{iconClass,jdbcType=VARCHAR},
 			</if>
 			<if test="sort != null">
 				#{sort,jdbcType=INTEGER},
@@ -128,6 +136,9 @@
 			<if test="resourceId != null">
 				resource_id = #{resourceId,jdbcType=INTEGER},
 			</if>
+			<if test="iconClass != null">
+				icon_class = #{iconClass,jdbcType=VARCHAR},
+			</if>
 			<if test="sort != null">
 				sort = #{sort,jdbcType=INTEGER},
 			</if>
@@ -157,6 +168,7 @@
 		set name = #{name,jdbcType=VARCHAR},
 		parent_id = #{parentId,jdbcType=INTEGER},
 		resource_id = #{resourceId,jdbcType=INTEGER},
+		icon_class = #{iconClass,jdbcType=VARCHAR},
 		sort = #{sort,jdbcType=INTEGER},
 		status = #{status,jdbcType=INTEGER},
 		remark = #{remark,jdbcType=VARCHAR},

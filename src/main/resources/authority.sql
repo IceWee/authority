@@ -16,6 +16,8 @@
 */
 CREATE DATABASE `authority` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
+use `authority`;
+
 -- Spring security内置表，用于使用Remember-me功能，将cookie持久化使用
 DROP TABLE IF EXISTS `persistent_logins`;
 CREATE TABLE `persistent_logins` (
@@ -185,6 +187,7 @@ CREATE TABLE `sys_menu` (
   `name` varchar(32) DEFAULT NULL COMMENT '菜单名称',
   `parent_id` int(11) DEFAULT NULL COMMENT '上级菜单ID',
   `resource_id` int(11) DEFAULT NULL COMMENT '资源ID',
+  `icon_class` varchar(32) DEFAULT NULL COMMENT '菜单图标',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
@@ -196,13 +199,13 @@ CREATE TABLE `sys_menu` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='菜单';
 
 -- 菜单初始化数据
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统菜单', '0', NULL, '0', '0', '系统菜单', now(), 'admin', now(), 'admin');
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统管理', (select t.id from (select id from sys_menu where parent_id = 0) t), NULL, '1', '0', '', now(), 'admin', now(), 'admin');
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '用户列表'), '1', '0', '', now(), 'admin', now(), 'admin');
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('角色管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '角色列表'), '2', '0', '', now(), 'admin', now(), 'admin');
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '资源列表'), '3', '0', '', now(), 'admin', now(), 'admin');
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('菜单管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '菜单列表'), '4', '0', '', now(), 'admin', now(), 'admin');
-INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('操作日志', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '操作日志列表'), '5', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `icon_class`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统菜单', '0', NULL, '', '0', '0', '系统菜单', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `icon_class`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('系统管理', (select t.id from (select id from sys_menu where parent_id = 0) t), NULL, 'ha-cog', '1', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `icon_class`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('用户管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '用户列表'), NULL, '1', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `icon_class`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('角色管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '角色列表'), NULL, '2', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `icon_class`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('资源管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '资源列表'), NULL, '3', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `icon_class`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('菜单管理', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '菜单列表'), NULL, '4', '0', '', now(), 'admin', now(), 'admin');
+INSERT INTO `sys_menu` (`name`, `parent_id`, `resource_id`, `icon_class`, `sort`, `status`, `remark`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('操作日志', (select t.id from (select id from sys_menu where name = '系统管理') t), (select id from sys_resource where name = '操作日志列表'), NULL, '5', '0', '', now(), 'admin', now(), 'admin');
 
 
 -- 角色资源关联表

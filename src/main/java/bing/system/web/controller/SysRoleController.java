@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
@@ -55,6 +56,7 @@ public class SysRoleController extends GenericController {
 	private static final String EDIT = PREFIX + "/edit";
 	private static final String UPDATE = PREFIX + "/update";
 	private static final String DELETE = PREFIX + "/delete";
+	private static final String REDIRECT_LIST = "redirect:/" + LIST;
 
 	@Autowired
 	private SysRoleService sysRoleService;
@@ -115,7 +117,7 @@ public class SysRoleController extends GenericController {
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(@Valid SysRole entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String save(@Valid SysRole entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
@@ -129,28 +131,28 @@ public class SysRoleController extends GenericController {
 			sysRoleService.save(entity);
 			String operateContent = "添加了角色[" + entity + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.SAVE_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
 			return ADD;
 		}
-		setMessage(MessageKeys.SAVE_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 	@RequestMapping(EDIT)
-	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model) {
+	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model, RedirectAttributesModelMap redirectModel) {
 		SysRole entity = sysRoleService.getById(id);
 		if (entity == null) {
-			setError(MessageKeys.ENTITY_NOT_EXIST, model);
-			return LIST;
+			setError(MessageKeys.ENTITY_NOT_EXIST, redirectModel);
+			return REDIRECT_LIST;
 		}
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		return EDIT;
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String update(@Valid SysRole entity, BindingResult bindingResult, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String update(@Valid SysRole entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return EDIT;
@@ -161,28 +163,28 @@ public class SysRoleController extends GenericController {
 			sysRoleService.update(entity);
 			String operateContent = "修改了角色信息[" + entity + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.UPDATE_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
 			return EDIT;
 		}
-		setMessage(MessageKeys.UPDATE_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 	@RequestMapping(DELETE)
-	public String delete(@RequestParam(value = "id", required = true) Integer id, Model model, @CurrentLoggedUser SysUser currentUser) {
+	public String delete(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
 		try {
 			String username = currentUser.getUsername();
 			sysRoleService.deleteById(id, username);
 			String operateContent = "删除了角色[" + id + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
+			setMessage(MessageKeys.DELETE_SUCCESS, redirectModel);
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
-			setError(e, model);
+			setError(e, redirectModel);
 		}
-		setMessage(MessageKeys.DELETE_SUCCESS, model);
-		return LIST;
+		return REDIRECT_LIST;
 	}
 
 }

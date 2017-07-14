@@ -28,6 +28,8 @@ public class SysMenu extends GenericObject implements Serializable {
 
 	private Integer resourceId;
 
+	private String iconClass;
+
 	private Integer sort = 1;
 
 	private String remark;
