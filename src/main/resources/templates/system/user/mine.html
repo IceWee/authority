@@ -45,6 +45,20 @@
        					<input type="mobile" id="mobile" name="mobile" class="form-control" th:value="*{mobile}" required />
    					</div>
 				</div>
+				<div class="form-group">
+					<label class="col-xs-4 control-label" th:text="#{gender}">性别</label>
+   					<div class="col-xs-5">
+       					<select class="form-control m-b" id="gender" name="gender">
+							<option th:each="gender : ${genderList}" th:selected="${gender.value eq #object.gender + ''}" th:text="${gender.label}" th:value="${gender.value}"></option>
+	    				</select>
+   					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-4 control-label" th:text="#{email}">Email</label>
+   					<div class="col-xs-5">
+       					<input type="email" id="email" name="email" class="form-control" th:value="*{email}" />
+   					</div>
+				</div>
 				<div class="form-group text-center">
 			    	<button type="button" id="button_save" class="btn btn-primary">
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;<span th:text="#{save}">保存</span>

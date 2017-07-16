@@ -37,6 +37,8 @@ CREATE TABLE `sys_user` (
   `name` varchar(32) DEFAULT NULL COMMENT '用户名',
   `password` varchar(256) DEFAULT NULL COMMENT '密码',
   `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
+  `gender` int(11) DEFAULT NULL COMMENT '性别（男0，女1）',
+  `email` varchar(32) DEFAULT NULL COMMENT '电子邮件',
   `status` int(11) DEFAULT NULL COMMENT '状态（正常0，锁定1，删除2）',
   `hidden` int(11) DEFAULT NULL COMMENT '隐藏（是1否0）',
   `create_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建日期',
@@ -47,7 +49,7 @@ CREATE TABLE `sys_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- 系统管理员用户
-INSERT INTO `sys_user` (`username`, `name`, `password`, `mobile`, `status`, `hidden`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '超级管理员', '2630d0280856135d2c7a19aee22ce42b37a060a99f512801ddb5ff522b33efcb34a3be20435ace78', '13800013800', 0, 1, now(), 'admin', now(), 'admin');
+INSERT INTO `sys_user` (`username`, `name`, `password`, `mobile`, `gender`, `email`, `status`, `hidden`, `create_date`, `create_user`, `update_date`, `update_user`) VALUES ('admin', '超级管理员', '2630d0280856135d2c7a19aee22ce42b37a060a99f512801ddb5ff522b33efcb34a3be20435ace78', '13800013800', 0, 'icewee@126.com', 0, 1, now(), 'admin', now(), 'admin');
 
 
 -- 角色表

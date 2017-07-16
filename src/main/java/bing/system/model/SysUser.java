@@ -31,6 +31,9 @@ public class SysUser extends CustomUserDetails {
 	@Pattern(groups = {CrudGroups.Create.class, CrudGroups.Update.class}, regexp = "^$|^(13|14|15|17|18)[0-9]{9}$", message = "{mobile.illegal}")
 	private String mobile;
 
+	private Integer gender;
+	private String email;
+
 	@ApiModelProperty(hidden = true)
 	private Integer hidden;
 

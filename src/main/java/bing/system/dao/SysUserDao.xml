@@ -7,6 +7,8 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="password" jdbcType="VARCHAR" property="password" />
 		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="gender" jdbcType="INTEGER" property="gender" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="hidden" jdbcType="INTEGER" property="hidden" />
 		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
@@ -19,6 +21,8 @@
 		<result column="username" jdbcType="VARCHAR" property="username" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="gender" jdbcType="INTEGER" property="gender" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
 		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
@@ -26,7 +30,7 @@
 		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, username, name, password, mobile, status, hidden, create_date, create_user, update_date, update_user
+		id, username, name, password, mobile, gender, email, status, hidden, create_date, create_user, update_date, update_user
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
@@ -38,10 +42,11 @@
 		delete from sys_user where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="bing.system.model.SysUser" useGeneratedKeys="true" keyProperty="id">
-		insert into sys_user (username, name, password, mobile, status, hidden, create_date, create_user, update_date, update_user)
+		insert into sys_user (username, name, password, mobile, gender, email, status, hidden, create_date, create_user, update_date, update_user)
 		values
 		(#{username,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
 		#{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+		#{gender,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR},
 		#{status,jdbcType=INTEGER}, #{hidden,jdbcType=INTEGER},
 		#{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
 		#{updateDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
@@ -60,6 +65,12 @@
 			</if>
 			<if test="mobile != null">
 				mobile,
+			</if>
+			<if test="gender != null">
+				gender,
+			</if>
+			<if test="email != null">
+				email,
 			</if>
 			<if test="status != null">
 				status,
@@ -92,6 +103,12 @@
 			</if>
 			<if test="mobile != null">
 				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				#{gender,jdbcType=INTEGER},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
 			</if>
 			<if test="status != null">
 				#{status,jdbcType=INTEGER},
@@ -128,6 +145,12 @@
 			<if test="mobile != null">
 				mobile = #{mobile,jdbcType=VARCHAR},
 			</if>
+			<if test="gender != null">
+				gender = #{gender,jdbcType=INTEGER},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
 			<if test="status != null">
 				status = #{status,jdbcType=INTEGER},
 			</if>
@@ -155,6 +178,8 @@
 		name = #{name,jdbcType=VARCHAR},
 		password = #{password,jdbcType=VARCHAR},
 		mobile = #{mobile,jdbcType=VARCHAR},
+		gender = #{gender,jdbcType=INTEGER},
+		email = #{email,jdbcType=VARCHAR},
 		status = #{status,jdbcType=INTEGER},
 		hidden = #{hidden,jdbcType=INTEGER},
 		create_date = #{createDate,jdbcType=TIMESTAMP},

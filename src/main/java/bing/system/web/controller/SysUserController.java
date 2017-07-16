@@ -2,6 +2,7 @@ package bing.system.web.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -31,12 +32,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import bing.constant.Charsets;
+import bing.constant.GenderEnum;
 import bing.constant.GlobalConstants;
 import bing.constant.LogPrefixes;
 import bing.constant.MessageKeys;
 import bing.domain.CrudGroups;
 import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericPage;
+import bing.domain.LabelValueBean;
 import bing.exception.BusinessException;
 import bing.system.condition.SysUserCondition;
 import bing.system.exception.UserExceptionCodes;
@@ -98,6 +101,19 @@ public class SysUserController extends GenericController {
 	@ModelAttribute("roleList")
 	protected List<SysRole> roleList() {
 		return sysRoleService.listAll();
+	}
+
+	/**
+	 * 性别列表
+	 * 
+	 * @return
+	 */
+	@ModelAttribute("genderList")
+	protected List<LabelValueBean> genderList() {
+		List<LabelValueBean> genderList = new ArrayList<>();
+		genderList.add(new LabelValueBean("男", String.valueOf(GenderEnum.MALE.ordinal())));
+		genderList.add(new LabelValueBean("女", String.valueOf(GenderEnum.FEMALE.ordinal())));
+		return genderList;
 	}
 
 	@RequestMapping(LIST)

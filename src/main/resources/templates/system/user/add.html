@@ -55,6 +55,18 @@
    					<div class="col-xs-3">
        					<input type="mobile" id="mobile" name="mobile" class="form-control" th:value="*{mobile}" required />
    					</div>
+   					<label class="col-xs-2 control-label" th:text="#{email}">Email</label>
+   					<div class="col-xs-3">
+       					<input type="email" id="email" name="email" class="form-control" th:value="*{email}" />
+   					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-2 control-label" th:text="#{gender}">性别</label>
+   					<div class="col-xs-3">
+       					<select class="form-control m-b" id="gender" name="gender">
+							<option th:each="gender : ${genderList}" th:selected="${gender.value eq #object.gender + ''}" th:text="${gender.label}" th:value="${gender.value}"></option>
+	    				</select>
+   					</div>
    					<label class="col-xs-2 control-label" th:text="#{status}">状态</label>
    					<div class="col-xs-3">
        					<select class="form-control m-b" id="status" name="status">
