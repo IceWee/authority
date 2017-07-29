@@ -1,24 +1,11 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/default">
-<head>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="layouts/default">
+<head th:replace="fragments/header :: header(~{::title},~{::link})">
 <title th:text="#{system.name}">Authority</title>
 <link type="text/css" rel="stylesheet" th:href="@{/css/plugins/chosen/css/bootstrap-chosen.css}" />
-<!-- 自定义js -->
-<script type="text/javascript" th:src="@{/js/plugins/chosen/chosen.jquery.min.js?v=1.7.0}"></script>
-<script type="text/javascript" th:src="@{/js/curd.js}"></script>
-<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
-<script th:inline="javascript">
-/*<![CDATA[*/
-	$(function() {
-		var error = /*[[${error}]]*/ null;
-		var message = /*[[${message}]]*/ null;
-		initAddPageExt(error, message);
-	});
-	/*]]>*/
-</script>
 </head>
 <body th:object="${bean}">
-<section layout:fragment="content">
+<th:block layout:fragment="content">
 <div class="wrapper wrapper-content animated fadeInLeft">
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
@@ -96,6 +83,21 @@
         </div>
     </div>
 </div>
-</section>
+</th:block>
+<th:block layout:fragment="scripts">
+<!-- 自定义js -->
+<script type="text/javascript" th:src="@{/js/plugins/chosen/chosen.jquery.min.js?v=1.7.0}"></script>
+<script type="text/javascript" th:src="@{/js/curd.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/user.js}"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$(function() {
+		var error = /*[[${error}]]*/ null;
+		var message = /*[[${message}]]*/ null;
+		initAddPageExt(error, message);
+	});
+	/*]]>*/
+</script>
+</th:block>
 </body>
 </html>

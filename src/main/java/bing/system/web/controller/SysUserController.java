@@ -165,13 +165,13 @@ public class SysUserController extends GenericController {
 
 	@RequestMapping(ADD)
 	public String add(Model model) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysUser());
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysUser());
 		return ADD;
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String save(@Validated(CrudGroups.Create.class) SysUser entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
 		}
@@ -206,13 +206,13 @@ public class SysUserController extends GenericController {
 		Integer[] roleIds = new Integer[roleIdList.size()];
 		roleIdList.toArray(roleIds);
 		entity.setRoleIds(roleIds);
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		return EDIT;
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String update(@Valid SysUser entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return EDIT;
 		}
@@ -288,7 +288,7 @@ public class SysUserController extends GenericController {
 	@RequestMapping(MINE)
 	public String mine(Model model, @CurrentLoggedUser SysUser currentUser) {
 		SysUser entity = sysUserService.getById(currentUser.getId());
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		return MINE;
 	}
 

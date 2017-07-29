@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="fragments/header :: header" />
+<head th:replace="fragments/header :: header(~{::title},~{::link})">
+<title th:text="#{system.name}">Authority</title>
 <link type="text/css" rel="stylesheet" th:href="@{/css/login.css}" />
-<script type="text/javascript" th:src="@{/js/jquery.placeholder.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery.waypoints.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/system/login.js}"></script>
-<script type="text/javascript">
-	// 跳出框架
-	if (window != top) {  
-	    top.location.href = location.href;  
-	}
-
-	$(function() {
-		initLoginPage();
-	});
-</script>
 </head>
 <body>
 <div class="container">
@@ -54,5 +42,19 @@
 		</div>
 	</div>
 </div>
+<th:block th:replace="fragments/body_scripts" />
+<script type="text/javascript" th:src="@{/js/jquery.placeholder.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.waypoints.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/login.js}"></script>
+<script type="text/javascript">
+	// 跳出框架
+	if (window != top) {  
+	    top.location.href = location.href;  
+	}
+
+	$(function() {
+		initLoginPage();
+	});
+</script>
 </body>
 </html>

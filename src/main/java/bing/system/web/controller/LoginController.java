@@ -38,6 +38,8 @@ public class LoginController extends GenericController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
+	private static final String KEY_MESSAGE = "msg";
+
 	@Autowired
 	private MessageSourceService messageSourceService;
 
@@ -58,15 +60,15 @@ public class LoginController extends GenericController {
 	@RequestMapping(value = "/login")
 	public String login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout,
 			@RequestParam(value = "expired", required = false) String expired, Model model, HttpServletRequest request) {
-		model.addAttribute("msg", messageSourceService.getMessage("login.label.username"));
+		addAttribute(model, KEY_MESSAGE, messageSourceService.getMessage("login.label.username"));
 		if (error != null) {
-			model.addAttribute("msg", getErrorMessage(request));
+			addAttribute(model, KEY_MESSAGE, getErrorMessage(request));
 		}
 		if (logout != null) {
-			model.addAttribute("msg", messageSourceService.getMessage("logout.tips.success"));
+			addAttribute(model, KEY_MESSAGE, messageSourceService.getMessage("logout.tips.success"));
 		}
 		if (expired != null) {
-			model.addAttribute("msg", messageSourceService.getMessage("session.tips.expired"));
+			addAttribute(model, KEY_MESSAGE, messageSourceService.getMessage("session.tips.expired"));
 		}
 		return "login";
 	}

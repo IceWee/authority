@@ -48,7 +48,7 @@ var toastrOptions = {
 	"closeButton": false,
 	"debug": false,
 	"progressBar": false,
-	"positionClass": "toast-top-left",
+	"positionClass": "toast-top-center",
 	"onclick": null,
 	"showDuration": "400",
 	"hideDuration": "1000",

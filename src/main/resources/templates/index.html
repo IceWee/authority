@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/default">
-<head th:include="fragments/head :: header" />
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="layouts/default">
+<head th:replace="fragments/header :: header(~{::title},~{})">
+<title th:text="#{system.name}">Authority</title>
 <body>
-<section layout:fragment="content">
+<th:block layout:fragment="content">
 <div class="container" style="padding-top:100px">
 	<header class="jumbotron hero-spacer">
 		<h1>欢迎使用本系统</h1>
@@ -20,6 +21,6 @@
 		</p>
 	</header>
 </div>
-</section>
+</th:block>
 </body>
 </html>

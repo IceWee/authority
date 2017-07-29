@@ -112,13 +112,13 @@ public class SysRoleController extends GenericController {
 
 	@RequestMapping(ADD)
 	public String add(Model model) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysRole());
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysRole());
 		return ADD;
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String save(@Valid SysRole entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return ADD;
 		}
@@ -147,13 +147,13 @@ public class SysRoleController extends GenericController {
 			setError(MessageKeys.ENTITY_NOT_EXIST, redirectModel);
 			return REDIRECT_LIST;
 		}
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		return EDIT;
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String update(@Valid SysRole entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			return EDIT;
 		}

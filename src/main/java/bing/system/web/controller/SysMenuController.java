@@ -112,27 +112,29 @@ public class SysMenuController extends GenericController {
 
 	@RequestMapping(LIST)
 	public String list(@RequestParam(name = "parentId", required = false) Integer parentId, Model model) {
-		model.addAttribute(REQUEST_ATTRIBUTE_PARENT_MENU_ID, parentId);
+		if (parentId != null) {
+			addAttribute(model, REQUEST_ATTRIBUTE_PARENT_MENU_ID, parentId);
+		}
 		return LIST;
 	}
 
 	@RequestMapping(ADD)
 	public String add(@RequestParam(name = "parentId", required = true) Integer parentId, Model model, RedirectAttributesModelMap redirectModel) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysMenu());
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysMenu());
 		SysMenu parentMenu = sysMenuService.getById(parentId);
 		if (parentMenu == null) {
 			setError(SystemMessageKeys.PARENT_MENU_NOT_EXIST, redirectModel);
 			return REDIRECT_LIST;
 		}
-		model.addAttribute(REQUEST_ATTRIBUTE_PARENT_MENU, parentMenu);
+		addAttribute(model, REQUEST_ATTRIBUTE_PARENT_MENU, parentMenu);
 		return ADD;
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String save(@Valid SysMenu entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
-		model.addAttribute(REQUEST_ATTRIBUTE_PARENT_MENU_ID, entity.getParentId());
 		if (hasErrors(bindingResult, model)) {
+			addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+			addAttribute(model, REQUEST_ATTRIBUTE_PARENT_MENU_ID, entity.getParentId());
 			prepareParentMenu(entity.getParentId(), model);
 			return ADD;
 		}
@@ -146,6 +148,7 @@ public class SysMenuController extends GenericController {
 			String operateContent = "添加了菜单[" + entity + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 			setMessage(MessageKeys.SAVE_SUCCESS, redirectModel);
+			addAttribute(redirectModel, REQUEST_ATTRIBUTE_PARENT_MENU_ID, entity.getParentId());
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -156,13 +159,15 @@ public class SysMenuController extends GenericController {
 	}
 
 	@RequestMapping(EDIT)
-	public String edit(@RequestParam(value = "id", required = true) Integer id, Model model, RedirectAttributesModelMap redirectModel) {
+	public String edit(@RequestParam(name = "parentId", required = false) Integer parentId, @RequestParam(value = "id", required = true) Integer id, Model model,
+			RedirectAttributesModelMap redirectModel) {
 		SysMenu entity = sysMenuService.getById(id);
 		if (entity == null) {
 			setError(MessageKeys.ENTITY_NOT_EXIST, redirectModel);
+			addAttribute(redirectModel, REQUEST_ATTRIBUTE_PARENT_MENU_ID, parentId);
 			return REDIRECT_LIST;
 		}
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		prepareParentMenu(entity.getParentId(), model);
 		prepareResource(entity.getResourceId(), model);
 		return EDIT;
@@ -170,7 +175,7 @@ public class SysMenuController extends GenericController {
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String update(@Valid SysMenu entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		if (hasErrors(bindingResult, model)) {
 			prepareParentMenu(entity.getParentId(), model);
 			prepareResource(entity.getResourceId(), model);
@@ -184,6 +189,7 @@ public class SysMenuController extends GenericController {
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 			setMessage(MessageKeys.UPDATE_SUCCESS, redirectModel);
 			prepareResource(entity.getResourceId(), redirectModel);
+			addAttribute(redirectModel, REQUEST_ATTRIBUTE_PARENT_MENU_ID, entity.getParentId());
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -196,13 +202,13 @@ public class SysMenuController extends GenericController {
 	@RequestMapping(DELETE)
 	public String delete(@RequestParam(value = "id", required = true) Integer id, @RequestParam(name = "parentId", required = false) Integer parentId, RedirectAttributesModelMap redirectModel,
 			@CurrentLoggedUser SysUser currentUser) {
-		redirectModel.addAttribute(REQUEST_ATTRIBUTE_PARENT_MENU_ID, parentId);
 		try {
 			String username = currentUser.getUsername();
 			sysMenuService.deleteById(id, username);
 			String operateContent = "删除了菜单[" + id + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
 			setMessage(MessageKeys.DELETE_SUCCESS, redirectModel);
+			addAttribute(redirectModel, REQUEST_ATTRIBUTE_PARENT_MENU_ID, parentId);
 		} catch (Exception e) {
 			LOGGER.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, redirectModel);

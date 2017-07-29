@@ -201,25 +201,27 @@ public class SysResourceController extends GenericController {
 
 	@RequestMapping(LIST)
 	public String list(@RequestParam(name = "categoryId", required = false) Integer categoryId, Model model) {
-		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+		if (categoryId != null) {
+			addAttribute(model, REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+		}
 		return LIST;
 	}
 
 	@RequestMapping(ADD)
 	public String add(@RequestParam(value = "categoryId", required = true) Integer categoryId, Model model, RedirectAttributesModelMap redirectModel) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysResource());
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysResource());
 		SysResourceCategory category = sysResourceService.getCategoryById(categoryId);
 		if (category == null) {
 			setError(SystemMessageKeys.RESOURCE_CATEGORY_NOT_EXIST, redirectModel);
 			return REDIRECT_LIST;
 		}
-		model.addAttribute(REQUEST_ATTRIBUTE_CATEGORY, category);
+		addAttribute(model, REQUEST_ATTRIBUTE_CATEGORY, category);
 		return ADD;
 	}
 
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String save(@Valid SysResource entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
 			prepareCategory(categoryId, model);
@@ -235,7 +237,7 @@ public class SysResourceController extends GenericController {
 			String operateContent = "添加了资源[" + entity + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_ADD, currentUser.getId(), currentUser.getName(), operateContent));
 			setMessage(MessageKeys.SAVE_SUCCESS, redirectModel);
-			redirectModel.addFlashAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+			addAttribute(redirectModel, REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 		} catch (Exception e) {
 			LOGGER.error("{}保存异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -251,17 +253,17 @@ public class SysResourceController extends GenericController {
 		SysResource entity = sysResourceService.getById(id);
 		if (entity == null) {
 			setError(MessageKeys.ENTITY_NOT_EXIST, redirectModel);
-			redirectModel.addFlashAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+			addAttribute(redirectModel, REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 			return REDIRECT_LIST;
 		}
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		prepareCategory(entity.getCategoryId(), model);
 		return EDIT;
 	}
 
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String update(@Valid SysResource entity, BindingResult bindingResult, Model model, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
-		model.addAttribute(GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
+		addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, entity);
 		Integer categoryId = entity.getCategoryId();
 		if (hasErrors(bindingResult, model)) {
 			prepareCategory(categoryId, model);
@@ -274,7 +276,7 @@ public class SysResourceController extends GenericController {
 			String operateContent = "修改了资源信息[" + entity + "]";
 			sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_MODIFY, currentUser.getId(), currentUser.getName(), operateContent));
 			setMessage(MessageKeys.UPDATE_SUCCESS, redirectModel);
-			redirectModel.addFlashAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+			addAttribute(redirectModel, REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 		} catch (Exception e) {
 			LOGGER.error("{}更新异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
 			setError(e, model);
@@ -287,7 +289,7 @@ public class SysResourceController extends GenericController {
 	@RequestMapping(DELETE)
 	public String delete(@RequestParam(value = "id", required = true) Integer id, @RequestParam(value = "categoryId", required = false) Integer categoryId, RedirectAttributesModelMap redirectModel,
 			@CurrentLoggedUser SysUser currentUser) {
-		redirectModel.addFlashAttribute(REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
+		addAttribute(redirectModel, REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
 		try {
 			String username = currentUser.getUsername();
 			sysResourceService.deleteById(id, username);

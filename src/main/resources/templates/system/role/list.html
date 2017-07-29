@@ -1,27 +1,12 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/default">
-<head>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="layouts/default">
+<head th:replace="fragments/header :: header(~{::title},~{::link})">
 <title th:text="#{system.name}">Authority</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/plugins/ztree/metroStyle/metroStyle.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/icons.css}" />
-<!-- 自定义js -->
-<script type="text/javascript" th:src="@{/js/jquery.select.box.js}"></script>
-<script type="text/javascript" th:src="@{/js/plugins/ztree/jquery.ztree.all.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery.ztree.dialog.js}"></script>
-<script type="text/javascript" th:src="@{/js/curd.js}"></script>
-<script type="text/javascript" th:src="@{/js/system/role.js}"></script>
-<script th:inline="javascript">
-/*<![CDATA[*/
-	$(function() {
-		var error = /*[[${error}]]*/ null;
-		var message = /*[[${message}]]*/ null;
-		initListPage(error, message);
-	});
-	/*]]>*/
-</script>
 </head>
 <body>
-<section layout:fragment="content">
+<th:block layout:fragment="content">
 <div class="wrapper wrapper-content animated fadeInLeft">
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
@@ -79,6 +64,23 @@
 <div th:replace="fragments/selectBox :: select_box"></div>
 <!-- 资源树弹出框 -->
 <div th:replace="fragments/tree :: dialog_tree"></div>
-</section>
+</th:block>
+<th:block layout:fragment="scripts">
+<!-- 自定义js -->
+<script type="text/javascript" th:src="@{/js/jquery.select.box.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/ztree/jquery.ztree.all.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ztree.dialog.js}"></script>
+<script type="text/javascript" th:src="@{/js/curd.js}"></script>
+<script type="text/javascript" th:src="@{/js/system/role.js}"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$(function() {
+		var error = /*[[${error}]]*/ null;
+		var message = /*[[${message}]]*/ null;
+		initListPage(error, message);
+	});
+	/*]]>*/
+</script>
+</th:block>
 </body> 
 </html>

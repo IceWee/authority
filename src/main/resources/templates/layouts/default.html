@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:replace="fragments/header :: header" />
 <body>
 <div id="wrapper">
 	<!-- 导航菜单开始 -->
-	<nav th:replace="fragments/nav :: nav" />
+	<th:block th:replace="fragments/navigation" />
     <!-- 导航菜单结束 -->
 	<!-- 右侧内容区开始 -->
 	<div id="page-wrapper" class="gray-bg">
-		<div th:replace="fragments/top :: top" />
+		<th:block th:replace="fragments/top" />
         <!-- 内容区域开始 -->
-        <section layout:fragment="content"></section>
+        <th:block layout:fragment="content" />
 		<!-- 内容区域结束 -->
         <!-- 页脚开始 -->
-        <div th:replace="fragments/footer :: footer" />
+        <th:block th:replace="fragments/footer" />
         <!-- 页脚结束 -->
 	</div>
 	<!-- 右侧内容区结束 -->
 </div>
 <!-- 修改密码弹出框 -->
 <div th:replace="password :: dialog_password"></div>
+<!-- 通用脚本 -->
+<th:block th:replace="fragments/body_scripts" />
+<!-- 页面自定义脚本 -->
+<th:block layout:fragment="scripts" />
 </body>
 </html>
