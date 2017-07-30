@@ -28,15 +28,9 @@
 				</a>
 				<ul th:if="${not #lists.isEmpty(menu1.children)}" class="nav nav-second-level collapse">
 					<li th:class="${menu2.active} ? 'active' : ''" th:each="menu2 : ${menu1.children}">
-						<a href="javascript:void(0)" th:onclick="'_linkMenu(\'' + ${menu2.url} + '\',' + ${menu2.id} + ')'">
-							<span th:text="${menu2.name}">二级菜单</span>
-							<span th:if="${not #lists.isEmpty(menu2.children)}" class="fa arrow"></span>
+						<a th:text="${menu2.name}" href="javascript:void(0)" th:onclick="'_linkMenu(\'' + ${menu2.url} + '\',' + ${menu2.id} + ')'">
+							二级菜单
 						</a>
-						<ul th:if="${not #lists.isEmpty(menu2.children)}" class="nav nav-third-level">
-							<li th:class="${menu3.active} ? 'active' : ''" th:each="menu3 : ${menu2.children}">
-								<a href="javascript:void(0)" th:onclick="'_linkMenu(\'' + ${menu3.url} + '\',' + ${menu3.id} + ')'" th:text="${menu3.name}">三级菜单</a>
-							</li>
-						</ul>
 					</li>
 				</ul>
 			</li>
