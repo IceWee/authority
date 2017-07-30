@@ -12,7 +12,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
  * 
  * @author IceWee
  */
-@Configuration
+//@Configuration
 public class ValidationMessageConfig {
 
 	@Bean
