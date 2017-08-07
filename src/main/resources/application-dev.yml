@@ -1,6 +1,6 @@
 # HTTPS config
 server:
-  port: 80
+  port: 8080
 #  port: 8443
 #  ssl.key-store: classpath:keystore.p12
 #  ssl.key-store-password: tomcat
@@ -13,8 +13,10 @@ spring:
     basename: i18n/messages, i18n/codes, i18n/validators
 # Datasource config
   datasource: 
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    driver-class-name: com.mysql.jdbc.Driver
+# hikari无需制动驱动类
+    type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/authority?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: root
