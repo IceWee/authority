@@ -53,8 +53,8 @@ pagehelper:
   
 # Logger config
 logging:
-  config: classpath:log4j2-dev.yml
-    
+  config: classpath:logback-dev.xml
+
 #########################################################################
 # 文件存储根目录
 file:
