@@ -20,6 +20,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Qualifier("uriHandlerInterceptor")
 	private HandlerInterceptor uriHandlerInterceptor;
 
+	/**
+	 * 校验框架与MessageSource集成
+	 *
+	 * @return
+	 */
 	@Override
 	public Validator getValidator() {
 		LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();

@@ -1,27 +1,25 @@
 package bing.task;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 定时任务
- * 
+ *
  * @author IceWee
  */
+@Slf4j
 @Component
 public class ScheduledTasks {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);
-
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 H点m分s秒");
-
-	// @Scheduled(cron = "*/10 * * * * *")
-	public void reportCurrentTime() {
-		LOGGER.info("北京时间： {}", dateFormat.format(new Date()));
-	}
+    @Scheduled(cron = "0 0/1 * * * *")
+    public void printCurrentTime() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        log.info("北京时间: {}", dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    }
 
 }
