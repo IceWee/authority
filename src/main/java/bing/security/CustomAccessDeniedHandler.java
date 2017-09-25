@@ -29,7 +29,7 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         if (AjaxUtils.ajaxRequest(request)) {
-            String code = BusinessExceptionCodes.singleton().ACCESS_DENIED;
+            String code = BusinessExceptionCodes.ACCESS_DENIED;
             AjaxUtils.ajaxResponse(response, code, retriveMessage(code));
         } else {
             super.handle(request, response, accessDeniedException);
@@ -48,7 +48,7 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
             message = messageSourceService.getMessage(code);
         } catch (Exception ex) {
             log.warn("国际化文件中未配置错误编码：{}，返回未知错误提示", code);
-            message = messageSourceService.getMessage(BusinessExceptionCodes.singleton().UNKNOW_ERROR);
+            message = messageSourceService.getMessage(BusinessExceptionCodes.UNKNOW_ERROR);
         }
         return message;
     }

@@ -290,7 +290,7 @@ public class SysUserController extends GenericController {
     @ApiResponse(code = 200, response = RestResponse.class, message = "")
     public RestResponse<Object> updateMine(SysUser mine, @CurrentLoggedUser SysUser currentUser) {
         if (StringUtils.isBlank(mine.getName())) {
-            throw new BusinessException(UserExceptionCodes.singleton().NAME_IS_NULL);
+            throw new BusinessException(UserExceptionCodes.NAME_IS_NULL);
         }
         mine.setId(currentUser.getId());
         sysUserService.update(mine);
