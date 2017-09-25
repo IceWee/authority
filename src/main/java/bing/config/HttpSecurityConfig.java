@@ -66,7 +66,8 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(SecurityConstants.PUBLIC_RESOURCE_PATHS);
+        String[] paths = SecurityConstants.PUBLIC_RESOURCE_PATHS.toArray(new String[]{});
+        web.ignoring().antMatchers(paths);
     }
 
     @Override
