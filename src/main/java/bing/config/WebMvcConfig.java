@@ -13,29 +13,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-	@Autowired
-	private MessageSource messageSource;
+    @Autowired
+    private MessageSource messageSource;
 
-	@Autowired
-	@Qualifier("uriHandlerInterceptor")
-	private HandlerInterceptor uriHandlerInterceptor;
+    @Autowired
+    @Qualifier("uriHandlerInterceptor")
+    private HandlerInterceptor uriHandlerInterceptor;
 
-	/**
-	 * 校验框架与MessageSource集成
-	 *
-	 * @return
-	 */
-	@Override
-	public Validator getValidator() {
-		LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
-		factory.setValidationMessageSource(messageSource);
-		return factory;
-	}
+    /**
+     * 校验框架与MessageSource集成
+     *
+     * @return
+     */
+    @Override
+    public Validator getValidator() {
+        LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
+        factory.setValidationMessageSource(messageSource);
+        return factory;
+    }
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(uriHandlerInterceptor).addPathPatterns("/**/**");
-		super.addInterceptors(registry);
-	}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(uriHandlerInterceptor).addPathPatterns("/**/**");
+        super.addInterceptors(registry);
+    }
 
 }

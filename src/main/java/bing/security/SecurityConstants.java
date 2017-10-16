@@ -45,8 +45,6 @@ public interface SecurityConstants {
     /**
      * Public resource paths
      */
-//    String[] PUBLIC_RESOURCE_PATHS = {"/js/**", "/css/**", "/images/**", "/i18n/**"};
-
     List<String> PUBLIC_RESOURCE_PATHS = Collections.unmodifiableList(Arrays.asList("/js/**", "/css/**", "/images/**", "/i18n/**"));
 
 }
