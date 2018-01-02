@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 public class PasswordUtils {
 
 	private static final String ENCODE_SECRET = "SHA-256";
-	private static final PasswordEncoder encoder = new StandardPasswordEncoder(ENCODE_SECRET);
+	private static final PasswordEncoder ENCODER = new StandardPasswordEncoder(ENCODE_SECRET);
 
 	/**
 	 * 密码加密
@@ -20,7 +20,7 @@ public class PasswordUtils {
 	 * @return
 	 */
 	public static String encrypt(String rawPassword) {
-		return encoder.encode(rawPassword);
+		return ENCODER.encode(rawPassword);
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class PasswordUtils {
 	 * @return
 	 */
 	public static boolean match(String rawPassword, String encodedPassword) {
-		return encoder.matches(rawPassword, encodedPassword);
+		return ENCODER.matches(rawPassword, encodedPassword);
 	}
 
 }

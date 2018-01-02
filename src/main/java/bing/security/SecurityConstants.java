@@ -33,9 +33,9 @@ public interface SecurityConstants {
     int MAXIMUM_SESSIONS = 1;
 
     /**
-     * Session timeout seconds
+     * Session timeout seconds, 10 mins
      */
-    int SESSION_TIMEOUT_SECONDS = 10 * 60; // 10 mins
+    int SESSION_TIMEOUT_SECONDS = 10 * 60;
 
     /**
      * Cookie expire seconds

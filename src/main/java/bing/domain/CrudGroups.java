@@ -7,16 +7,16 @@ package bing.domain;
  */
 public interface CrudGroups {
 
-	public static interface Create {
+	interface Create {
 	}
 
-	public static interface Retrieve {
+	interface Retrieve {
 	}
 
-	public static interface Update {
+	interface Update {
 	}
 
-	public static interface Delete {
+	interface Delete {
 	}
 
 }

@@ -2,6 +2,7 @@ package bing.constant;
 
 public enum GenderEnum {
 
-	MALE, FEMALE;
+	// 男, 女
+	MALE, FEMALE
 
 }

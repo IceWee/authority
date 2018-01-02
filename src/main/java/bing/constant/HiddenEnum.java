@@ -2,6 +2,7 @@ package bing.constant;
 
 public enum HiddenEnum {
 
-	HIDDEN, SHOW;
+	// 隐藏, 显示
+	HIDDEN, SHOW
 
 }

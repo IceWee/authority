@@ -39,18 +39,23 @@ public class CustomWebAuthenticationDetails extends WebAuthenticationDetails {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		CustomWebAuthenticationDetails other = (CustomWebAuthenticationDetails) obj;
 		if (captcha == null) {
-			if (other.captcha != null)
+			if (other.captcha != null) {
 				return false;
-		} else if (!captcha.equals(other.captcha))
-			return false;
+			}
+		} else if (!captcha.equals(other.captcha)) {
+            return false;
+        }
 		return true;
 	}
 

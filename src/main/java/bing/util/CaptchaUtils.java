@@ -67,8 +67,10 @@ public class CaptchaUtils {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
         Random random = new Random();
-        g.setColor(new Color(230, 230, 250)); // 设置背景色
-        g.fillRect(0, 0, width, height); // 填充背景
+        // 设置背景色
+        g.setColor(new Color(230, 230, 250));
+        // 填充背景
+        g.fillRect(0, 0, width, height);
         g.setColor(Color.BLACK);
         // 绘制边缘
         g.drawRect(-1, -1, width + 1, height + 1);
@@ -91,10 +93,11 @@ public class CaptchaUtils {
         for (int i = 0; i < 131; i++) {
             px = x + 1;
             py = M * Math.sin(Math.toRadians(V * px)) + D;
-            if (rsta < i && i < (rsta + nor))
+            if (rsta < i && i < (rsta + nor)) {
                 g.setColor(new Color(230, 230, 250));
-            else
+            } else {
                 g.setColor(new Color(red, green, blue));
+            }
             // 随机设置像素点宽带(线宽)
             g.setStroke(new BasicStroke((float) (Math.random() + 1.5f)));
             g.draw(new Line2D.Double(x, y, px, py));
@@ -105,7 +108,8 @@ public class CaptchaUtils {
         for (int i = 0; i < codes.length; i++) {
             // 旋转图形
             int degree = (random.nextInt(20) - 10) % 360;
-            double ang = degree * 0.0174532925; // 将角度转为弧度
+            // 将角度转为弧度
+            double ang = degree * 0.0174532925;
             g.rotate(ang, width / 2.0, height / 2.0);
             g.setColor(new Color(red, green, blue));
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
