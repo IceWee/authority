@@ -86,13 +86,13 @@ public class CaptchaUtils {
         // 定义一个无干扰线区间和一个起始位置
         int nor = random.nextInt(50), rsta = random.nextInt(131);
         // 绘制干扰正弦曲线 M:曲线平折度, D:Y轴常量 V:X轴焦距
-        int M = random.nextInt(15) + 5, D = random.nextInt(23) + 15, V = random.nextInt(5) + 1;
+        int m = random.nextInt(15) + 5, d = random.nextInt(23) + 15, v = random.nextInt(5) + 1;
         double x = 0.0;
-        double y = M * Math.sin(Math.toRadians(V * x)) + D;
+        double y = m * Math.sin(Math.toRadians(v * x)) + d;
         double px, py;
         for (int i = 0; i < 131; i++) {
             px = x + 1;
-            py = M * Math.sin(Math.toRadians(V * px)) + D;
+            py = m * Math.sin(Math.toRadians(v * px)) + d;
             if (rsta < i && i < (rsta + nor)) {
                 g.setColor(new Color(230, 230, 250));
             } else {
