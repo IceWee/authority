@@ -1,6 +1,10 @@
 package bing.system.web.controller;
 
-import bing.constant.*;
+import bing.constant.Charsets;
+import bing.constant.GenderEnum;
+import bing.constant.GlobalConstants;
+import bing.constant.LogPrefixes;
+import bing.constant.MessageKeys;
 import bing.domain.CrudGroups;
 import bing.domain.CurrentLoggedUser;
 import bing.domain.GenericPage;
@@ -36,7 +40,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.validation.Valid;
@@ -365,7 +374,7 @@ public class SysUserController extends GenericController {
             filename = new String(filename.getBytes(Charsets.CHARSET_UTF_8), Charsets.CHARSET_ISO_8859_1);
             headers.setContentDispositionFormData("attachment", filename);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
+            return new ResponseEntity<>(bytes, headers, HttpStatus.CREATED);
         } catch (IOException e) {
             log.error("{}导出Excel异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
             throw new RuntimeException(e);
