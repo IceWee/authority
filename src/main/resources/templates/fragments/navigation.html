@@ -28,7 +28,7 @@
 				</a>
 				<ul th:if="${not #lists.isEmpty(menu1.children)}" class="nav nav-second-level collapse">
 					<li th:class="${menu2.active} ? 'active' : ''" th:each="menu2 : ${menu1.children}">
-						<a th:text="${menu2.name}" href="javascript:void(0)" th:onclick="'_linkMenu(\'' + ${menu2.url} + '\',' + ${menu2.id} + ')'">
+						<a th:text="${menu2.name}" href="javascript:void(0)" th:onclick="_linkMenu([[${menu2.url}]], [[${menu2.id}]])">
 							二级菜单
 						</a>
 					</li>
