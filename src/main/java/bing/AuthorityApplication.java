@@ -13,11 +13,10 @@ import bing.constant.GlobalConstants;
 import bing.security.SecurityConstants;
 
 // @EnableCaching
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = { GlobalConstants.COMPONENT_SCAN_PACKAGES })
 @EnableAsync // 开启异步调用
 @EnableScheduling // 允许定时任务
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = SecurityConstants.SESSION_TIMEOUT_SECONDS) // session过期时间，单位：秒
-@ComponentScan(basePackages = { GlobalConstants.COMPONENT_SCAN_PACKAGES })
 @MapperScan(GlobalConstants.MAPPER_SCAN_PACKAGES)
 // public class AuthorityApplication extends SpringBootServletInitializer { //
 // 打war包时打开
