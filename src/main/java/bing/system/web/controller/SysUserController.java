@@ -190,7 +190,7 @@ public class SysUserController extends GenericController {
     }
 
     @RequestMapping(EDIT)
-    public String edit(@RequestParam(value = "id", required = true) Integer id, Model model, RedirectAttributesModelMap redirectModel) {
+    public String edit(@RequestParam(value = "id") Integer id, Model model, RedirectAttributesModelMap redirectModel) {
         SysUser entity = sysUserService.getById(id);
         if (entity == null) {
             setError(MessageKeys.ENTITY_NOT_EXIST, redirectModel);
@@ -228,7 +228,7 @@ public class SysUserController extends GenericController {
     }
 
     @RequestMapping(DELETE)
-    public String delete(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
+    public String delete(@RequestParam(value = "id") Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
         try {
             String username = currentUser.getName();
             sysUserService.deleteById(id, username);
@@ -315,7 +315,7 @@ public class SysUserController extends GenericController {
      * @return
      */
     @RequestMapping(LOCK)
-    public String lock(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
+    public String lock(@RequestParam(value = "id") Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
         try {
             String username = currentUser.getName();
             sysUserService.lockById(id, username);
@@ -338,7 +338,7 @@ public class SysUserController extends GenericController {
      * @return
      */
     @RequestMapping(UNLOCK)
-    public String unlock(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
+    public String unlock(@RequestParam(value = "id") Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
         try {
             String username = currentUser.getName();
             sysUserService.unlockById(id, username);

@@ -133,7 +133,7 @@ public class SysRoleController extends GenericController {
     }
 
     @RequestMapping(EDIT)
-    public String edit(@RequestParam(value = "id", required = true) Integer id, Model model, RedirectAttributesModelMap redirectModel) {
+    public String edit(@RequestParam(value = "id") Integer id, Model model, RedirectAttributesModelMap redirectModel) {
         SysRole entity = sysRoleService.getById(id);
         if (entity == null) {
             setError(MessageKeys.ENTITY_NOT_EXIST, redirectModel);
@@ -165,7 +165,7 @@ public class SysRoleController extends GenericController {
     }
 
     @RequestMapping(DELETE)
-    public String delete(@RequestParam(value = "id", required = true) Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
+    public String delete(@RequestParam(value = "id") Integer id, RedirectAttributesModelMap redirectModel, @CurrentLoggedUser SysUser currentUser) {
         try {
             String username = currentUser.getUsername();
             sysRoleService.deleteById(id, username);

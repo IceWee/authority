@@ -198,7 +198,7 @@ public class SysResourceController extends GenericController {
     }
 
     @RequestMapping(ADD)
-    public String add(@RequestParam(value = "categoryId", required = true) Integer categoryId, Model model, RedirectAttributesModelMap redirectModel) {
+    public String add(@RequestParam(value = "categoryId") Integer categoryId, Model model, RedirectAttributesModelMap redirectModel) {
         addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysResource());
         SysResourceCategory category = sysResourceService.getCategoryById(categoryId);
         if (category == null) {
@@ -238,7 +238,7 @@ public class SysResourceController extends GenericController {
     }
 
     @RequestMapping(EDIT)
-    public String edit(@RequestParam(value = "categoryId", required = false) Integer categoryId, @RequestParam(value = "id", required = true) Integer id, Model model,
+    public String edit(@RequestParam(value = "categoryId", required = false) Integer categoryId, @RequestParam(value = "id") Integer id, Model model,
                        RedirectAttributesModelMap redirectModel) {
         SysResource entity = sysResourceService.getById(id);
         if (entity == null) {
@@ -277,7 +277,7 @@ public class SysResourceController extends GenericController {
     }
 
     @RequestMapping(DELETE)
-    public String delete(@RequestParam(value = "id", required = true) Integer id, @RequestParam(value = "categoryId", required = false) Integer categoryId, RedirectAttributesModelMap redirectModel,
+    public String delete(@RequestParam(value = "id") Integer id, @RequestParam(value = "categoryId", required = false) Integer categoryId, RedirectAttributesModelMap redirectModel,
                          @CurrentLoggedUser SysUser currentUser) {
         addAttribute(redirectModel, REQUEST_ATTRIBUTE_CATEGORY_ID, categoryId);
         try {
