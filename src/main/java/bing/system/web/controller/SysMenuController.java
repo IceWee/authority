@@ -25,7 +25,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.validation.Valid;
@@ -95,7 +99,7 @@ public class SysMenuController extends GenericController {
      */
     @ResponseBody
     @RequestMapping(value = AJAX_MENU_TREE + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResponse<List<MenuTreeNode>> menuTreeExclude(@PathVariable(required = true) Integer id) {
+    public RestResponse<List<MenuTreeNode>> menuTreeExclude(@PathVariable Integer id) {
         RestResponse<List<MenuTreeNode>> response = new RestResponse<>();
         List<MenuTreeNode> menus = sysMenuService.getMenuTree(id);
         response.setData(menus);
@@ -111,7 +115,7 @@ public class SysMenuController extends GenericController {
     }
 
     @RequestMapping(ADD)
-    public String add(@RequestParam(name = "parentId", required = true) Integer parentId, Model model, RedirectAttributesModelMap redirectModel) {
+    public String add(@RequestParam(name = "parentId") Integer parentId, Model model, RedirectAttributesModelMap redirectModel) {
         addAttribute(model, GlobalConstants.REQUEST_ATTRIBUTE_BEAN, new SysMenu());
         SysMenu parentMenu = sysMenuService.getById(parentId);
         if (parentMenu == null) {
@@ -151,7 +155,7 @@ public class SysMenuController extends GenericController {
     }
 
     @RequestMapping(EDIT)
-    public String edit(@RequestParam(name = "parentId", required = false) Integer parentId, @RequestParam(value = "id", required = true) Integer id, Model model,
+    public String edit(@RequestParam(name = "parentId", required = false) Integer parentId, @RequestParam(value = "id") Integer id, Model model,
                        RedirectAttributesModelMap redirectModel) {
         SysMenu entity = sysMenuService.getById(id);
         if (entity == null) {
@@ -192,7 +196,7 @@ public class SysMenuController extends GenericController {
     }
 
     @RequestMapping(DELETE)
-    public String delete(@RequestParam(value = "id", required = true) Integer id, @RequestParam(name = "parentId", required = false) Integer parentId, RedirectAttributesModelMap redirectModel,
+    public String delete(@RequestParam(value = "id") Integer id, @RequestParam(name = "parentId", required = false) Integer parentId, RedirectAttributesModelMap redirectModel,
                          @CurrentLoggedUser SysUser currentUser) {
         try {
             String username = currentUser.getUsername();
@@ -201,7 +205,7 @@ public class SysMenuController extends GenericController {
             sysOperateLogService.log(new SysOperateLog(MODULE_NAME, SysOperateLog.OPERATE_DELETE, currentUser.getId(), currentUser.getName(), operateContent));
             setMessage(MessageKeys.DELETE_SUCCESS, redirectModel);
             addAttribute(redirectModel, REQUEST_ATTRIBUTE_PARENT_MENU_ID, parentId);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error("{}删除异常：\n{}", LOG_PREFIX, ExceptionUtils.parseStackTrace(e));
             setError(e, redirectModel);
         }

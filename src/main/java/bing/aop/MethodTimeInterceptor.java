@@ -1,5 +1,6 @@
 package bing.aop;
 
+import bing.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -36,6 +37,10 @@ public class MethodTimeInterceptor {
             object = joinPoint.proceed(args);
         } catch (Throwable e) {
             log.error("统计某方法执行耗时出错...", e);
+            if (e instanceof BusinessException) {
+                BusinessException be = (BusinessException) e;
+                throw be;
+            }
         }
         long endTime = System.currentTimeMillis();
 
