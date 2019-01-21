@@ -46,7 +46,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        UserDetails loadedUser = null;
+        UserDetails loadedUser;
         try {
             loadedUser = userDetailsService.loadUserByUsername(username);
         } catch (UsernameNotFoundException notFound) {

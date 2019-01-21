@@ -29,7 +29,7 @@ public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
     }
 
     @Override
-    public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (createNewSession) {
             request.getSession();
         }

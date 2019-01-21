@@ -69,7 +69,7 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
      * 配置公共访问资源路径，以下路径无需登录，不拦截
      */
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         String[] paths = SecurityConstants.PUBLIC_RESOURCE_PATHS.toArray(new String[]{});
         web.ignoring().antMatchers(paths);
     }
@@ -121,7 +121,7 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setStringRedisTemplate(stringRedisTemplate);
