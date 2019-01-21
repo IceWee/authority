@@ -14,10 +14,10 @@ spring:
 # Datasource config
   datasource:
 # hikari
-    type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/authority?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 # Thymeleaf config
   thymeleaf:
     cache: false

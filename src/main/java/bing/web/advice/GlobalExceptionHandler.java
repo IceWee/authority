@@ -52,7 +52,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
             BusinessException be = (BusinessException) cause;
             code = be.getCode();
         }
-        String error = retriveMessage(code);
+        String error = retrieveMessage(code);
         String stack = ExceptionUtils.parseStackTrace(cause);
         request.setAttribute(GlobalConstants.REQUEST_ATTRIBUTE_ERROR, error);
         request.setAttribute(GlobalConstants.REQUEST_ATTRIBUTE_STACK, stack);
@@ -72,7 +72,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
             BusinessException be = (BusinessException) cause;
             code = be.getCode();
         }
-        String error = retriveMessage(code);
+        String error = retrieveMessage(code);
         String stack = ExceptionUtils.parseStackTrace(cause);
         log.error("CODE:{}, ERROR:{}, STACK:\n{}", code, error, stack);
         AjaxUtils.ajaxResponse(response, code, error);
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler extends SimpleMappingExceptionResolver {
      * @param code
      * @return
      */
-    private String retriveMessage(String code) {
+    private String retrieveMessage(String code) {
         String message;
         try {
             message = messageSourceService.getMessage(code);

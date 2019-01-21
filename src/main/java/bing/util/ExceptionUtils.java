@@ -6,7 +6,6 @@ package bing.util;
  * </p>
  *
  * @author IceWee
- * @see java.lang.Throwable
  */
 public class ExceptionUtils {
 

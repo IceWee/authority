@@ -1,16 +1,14 @@
 package bing.system.model;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import bing.constant.HiddenEnum;
+import bing.constant.VisibilityEnum;
 import bing.domain.GenericObject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -34,7 +32,7 @@ public class SysRole extends GenericObject implements Serializable {
 
 	public Integer getHidden() {
 		if (hidden == null) {
-			hidden = HiddenEnum.HIDDEN.ordinal();
+			hidden = VisibilityEnum.HIDDEN.ordinal();
 		}
 		return hidden;
 	}

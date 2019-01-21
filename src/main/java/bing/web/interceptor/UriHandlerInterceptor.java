@@ -26,7 +26,7 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
      * Controller方法调用之前
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String uri = request.getRequestURI();
         String menuId = request.getParameter(GlobalConstants.PARAM_MENU_ID);
         log.debug("当前请求的URI为：{}，请求菜单ID：{}", uri, menuId);
@@ -42,15 +42,14 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
      * 请求处理之后进行调用，但是在视图被渲染之前，即Controller方法调用之后
      */
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
     }
 
     /**
      * 在整个请求结束之后被调用，也就是在DispatcherServlet 渲染了对应的视图之后执行，主要是用于进行资源清理工作
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
     }
 
     /**
@@ -65,8 +64,8 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
         if (session != null && StringUtils.isNotBlank(requestMenuId)) {
             List<MenuTreeNode> menus = (List<MenuTreeNode>) session.getAttribute(GlobalConstants.SESSION_ATTRIBUTE_MENUS);
             if (menus != null) {
-                recurveClearMenuActive(menus);
-                recurveActiveMenu(menus, requestMenuId);
+                recursionClearMenuActive(menus);
+                recursionActiveMenu(menus, requestMenuId);
             }
         }
     }
@@ -78,11 +77,11 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
      * @param menuId
      * @Description
      */
-    private void recurveActiveMenu(List<MenuTreeNode> menus, String menuId) {
-        MenuTreeNode menu = recurveFindMenuById(menus, menuId);
+    private void recursionActiveMenu(List<MenuTreeNode> menus, String menuId) {
+        MenuTreeNode menu = recursionFindMenuById(menus, menuId);
         if (menu != null) {
             menu.setActive(true);
-            recurveActiveMenu(menus, menu.getParentId());
+            recursionActiveMenu(menus, menu.getParentId());
         }
     }
 
@@ -93,10 +92,10 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
      * @param menuId
      * @return
      */
-    private MenuTreeNode recurveFindMenuById(List<MenuTreeNode> menus, String menuId) {
+    private MenuTreeNode recursionFindMenuById(List<MenuTreeNode> menus, String menuId) {
         MenuTreeNode findMenu = null;
         if (StringUtils.isBlank(menuId)) {
-            return findMenu;
+            return null;
         }
         String currId;
         for (MenuTreeNode menuTreeNode : menus) {
@@ -106,7 +105,7 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
                 break;
             }
             if (menuTreeNode.hasChild()) {
-                findMenu = recurveFindMenuById(menuTreeNode.getChildren(), menuId);
+                findMenu = recursionFindMenuById(menuTreeNode.getChildren(), menuId);
                 if (findMenu != null) {
                     break;
                 }
@@ -120,11 +119,11 @@ public class UriHandlerInterceptor implements HandlerInterceptor {
      *
      * @param menus
      */
-    private void recurveClearMenuActive(List<MenuTreeNode> menus) {
+    private void recursionClearMenuActive(List<MenuTreeNode> menus) {
         for (MenuTreeNode menuTreeNode : menus) {
             menuTreeNode.setActive(false);
             if (menuTreeNode.hasChild()) {
-                recurveClearMenuActive(menuTreeNode.getChildren());
+                recursionClearMenuActive(menuTreeNode.getChildren());
             }
         }
     }

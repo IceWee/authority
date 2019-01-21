@@ -2,7 +2,14 @@ package bing.util;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -14,9 +21,6 @@ import java.util.zip.ZipOutputStream;
  * </p>
  *
  * @author IceWee
- * @see java.util.zip.ZipOutputStream
- * @see java.util.zip.ZipFile
- * @see java.util.zip.ZipEntry
  */
 public class ZipUtils {
 
@@ -34,7 +38,6 @@ public class ZipUtils {
      * @param sourceFolder which to be compressed
      * @param zipFolder    compress file created folder
      * @param zipName      compress file name
-     * @throws IOException
      */
     public static void zip(String sourceFolder, String zipFolder, String zipName) {
         String destFolder = StringUtils.replace(zipFolder, "\\", "/");
@@ -50,7 +53,6 @@ public class ZipUtils {
      *
      * @param sourceFolder which to be compressed
      * @param zipFilePath  compress file created path
-     * @throws IOException
      */
     public static void zip(String sourceFolder, String zipFilePath) {
         OutputStream out = null;
@@ -101,27 +103,24 @@ public class ZipUtils {
      *
      * @param zipFilePath path of zip file
      * @param unzipFolder folder of uncompressed
-     * @throws IOException
      */
     public static void unzip(final String zipFilePath, final String unzipFolder) {
         ZipFile zipFile = null;
         try {
             String destFolder = StringUtils.replace(unzipFolder, "\\", "/");
-            destFolder = StringUtils.appendIfMissing(unzipFolder, "/");
+            destFolder = StringUtils.appendIfMissing(destFolder, "/");
             zipFile = new ZipFile(zipFilePath);
             Enumeration<?> emu = zipFile.entries();
-            BufferedInputStream bis = null;
-            FileOutputStream fos = null;
-            BufferedOutputStream bos = null;
+            BufferedInputStream bis;
+            FileOutputStream fos;
+            BufferedOutputStream bos;
             File file;
             ZipEntry entry;
             byte[] cache = new byte[CACHE_SIZE];
             while (emu.hasMoreElements()) {
                 entry = (ZipEntry) emu.nextElement();
                 if (entry.isDirectory()) {
-                    if (!new File(destFolder + entry.getName()).mkdirs()) {
-                        throw new RuntimeException("mkdirs [" + destFolder + entry.getName() + "] failed");
-                    }
+                    new File(destFolder + entry.getName()).mkdirs();
                     continue;
                 }
                 bis = new BufferedInputStream(zipFile.getInputStream(entry));
@@ -158,7 +157,6 @@ public class ZipUtils {
      * @param parentFile
      * @param parentFile
      * @param zos
-     * @throws IOException
      */
     private static void zipFile(File parentFile, String basePath, ZipOutputStream zos) {
         if (parentFile.isDirectory()) {

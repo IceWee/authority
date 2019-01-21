@@ -1,7 +1,7 @@
 package bing.system.model;
 
-import bing.constant.HiddenEnum;
 import bing.constant.StatusEnum;
+import bing.constant.VisibilityEnum;
 import bing.domain.CrudGroups;
 import bing.security.CustomUserDetails;
 import io.swagger.annotations.ApiModelProperty;
@@ -65,7 +65,7 @@ public class SysUser extends CustomUserDetails {
 
     public Integer getHidden() {
         if (hidden == null) {
-            hidden = HiddenEnum.HIDDEN.ordinal();
+            hidden = VisibilityEnum.HIDDEN.ordinal();
         }
         return hidden;
     }
