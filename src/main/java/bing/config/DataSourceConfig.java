@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 /**
- * 数据库配置
+ * 数据源配置
  *
- * @author weibing
+ * @author IceWee
  * @date 2019.1.21/021
  */
 @Configuration

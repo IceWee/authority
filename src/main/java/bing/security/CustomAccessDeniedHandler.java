@@ -30,7 +30,7 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         if (AjaxUtils.ajaxRequest(request)) {
             String code = BusinessExceptionCodes.ACCESS_DENIED;
-            AjaxUtils.ajaxResponse(response, code, retriveMessage(code));
+            AjaxUtils.ajaxResponse(response, code, retrieveMessage(code));
         } else {
             super.handle(request, response, accessDeniedException);
         }
@@ -42,7 +42,7 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
      * @param code
      * @return
      */
-    private String retriveMessage(String code) {
+    private String retrieveMessage(String code) {
         String message;
         try {
             message = messageSourceService.getMessage(code);

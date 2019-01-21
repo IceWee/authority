@@ -72,9 +72,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void update(SysUser entity) {
         SysUser persistUser = sysUserDao.selectByPrimaryKey(entity.getId());
-        String origionUsername = persistUser.getUsername();
+        String originUsername = persistUser.getUsername();
         String newUsername = entity.getUsername();
-        if (!StringUtils.equals(origionUsername, newUsername)) {
+        if (!StringUtils.equals(originUsername, newUsername)) {
             throw new BusinessException(UserExceptionCodes.USERNAME_FORBIDDEN_MODIFY);
         }
         entity.setCreateDate(new Date());
@@ -128,8 +128,8 @@ public class SysUserServiceImpl implements SysUserService {
         if (!PasswordUtils.match(oldPassword, user.getPassword())) {
             throw new BusinessException(UserExceptionCodes.ORIGION_PASSWORD_WRONG);
         }
-        String encryptPasswd = PasswordUtils.encrypt(newPassword);
-        user.setPassword(encryptPasswd);
+        String encryptPassword = PasswordUtils.encrypt(newPassword);
+        user.setPassword(encryptPassword);
         sysUserDao.updateByPrimaryKeySelective(user);
     }
 
